@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The VRN Method — Vocal Resonance Notation | VoiceStry</title>
+  <meta name="description" content="VRN is the world's first notation system for vocal production — not just what pitch to sing, but how your body creates the sound. 75+ symbols covering resonance, intensity, breath, and technique.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎤</text></svg>">
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    .hero {
+      padding: 80px 20px 60px;
+      text-align: center;
+      background:
+        radial-gradient(ellipse at 40% 20%, rgba(157, 78, 221, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 60% 80%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
+        var(--bg-dark);
+    }
+    .hero h1 { font-size: clamp(2.2rem, 6vw, 3.5rem); margin-bottom: 15px; }
+    .hero-sub { font-size: 1.15rem; color: var(--text-secondary); max-width: 650px; margin: 0 auto 30px; }
+
+    .content { max-width: 850px; margin: 0 auto; padding: 0 20px 80px; }
+
+    .what-block { padding: 50px 0; }
+    .what-block h2 { font-size: 1.6rem; color: var(--accent-gold); margin-bottom: 18px; }
+    .what-block p { color: var(--text-secondary); font-size: 1.05rem; margin-bottom: 15px; }
+
+    .compare-box {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+      margin: 30px 0;
+    }
+    .compare-side {
+      border-radius: var(--radius-lg); padding: 25px;
+    }
+    .compare-old {
+      background: rgba(239, 68, 68, 0.05);
+      border: 1px solid rgba(239, 68, 68, 0.12);
+    }
+    .compare-new {
+      background: rgba(74, 222, 128, 0.05);
+      border: 1px solid rgba(74, 222, 128, 0.12);
+    }
+    .compare-label { font-weight: 800; margin-bottom: 12px; font-size: 1.05rem; }
+    .compare-old .compare-label { color: var(--accent-red); }
+    .compare-new .compare-label { color: var(--accent-green); }
+    .compare-side p { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 8px; }
+    .compare-side .vrn { font-family: 'Courier New', monospace; color: var(--accent-gold); font-weight: 800; font-size: 1.1rem; }
+
+    /* Zone Cards */
+    .zones-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 14px; margin: 25px 0;
+    }
+    .zone-mini {
+      background: var(--bg-card); border-radius: var(--radius-md); padding: 20px;
+      border: 1px solid var(--border-subtle); text-align: center;
+    }
+    .zone-mini-sym {
+      font-family: 'Courier New', monospace; font-size: 1.8rem; font-weight: 900;
+      color: var(--accent-gold); margin-bottom: 6px;
+    }
+    .zone-mini-name { font-weight: 800; margin-bottom: 4px; }
+    .zone-mini-desc { font-size: 0.85rem; color: var(--text-secondary); }
+
+    /* Intensity */
+    .intensity-row {
+      display: flex; gap: 15px; align-items: center; justify-content: center;
+      margin: 15px 0; flex-wrap: wrap;
+    }
+    .intensity-item {
+      background: var(--bg-card); border-radius: var(--radius-sm); padding: 12px 20px;
+      text-align: center; border: 1px solid var(--border-subtle);
+    }
+    .intensity-sym {
+      font-family: 'Courier New', monospace; font-size: 1.4rem; font-weight: 900;
+      color: var(--accent-cyan);
+    }
+    .intensity-label { font-size: 0.8rem; color: var(--text-secondary); }
+
+    /* Example */
+    .example-box {
+      background: linear-gradient(135deg, rgba(157, 78, 221, 0.08), rgba(0, 212, 255, 0.04));
+      border: 1px solid rgba(157, 78, 221, 0.15);
+      border-radius: var(--radius-lg); padding: 30px; margin: 25px 0;
+    }
+    .example-vrn {
+      font-family: 'Courier New', monospace; font-size: 1.3rem; font-weight: 800;
+      color: var(--accent-gold); text-align: center; margin-bottom: 15px;
+    }
+    .example-breakdown { color: var(--text-secondary); font-size: 0.95rem; }
+    .example-breakdown strong { color: var(--accent-cyan); }
+
+    /* History */
+    .origin-box {
+      background: var(--bg-card); border-radius: var(--radius-lg);
+      padding: 30px; border: 1px solid var(--border-subtle); margin: 25px 0;
+    }
+    .origin-box h3 { color: var(--accent-purple); margin-bottom: 12px; }
+    .origin-box p { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 10px; }
+
+    .cta-bottom {
+      text-align: center; padding: 50px 20px;
+      background: radial-gradient(ellipse at 50% 50%, rgba(157, 78, 221, 0.1) 0%, transparent 70%);
+      border-radius: var(--radius-xl); margin: 40px 0;
+    }
+    .cta-bottom h2 { font-size: 1.8rem; margin-bottom: 12px; }
+    .cta-bottom p { color: var(--text-secondary); margin-bottom: 25px; max-width: 500px; margin-left: auto; margin-right: auto; }
+    .cta-links { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+    @media (max-width: 768px) {
+      .compare-box { grid-template-columns: 1fr; }
+      .zones-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Webring -->
+  <div class="aiunites-bar"><div class="aiunites-bar-content"><a href="https://aiunites.github.io/aiunites-site/" class="aiunites-bar-brand">◆ AIUNITES</a><span class="aiunites-bar-divider">|</span><a href="https://aiunites.github.io/cosmostheopera-site/">COSMOS</a><a href="https://aiunites.github.io/gameatica-site/">Gameatica</a><a href="https://aiunites.github.io/voicestry-site/" style="color:var(--accent-green)!important;font-weight:600;">🎤 VoiceStry</a></div></div>
+
+  <nav class="nav">
+    <a href="index.html" class="nav-logo">🎤 VoiceStry</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="vrn-method.html" class="active">VRN Method</a>
+      <a href="learn.html">Learn VRN</a>
+      <a href="5-gears.html">5 Gears</a>
+      <a href="vocal-gym.html">Vocal Gym</a>
+      <a href="pitch-trainer.html">Pitch Trainer</a>
+      <a href="sight-reading.html">Sight Reading</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1><span class="text-gradient-cosmic">The VRN Method</span></h1>
+    <p class="hero-sub">Not what pitch to sing — but how your body creates the sound. The world's first notation system for vocal production.</p>
+    <a href="learn.html" class="btn btn--cosmic btn--lg">🎓 Start Learning VRN</a>
+  </section>
+
+  <div class="content">
+
+    <!-- What Is VRN -->
+    <section class="what-block">
+      <h2>What Is VRN?</h2>
+      <p>VRN stands for <strong>Vocal Resonance Notation</strong>. Traditional music notation tells you <em>what</em> to sing — pitch, rhythm, dynamics. VRN tells you <em>how</em> your body produces the sound — where it resonates, how intensely, and what muscles engage.</p>
+      <p>Think of it this way: sheet music is the destination. VRN is the driving directions.</p>
+
+      <div class="compare-box">
+        <div class="compare-side compare-old">
+          <div class="compare-label">❌ Before VRN</div>
+          <p>"Sing it more forward"</p>
+          <p>"Put it in the mask"</p>
+          <p>"Open your throat"</p>
+          <p>"Feel the resonance"</p>
+          <p style="margin-top:12px; font-size:0.85rem; color:var(--text-dim);">Metaphors. Different meaning for every singer.</p>
+        </div>
+        <div class="compare-side compare-new">
+          <div class="compare-label">✅ With VRN</div>
+          <p class="vrn">[N++, H+]</p>
+          <p class="vrn">[N++, Ey(E)]</p>
+          <p class="vrn">[P++, O+]</p>
+          <p class="vrn">[C++, H+, N+]</p>
+          <p style="margin-top:12px; font-size:0.85rem; color:var(--text-dim);">Precise. Same meaning for every singer.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- The 6 Zones -->
+    <section class="what-block">
+      <h2>The 6 Primary Resonance Zones</h2>
+      <p>Every voice uses the same six resonating chambers. VRN gives each one a letter.</p>
+
+      <div class="zones-grid">
+        <div class="zone-mini">
+          <div class="zone-mini-sym">[C]</div>
+          <div class="zone-mini-name">Chest</div>
+          <div class="zone-mini-desc">Sternum, ribs, lower torso</div>
+        </div>
+        <div class="zone-mini">
+          <div class="zone-mini-sym">[H]</div>
+          <div class="zone-mini-name">Head</div>
+          <div class="zone-mini-desc">Skull, forehead, crown</div>
+        </div>
+        <div class="zone-mini">
+          <div class="zone-mini-sym">[N]</div>
+          <div class="zone-mini-name">Nasal / Mask</div>
+          <div class="zone-mini-desc">Nose bridge, cheekbones, sinuses</div>
+        </div>
+        <div class="zone-mini">
+          <div class="zone-mini-sym">[O]</div>
+          <div class="zone-mini-name">Oral</div>
+          <div class="zone-mini-desc">Mouth cavity, palate, tongue</div>
+        </div>
+        <div class="zone-mini">
+          <div class="zone-mini-sym">[P]</div>
+          <div class="zone-mini-name">Pharyngeal</div>
+          <div class="zone-mini-desc">Throat space, open pharynx</div>
+        </div>
+        <div class="zone-mini">
+          <div class="zone-mini-sym">[L]</div>
+          <div class="zone-mini-name">Low Body</div>
+          <div class="zone-mini-desc">Abdomen, lower back, pelvic floor</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Intensity -->
+    <section class="what-block">
+      <h2>Intensity Scale</h2>
+      <p>Each zone gets an intensity level. More + signs = stronger engagement. Think of it like weight at the gym — [C+] is a warm-up set, [C+++] is a max-effort lift.</p>
+
+      <div class="intensity-row">
+        <div class="intensity-item">
+          <div class="intensity-sym">+</div>
+          <div class="intensity-label">Light</div>
+        </div>
+        <div class="intensity-item">
+          <div class="intensity-sym">++</div>
+          <div class="intensity-label">Moderate</div>
+        </div>
+        <div class="intensity-item">
+          <div class="intensity-sym">+++</div>
+          <div class="intensity-label">Strong</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reading Example -->
+    <section class="what-block">
+      <h2>Reading VRN — A Full Example</h2>
+
+      <div class="example-box">
+        <div class="example-vrn">[C++, H+, N++, P+, O++] ff ▲ Sp(A)</div>
+        <div class="example-breakdown">
+          <p><strong>[C++]</strong> — Moderate chest resonance. You feel warmth in your sternum.</p>
+          <p><strong>[H+]</strong> — Light head resonance. A gentle tingle in the forehead.</p>
+          <p><strong>[N++]</strong> — Moderate nasal/mask. Cheekbones are buzzing.</p>
+          <p><strong>[P+]</strong> — Light pharyngeal opening. Throat is relaxed, not clenched.</p>
+          <p><strong>[O++]</strong> — Strong oral resonance. Mouth is wide, palate lifted.</p>
+          <p><strong>ff</strong> — Fortissimo. Loud dynamics.</p>
+          <p><strong>▲</strong> — Ascending pitch direction.</p>
+          <p><strong>Sp(A)</strong> — Soft palate arched (the "pre-yawn" position).</p>
+          <p style="margin-top: 15px;">This describes a full, projecting operatic sound with warm chest foundation, bright mask, and excellent space — all in one line.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- More Than Just Zones -->
+    <section class="what-block">
+      <h2>Beyond the 6 Zones</h2>
+      <p>VRN includes 75+ symbols covering everything a voice does. The full system adds:</p>
+      <p><strong style="color:var(--accent-cyan);">Vocal Tract Modifiers</strong> — Soft palate position [Sp], tongue placement [Tg], larynx height [Lx], jaw opening [Jw], lip shape [Lp]</p>
+      <p><strong style="color:var(--accent-cyan);">Muscular Engagement</strong> — Eye muscles [Ey], brow [B], thyroid area [T], musculo-skeletal engagement [M]</p>
+      <p><strong style="color:var(--accent-cyan);">Breath & Phonation</strong> — Breath support [Br], phonation type [Ph], vocal fold state [VF], subglottal pressure [Sg]</p>
+      <p><strong style="color:var(--accent-cyan);">Formant & Timbral</strong> — Singer's formant [SF], formant tuning [Ft], brightness [Brt], warmth [Wm], vibrato [Vib]</p>
+      <p><strong style="color:var(--accent-cyan);">Dynamics & Direction</strong> — Traditional dynamics (pp–ff), pitch direction (▲▼), messa di voce (<>)</p>
+    </section>
+
+    <!-- Origin -->
+    <section class="what-block">
+      <div class="origin-box">
+        <h3>Why VRN Didn't Exist Before</h3>
+        <p>Western music notation evolved over centuries to capture pitch, rhythm, and dynamics — the <em>what</em> of music. But it never addressed the <em>how</em> of vocal production.</p>
+        <p>Voice teaching has been an oral tradition for 400+ years. Teachers demonstrate, students imitate. Knowledge passes through metaphor and physical proximity. Nothing gets written down.</p>
+        <p>VRN does for vocal production what the International Phonetic Alphabet did for phonetics — creates a standardized written system for something that was previously passed down by ear and touch.</p>
+        <p>Developed for <a href="https://aiunites.github.io/cosmostheopera-site/">COSMOS the OPERA</a> — a full-scale opera requiring precise vocal production specifications across an entire cast — VRN emerged from the need to write down what no notation system could capture.</p>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-bottom">
+      <h2><span class="text-gradient-cosmic">Ready to Learn VRN?</span></h2>
+      <p>Start with the free interactive lessons. Eight progressive modules from zero to fluent. No signup required.</p>
+      <div class="cta-links">
+        <a href="learn.html" class="btn btn--cosmic">🎓 Start Lesson 1</a>
+        <a href="5-gears.html" class="btn btn--ghost">🔄 The 5 Gears</a>
+        <a href="vocal-gym.html" class="btn btn--ghost">💪 Vocal Gym</a>
+      </div>
+    </section>
+
+  </div>
+
+  <footer class="footer">
+    <p>
+      © 2002-2026 VoiceStry. All Rights Reserved. DMCA Protected.<br>
+      <a href="index.html">Home</a> |
+      <a href="vrn-method.html">VRN Method</a> |
+      <a href="learn.html">Learn</a> |
+      <a href="5-gears.html">5 Gears</a> |
+      <a href="vocal-gym.html">Vocal Gym</a><br><br>
+      Part of the <a href="https://aiunites.github.io/aiunites-site/">AIUNITES</a> network |
+      VRN originated at <a href="https://aiunites.github.io/cosmostheopera-site/">COSMOS the OPERA</a>
+    </p>
+  </footer>
+
+</body>
+</html>

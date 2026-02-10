@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VoiceStry — Train Your Voice Like You Train Your Body</title>
+  <meta name="description" content="Your voice has 5 gears, 6 resonance zones, and you've never trained any of them. VoiceStry gives you the tools. Free interactive lessons, pitch training, and the VRN Method.">
+  <meta name="keywords" content="vocal training, singing lessons, voice exercises, VRN, vocal resonance, learn to sing, vocal range, singing technique">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎤</text></svg>">
+  <meta property="og:title" content="VoiceStry — Train Your Voice Like You Train Your Body">
+  <meta property="og:description" content="Your voice has 5 gears and 6 resonance zones. Learn to use them all.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    /* Hero */
+    .hero {
+      padding: 100px 20px 80px;
+      text-align: center;
+      background:
+        radial-gradient(ellipse at 25% 20%, rgba(74, 222, 128, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 75% 70%, rgba(239, 68, 68, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(157, 78, 221, 0.06) 0%, transparent 60%),
+        var(--bg-dark);
+    }
+    .hero-badge {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      background: rgba(74, 222, 128, 0.1);
+      border: 1px solid rgba(74, 222, 128, 0.2);
+      color: var(--accent-green);
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-size: clamp(2.4rem, 7vw, 4.2rem);
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+    .hero-sub {
+      font-size: 1.15rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto 35px;
+    }
+    .hero-ctas {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 50px;
+    }
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .hero-stat { text-align: center; }
+    .hero-stat-num {
+      font-size: 2rem;
+      font-weight: 900;
+      background: var(--gradient-nature);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-stat-label { font-size: 0.85rem; color: var(--text-secondary); }
+
+    /* Hooks Grid */
+    .hooks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .hook-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      border: 1px solid var(--border-subtle);
+      transition: all 0.3s;
+      text-decoration: none;
+      color: var(--text-primary);
+      display: block;
+    }
+    .hook-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-4px);
+      opacity: 1;
+    }
+    .hook-icon { font-size: 2.5rem; margin-bottom: 15px; }
+    .hook-title { font-size: 1.2rem; font-weight: 800; margin-bottom: 8px; }
+    .hook-desc { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; }
+    .hook-arrow { display: block; margin-top: 15px; font-weight: 700; font-size: 0.9rem; }
+    .hook-arrow--red { color: var(--accent-red); }
+    .hook-arrow--green { color: var(--accent-green); }
+    .hook-arrow--purple { color: var(--accent-purple); }
+    .hook-arrow--cyan { color: var(--accent-cyan); }
+
+    /* Tools Grid */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .tool-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 25px;
+      text-align: center;
+      border: 1px solid var(--border-subtle);
+      transition: all 0.3s;
+      text-decoration: none;
+      color: var(--text-primary);
+      display: block;
+    }
+    .tool-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-3px);
+      opacity: 1;
+    }
+    .tool-icon { font-size: 2.2rem; margin-bottom: 12px; }
+    .tool-name { font-size: 1.05rem; font-weight: 800; margin-bottom: 6px; }
+    .tool-desc { font-size: 0.85rem; color: var(--text-secondary); }
+
+    /* How It Works */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      counter-reset: step;
+    }
+    .step {
+      text-align: center;
+      padding: 25px 20px;
+      position: relative;
+    }
+    .step::before {
+      counter-increment: step;
+      content: counter(step);
+      display: block;
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: var(--gradient-cosmic);
+      color: #fff;
+      font-weight: 900;
+      font-size: 1.3rem;
+      line-height: 48px;
+      margin: 0 auto 15px;
+    }
+    .step-title { font-weight: 800; margin-bottom: 8px; }
+    .step-desc { font-size: 0.9rem; color: var(--text-secondary); }
+
+    /* Who Section */
+    .who-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+    }
+    .who-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-md);
+      padding: 22px;
+      border: 1px solid var(--border-subtle);
+    }
+    .who-emoji { font-size: 1.8rem; margin-bottom: 10px; }
+    .who-title { font-weight: 800; margin-bottom: 6px; }
+    .who-desc { font-size: 0.9rem; color: var(--text-secondary); }
+
+    /* VRN Teaser */
+    .vrn-teaser {
+      background: linear-gradient(135deg, rgba(157, 78, 221, 0.08), rgba(0, 212, 255, 0.05));
+      border: 1px solid rgba(157, 78, 221, 0.15);
+      border-radius: var(--radius-xl);
+      padding: 50px 30px;
+      text-align: center;
+    }
+    .vrn-sample {
+      font-family: 'Courier New', monospace;
+      font-size: clamp(1.3rem, 3vw, 1.8rem);
+      font-weight: 800;
+      color: var(--accent-gold);
+      margin: 25px 0;
+      letter-spacing: 1px;
+    }
+    .vrn-teaser p { color: var(--text-secondary); max-width: 600px; margin: 0 auto 20px; }
+
+    /* CTA Bottom */
+    .cta-section {
+      text-align: center;
+      padding: 80px 20px;
+      background:
+        radial-gradient(ellipse at 50% 50%, rgba(74, 222, 128, 0.08) 0%, transparent 60%),
+        var(--bg-dark);
+    }
+    .cta-section h2 { font-size: clamp(1.8rem, 5vw, 2.5rem); margin-bottom: 15px; }
+    .cta-section p { color: var(--text-secondary); max-width: 500px; margin: 0 auto 30px; font-size: 1.1rem; }
+    .cta-buttons { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+    @media (max-width: 768px) {
+      .hooks-grid { grid-template-columns: 1fr; }
+      .hero-stats { gap: 25px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- AIUNITES Webring -->
+  <div class="aiunites-bar"><div class="aiunites-bar-content"><a href="https://aiunites.github.io/aiunites-site/" class="aiunites-bar-brand">◆ AIUNITES</a><span class="aiunites-bar-divider">|</span><a href="https://aiunites.github.io/aizines-app/">AIZines</a><a href="https://aiunites.github.io/aibyjob-demo/">AIByJob</a><a href="https://aiunites.github.io/redomy-demo/">Redomy</a><a href="https://aiunites.github.io/videobate-site/">VideoBate</a><a href="https://aiunites.github.io/cosmostheopera-site/">COSMOS</a><a href="https://aiunites.github.io/gameatica-site/">Gameatica</a><a href="https://aiunites.github.io/erpise-site/">ERPise</a><a href="https://aiunites.github.io/voicestry-site/" style="color:var(--accent-green) !important;font-weight:600;">🎤 VoiceStry</a></div></div>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <a href="index.html" class="nav-logo">🎤 VoiceStry</a>
+    <div class="nav-links">
+      <a href="index.html" class="active">Home</a>
+      <a href="vrn-method.html">VRN Method</a>
+      <a href="learn.html">Learn VRN</a>
+      <a href="5-gears.html">5 Gears</a>
+      <a href="vocal-gym.html">Vocal Gym</a>
+      <a href="pitch-trainer.html">Pitch Trainer</a>
+      <a href="sight-reading.html">Sight Reading</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-badge">✨ Free vocal training tools — no signup required</div>
+    <h1>
+      <span class="text-gradient-nature">Train Your Voice</span><br>
+      Like You Train Your Body.
+    </h1>
+    <p class="hero-sub">Your voice has 5 gears, 6 resonance zones, and muscles you've never targeted. VoiceStry gives you the map, the method, and the tools to train them all.</p>
+    <div class="hero-ctas">
+      <a href="learn.html" class="btn btn--nature btn--lg">🎓 Start Free Lessons</a>
+      <a href="vrn-method.html" class="btn btn--ghost btn--lg">📖 What is VRN?</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num">5</div>
+        <div class="hero-stat-label">Vocal Gears</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">6</div>
+        <div class="hero-stat-label">Resonance Zones</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">75+</div>
+        <div class="hero-stat-label">VRN Symbols</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">8</div>
+        <div class="hero-stat-label">Free Lessons</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Big Hooks -->
+  <section class="section">
+    <div class="section-inner">
+      <h2 class="section-title text-gold">Discover What Your Voice Can Really Do</h2>
+      <p class="section-subtitle">Most people use a fraction of their vocal range. Not because they lack talent — because nobody gave them the manual.</p>
+      <div class="hooks-grid">
+
+        <a href="5-gears.html" class="hook-card">
+          <div class="hook-icon">🔄</div>
+          <div class="hook-title">Your Voice Has 5 Gears</div>
+          <div class="hook-desc">That crack when you sing high? It's not your limit — it's an unmanaged gear shift. Learn where each register lives and how to transition between them smoothly. Like learning to drive manual.</div>
+          <span class="hook-arrow hook-arrow--red">Learn the Gear Shifts →</span>
+        </a>
+
+        <a href="vocal-gym.html" class="hook-card">
+          <div class="hook-icon">💪</div>
+          <div class="hook-title">Bodybuilding for the Voice</div>
+          <div class="hook-desc">Your voice has muscle groups just like your body — chest, head, mask, throat, oral cavity. Train each one with the same precision athletes use in the gym.</div>
+          <span class="hook-arrow hook-arrow--green">Start Your Voice Split →</span>
+        </a>
+
+        <a href="vrn-method.html" class="hook-card">
+          <div class="hook-icon">📐</div>
+          <div class="hook-title">The VRN Method</div>
+          <div class="hook-desc">The world's first notation system for vocal resonance. Not what pitch to sing — but how your body produces it. 75+ symbols covering every zone, intensity, and technique.</div>
+          <span class="hook-arrow hook-arrow--purple">Explore the System →</span>
+        </a>
+
+        <a href="learn.html" class="hook-card">
+          <div class="hook-icon">🎓</div>
+          <div class="hook-title">Free Interactive Lessons</div>
+          <div class="hook-desc">Eight progressive lessons take you from zero to reading and writing VRN. Animated diagrams, audio synthesis, microphone analysis, and quizzes. No account needed.</div>
+          <span class="hook-arrow hook-arrow--cyan">Start Lesson 1 →</span>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- VRN Teaser -->
+  <section class="section">
+    <div class="section-inner">
+      <div class="vrn-teaser">
+        <h2 class="section-title"><span class="text-gradient-cosmic">One Line. Complete Vocal Blueprint.</span></h2>
+        <div class="vrn-sample">[C++, H+, N++, P+, O++] ff ▲ Sp(A) Tg(F)</div>
+        <p>This single line tells a singer: strong chest resonance, light head, full nasal mask, open throat, maximum oral space, forte dynamics, ascending pitch, arched soft palate, tongue forward. What used to take five minutes of a voice teacher pointing at their face — captured in eight characters.</p>
+        <a href="vrn-method.html" class="btn btn--cosmic">📖 Learn to Read VRN</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Free Tools -->
+  <section class="section">
+    <div class="section-inner">
+      <h2 class="section-title text-cyan">Free Training Tools</h2>
+      <p class="section-subtitle">No account. No paywall. Just open and start training.</p>
+      <div class="tools-grid">
+
+        <a href="learn.html" class="tool-card">
+          <div class="tool-icon">🎓</div>
+          <div class="tool-name">VRN Lessons</div>
+          <div class="tool-desc">8 progressive lessons with diagrams, audio, and quizzes</div>
+        </a>
+
+        <a href="pitch-trainer.html" class="tool-card">
+          <div class="tool-icon">🎤</div>
+          <div class="tool-name">Pitch Trainer</div>
+          <div class="tool-desc">Real-time pitch detection, interval training, note matching</div>
+        </a>
+
+        <a href="sight-reading.html" class="tool-card">
+          <div class="tool-icon">👁️</div>
+          <div class="tool-name">Sight Reading</div>
+          <div class="tool-desc">Learn to read staff notation with speed drills</div>
+        </a>
+
+        <a href="vocal-games.html" class="tool-card">
+          <div class="tool-icon">🎮</div>
+          <div class="tool-name">Vocal Games</div>
+          <div class="tool-desc">Gamified resonance challenges and VRN quizzes</div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="section" style="background: rgba(255,255,255,0.01);">
+    <div class="section-inner">
+      <h2 class="section-title text-gold">How It Works</h2>
+      <p class="section-subtitle">From zero to singing with intention in four steps.</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-title">Learn the Zones</div>
+          <div class="step-desc">Discover the 6 resonance zones in your body and feel where each one vibrates.</div>
+        </div>
+        <div class="step">
+          <div class="step-title">Read VRN</div>
+          <div class="step-desc">Learn the notation system that maps every zone, intensity, and vocal technique.</div>
+        </div>
+        <div class="step">
+          <div class="step-title">Train the Gears</div>
+          <div class="step-desc">Practice shifting between registers with targeted exercises for each gear.</div>
+        </div>
+        <div class="step">
+          <div class="step-title">Sing With a Map</div>
+          <div class="step-desc">Apply VRN to real music. Know exactly what your body does on every note.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Who Is This For -->
+  <section class="section">
+    <div class="section-inner">
+      <h2 class="section-title text-green">Who Is This For?</h2>
+      <p class="section-subtitle">Everyone has a voice. Not everyone has a system for it.</p>
+      <div class="who-grid">
+        <div class="who-card">
+          <div class="who-emoji">🎤</div>
+          <div class="who-title">Singers Who Hit a Wall</div>
+          <div class="who-desc">You can sing, but your range stalls, your breaks crack, and you don't know why. VRN shows you exactly what's happening.</div>
+        </div>
+        <div class="who-card">
+          <div class="who-emoji">🎹</div>
+          <div class="who-title">Voice Teachers</div>
+          <div class="who-desc">Stop saying "feel it in the mask." Write [N++, H+] on the score. Your students practice resonance, not guesswork.</div>
+        </div>
+        <div class="who-card">
+          <div class="who-emoji">🎵</div>
+          <div class="who-title">Choral Directors</div>
+          <div class="who-desc">40 singers interpreting "darker tone" differently? Give them all [C++, P++, O+]. One notation, one sound.</div>
+        </div>
+        <div class="who-card">
+          <div class="who-emoji">🏋️</div>
+          <div class="who-title">Athletes & Professionals</div>
+          <div class="who-desc">Podcasters, speakers, salespeople, lawyers — your voice is a performance tool. Train it like one.</div>
+        </div>
+        <div class="who-card">
+          <div class="who-emoji">⛪</div>
+          <div class="who-title">Church & Worship Singers</div>
+          <div class="who-desc">No formal training but you sing every week. VRN gives you the framework to improve systematically.</div>
+        </div>
+        <div class="who-card">
+          <div class="who-emoji">✍️</div>
+          <div class="who-title">Composers</div>
+          <div class="who-desc">Specify exactly how a phrase should sound — not just the pitch, but the timbral recipe. VRN annotates what "con forza" can't.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bottom CTA -->
+  <section class="cta-section">
+    <h2><span class="text-gradient-nature">Voices try.</span> Start yours.</h2>
+    <p>Free lessons, free tools, no signup. Your voice already has everything it needs — you just need the manual.</p>
+    <div class="cta-buttons">
+      <a href="learn.html" class="btn btn--nature btn--lg">🎓 Start Free Lessons</a>
+      <a href="5-gears.html" class="btn btn--fire btn--lg">🔄 Find Your 5 Gears</a>
+      <a href="vocal-gym.html" class="btn btn--ghost btn--lg">💪 Voice Gym</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>
+      © 2002-2026 VoiceStry. All Rights Reserved. DMCA Protected.<br>
+      Home of the <a href="vrn-method.html">VRN Method</a> — Vocal Resonance Notation<br><br>
+      <a href="index.html">Home</a> |
+      <a href="vrn-method.html">VRN Method</a> |
+      <a href="learn.html">Learn</a> |
+      <a href="5-gears.html">5 Gears</a> |
+      <a href="vocal-gym.html">Vocal Gym</a> |
+      <a href="pitch-trainer.html">Pitch</a> |
+      <a href="sight-reading.html">Sight Reading</a><br><br>
+      Part of the <a href="https://aiunites.github.io/aiunites-site/">AIUNITES</a> network |
+      Created by <a href="https://aiunites.github.io/cosmostheopera-site/">COSMOS the OPERA</a>
+    </p>
+  </footer>
+
+</body>
+</html>
