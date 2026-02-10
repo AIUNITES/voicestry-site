@@ -3,296 +3,439 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The VRN Method — Vocal Resonance Notation | VoiceStry</title>
-  <meta name="description" content="VRN is the world's first notation system for vocal production — not just what pitch to sing, but how your body creates the sound. 75+ symbols covering resonance, intensity, breath, and technique.">
+  <title>VRN Method — The Complete Vocal Resonance Notation Reference | VoiceStry</title>
+  <meta name="description" content="The world's first Vocal Resonance Notation system — 75+ symbols across 8 notation systems for encoding vocal resonance, phonation, breath, formants, vibrato, and timbral color.">
+  <meta name="keywords" content="vocal resonance notation, VRN method, vocal technique, chest voice, head voice, mixed voice, vocal placement, singing notation, voice training">
+  <meta name="author" content="Tom Sans / AIUNITES">
+  <meta property="og:title" content="VRN Method — Complete Vocal Resonance Notation Reference">
+  <meta property="og:description" content="75+ symbols for encoding exactly how the voice produces sound. The world's first formalized vocal production notation system.">
+  <meta property="og:type" content="article">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎤</text></svg>">
-  <link rel="stylesheet" href="css/style.css">
 
   <style>
-    .hero {
-      padding: 80px 20px 60px;
-      text-align: center;
-      background:
-        radial-gradient(ellipse at 40% 20%, rgba(157, 78, 221, 0.12) 0%, transparent 50%),
-        radial-gradient(ellipse at 60% 80%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
-        var(--bg-dark);
-    }
-    .hero h1 { font-size: clamp(2.2rem, 6vw, 3.5rem); margin-bottom: 15px; }
-    .hero-sub { font-size: 1.15rem; color: var(--text-secondary); max-width: 650px; margin: 0 auto 30px; }
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{--bg-dark:#0a0a0f;--bg-card:#12121a;--text-primary:#fff;--text-secondary:#a0a0b0;--accent-purple:#9d4edd;--accent-cyan:#00d4ff;--accent-gold:#ffd700;--accent-pink:#ff6b9d;--accent-green:#4ade80;--accent-orange:#f59e0b;--accent-red:#ef4444}
+    body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg-dark);color:var(--text-primary);line-height:1.7}
 
-    .content { max-width: 850px; margin: 0 auto; padding: 0 20px 80px; }
+    /* Webring */
+    .aiunites-bar{background:linear-gradient(90deg,#0a0a0f,#1a1a2e);border-bottom:1px solid rgba(99,102,241,.3);padding:8px 0;font-size:12px}.aiunites-bar-content{max-width:1400px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:12px;overflow-x:auto;scrollbar-width:none}.aiunites-bar-content::-webkit-scrollbar{display:none}.aiunites-bar a{color:rgba(255,255,255,.7);text-decoration:none;white-space:nowrap;transition:color .2s}.aiunites-bar a:hover{color:#fff}.aiunites-bar-brand{color:#6366f1!important;font-weight:600}.aiunites-bar-divider{color:rgba(255,255,255,.2)}
 
-    .what-block { padding: 50px 0; }
-    .what-block h2 { font-size: 1.6rem; color: var(--accent-gold); margin-bottom: 18px; }
-    .what-block p { color: var(--text-secondary); font-size: 1.05rem; margin-bottom: 15px; }
+    /* Nav */
+    .nav{background:var(--bg-card);padding:15px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,0.1);position:sticky;top:0;z-index:100}
+    .nav-logo{font-size:1.5rem;font-weight:800;text-decoration:none;background:linear-gradient(135deg,var(--accent-green),var(--accent-cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .nav-links{display:flex;gap:22px;flex-wrap:wrap}.nav-links a{color:var(--text-secondary);text-decoration:none;font-size:0.95rem;transition:color 0.3s}.nav-links a:hover,.nav-links a.active{color:var(--accent-cyan)}
 
-    .compare-box {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
-      margin: 30px 0;
-    }
-    .compare-side {
-      border-radius: var(--radius-lg); padding: 25px;
-    }
-    .compare-old {
-      background: rgba(239, 68, 68, 0.05);
-      border: 1px solid rgba(239, 68, 68, 0.12);
-    }
-    .compare-new {
-      background: rgba(74, 222, 128, 0.05);
-      border: 1px solid rgba(74, 222, 128, 0.12);
-    }
-    .compare-label { font-weight: 800; margin-bottom: 12px; font-size: 1.05rem; }
-    .compare-old .compare-label { color: var(--accent-red); }
-    .compare-new .compare-label { color: var(--accent-green); }
-    .compare-side p { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 8px; }
-    .compare-side .vrn { font-family: 'Courier New', monospace; color: var(--accent-gold); font-weight: 800; font-size: 1.1rem; }
+    /* Hero */
+    .hero{padding:80px 20px;text-align:center;background:radial-gradient(ellipse at 30% 20%,rgba(157,78,221,0.15) 0%,transparent 50%),var(--bg-dark)}
+    .hero h1{font-size:clamp(2.5rem,6vw,4rem);margin-bottom:20px;background:linear-gradient(135deg,#fff,var(--accent-cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero-subtitle{font-size:1.2rem;color:var(--text-secondary);max-width:700px;margin:0 auto}
+    .hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:30px}
+    .hero-btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:14px;text-decoration:none;font-weight:700;font-size:1rem;transition:transform 0.2s,box-shadow 0.2s;color:#fff}.hero-btn:hover{transform:translateY(-3px)}
+    .hero-btn--purple{background:linear-gradient(135deg,var(--accent-purple),#7c3aed);box-shadow:0 4px 20px rgba(157,78,221,0.3)}.hero-btn--purple:hover{box-shadow:0 8px 30px rgba(157,78,221,0.5)}
+    .hero-btn--cyan{background:linear-gradient(135deg,#0891b2,var(--accent-cyan));box-shadow:0 4px 20px rgba(0,212,255,0.25)}.hero-btn--cyan:hover{box-shadow:0 8px 30px rgba(0,212,255,0.45)}
+    .hero-btn--gold{background:linear-gradient(135deg,#d97706,var(--accent-gold));color:#000;box-shadow:0 4px 20px rgba(255,215,0,0.25)}.hero-btn--gold:hover{box-shadow:0 8px 30px rgba(255,215,0,0.45)}
 
-    /* Zone Cards */
-    .zones-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 14px; margin: 25px 0;
-    }
-    .zone-mini {
-      background: var(--bg-card); border-radius: var(--radius-md); padding: 20px;
-      border: 1px solid var(--border-subtle); text-align: center;
-    }
-    .zone-mini-sym {
-      font-family: 'Courier New', monospace; font-size: 1.8rem; font-weight: 900;
-      color: var(--accent-gold); margin-bottom: 6px;
-    }
-    .zone-mini-name { font-weight: 800; margin-bottom: 4px; }
-    .zone-mini-desc { font-size: 0.85rem; color: var(--text-secondary); }
+    /* Content */
+    .content{max-width:1000px;margin:0 auto;padding:60px 20px}
+    .section{margin-bottom:60px}
+    .section h2{font-size:1.8rem;margin-bottom:25px;color:var(--accent-gold);display:flex;align-items:center;gap:15px}
+    .section h2::before{content:"";width:5px;height:30px;background:linear-gradient(180deg,var(--accent-purple),var(--accent-cyan));border-radius:3px}
+    .section h3{font-size:1.3rem;margin:30px 0 15px;color:var(--accent-cyan)}
+    .section p{color:var(--text-secondary);margin-bottom:15px}
 
-    /* Intensity */
-    .intensity-row {
-      display: flex; gap: 15px; align-items: center; justify-content: center;
-      margin: 15px 0; flex-wrap: wrap;
-    }
-    .intensity-item {
-      background: var(--bg-card); border-radius: var(--radius-sm); padding: 12px 20px;
-      text-align: center; border: 1px solid var(--border-subtle);
-    }
-    .intensity-sym {
-      font-family: 'Courier New', monospace; font-size: 1.4rem; font-weight: 900;
-      color: var(--accent-cyan);
-    }
-    .intensity-label { font-size: 0.8rem; color: var(--text-secondary); }
+    /* Cards */
+    .notation-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-top:30px}
+    .notation-card{background:var(--bg-card);border-radius:15px;padding:25px;border:1px solid rgba(255,255,255,0.05);transition:all 0.3s}
+    .notation-card:hover{border-color:var(--accent-purple);transform:translateY(-3px)}
+    .notation-symbol{font-size:2.5rem;font-weight:800;margin-bottom:10px;background:linear-gradient(135deg,var(--accent-purple),var(--accent-cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-family:'Courier New',monospace}
+    .notation-name{font-size:1.2rem;font-weight:700;margin-bottom:8px}
+    .notation-desc{color:var(--text-secondary);font-size:0.95rem}
 
-    /* Example */
-    .example-box {
-      background: linear-gradient(135deg, rgba(157, 78, 221, 0.08), rgba(0, 212, 255, 0.04));
-      border: 1px solid rgba(157, 78, 221, 0.15);
-      border-radius: var(--radius-lg); padding: 30px; margin: 25px 0;
-    }
-    .example-vrn {
-      font-family: 'Courier New', monospace; font-size: 1.3rem; font-weight: 800;
-      color: var(--accent-gold); text-align: center; margin-bottom: 15px;
-    }
-    .example-breakdown { color: var(--text-secondary); font-size: 0.95rem; }
-    .example-breakdown strong { color: var(--accent-cyan); }
+    /* Tables */
+    .notation-table{width:100%;border-collapse:collapse;margin:20px 0;background:var(--bg-card);border-radius:15px;overflow:hidden}
+    .notation-table th,.notation-table td{padding:15px 20px;text-align:left;border-bottom:1px solid rgba(255,255,255,0.05)}
+    .notation-table th{background:rgba(157,78,221,0.2);color:var(--accent-cyan);font-weight:600}
+    .notation-table tr:last-child td{border-bottom:none}
+    .notation-table tr:hover{background:rgba(0,212,255,0.05)}
+    .symbol-cell{font-family:'Courier New',monospace;font-weight:700;color:var(--accent-gold);font-size:1.1rem}
 
-    /* History */
-    .origin-box {
-      background: var(--bg-card); border-radius: var(--radius-lg);
-      padding: 30px; border: 1px solid var(--border-subtle); margin: 25px 0;
-    }
-    .origin-box h3 { color: var(--accent-purple); margin-bottom: 12px; }
-    .origin-box p { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 10px; }
+    /* Code blocks */
+    .code-block{background:#1a1a2e;border-radius:10px;padding:25px;font-family:'Courier New',monospace;font-size:0.95rem;overflow-x:auto;border:1px solid rgba(255,255,255,0.1);margin:20px 0}
+    .code-block .comment{color:var(--accent-green)}
+    .code-block .notation{color:var(--accent-gold)}
+    .code-block .text{color:var(--text-secondary)}
 
-    .cta-bottom {
-      text-align: center; padding: 50px 20px;
-      background: radial-gradient(ellipse at 50% 50%, rgba(157, 78, 221, 0.1) 0%, transparent 70%);
-      border-radius: var(--radius-xl); margin: 40px 0;
-    }
-    .cta-bottom h2 { font-size: 1.8rem; margin-bottom: 12px; }
-    .cta-bottom p { color: var(--text-secondary); margin-bottom: 25px; max-width: 500px; margin-left: auto; margin-right: auto; }
-    .cta-links { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    /* Example box */
+    .example-box{background:linear-gradient(135deg,rgba(157,78,221,0.1),rgba(0,212,255,0.05));border-radius:15px;padding:30px;margin:30px 0;border-left:4px solid var(--accent-purple)}
+    .example-box h4{color:var(--accent-gold);margin-bottom:15px}
 
-    @media (max-width: 768px) {
-      .compare-box { grid-template-columns: 1fr; }
-      .zones-grid { grid-template-columns: 1fr 1fr; }
-    }
+    /* Genre cards */
+    .genre-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;margin-top:20px}
+    .genre-card{background:var(--bg-card);border-radius:12px;padding:20px;border:1px solid rgba(255,255,255,0.05)}
+    .genre-name{font-size:1.1rem;font-weight:700;color:var(--accent-cyan);margin-bottom:10px}
+    .genre-notation{font-family:'Courier New',monospace;color:var(--accent-gold);margin-bottom:10px}
+    .genre-desc{font-size:0.9rem;color:var(--text-secondary)}
+
+    /* Footer */
+    .footer{background:var(--bg-card);padding:40px 20px;text-align:center;border-top:1px solid rgba(255,255,255,0.05)}
+    .footer p{color:var(--text-secondary);font-size:0.9rem}.footer a{color:var(--accent-purple);text-decoration:none}
+
+    @media(max-width:768px){.nav{flex-direction:column;gap:12px}.nav-links{flex-wrap:wrap;justify-content:center;gap:12px}.notation-grid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
-
-  <!-- Webring -->
   <div class="aiunites-bar"><div class="aiunites-bar-content"><a href="https://aiunites.github.io/aiunites-site/" class="aiunites-bar-brand">◆ AIUNITES</a><span class="aiunites-bar-divider">|</span><a href="https://aiunites.github.io/cosmostheopera-site/">COSMOS</a><a href="https://aiunites.github.io/gameatica-site/">Gameatica</a><a href="https://aiunites.github.io/voicestry-site/" style="color:var(--accent-green)!important;font-weight:600;">🎤 VoiceStry</a></div></div>
 
-  <nav class="nav">
-    <a href="index.html" class="nav-logo">🎤 VoiceStry</a>
-    <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="vrn-method.html" class="active">VRN Method</a>
-      <a href="learn.html">Learn VRN</a>
-      <a href="5-gears.html">5 Gears</a>
-      <a href="vocal-gym.html">Vocal Gym</a>
-      <a href="pitch-trainer.html">Pitch Trainer</a>
-      <a href="sight-reading.html">Sight Reading</a>
-    </div>
-  </nav>
+  <nav class="nav"><a href="index.html" class="nav-logo">🎤 VoiceStry</a><div class="nav-links"><a href="index.html">Home</a><a href="vrn-method.html" class="active">VRN Method</a><a href="learn.html">Learn VRN</a><a href="5-gears.html">5 Gears</a><a href="vocal-gym.html">Vocal Gym</a><a href="pitch-trainer.html">Pitch Trainer</a><a href="sight-reading.html">Sight Reading</a></div></nav>
 
   <section class="hero">
-    <h1><span class="text-gradient-cosmic">The VRN Method</span></h1>
-    <p class="hero-sub">Not what pitch to sing — but how your body creates the sound. The world's first notation system for vocal production.</p>
-    <a href="learn.html" class="btn btn--cosmic btn--lg">🎓 Start Learning VRN</a>
+    <h1>🎵 Vocal Resonance Notation</h1>
+    <p class="hero-subtitle">The world's first notation system for indicating vocal resonance locations, muscular engagement, breath support, phonation type, formant tracking, and timbral color. Now at VSV c06 with 75+ symbols across 8 complete notation systems.</p>
+    <div class="hero-actions">
+      <a href="learn.html" class="hero-btn hero-btn--purple">🎓 Learn VRN</a>
+      <a href="pitch-trainer.html" class="hero-btn hero-btn--cyan">🎤 Pitch Trainer</a>
+      <a href="sight-reading.html" class="hero-btn hero-btn--gold">🎼 Sight Reading</a>
+    </div>
+    <div class="hero-actions" style="margin-top:12px;">
+      <a href="5-gears.html" class="hero-btn" style="background:linear-gradient(135deg,#ef4444,#f59e0b);box-shadow:0 4px 20px rgba(239,68,68,0.25);">🔄 5 Gears of Your Voice</a>
+      <a href="vocal-gym.html" class="hero-btn" style="background:linear-gradient(135deg,#4ade80,#00d4ff);color:#000;box-shadow:0 4px 20px rgba(74,222,128,0.25);">💪 Bodybuilding for the Voice</a>
+    </div>
   </section>
 
-  <div class="content">
+  <main class="content">
 
-    <!-- What Is VRN -->
-    <section class="what-block">
-      <h2>What Is VRN?</h2>
-      <p>VRN stands for <strong>Vocal Resonance Notation</strong>. Traditional music notation tells you <em>what</em> to sing — pitch, rhythm, dynamics. VRN tells you <em>how</em> your body produces the sound — where it resonates, how intensely, and what muscles engage.</p>
-      <p>Think of it this way: sheet music is the destination. VRN is the driving directions.</p>
+    <!-- 1. Introduction -->
+    <section class="section">
+      <h2>What is Vocal Resonance Notation?</h2>
+      <p>Traditional musical notation tells us <em>what</em> to sing — pitch, rhythm, dynamics. But it doesn't tell us <em>how</em> to produce the sound in terms of physical sensation and placement.</p>
+      <p>Vocal Resonance Notation (VRN) fills this gap by providing symbols that indicate where in the body the singer should feel resonance and which muscles to engage. This creates a more precise communication between composer/conductor and performer.</p>
+      <p>VRN was created as part of <a href="https://aiunites.github.io/cosmostheopera-site/" style="color:var(--accent-cyan);">COSMOS the OPERA</a> — the first opera to use this system, making it a groundbreaking work not just artistically but pedagogically.</p>
+    </section>
 
-      <div class="compare-box">
-        <div class="compare-side compare-old">
-          <div class="compare-label">❌ Before VRN</div>
-          <p>"Sing it more forward"</p>
-          <p>"Put it in the mask"</p>
-          <p>"Open your throat"</p>
-          <p>"Feel the resonance"</p>
-          <p style="margin-top:12px; font-size:0.85rem; color:var(--text-dim);">Metaphors. Different meaning for every singer.</p>
-        </div>
-        <div class="compare-side compare-new">
-          <div class="compare-label">✅ With VRN</div>
-          <p class="vrn">[N++, H+]</p>
-          <p class="vrn">[N++, Ey(E)]</p>
-          <p class="vrn">[P++, O+]</p>
-          <p class="vrn">[C++, H+, N+]</p>
-          <p style="margin-top:12px; font-size:0.85rem; color:var(--text-dim);">Precise. Same meaning for every singer.</p>
-        </div>
+    <!-- 2. Primary Resonance Areas -->
+    <section class="section">
+      <h2>1. Primary Resonance Areas</h2>
+      <p>These indicate the main resonating chambers where sound vibration is felt:</p>
+      <div class="notation-grid">
+        <div class="notation-card"><div class="notation-symbol">[C]</div><h3 class="notation-name">Chest</h3><p class="notation-desc">Resonance felt primarily in the chest cavity. Rich, grounded, powerful lower register sound.</p></div>
+        <div class="notation-card"><div class="notation-symbol">[L]</div><h3 class="notation-name">Low Body</h3><p class="notation-desc">Resonance centered in the abdomen and lower torso. Deep, grounding anchor for bass frequencies.</p></div>
+        <div class="notation-card"><div class="notation-symbol">[P]</div><h3 class="notation-name">Pharynx</h3><p class="notation-desc">Resonance in the throat area. Darker, rounded, somewhat covered tone. The Italian "gola aperta."</p></div>
+        <div class="notation-card"><div class="notation-symbol">[O]</div><h3 class="notation-name">Oral</h3><p class="notation-desc">Resonance in the mouth and oral cavity. Forward, clear, articulate sound. Where vowels are shaped.</p></div>
+        <div class="notation-card"><div class="notation-symbol">[N]</div><h3 class="notation-name">Nasal</h3><p class="notation-desc">Resonance in the nasal cavity. Bright, ringing "mask" resonance quality.</p></div>
+        <div class="notation-card"><div class="notation-symbol">[H]</div><h3 class="notation-name">Head</h3><p class="notation-desc">Broader category encompassing nasal, oral, and sinus resonance. Light, ethereal, high placement.</p></div>
       </div>
     </section>
 
-    <!-- The 6 Zones -->
-    <section class="what-block">
-      <h2>The 6 Primary Resonance Zones</h2>
-      <p>Every voice uses the same six resonating chambers. VRN gives each one a letter.</p>
+    <!-- 3. Additional Muscular Indicators -->
+    <section class="section">
+      <h2>2. Additional Muscular Indicators</h2>
+      <p>These indicate specific muscular engagement or sensation points:</p>
+      <table class="notation-table"><thead><tr><th>Symbol</th><th>Name</th><th>Description</th></tr></thead><tbody>
+        <tr><td class="symbol-cell">[T]</td><td>Thyroid</td><td>Vibration or pressure sensation in the thyroid area, related to laryngeal resonance</td></tr>
+        <tr><td class="symbol-cell">[Tg]</td><td>Tongue</td><td>Indicates tongue position affecting resonance (e.g., forward, back, arched)</td></tr>
+        <tr><td class="symbol-cell">[SP]</td><td>Soft Palate</td><td>Position of soft palate affecting nasal/oral balance (raised, lowered, arched)</td></tr>
+        <tr><td class="symbol-cell">[M]</td><td>Musculo</td><td>Overall muscle engagement or tension in the vocal tract (relaxed, engaged)</td></tr>
+        <tr><td class="symbol-cell">[Oc]</td><td>Occipital</td><td>Resonance or vibration sensation in the back of the head</td></tr>
+        <tr><td class="symbol-cell">[E]</td><td>Esophagus</td><td>Indicates unwanted tension or sound traveling down (usually to avoid)</td></tr>
+        <tr><td class="symbol-cell">[Ey]</td><td>Eye Muscles</td><td>Engagement of eye muscles, related to "mask resonance"</td></tr>
+        <tr><td class="symbol-cell">[B]</td><td>Brow Muscles</td><td>Brow muscle engagement, linked to head resonance and brightness</td></tr>
+      </tbody></table>
+    </section>
 
-      <div class="zones-grid">
-        <div class="zone-mini">
-          <div class="zone-mini-sym">[C]</div>
-          <div class="zone-mini-name">Chest</div>
-          <div class="zone-mini-desc">Sternum, ribs, lower torso</div>
-        </div>
-        <div class="zone-mini">
-          <div class="zone-mini-sym">[H]</div>
-          <div class="zone-mini-name">Head</div>
-          <div class="zone-mini-desc">Skull, forehead, crown</div>
-        </div>
-        <div class="zone-mini">
-          <div class="zone-mini-sym">[N]</div>
-          <div class="zone-mini-name">Nasal / Mask</div>
-          <div class="zone-mini-desc">Nose bridge, cheekbones, sinuses</div>
-        </div>
-        <div class="zone-mini">
-          <div class="zone-mini-sym">[O]</div>
-          <div class="zone-mini-name">Oral</div>
-          <div class="zone-mini-desc">Mouth cavity, palate, tongue</div>
-        </div>
-        <div class="zone-mini">
-          <div class="zone-mini-sym">[P]</div>
-          <div class="zone-mini-name">Pharyngeal</div>
-          <div class="zone-mini-desc">Throat space, open pharynx</div>
-        </div>
-        <div class="zone-mini">
-          <div class="zone-mini-sym">[L]</div>
-          <div class="zone-mini-name">Low Body</div>
-          <div class="zone-mini-desc">Abdomen, lower back, pelvic floor</div>
-        </div>
+    <!-- 4. Degree of Resonance -->
+    <section class="section">
+      <h2>3. Degree of Resonance</h2>
+      <p>Intensity is indicated using numerical scales or symbols:</p>
+      <div class="example-box"><h4>Numerical Scale (1-5)</h4><ul style="color:var(--text-secondary);padding-left:20px;"><li><span class="symbol-cell">C3</span> = Moderate chest resonance</li><li><span class="symbol-cell">H5</span> = Maximum head resonance</li><li><span class="symbol-cell">N-</span> = Decreased nasal resonance (hyponasal)</li></ul></div>
+      <div class="example-box"><h4>Symbol Scale (+, ++, +++)</h4><ul style="color:var(--text-secondary);padding-left:20px;"><li><span class="symbol-cell">H+</span> = Slight head resonance</li><li><span class="symbol-cell">O++</span> = Strong oral resonance</li><li><span class="symbol-cell">H+++</span> = Maximum head resonance, brilliant</li></ul></div>
+    </section>
+
+    <!-- 5. Combined Examples -->
+    <section class="section">
+      <h2>4. Combined Notation Examples</h2>
+      <p>Multiple notations can be combined to describe complex vocal production:</p>
+      <div class="code-block">
+<span class="comment">// Example from "Do You See" — Observer (Mezzo-Soprano)</span>
+
+<span class="notation">[CM]</span> <span class="text">"do you see"</span>
+<span class="comment">// Chest-mix, questioning, intimate</span>
+
+<span class="notation">[H+++, N++, Ey+]</span> <span class="text">"what i see is the light"</span>
+<span class="comment">// Maximum head, strong nasal, eye muscle engagement (mask)</span>
+
+<span class="notation">[H+++, O++, Oc+++, M+++]</span> <span class="text">"i see the universe"</span>
+<span class="comment">// Full head resonance, strong oral, occipital, high muscle engagement</span>
       </div>
     </section>
 
-    <!-- Intensity -->
-    <section class="what-block">
-      <h2>Intensity Scale</h2>
-      <p>Each zone gets an intensity level. More + signs = stronger engagement. Think of it like weight at the gym — [C+] is a warm-up set, [C+++] is a max-effort lift.</p>
-
-      <div class="intensity-row">
-        <div class="intensity-item">
-          <div class="intensity-sym">+</div>
-          <div class="intensity-label">Light</div>
-        </div>
-        <div class="intensity-item">
-          <div class="intensity-sym">++</div>
-          <div class="intensity-label">Moderate</div>
-        </div>
-        <div class="intensity-item">
-          <div class="intensity-sym">+++</div>
-          <div class="intensity-label">Strong</div>
-        </div>
+    <!-- 6. Score Example -->
+    <section class="section">
+      <h2>5. Example Score Notation</h2>
+      <p>Here's how VRN integrates with traditional notation in a score:</p>
+      <div class="code-block" style="white-space:pre;">
+Text                          Resonance              Notes
+─────────────────────────────────────────────────────────────
+do you see                    [O++, H+]              Inquisitive, forward
+what do you see               [O++, N+, P+]          Reaching inward
+when you close your eyes      [H++, N+]              Ethereal, lifted
+some don't see                [C+, O+, L+]           Grounded, heavy
+they sleep                    [H++, N++]             Airy, lifted
+what i see is the light       [H+++, O++, Ey+]       BRIGHT, mask engaged
+an infinite number of stars   [H+++, N++, Oc+]       Expansive, occipital
+i see the light               [H+++, O+++, Ey+, B+]  Maximum brightness
+i see the universe            [H+++, O+++, Oc+++]    Full expansion
       </div>
     </section>
 
-    <!-- Reading Example -->
-    <section class="what-block">
-      <h2>Reading VRN — A Full Example</h2>
-
-      <div class="example-box">
-        <div class="example-vrn">[C++, H+, N++, P+, O++] ff ▲ Sp(A)</div>
-        <div class="example-breakdown">
-          <p><strong>[C++]</strong> — Moderate chest resonance. You feel warmth in your sternum.</p>
-          <p><strong>[H+]</strong> — Light head resonance. A gentle tingle in the forehead.</p>
-          <p><strong>[N++]</strong> — Moderate nasal/mask. Cheekbones are buzzing.</p>
-          <p><strong>[P+]</strong> — Light pharyngeal opening. Throat is relaxed, not clenched.</p>
-          <p><strong>[O++]</strong> — Strong oral resonance. Mouth is wide, palate lifted.</p>
-          <p><strong>ff</strong> — Fortissimo. Loud dynamics.</p>
-          <p><strong>▲</strong> — Ascending pitch direction.</p>
-          <p><strong>Sp(A)</strong> — Soft palate arched (the "pre-yawn" position).</p>
-          <p style="margin-top: 15px;">This describes a full, projecting operatic sound with warm chest foundation, bright mask, and excellent space — all in one line.</p>
-        </div>
+    <!-- 7. Genre Applications -->
+    <section class="section">
+      <h2>6. VRN for Different Genres</h2>
+      <p>The system can be adapted across musical genres:</p>
+      <div class="genre-grid">
+        <div class="genre-card"><div class="genre-name">🎸 Rock</div><div class="genre-notation">(C++, O+++, Vf+)</div><p class="genre-desc">Strong chest, dominant oral projection, slight ventricular fold engagement for grit</p></div>
+        <div class="genre-card"><div class="genre-name">🎷 Jazz</div><div class="genre-notation">(P++, O+, N+, SP+, Flt)</div><p class="genre-desc">Balanced pharyngeal and oral, mask sound, active soft palate, falsetto for licks</p></div>
+        <div class="genre-card"><div class="genre-name">🎭 Opera</div><div class="genre-notation">(H+++, P+, T++)</div><p class="genre-desc">Dominant head resonance, optimized pharyngeal space, strong thyroid/appoggio feel</p></div>
+        <div class="genre-card"><div class="genre-name">🎸 Folk</div><div class="genre-notation">(C+, O++, Tg+)</div><p class="genre-desc">Natural chest, clear oral for intelligibility, forward tongue (conversational)</p></div>
+        <div class="genre-card"><div class="genre-name">🎭 Broadway</div><div class="genre-notation">(C++, O++, H+, M+)</div><p class="genre-desc">Mix of chest and head, strong oral for lyrics, muscular engagement for belt</p></div>
       </div>
     </section>
 
-    <!-- More Than Just Zones -->
-    <section class="what-block">
-      <h2>Beyond the 6 Zones</h2>
-      <p>VRN includes 75+ symbols covering everything a voice does. The full system adds:</p>
-      <p><strong style="color:var(--accent-cyan);">Vocal Tract Modifiers</strong> — Soft palate position [Sp], tongue placement [Tg], larynx height [Lx], jaw opening [Jw], lip shape [Lp]</p>
-      <p><strong style="color:var(--accent-cyan);">Muscular Engagement</strong> — Eye muscles [Ey], brow [B], thyroid area [T], musculo-skeletal engagement [M]</p>
-      <p><strong style="color:var(--accent-cyan);">Breath & Phonation</strong> — Breath support [Br], phonation type [Ph], vocal fold state [VF], subglottal pressure [Sg]</p>
-      <p><strong style="color:var(--accent-cyan);">Formant & Timbral</strong> — Singer's formant [SF], formant tuning [Ft], brightness [Brt], warmth [Wm], vibrato [Vib]</p>
-      <p><strong style="color:var(--accent-cyan);">Dynamics & Direction</strong> — Traditional dynamics (pp–ff), pitch direction (▲▼), messa di voce (<>)</p>
+    <!-- 8. Breath & Airflow -->
+    <section class="section">
+      <h2>7. Breath &amp; Airflow Notation</h2>
+      <p>Breath support is foundational to vocal production. These indicators describe the engine behind the sound — diaphragmatic engagement, intercostal expansion, and subglottic pressure management.</p>
+      <table class="notation-table"><thead><tr><th>Symbol</th><th>Name</th><th>Description</th></tr></thead><tbody>
+        <tr><td class="symbol-cell">[D]</td><td>Diaphragm</td><td>Diaphragmatic engagement and lowering — the primary breath support muscle</td></tr>
+        <tr><td class="symbol-cell">[IC]</td><td>Intercostal</td><td>Intercostal muscle engagement — expansion and resistance in the rib cage</td></tr>
+        <tr><td class="symbol-cell">[PF]</td><td>Pelvic Floor</td><td>Pelvic floor support engagement — deep low-body connection for sustained pressure</td></tr>
+        <tr><td class="symbol-cell">[Ap]</td><td>Appoggio</td><td>The coordinated Italian breath support system — balanced antagonism between diaphragm descent and intercostal resistance</td></tr>
+        <tr><td class="symbol-cell">Sp1–Sp5</td><td>Subglottic Pressure</td><td>Pressure beneath the vocal folds: Sp1 (minimal, whisper-like) through Sp5 (maximum, full fortissimo)</td></tr>
+        <tr><td class="symbol-cell">Af→</td><td>Airflow Steady</td><td>Consistent, even airflow rate</td></tr>
+        <tr><td class="symbol-cell">Af↑</td><td>Airflow Increasing</td><td>Accelerating airflow — crescendo support, phrase intensification</td></tr>
+        <tr><td class="symbol-cell">Af↓</td><td>Airflow Decreasing</td><td>Decelerating airflow — diminuendo, phrase tapering, morendo</td></tr>
+      </tbody></table>
+      <div class="example-box"><h4>Example: Sustained Operatic Phrase</h4><div class="code-block" style="margin:10px 0 0;">
+<span class="notation">[Ap, D++, IC++, Sp3, Af→]</span> <span class="text">"i see the light"</span>
+<span class="comment">// Full appoggio, strong diaphragm and intercostal, moderate pressure, steady flow</span>
+
+<span class="notation">[D+++, Sp4, Af↑]</span> <span class="text">"an infinite number of stars"</span>
+<span class="comment">// Maximum diaphragm, increasing pressure and airflow for climactic phrase</span>
+      </div></div>
     </section>
 
-    <!-- Origin -->
-    <section class="what-block">
-      <div class="origin-box">
-        <h3>Why VRN Didn't Exist Before</h3>
-        <p>Western music notation evolved over centuries to capture pitch, rhythm, and dynamics — the <em>what</em> of music. But it never addressed the <em>how</em> of vocal production.</p>
-        <p>Voice teaching has been an oral tradition for 400+ years. Teachers demonstrate, students imitate. Knowledge passes through metaphor and physical proximity. Nothing gets written down.</p>
-        <p>VRN does for vocal production what the International Phonetic Alphabet did for phonetics — creates a standardized written system for something that was previously passed down by ear and touch.</p>
-        <p>Developed for <a href="https://aiunites.github.io/cosmostheopera-site/">COSMOS the OPERA</a> — a full-scale opera requiring precise vocal production specifications across an entire cast — VRN emerged from the need to write down what no notation system could capture.</p>
+    <!-- 9. Vocal Fold Behavior -->
+    <section class="section">
+      <h2>8. Vocal Fold Behavior &amp; Phonation Type</h2>
+      <p>While resonance notation describes where sound resonates, phonation type describes <em>how the vocal folds themselves vibrate</em> — their mass, closure pattern, and onset behavior.</p>
+
+      <h3>Fold Mass &amp; Configuration</h3>
+      <table class="notation-table"><thead><tr><th>Symbol</th><th>Name</th><th>Description</th></tr></thead><tbody>
+        <tr><td class="symbol-cell">[Th]</td><td>Thick Fold</td><td>Full vocal fold mass vibrating — chest-dominant mechanism (M1), rich and heavy</td></tr>
+        <tr><td class="symbol-cell">[Tn]</td><td>Thin Fold</td><td>Stretched, thinned vocal fold edges — head-dominant mechanism (M2), light and clear</td></tr>
+        <tr><td class="symbol-cell">[Zp]</td><td>Zip</td><td>Partial fold closure — posterior folds zipped together, only anterior portion vibrating</td></tr>
+      </tbody></table>
+
+      <h3>Phonation Quality</h3>
+      <table class="notation-table"><thead><tr><th>Symbol</th><th>Name</th><th>Description</th></tr></thead><tbody>
+        <tr><td class="symbol-cell">[Prs]</td><td>Pressed</td><td>High medial compression — tight, intense, sometimes strained quality</td></tr>
+        <tr><td class="symbol-cell">[Fl]</td><td>Flow</td><td>Balanced airflow-to-closure ratio — the ideal efficient phonation</td></tr>
+        <tr><td class="symbol-cell">[Br]</td><td>Breathy</td><td>Incomplete fold closure — air escapes, creating a soft, intimate quality</td></tr>
+      </tbody></table>
+
+      <h3>Onset Type</h3>
+      <table class="notation-table"><thead><tr><th>Symbol</th><th>Name</th><th>Description</th></tr></thead><tbody>
+        <tr><td class="symbol-cell">[Gl]</td><td>Glottal Onset</td><td>Hard attack — folds close before air arrives, creating a sharp, percussive start</td></tr>
+        <tr><td class="symbol-cell">[As]</td><td>Aspirate Onset</td><td>Air flows before folds close — breathy, gentle beginning ("h" quality)</td></tr>
+        <tr><td class="symbol-cell">[Co]</td><td>Coordinated Onset</td><td>Air and closure arrive simultaneously — clean, balanced, ideal onset</td></tr>
+      </tbody></table>
+    </section>
+
+    <!-- 10. Vowel Modification & Formant Tracking -->
+    <section class="section">
+      <h2>9. Vowel Modification &amp; Formant Tracking</h2>
+      <p>Navigating the passaggio requires deliberate vowel modification. These symbols indicate how vowels should be shaped to maintain resonance through register transitions — the science of <em>copertura</em> (covering) and formant tuning.</p>
+      <table class="notation-table"><thead><tr><th>Symbol</th><th>Name</th><th>Description</th></tr></thead><tbody>
+        <tr><td class="symbol-cell">[F1↑]</td><td>First Formant Raised</td><td>Open the jaw or lower the tongue to raise F1 — used for louder, fuller low-mid pitches</td></tr>
+        <tr><td class="symbol-cell">[F1↓]</td><td>First Formant Lowered</td><td>Close the jaw slightly or raise the tongue — softer, more covered quality</td></tr>
+        <tr><td class="symbol-cell">[F2↑]</td><td>Second Formant Raised</td><td>Forward tongue, spread lips — brighter, more forward vowel color</td></tr>
+        <tr><td class="symbol-cell">[F2↓]</td><td>Second Formant Lowered</td><td>Retracted tongue, rounded lips — darker, more covered vowel color</td></tr>
+        <tr><td class="symbol-cell">[Vow: X→Y]</td><td>Vowel Modification</td><td>Modify vowel X toward vowel Y (e.g., [Vow: a→ɔ] = modify "ah" toward "aw")</td></tr>
+        <tr><td class="symbol-cell">[Cov]</td><td>Copertura (Cover)</td><td>Apply the covering technique at passaggio — darken and round the vowel to maintain connection</td></tr>
+        <tr><td class="symbol-cell">[Ag]</td><td>Aggiustamento</td><td>Gradual vowel adjustment across an ascending phrase — continuous modification rather than a single shift</td></tr>
+      </tbody></table>
+      <div class="example-box"><h4>Example: Tenor Navigating the Passaggio (E4–F#4)</h4><div class="code-block" style="margin:10px 0 0;">
+<span class="notation">[O++, Th]</span> <span class="text">"i see the..."</span> <span class="comment">// Open oral, thick fold, below passaggio</span>
+<span class="notation">[Cov, Vow: a→ɔ, F2↓]</span> <span class="text">"light"</span> <span class="comment">// Cover at passaggio — "ah" rounds toward "aw", darken F2</span>
+<span class="notation">[H+++, Tn, Ag]</span> <span class="text">"of the universe"</span> <span class="comment">// Above passaggio — head voice, thin fold, continuous adjustment</span>
+      </div></div>
+    </section>
+
+    <!-- 11. Register Transition Markers -->
+    <section class="section">
+      <h2>10. Register Transition Markers</h2>
+      <p>These markers indicate where register events occur — passaggio zones, blending areas, and shift points.</p>
+      <table class="notation-table"><thead><tr><th>Symbol</th><th>Name</th><th>Description</th></tr></thead><tbody>
+        <tr><td class="symbol-cell">[Pz1]</td><td>Primo Passaggio</td><td>First passaggio zone — transition from chest to middle voice</td></tr>
+        <tr><td class="symbol-cell">[Pz2]</td><td>Secondo Passaggio</td><td>Second passaggio zone — transition from middle to head voice</td></tr>
+        <tr><td class="symbol-cell">[Bl]</td><td>Blending Zone</td><td>Gradual, seamless register mix — no audible break, smooth transition</td></tr>
+        <tr><td class="symbol-cell">[Sh]</td><td>Shift Point</td><td>Distinct register break — intentional or stylistic flip between registers</td></tr>
+        <tr><td class="symbol-cell">[Mv: X→Y]</td><td>Register Movement</td><td>Direction of register transition (e.g., [Mv: C→H] = chest to head)</td></tr>
+        <tr><td class="symbol-cell">[Vce: M1]</td><td>Mechanism 1</td><td>Heavy mechanism / modal voice — dominant in chest and low-middle range</td></tr>
+        <tr><td class="symbol-cell">[Vce: M2]</td><td>Mechanism 2</td><td>Light mechanism / loft voice — dominant in head voice and upper range</td></tr>
+      </tbody></table>
+    </section>
+
+    <!-- 12. Vibrato & Oscillation -->
+    <section class="section">
+      <h2>11. Vibrato &amp; Oscillation Notation</h2>
+      <p>Vibrato is a defining feature of operatic vocal production. These symbols control its presence, rate, width, and stylistic application.</p>
+      <table class="notation-table"><thead><tr><th>Symbol</th><th>Name</th><th>Description</th></tr></thead><tbody>
+        <tr><td class="symbol-cell">[Vib]</td><td>Vibrato</td><td>Standard natural vibrato — free oscillation at the singer's comfortable rate</td></tr>
+        <tr><td class="symbol-cell">[Str]</td><td>Straight Tone</td><td>No vibrato — still, focused tone (choral blending or stylistic effect)</td></tr>
+        <tr><td class="symbol-cell">Vib.r4–Vib.r7</td><td>Vibrato Rate</td><td>Oscillation speed in cycles per second: r4 (slow, expressive) through r7 (fast, intense)</td></tr>
+        <tr><td class="symbol-cell">Vib.w+</td><td>Wide Vibrato</td><td>Broader pitch oscillation — dramatic, passionate, romantic quality</td></tr>
+        <tr><td class="symbol-cell">Vib.w-</td><td>Narrow Vibrato</td><td>Tighter pitch oscillation — focused, laser-like, precise quality</td></tr>
+        <tr><td class="symbol-cell">[Mes]</td><td>Messa di Voce</td><td>The ultimate vocal control: swell from pianissimo to fortissimo and back on a single sustained note</td></tr>
+        <tr><td class="symbol-cell">[Trm]</td><td>Tremolo</td><td>Rapid oscillation wider than vibrato — used for agitation, fear, or dramatic intensity</td></tr>
+      </tbody></table>
+      <div class="example-box"><h4>Example: Aria Climax with Vibrato Control</h4><div class="code-block" style="margin:10px 0 0;">
+<span class="notation">[Str, Br]</span> <span class="text">"do you see..."</span> <span class="comment">// Straight tone, breathy — intimate whispered beginning</span>
+<span class="notation">[Vib, Vib.r5, Vib.w-]</span> <span class="text">"what i see"</span> <span class="comment">// Natural vibrato emerges, moderate rate, narrow</span>
+<span class="notation">[Mes, Vib.r6, Vib.w+]</span> <span class="text">"is the light"</span> <span class="comment">// Messa di voce swell, faster rate, wide vibrato at climax</span>
+      </div></div>
+    </section>
+
+    <!-- 13. Jaw & Embouchure -->
+    <section class="section">
+      <h2>12. Jaw &amp; Embouchure</h2>
+      <p>The external shaping mechanisms of the vocal tract — jaw position, lip configuration, and facial muscle engagement.</p>
+      <table class="notation-table"><thead><tr><th>Symbol</th><th>Name</th><th>Description</th></tr></thead><tbody>
+        <tr><td class="symbol-cell">[Jw↓]</td><td>Jaw Dropped</td><td>Lowered jaw — increases oral space, lowers F1, enables louder and more open vowels</td></tr>
+        <tr><td class="symbol-cell">[Jw→]</td><td>Jaw Forward</td><td>Protruded jaw — changes pharyngeal space, sometimes used for dramatic character voice</td></tr>
+        <tr><td class="symbol-cell">[Jw~]</td><td>Jaw Relaxed</td><td>Released, neutral jaw — no excess tension, free-swinging</td></tr>
+        <tr><td class="symbol-cell">[Lp]</td><td>Lip Rounding</td><td>Standard lip rounding — darkens tone, lowers formants ("oo" and "oh" vowels)</td></tr>
+        <tr><td class="symbol-cell">[Lp+]</td><td>Lip Protrusion</td><td>Exaggerated forward lip extension — maximum darkening, dramatic effect</td></tr>
+        <tr><td class="symbol-cell">[Lp→]</td><td>Lip Spread</td><td>Lateral lip stretch — brightens tone, raises formants ("ee" and "eh" vowels)</td></tr>
+        <tr><td class="symbol-cell">[Zy]</td><td>Zygomatic Lift</td><td>Cheekbone raise (the "inner smile") — lifts the soft palate sympathetically, brightens upper partials, engages mask resonance</td></tr>
+      </tbody></table>
+    </section>
+
+    <!-- 14. Sinus Sub-Region & Squillo -->
+    <section class="section">
+      <h2>13. Sinus Sub-Region &amp; Squillo</h2>
+      <p>Expanding beyond the broad [N] Nasal and [H] Head markers, these symbols target specific sinus cavities and the coveted <em>squillo</em> — the singer's formant that allows an operatic voice to cut through a full orchestra.</p>
+      <table class="notation-table"><thead><tr><th>Symbol</th><th>Name</th><th>Description</th></tr></thead><tbody>
+        <tr><td class="symbol-cell">[Sf]</td><td>Frontal Sinus</td><td>Vibration sensation in the forehead area — associated with the highest, most brilliant resonance</td></tr>
+        <tr><td class="symbol-cell">[Sm]</td><td>Maxillary Sinus</td><td>Vibration in the cheekbone area — the core of "mask" resonance, warmth with ring</td></tr>
+        <tr><td class="symbol-cell">[Ss]</td><td>Sphenoid Sinus</td><td>Deep resonance behind the nasal cavity — contributes to depth and "cathedral" quality</td></tr>
+        <tr><td class="symbol-cell">[Sq]</td><td>Squillo</td><td>The singer's formant cluster (~2800–3200 Hz) — the brilliant ring that projects over an orchestra</td></tr>
+        <tr><td class="symbol-cell">Sq+</td><td>Enhanced Squillo</td><td>Maximum singer's formant presence — laser-like projection, aria climax quality</td></tr>
+        <tr><td class="symbol-cell">Sq-</td><td>Reduced Squillo</td><td>Softened ring — warmer, more intimate, less projected (piano passages, recitative)</td></tr>
+      </tbody></table>
+    </section>
+
+    <!-- 15. Emotional/Timbral Color -->
+    <section class="section">
+      <h2>14. Emotional &amp; Timbral Color Qualifiers</h2>
+      <p>These overlay indicators describe the overall character and emotional coloring of the voice — the subjective qualities that define a performance beyond the mechanics.</p>
+      <div class="notation-grid">
+        <div class="notation-card"><div class="notation-symbol">[Ch]</div><h3 class="notation-name">Chiaroscuro</h3><p class="notation-desc">The ideal operatic balance of light (chiaro) and dark (scuro) — the hallmark of a well-produced classical voice.</p></div>
+        <div class="notation-card"><div class="notation-symbol">[Sc]</div><h3 class="notation-name">Scuro (Dark)</h3><p class="notation-desc">Darkened timbre — covered, rounded, warm, introspective. Associated with lower formants and pharyngeal space.</p></div>
+        <div class="notation-card"><div class="notation-symbol">[Ch+]</div><h3 class="notation-name">Chiaro (Bright)</h3><p class="notation-desc">Brightened timbre — forward, brilliant, ringing, extroverted. Associated with higher formants and oral/nasal resonance.</p></div>
+        <div class="notation-card"><div class="notation-symbol">[Sob]</div><h3 class="notation-name">Sob Quality</h3><p class="notation-desc">Lowered larynx, expanded pharynx — creates a mournful, emotionally weighted quality. Used for grief, longing, prayer.</p></div>
+        <div class="notation-card"><div class="notation-symbol">[Cr]</div><h3 class="notation-name">Cry Quality</h3><p class="notation-desc">Tilted thyroid cartilage — thins the vocal fold edge while maintaining connection. Vulnerable, pleading, emotionally raw.</p></div>
+        <div class="notation-card"><div class="notation-symbol">[Met]</div><h3 class="notation-name">Metallic Edge</h3><p class="notation-desc">Narrowed aryepiglottic sphincter — adds cutting, steely brightness. Power, authority, confrontation.</p></div>
+        <div class="notation-card"><div class="notation-symbol">[Vl]</div><h3 class="notation-name">Velvety / Warm</h3><p class="notation-desc">Relaxed pharynx, balanced airflow — smooth, plush, comforting quality. Lullabies, tenderness, intimacy.</p></div>
+        <div class="notation-card"><div class="notation-symbol">[Ang]</div><h3 class="notation-name">Angelic / Ethereal</h3><p class="notation-desc">High head resonance with straight or minimal vibrato — otherworldly, pure, transcendent. Celestial moments, visions.</p></div>
       </div>
+      <div class="example-box"><h4>Example: Full VSV c06 Combined Notation</h4><div class="code-block" style="margin:10px 0 0;">
+<span class="comment">// Building from intimate to transcendent</span>
+
+<span class="notation">[Br, Str, Vl, Sp1, Af→]</span> <span class="text">"do you see"</span>
+<span class="comment">// Breathy onset, straight tone, velvety, minimal pressure, steady air</span>
+
+<span class="notation">[Co, Fl, Vib, Cr, Pz1, Mv: C→H, D++, Af↑]</span> <span class="text">"what i see is the light"</span>
+<span class="comment">// Coordinated onset, flow phonation, vibrato enters, cry quality, crossing primo passaggio, building breath</span>
+
+<span class="notation">[H+++, Sq+, Mes, Ch, Tn, F2↓, Cov, Zy, Ap, D+++, Sp4]</span> <span class="text">"i see the universe"</span>
+<span class="comment">// Full head, squillo blazing, messa di voce, chiaroscuro, thin fold above passaggio,</span>
+<span class="comment">// covered vowel, zygomatic lift, full appoggio, maximum diaphragm, high subglottic pressure</span>
+      </div></div>
     </section>
 
-    <!-- CTA -->
-    <section class="cta-bottom">
-      <h2><span class="text-gradient-cosmic">Ready to Learn VRN?</span></h2>
-      <p>Start with the free interactive lessons. Eight progressive modules from zero to fluent. No signup required.</p>
-      <div class="cta-links">
-        <a href="learn.html" class="btn btn--cosmic">🎓 Start Lesson 1</a>
-        <a href="5-gears.html" class="btn btn--ghost">🔄 The 5 Gears</a>
-        <a href="vocal-gym.html" class="btn btn--ghost">💪 Vocal Gym</a>
+    <!-- 16. Version History -->
+    <section class="section">
+      <h2>15. Version History</h2>
+      <p>The Vocal Standard Version (VSV) notation continues to evolve:</p>
+      <table class="notation-table"><thead><tr><th>Version</th><th>Focus</th><th>Key Additions</th></tr></thead><tbody>
+        <tr><td class="symbol-cell">VSV a04</td><td>Core System</td><td>Primary resonance areas, basic indicators</td></tr>
+        <tr><td class="symbol-cell">VSV c04</td><td>Characters/Genres</td><td>Ventricular Folds [Vf], Falsetto [Flt], Whistle Register [Wr]</td></tr>
+        <tr><td class="symbol-cell">VSV s05</td><td>Symbols</td><td>Unicode symbols for resonator direction (↑, ↓, →)</td></tr>
+        <tr><td class="symbol-cell">VSV c06</td><td>Extended Character Systems</td><td>Breath &amp; Airflow, Vocal Fold Behavior, Vowel Modification &amp; Formant Tracking, Register Transitions, Vibrato &amp; Oscillation, Jaw &amp; Embouchure, Sinus Sub-Regions &amp; Squillo, Emotional/Timbral Color Qualifiers</td></tr>
+      </tbody></table>
+    </section>
+
+    <!-- 17. How VRN Compares -->
+    <section class="section">
+      <h2>16. How VRN Compares to Existing Systems</h2>
+      <p>No other formalized notation system exists that encodes vocal resonance, phonation type, breath mechanics, and timbral color directly into a musical score:</p>
+      <table class="notation-table"><thead><tr><th>System</th><th>What It Tells the Singer</th><th>What It Doesn't Tell the Singer</th></tr></thead><tbody>
+        <tr><td class="symbol-cell">Standard Musical Notation</td><td>Pitch, rhythm, dynamics (pp–ff), tempo, breath marks, articulation, expression words</td><td>Where to resonate, how to shape the vocal tract, what the folds should be doing, how to manage airflow</td></tr>
+        <tr><td class="symbol-cell">IPA</td><td>Exact vowel and consonant pronunciation for diction coaching across languages</td><td>Nothing about resonance placement, fold behavior, breath coordination, or timbral quality</td></tr>
+        <tr><td class="symbol-cell">German Fach System</td><td>Voice type classification (lyric soprano, spinto tenor, etc.) for casting</td><td>Nothing about moment-to-moment vocal production within a performance</td></tr>
+        <tr><td class="symbol-cell">Lilli Lehmann (1902)</td><td>A pedagogical diagram showing where different pitches resonate in the head and body</td><td>Not a notation system — cannot be embedded in a score, no symbols, no degrees, no combinability</td></tr>
+        <tr><td class="symbol-cell">Vocal Pedagogy Literature</td><td>Prose descriptions of appoggio, passaggio, copertura, chiaroscuro, squillo, formant tuning</td><td>Always in essay form — never formalized into symbolic shorthand alongside notes on a staff</td></tr>
+        <tr><td class="symbol-cell" style="background:rgba(157,78,221,0.15);">VRN</td><td style="background:rgba(157,78,221,0.15);"><strong>All of the above — encoded as compact symbols that embed directly into a score.</strong> Resonance location, degree, fold mass, phonation, onset, airflow, formants, register transitions, vibrato, embouchure, sinus targeting, squillo, and emotional color — all combinable.</td><td style="background:rgba(157,78,221,0.15);">Pitch and rhythm (by design — VRN supplements standard notation, doesn't replace it)</td></tr>
+      </tbody></table>
+      <p style="margin-top:20px;">Traditional notation tells singers <em>what</em> to sing. Vocal pedagogy teaches <em>how</em> to sing. VRN is the bridge — it encodes the <em>how</em> directly into the score.</p>
+    </section>
+
+    <!-- 18. Applications -->
+    <section class="section">
+      <h2>17. Applications &amp; Use Cases</h2>
+      <p>VRN was created for opera, but its symbolic system has applications far beyond the opera house:</p>
+      <div class="notation-grid">
+        <div class="notation-card"><div class="notation-symbol">🎭</div><h3 class="notation-name">Opera &amp; Musical Theater</h3><p class="notation-desc">Composers can specify exactly how a phrase should be produced — not just how loud, but which resonance, which fold mass, which vibrato character.</p></div>
+        <div class="notation-card"><div class="notation-symbol">🎓</div><h3 class="notation-name">Vocal Pedagogy &amp; Training</h3><p class="notation-desc">Teachers can write exercises with specific VRN targets: "Sing this scale at [Fl, H++, Vib.r5, Zy]" gives a student a measurable goal.</p></div>
+        <div class="notation-card"><div class="notation-symbol">🎤</div><h3 class="notation-name">Recording Session Direction</h3><p class="notation-desc">Producers can annotate vocal charts: "Give me more [Sq+, Met] on the chorus and [Br, Vl, Sp1] on the verse." Eliminates vague direction.</p></div>
+        <div class="notation-card"><div class="notation-symbol">🎸</div><h3 class="notation-name">Cross-Genre Vocal Arranging</h3><p class="notation-desc">Arrangers can specify exact vocal production for genre shifts. Jazz verse [P++, O+, Fl] to rock chorus [C++, O+++, Prs, Met] — precisely documented.</p></div>
+        <div class="notation-card"><div class="notation-symbol">🏥</div><h3 class="notation-name">Speech &amp; Vocal Therapy</h3><p class="notation-desc">Clinicians can document patient vocal production: "Presented with [Prs, E+, Sp4], after therapy produces [Fl, Co, Sp2]."</p></div>
+        <div class="notation-card"><div class="notation-symbol">🧠</div><h3 class="notation-name">Vocal Science Research</h3><p class="notation-desc">Researchers can annotate spectrograms with VRN symbols, bridging subjective sensation reports and objective acoustic data.</p></div>
+        <div class="notation-card"><div class="notation-symbol">💻</div><h3 class="notation-name">AI Voice Synthesis</h3><p class="notation-desc">VRN provides a structured parameter space for singing synthesis: "Generate this phrase at [Ch, Fl, Vib.r6, Sm++, D++]."</p></div>
+        <div class="notation-card"><div class="notation-symbol">🐦</div><h3 class="notation-name">Bird Call Transcription</h3><p class="notation-desc">VRN can transcribe and teach bird call imitation — describing the throat shaping, airflow control, and resonance placement for species-specific calls.</p></div>
       </div>
+      <div class="example-box"><h4>🐦 Example: Bird Call Transcription with VRN</h4><div class="code-block" style="margin:10px 0 0;">
+<span class="comment">// Wood Thrush — ethereal flute-like song</span>
+<span class="notation">[H+++, N++, Sf+, Ang, Str, Af→, Tn, Lp]</span> <span class="text">"ee-oh-lay"</span>
+<span class="comment">// High head resonance, nasal+frontal sinus, angelic, straight tone, steady air, thin fold, rounded lips</span>
+
+<span class="comment">// Mourning Dove — low coo</span>
+<span class="notation">[C++, P++, Sob, Br, Sp1, Af→, Lp+, Jw↓]</span> <span class="text">"coo-OOH-oo-oo-oo"</span>
+<span class="comment">// Chest+pharyngeal, sob quality, breathy, low pressure, protruded lips, dropped jaw</span>
+
+<span class="comment">// Red-tailed Hawk — piercing scream</span>
+<span class="notation">[H+++, Sq+, Met, Prs, Sp5, Af↑, Gl, F2↑, Lp→]</span> <span class="text">"keeee-eeee-arrr"</span>
+<span class="comment">// Max head, squillo blazing, metallic, pressed, max pressure, glottal onset, bright, spread lips</span>
+
+<span class="comment">// American Robin — cheerful song</span>
+<span class="notation">[O++, H+, Ch+, Fl, Vib.r6, Vib.w-, Co, Ag]</span> <span class="text">"cheerily cheer-up cheerio"</span>
+<span class="comment">// Forward oral, light head, bright, flow phonation, fast narrow vibrato, coordinated onset</span>
+      </div></div>
+      <p style="margin-top:20px;">The bird call application demonstrates a key strength of VRN: because it describes the <em>mechanics</em> of sound production rather than the <em>result</em>, it can guide a human imitator through the physical motions needed to reproduce any vocalization — whether the source is a soprano, a rock singer, or a songbird.</p>
     </section>
 
-  </div>
+    <!-- 19. Conclusion -->
+    <section class="section">
+      <h2>18. A First in Music History</h2>
+      <p>Vocal Resonance Notation is the world's first formalized symbolic system for encoding vocal production mechanics directly into a musical score. It is designed to be used alongside traditional musical notation, not replace it. While vocal pedagogy has always discussed these concepts in prose — from the medieval monks who first described chest, throat, and head voice, through the bel canto masters, to modern vocal scientists like Johan Sundberg and Richard Miller — no one has previously compressed this knowledge into a compact, combinable notation system that a composer can write and a singer can read at sight.</p>
+      <p style="margin-top:20px;"><strong style="color:var(--accent-gold);">COSMOS the OPERA</strong> serves as the first complete implementation of this system in a full-length operatic work, with 75+ unique symbols across 16 notation categories at VSV c06.</p>
+      <p style="margin-top:20px;">
+        <a href="learn.html" style="display:inline-block;background:linear-gradient(135deg,var(--accent-purple),var(--accent-cyan));color:#fff;padding:14px 28px;border-radius:14px;text-decoration:none;font-weight:700;font-size:1.05rem;transition:transform 0.2s;">🎓 Start Learning VRN →</a>
+      </p>
+    </section>
 
-  <footer class="footer">
-    <p>
-      © 2002-2026 VoiceStry. All Rights Reserved. DMCA Protected.<br>
-      <a href="index.html">Home</a> |
-      <a href="vrn-method.html">VRN Method</a> |
-      <a href="learn.html">Learn</a> |
-      <a href="5-gears.html">5 Gears</a> |
-      <a href="vocal-gym.html">Vocal Gym</a><br><br>
-      Part of the <a href="https://aiunites.github.io/aiunites-site/">AIUNITES</a> network |
-      VRN originated at <a href="https://aiunites.github.io/cosmostheopera-site/">COSMOS the OPERA</a>
-    </p>
-  </footer>
+  </main>
 
+  <footer class="footer"><p>© 2002-2026 VoiceStry. All Rights Reserved. DMCA Protected.<br><a href="index.html">Home</a> | <a href="learn.html">Learn VRN</a> | <a href="5-gears.html">5 Gears</a> | <a href="vocal-gym.html">Vocal Gym</a><br><br>Part of the <a href="https://aiunites.github.io/aiunites-site/">AIUNITES</a> network | VRN originated at <a href="https://aiunites.github.io/cosmostheopera-site/">COSMOS the OPERA</a></p></footer>
 </body>
 </html>
