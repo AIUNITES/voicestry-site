@@ -34,10 +34,10 @@
 
     /* Nav */
     .nav { background: var(--bg-card); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); position: sticky; top: 0; z-index: 100; }
-    .nav-logo { font-size: 1.5rem; font-weight: 800; color: var(--accent-green); text-decoration: none; }
+    .nav-logo { font-size: 1.5rem; font-weight: 800; text-decoration: none; background: linear-gradient(135deg, var(--accent-green), var(--accent-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .nav-links { display: flex; gap: 25px; flex-wrap: wrap; }
     .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.95rem; transition: color 0.3s; }
-    .nav-links a:hover, .nav-links a.active { color: var(--accent-green); }
+    .nav-links a:hover, .nav-links a.active { color: var(--accent-cyan); }
 
     /* Hero */
     .hero { padding: 50px 20px 30px; text-align: center; background: radial-gradient(ellipse at 50% 30%, rgba(255, 215, 0, 0.1) 0%, transparent 60%), var(--bg-dark); }
@@ -146,7 +146,7 @@
     /* Footer */
     .footer { background: var(--bg-card); padding: 40px 20px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); }
     .footer p { color: var(--text-secondary); font-size: 0.9rem; }
-    .footer a { color: var(--accent-green); text-decoration: none; }
+    .footer a { color: var(--accent-purple); text-decoration: none; }
 
     @media (max-width: 768px) {
       .nav { flex-direction: column; gap: 12px; }
@@ -316,10 +316,18 @@
 
   <footer class="footer">
     <p>
-      © 2025-2026 VoiceStry. All Rights Reserved.<br>
+      © 2002-2026 VoiceStry. All Rights Reserved. DMCA Protected.<br>
+      Home of the <a href="vrn-method.html">VRN Method</a> — Vocal Resonance Notation<br><br>
+      <a href="index.html">Home</a> |
       <a href="vrn-method.html">VRN Method</a> |
-      <a href="pitch-trainer.html">Pitch Trainer</a> |
-      <a href="learn.html">Learn VRN</a>
+      <a href="learn.html">Learn</a> |
+      <a href="5-gears.html">5 Gears</a> |
+      <a href="vocal-gym.html">Vocal Gym</a> |
+      <a href="pitch-trainer.html">Pitch</a> |
+      <a href="sight-reading.html">Sight Reading</a> |
+      <a href="press.html">Press</a><br><br>
+      Part of the <a href="https://aiunites.github.io/aiunites-site/">AIUNITES</a> network |
+      Created by <a href="https://aiunites.github.io/cosmostheopera-site/">COSMOS the OPERA</a>
     </p>
   </footer>
 
