@@ -614,34 +614,48 @@
       var freq = 440 * Math.pow(2, (idCurrent.midi - 69) / 12);
       var now = ctx.currentTime;
 
-      // Use triangle wave for richer harmonics (bass audible on small speakers)
+      // Fundamental tone
       var osc = ctx.createOscillator();
       var gain = ctx.createGain();
       osc.type = 'triangle';
       osc.frequency.value = freq;
-
-      // Louder gain for low notes that speakers struggle with
-      var vol = freq < 200 ? 0.45 : 0.25;
+      var vol = freq < 200 ? 0.5 : 0.3;
       gain.gain.setValueAtTime(0, now);
-      gain.gain.linearRampToValueAtTime(vol, now + 0.05);
+      gain.gain.linearRampToValueAtTime(vol, now + 0.04);
       gain.gain.setValueAtTime(vol, now + 1.2);
-      gain.gain.linearRampToValueAtTime(0, now + 1.5);
+      gain.gain.linearRampToValueAtTime(0, now + 1.6);
       osc.connect(gain).connect(ctx.destination);
-      osc.start(now); osc.stop(now + 1.5);
+      osc.start(now); osc.stop(now + 1.6);
 
-      // Add octave harmonic for very low notes so speakers can reproduce them
-      if (freq < 180) {
+      // For low notes (bass clef range), add strong upper harmonics
+      // so they're clearly audible on laptop/phone speakers
+      if (freq < 250) {
+        // 1st harmonic (octave) - strong
         var osc2 = ctx.createOscillator();
         var gain2 = ctx.createGain();
-        osc2.type = 'sine';
-        osc2.frequency.value = freq * 2; // octave above
-        var vol2 = 0.15;
+        osc2.type = 'triangle';
+        osc2.frequency.value = freq * 2;
+        var vol2 = freq < 130 ? 0.35 : 0.2;
         gain2.gain.setValueAtTime(0, now);
-        gain2.gain.linearRampToValueAtTime(vol2, now + 0.05);
-        gain2.gain.setValueAtTime(vol2, now + 1.2);
+        gain2.gain.linearRampToValueAtTime(vol2, now + 0.04);
+        gain2.gain.setValueAtTime(vol2, now + 1.1);
         gain2.gain.linearRampToValueAtTime(0, now + 1.5);
         osc2.connect(gain2).connect(ctx.destination);
         osc2.start(now); osc2.stop(now + 1.5);
+
+        // 2nd harmonic (octave + fifth) - for very low notes
+        if (freq < 130) {
+          var osc3 = ctx.createOscillator();
+          var gain3 = ctx.createGain();
+          osc3.type = 'sine';
+          osc3.frequency.value = freq * 3;
+          gain3.gain.setValueAtTime(0, now);
+          gain3.gain.linearRampToValueAtTime(0.12, now + 0.04);
+          gain3.gain.setValueAtTime(0.12, now + 1.0);
+          gain3.gain.linearRampToValueAtTime(0, now + 1.4);
+          osc3.connect(gain3).connect(ctx.destination);
+          osc3.start(now); osc3.stop(now + 1.4);
+        }
       }
     }
 
