@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VRN Voice Lab — Hear Voices, See the Notation | VoiceStry</title>
+  <meta name="description" content="Listen to different voice types and see real-time Vocal Resonance Notation. Watch resonance zones light up as you hear bass, baritone, tenor, countertenor, alto, mezzo-soprano, and soprano voices across their full range.">
+  <meta name="keywords" content="vocal resonance notation, VRN, voice types, bass, baritone, tenor, countertenor, alto, soprano, vocal registers, singing technique, voice analysis">
+  <meta name="author" content="Tom Sans / AIUNITES">
+  <meta property="og:title" content="VRN Voice Lab — Hear Voices, See the Notation">
+  <meta property="og:description" content="Listen to different voice types and watch VRN notation come alive with animated resonance mapping.">
+  <meta property="og:type" content="article">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎤</text></svg>">
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{--bg-dark:#0a0a0f;--bg-card:#12121a;--bg-panel:#0e0e18;--text-primary:#fff;--text-secondary:#a0a0b0;--accent-purple:#9d4edd;--accent-cyan:#00d4ff;--accent-gold:#ffd700;--accent-pink:#ff6b9d;--accent-green:#4ade80;--accent-orange:#f59e0b;--accent-red:#ef4444}
+    body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg-dark);color:var(--text-primary);line-height:1.7}
+
+    /* Webring */
+    .aiunites-bar{background:linear-gradient(90deg,#0a0a0f,#1a1a2e);border-bottom:1px solid rgba(99,102,241,.3);padding:8px 0;font-size:12px}.aiunites-bar-content{max-width:1400px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:12px;overflow-x:auto;scrollbar-width:none}.aiunites-bar-content::-webkit-scrollbar{display:none}.aiunites-bar a{color:rgba(255,255,255,.7);text-decoration:none;white-space:nowrap;transition:color .2s}.aiunites-bar a:hover{color:#fff}.aiunites-bar-brand{color:#6366f1!important;font-weight:600}.aiunites-bar-divider{color:rgba(255,255,255,.2)}
+
+    /* Nav */
+    .nav{background:var(--bg-card);padding:15px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,0.1);position:sticky;top:0;z-index:100}
+    .nav-logo{font-size:1.5rem;font-weight:800;text-decoration:none;background:linear-gradient(135deg,var(--accent-green),var(--accent-cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .nav-links{display:flex;gap:22px;flex-wrap:wrap}.nav-links a{color:var(--text-secondary);text-decoration:none;font-size:0.95rem;transition:color 0.3s}.nav-links a:hover,.nav-links a.active{color:var(--accent-cyan)}
+
+    /* Hero */
+    .hero{padding:60px 20px 40px;text-align:center;background:radial-gradient(ellipse at 30% 30%,rgba(157,78,221,0.12) 0%,transparent 50%),radial-gradient(ellipse at 70% 70%,rgba(0,212,255,0.08) 0%,transparent 50%),var(--bg-dark)}
+    .hero h1{font-size:clamp(2rem,5vw,3.2rem);margin-bottom:14px;background:linear-gradient(135deg,#fff,var(--accent-cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero-sub{font-size:1.1rem;color:var(--text-secondary);max-width:650px;margin:0 auto}
+
+    /* Voice Type Selector */
+    .voice-selector{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;padding:30px 20px}
+    .voice-btn{padding:12px 24px;border-radius:12px;border:2px solid rgba(255,255,255,0.08);background:var(--bg-card);color:var(--text-secondary);font-size:0.95rem;font-weight:700;cursor:pointer;transition:all 0.3s;font-family:inherit}
+    .voice-btn:hover{border-color:rgba(255,255,255,0.2);color:var(--text-primary);transform:translateY(-2px)}
+    .voice-btn.active{border-color:var(--accent-cyan);color:var(--accent-cyan);background:rgba(0,212,255,0.08);box-shadow:0 0 20px rgba(0,212,255,0.15)}
+
+    /* Main Lab Layout */
+    .lab{max-width:1100px;margin:0 auto;padding:0 20px 80px;display:grid;grid-template-columns:1fr 280px;gap:30px;align-items:start}
+
+    /* Left Panel - Notes & VRN */
+    .notes-panel{background:var(--bg-panel);border-radius:20px;padding:30px;border:1px solid rgba(255,255,255,0.05)}
+    .panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+    .panel-title{font-size:1.3rem;font-weight:800}
+    .voice-range{font-size:0.9rem;color:var(--text-secondary)}
+
+    /* Note Grid */
+    .gear-group{margin-bottom:28px}
+    .gear-label{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+    .gear-badge{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:0.9rem}
+    .gear-1-badge{background:rgba(239,68,68,0.2);color:var(--accent-red)}
+    .gear-2-badge{background:rgba(245,158,11,0.2);color:var(--accent-orange)}
+    .gear-3-badge{background:rgba(255,215,0,0.2);color:var(--accent-gold)}
+    .gear-4-badge{background:rgba(0,212,255,0.2);color:var(--accent-cyan)}
+    .gear-5-badge{background:rgba(157,78,221,0.2);color:var(--accent-purple)}
+    .gear-name{font-weight:700;font-size:1rem}
+    .gear-vrn-label{font-family:'Courier New',monospace;color:var(--accent-gold);font-size:0.85rem;margin-left:auto}
+
+    .note-row{display:flex;gap:8px;flex-wrap:wrap}
+    .note-btn{width:56px;height:56px;border-radius:12px;border:1px solid rgba(255,255,255,0.08);background:var(--bg-dark);color:var(--text-secondary);font-size:0.8rem;font-weight:700;cursor:pointer;transition:all 0.2s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:inherit}
+    .note-btn .note-name{font-size:0.85rem;font-weight:800;color:var(--text-primary)}
+    .note-btn .note-hz{font-size:0.65rem;color:var(--text-secondary)}
+    .note-btn:hover{border-color:rgba(255,255,255,0.25);transform:scale(1.08)}
+    .note-btn.playing{transform:scale(1.1)}
+    .note-btn.gear-1-note.playing{border-color:var(--accent-red);background:rgba(239,68,68,0.1);box-shadow:0 0 25px rgba(239,68,68,0.2)}
+    .note-btn.gear-2-note.playing{border-color:var(--accent-orange);background:rgba(245,158,11,0.1);box-shadow:0 0 25px rgba(245,158,11,0.2)}
+    .note-btn.gear-3-note.playing{border-color:var(--accent-gold);background:rgba(255,215,0,0.1);box-shadow:0 0 25px rgba(255,215,0,0.2)}
+    .note-btn.gear-4-note.playing{border-color:var(--accent-cyan);background:rgba(0,212,255,0.1);box-shadow:0 0 25px rgba(0,212,255,0.2)}
+    .note-btn.gear-5-note.playing{border-color:var(--accent-purple);background:rgba(157,78,221,0.1);box-shadow:0 0 25px rgba(157,78,221,0.2)}
+
+    /* VRN Display */
+    .vrn-display{background:var(--bg-dark);border-radius:14px;padding:20px;margin-top:24px;border:1px solid rgba(255,255,255,0.06);min-height:100px;transition:all 0.3s}
+    .vrn-display.active{border-color:rgba(0,212,255,0.2)}
+    .vrn-label{font-size:0.8rem;color:var(--text-secondary);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px}
+    .vrn-notation{font-family:'Courier New',monospace;font-size:1.6rem;font-weight:800;color:var(--accent-gold);margin-bottom:8px;min-height:40px}
+    .vrn-desc{font-size:0.95rem;color:var(--text-secondary);line-height:1.6}
+    .vrn-note-name{font-size:1.1rem;font-weight:800;color:var(--accent-cyan);margin-bottom:6px}
+
+    /* Right Panel - Body Diagram */
+    .body-panel{background:var(--bg-panel);border-radius:20px;padding:24px;border:1px solid rgba(255,255,255,0.05);position:sticky;top:80px}
+    .body-title{font-size:1rem;font-weight:700;text-align:center;margin-bottom:16px;color:var(--text-secondary)}
+
+    /* SVG Body */
+    .body-svg{width:100%;max-width:220px;margin:0 auto;display:block}
+    .body-zone{transition:all 0.4s ease;opacity:0.08}
+    .body-zone.active{opacity:1}
+    .body-zone.dim{opacity:0.25}
+    .body-outline{fill:none;stroke:rgba(255,255,255,0.15);stroke-width:1.5}
+
+    /* Zone Legend */
+    .zone-legend{margin-top:20px}
+    .zone-item{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:0.8rem;color:var(--text-secondary);transition:all 0.3s}
+    .zone-item.active{color:var(--text-primary)}
+    .zone-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;transition:all 0.3s}
+    .zone-dot.active{box-shadow:0 0 8px currentColor}
+    .zone-vrn{font-family:'Courier New',monospace;font-weight:700;margin-left:auto;font-size:0.75rem;color:var(--accent-gold);opacity:0;transition:opacity 0.3s}
+    .zone-item.active .zone-vrn{opacity:1}
+
+    /* Passaggio Indicator */
+    .passaggio-box{margin-top:20px;padding:14px;border-radius:12px;background:rgba(157,78,221,0.06);border:1px solid rgba(157,78,221,0.15);text-align:center;opacity:0;transition:all 0.3s}
+    .passaggio-box.show{opacity:1}
+    .passaggio-label{font-size:0.75rem;color:var(--accent-purple);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+    .passaggio-shift{font-family:'Courier New',monospace;font-size:0.85rem;color:var(--accent-gold)}
+
+    /* How It Works */
+    .how-section{max-width:1100px;margin:0 auto;padding:40px 20px 60px}
+    .how-section h2{font-size:1.5rem;text-align:center;margin-bottom:30px;color:var(--accent-gold)}
+    .how-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+    .how-card{background:var(--bg-card);border-radius:14px;padding:22px;border:1px solid rgba(255,255,255,0.05);text-align:center}
+    .how-icon{font-size:2rem;margin-bottom:10px}
+    .how-card h3{font-size:1rem;margin-bottom:8px;color:var(--accent-cyan)}
+    .how-card p{font-size:0.9rem;color:var(--text-secondary)}
+
+    /* Footer */
+    .footer{background:var(--bg-card);padding:40px 20px;text-align:center;border-top:1px solid rgba(255,255,255,0.05)}.footer p{color:var(--text-secondary);font-size:0.9rem}.footer a{color:var(--accent-purple);text-decoration:none}
+
+    @media(max-width:768px){
+      .nav{flex-direction:column;gap:12px}.nav-links{flex-wrap:wrap;justify-content:center;gap:12px}
+      .lab{grid-template-columns:1fr}
+      .body-panel{position:static;order:-1}
+      .voice-selector{gap:6px}
+      .voice-btn{padding:10px 16px;font-size:0.85rem}
+      .note-btn{width:48px;height:48px}
+    }
+  </style>
+</head>
+<body>
+  <div class="aiunites-bar"><div class="aiunites-bar-content"><a href="https://aiunites.github.io/aiunites-site/" class="aiunites-bar-brand">◆ AIUNITES</a><span class="aiunites-bar-divider">|</span><a href="https://aiunites.github.io/aizines-app/">AIZines</a><a href="https://aiunites.github.io/aibyjob-demo/">AIByJob</a><a href="https://aiunites.github.io/redomy-demo/">Redomy</a><a href="https://aiunites.github.io/videobate-site/">VideoBate</a><a href="https://aiunites.github.io/voicestry-site/" style="color:var(--accent-green) !important;font-weight:600;">🎤 VoiceStry</a><a href="https://aiunites.github.io/furnishthings-site/">FurnishThings</a><a href="https://aiunites.github.io/bizstry-site/">BizStry</a><a href="https://aiunites.github.io/aiyhwh-site/">AI YHWH</a><a href="https://aiunites.github.io/cloudsion-site/">Cloudsion</a><a href="https://aiunites.github.io/gameatica-site/">Gameatica</a><a href="https://aiunites.github.io/uptownit-site/">UptownIT</a><a href="https://aiunites.github.io/inthisworld-site/">InThisWorld</a><a href="https://aiunites.github.io/erpise-site/">ERPise</a><a href="https://aiunites.github.io/erpize-site/">ERPize</a><a href="https://aiunites.github.io/cosmostheopera-site/">🌌 COSMOS</a></div></div>
+
+  <nav class="nav"><a href="index.html" class="nav-logo">🎤 VoiceStry</a><div class="nav-links"><a href="index.html">Home</a><a href="vrn-method.html">VRN Method</a><a href="learn.html">Learn VRN</a><a href="5-gears.html">5 Gears</a><a href="vocal-gym.html">Vocal Gym</a><a href="pitch-trainer.html">Pitch Trainer</a><a href="sight-reading.html">Sight Reading</a><a href="voice-lab.html" class="active">Voice Lab</a><a href="press.html">Press</a></div></nav>
+
+  <section class="hero">
+    <h1>🔬 VRN Voice Lab</h1>
+    <p class="hero-sub">Pick a voice type. Tap a note. Hear the sound and see exactly what's happening inside the body — mapped in Vocal Resonance Notation.</p>
+  </section>
+
+  <!-- Voice Type Selector -->
+  <div class="voice-selector" id="voiceSelector">
+    <button class="voice-btn active" data-voice="bass">🎵 Bass</button>
+    <button class="voice-btn" data-voice="baritone">🎵 Baritone</button>
+    <button class="voice-btn" data-voice="tenor">🎵 Tenor</button>
+    <button class="voice-btn" data-voice="countertenor">🎵 Countertenor</button>
+    <button class="voice-btn" data-voice="alto">🎵 Alto</button>
+    <button class="voice-btn" data-voice="mezzo">🎵 Mezzo-Soprano</button>
+    <button class="voice-btn" data-voice="soprano">🎵 Soprano</button>
+  </div>
+
+  <!-- Main Lab -->
+  <div class="lab">
+    <!-- Left: Notes & VRN -->
+    <div class="notes-panel">
+      <div class="panel-header">
+        <div class="panel-title" id="voiceTitle">Bass Voice</div>
+        <div class="voice-range" id="voiceRange">E2 – E4</div>
+      </div>
+
+      <div id="noteGroups"></div>
+
+      <!-- VRN Display -->
+      <div class="vrn-display" id="vrnDisplay">
+        <div class="vrn-label">VRN Notation</div>
+        <div class="vrn-note-name" id="vrnNoteName">Tap a note to begin</div>
+        <div class="vrn-notation" id="vrnNotation"></div>
+        <div class="vrn-desc" id="vrnDesc">Select any note above to hear the voice and see the Vocal Resonance Notation for that pitch, showing exactly which body zones resonate and at what intensity.</div>
+      </div>
+    </div>
+
+    <!-- Right: Body Diagram -->
+    <div class="body-panel">
+      <div class="body-title">Resonance Map</div>
+
+      <svg class="body-svg" viewBox="0 0 200 420" xmlns="http://www.w3.org/2000/svg">
+        <!-- Body outline -->
+        <ellipse class="body-outline" cx="100" cy="42" rx="32" ry="38"/>
+        <line class="body-outline" x1="100" y1="80" x2="100" y2="240"/>
+        <line class="body-outline" x1="100" y1="100" x2="45" y2="180"/>
+        <line class="body-outline" x1="100" y1="100" x2="155" y2="180"/>
+        <line class="body-outline" x1="100" y1="240" x2="65" y2="380"/>
+        <line class="body-outline" x1="100" y1="240" x2="135" y2="380"/>
+
+        <!-- Resonance Zones -->
+        <circle class="body-zone" id="zone-H" cx="100" cy="22" r="24" fill="url(#glow-purple)"/>
+        <ellipse class="body-zone" id="zone-N" cx="100" cy="42" rx="18" ry="10" fill="url(#glow-cyan)"/>
+        <ellipse class="body-zone" id="zone-O" cx="100" cy="58" rx="14" ry="8" fill="url(#glow-green)"/>
+        <ellipse class="body-zone" id="zone-P" cx="100" cy="88" rx="12" ry="14" fill="url(#glow-orange)"/>
+        <ellipse class="body-zone" id="zone-C" cx="100" cy="140" rx="36" ry="35" fill="url(#glow-red)"/>
+        <ellipse class="body-zone" id="zone-L" cx="100" cy="210" rx="30" ry="30" fill="url(#glow-pink)"/>
+
+        <!-- Zone labels -->
+        <text x="155" y="26" fill="rgba(255,255,255,0.3)" font-size="10" font-weight="600" id="label-H">[H]</text>
+        <text x="155" y="46" fill="rgba(255,255,255,0.3)" font-size="10" font-weight="600" id="label-N">[N]</text>
+        <text x="155" y="62" fill="rgba(255,255,255,0.3)" font-size="10" font-weight="600" id="label-O">[O]</text>
+        <text x="155" y="92" fill="rgba(255,255,255,0.3)" font-size="10" font-weight="600" id="label-P">[P]</text>
+        <text x="155" y="144" fill="rgba(255,255,255,0.3)" font-size="10" font-weight="600" id="label-C">[C]</text>
+        <text x="155" y="214" fill="rgba(255,255,255,0.3)" font-size="10" font-weight="600" id="label-L">[L]</text>
+
+        <defs>
+          <radialGradient id="glow-red"><stop offset="0%" stop-color="#ef4444" stop-opacity="0.7"/><stop offset="100%" stop-color="#ef4444" stop-opacity="0"/></radialGradient>
+          <radialGradient id="glow-orange"><stop offset="0%" stop-color="#f59e0b" stop-opacity="0.6"/><stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/></radialGradient>
+          <radialGradient id="glow-cyan"><stop offset="0%" stop-color="#00d4ff" stop-opacity="0.6"/><stop offset="100%" stop-color="#00d4ff" stop-opacity="0"/></radialGradient>
+          <radialGradient id="glow-purple"><stop offset="0%" stop-color="#9d4edd" stop-opacity="0.6"/><stop offset="100%" stop-color="#9d4edd" stop-opacity="0"/></radialGradient>
+          <radialGradient id="glow-green"><stop offset="0%" stop-color="#4ade80" stop-opacity="0.5"/><stop offset="100%" stop-color="#4ade80" stop-opacity="0"/></radialGradient>
+          <radialGradient id="glow-pink"><stop offset="0%" stop-color="#ff6b9d" stop-opacity="0.5"/><stop offset="100%" stop-color="#ff6b9d" stop-opacity="0"/></radialGradient>
+        </defs>
+      </svg>
+
+      <!-- Zone Legend -->
+      <div class="zone-legend">
+        <div class="zone-item" id="legend-H"><span class="zone-dot" style="background:#9d4edd"></span>Head <span class="zone-vrn">[H]</span></div>
+        <div class="zone-item" id="legend-N"><span class="zone-dot" style="background:#00d4ff"></span>Nasal / Mask <span class="zone-vrn">[N]</span></div>
+        <div class="zone-item" id="legend-O"><span class="zone-dot" style="background:#4ade80"></span>Oral <span class="zone-vrn">[O]</span></div>
+        <div class="zone-item" id="legend-P"><span class="zone-dot" style="background:#f59e0b"></span>Pharynx <span class="zone-vrn">[P]</span></div>
+        <div class="zone-item" id="legend-C"><span class="zone-dot" style="background:#ef4444"></span>Chest <span class="zone-vrn">[C]</span></div>
+        <div class="zone-item" id="legend-L"><span class="zone-dot" style="background:#ff6b9d"></span>Low Body <span class="zone-vrn">[L]</span></div>
+      </div>
+
+      <!-- Passaggio indicator -->
+      <div class="passaggio-box" id="passaggioBox">
+        <div class="passaggio-label">Passaggio Zone</div>
+        <div class="passaggio-shift" id="passaggioShift"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- How It Works -->
+  <section class="how-section">
+    <h2>How to Read the Voice Lab</h2>
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="how-icon">🎤</div>
+        <h3>Pick a Voice</h3>
+        <p>Choose from 7 voice types to see their full range organized by gear (register).</p>
+      </div>
+      <div class="how-card">
+        <div class="how-icon">🎹</div>
+        <h3>Tap a Note</h3>
+        <p>Hear a synthesized vocal tone at that pitch with harmonics shaped to match the register.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-icon">🔬</div>
+        <h3>See the VRN</h3>
+        <p>The notation shows resonance zones, intensity levels, and which muscles engage.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-icon">💡</div>
+        <h3>Watch the Body</h3>
+        <p>Resonance zones light up on the body diagram — brighter means more intensity.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>
+      &copy; 2002-2026 VoiceStry. All Rights Reserved. DMCA Protected.<br>
+      Home of the <a href="vrn-method.html">VRN Method</a> — Vocal Resonance Notation<br><br>
+      <a href="index.html">Home</a> |
+      <a href="vrn-method.html">VRN Method</a> |
+      <a href="learn.html">Learn</a> |
+      <a href="5-gears.html">5 Gears</a> |
+      <a href="vocal-gym.html">Vocal Gym</a> |
+      <a href="pitch-trainer.html">Pitch</a> |
+      <a href="sight-reading.html">Sight Reading</a> |
+      <a href="voice-lab.html">Voice Lab</a> |
+      <a href="press.html">Press</a><br><br>
+      Part of the <a href="https://aiunites.github.io/aiunites-site/">AIUNITES</a> network |
+      Created by <a href="https://aiunites.github.io/cosmostheopera-site/">COSMOS the OPERA</a>
+    </p>
+  </footer>
+
+<script>
+// ============================================================
+// VRN VOICE LAB — Audio Engine + VRN Mapping
+// ============================================================
+
+const NOTES = {
+  'E2':82.41,'F2':87.31,'G2':98.00,'A2':110.00,'B2':123.47,
+  'C3':130.81,'D3':146.83,'E3':164.81,'F3':174.61,'G3':196.00,'A3':220.00,'B3':246.94,
+  'C4':261.63,'D4':293.66,'E4':329.63,'F4':349.23,'G4':392.00,'A4':440.00,'B4':493.88,
+  'C5':523.25,'D5':587.33,'E5':659.25,'F5':698.46,'G5':783.99,'A5':880.00,'B5':987.77,
+  'C6':1046.50,'D6':1174.66,'E6':1318.51
+};
+
+const VOICES = {
+  bass: {
+    name: 'Bass Voice', range: 'E2 – E4',
+    gears: [
+      { gear:1, name:'Chest / Low Body', vrn:'[C+++, L++, P+]', color:'red',
+        notes:['E2','F2','G2','A2','B2'],
+        zones:{C:3,L:2,P:1,O:0,N:0,H:0},
+        desc:'Maximum chest wall vibration. Deep body resonance. The bass foundation — felt in the sternum and lower ribs.' },
+      { gear:2, name:'Upper Chest / Mix', vrn:'[C++, H+, P++, O+]', color:'orange',
+        notes:['C3','D3','E3','F3','G3'],
+        zones:{C:2,L:1,P:2,O:1,N:0,H:1},
+        desc:'Chest still dominant but the pharynx opens wider. Head resonance begins to enter. The baritone crossover zone.' },
+      { gear:3, name:'Head Dominant', vrn:'[H++, N+, O++, C+]', color:'gold',
+        notes:['A3','B3','C4','D4','E4'],
+        zones:{C:1,L:0,P:1,O:2,N:1,H:2},
+        desc:'Head resonance takes the lead. Oral space opens for projection. Chest provides warmth underneath. The bass upper extension.' }
+    ],
+    passaggi:[ {at:'C3',shift:'1→2',vrn:'[C+++]→[C++, H+]'}, {at:'A3',shift:'2→3',vrn:'[C++, P++]→[H++, O++]'} ]
+  },
+  baritone: {
+    name: 'Baritone Voice', range: 'A2 – A4',
+    gears: [
+      { gear:1, name:'Chest / Low Body', vrn:'[C+++, L+, P+]', color:'red',
+        notes:['A2','B2','C3','D3'],
+        zones:{C:3,L:1,P:1,O:0,N:0,H:0},
+        desc:'Rich chest resonance. The baritone low range — warm, grounded, authoritative.' },
+      { gear:2, name:'Upper Chest / Mix', vrn:'[C++, H+, P++, O+]', color:'orange',
+        notes:['E3','F3','G3','A3','B3'],
+        zones:{C:2,L:0,P:2,O:1,N:0,H:1},
+        desc:'The baritone sweet spot. Chest power with pharyngeal depth. Where speech quality singing lives.' },
+      { gear:3, name:'Head Dominant', vrn:'[H+++, N++, O++]', color:'gold',
+        notes:['C4','D4','E4','F4','G4','A4'],
+        zones:{C:1,L:0,P:1,O:2,N:2,H:3},
+        desc:'Full head voice activation. Nasal mask fully engaged. The operatic baritone high range that fills a hall.' }
+    ],
+    passaggi:[ {at:'E3',shift:'1→2',vrn:'[C+++]→[C++, H+]'}, {at:'C4',shift:'2→3',vrn:'[C++, P++]→[H+++, N++]'} ]
+  },
+  tenor: {
+    name: 'Tenor Voice', range: 'C3 – C5',
+    gears: [
+      { gear:1, name:'Chest / Low Body', vrn:'[C+++, P+]', color:'red',
+        notes:['C3','D3','E3','F3'],
+        zones:{C:3,L:1,P:1,O:0,N:0,H:0},
+        desc:'Chest-anchored low range. Lighter body resonance than bass/baritone. Clean, clear foundation.' },
+      { gear:2, name:'Upper Chest / Mix', vrn:'[C++, H+, P++, O++]', color:'orange',
+        notes:['G3','A3','B3','C4','D4'],
+        zones:{C:2,L:0,P:2,O:2,N:0,H:1},
+        desc:'The tenor powerhouse. Chest and head blend with wide oral space. Where the money notes live — the ringing passaggio zone.' },
+      { gear:3, name:'Head Dominant', vrn:'[H+++, N+++, O++]', color:'gold',
+        notes:['E4','F4','G4','A4','B4'],
+        zones:{C:0,L:0,P:1,O:2,N:3,H:3},
+        desc:'Full mask resonance. The legendary high C territory. Maximum head and nasal ring — the sound that pierces an orchestra.' },
+      { gear:4, name:'Light Head / Falsetto', vrn:'[H+++, N+]', color:'cyan',
+        notes:['C5'],
+        zones:{C:0,L:0,P:0,O:1,N:1,H:3},
+        desc:'Thin-fold production. Ethereal, light. The pianissimo high extension.' }
+    ],
+    passaggi:[ {at:'G3',shift:'1→2',vrn:'[C+++]→[C++, H+]'}, {at:'E4',shift:'2→3',vrn:'[C++, O++]→[H+++, N+++]'}, {at:'C5',shift:'3→4',vrn:'[H+++, N+++]→[H+++, N+]'} ]
+  },
+  countertenor: {
+    name: 'Countertenor Voice', range: 'G3 – E5',
+    gears: [
+      { gear:2, name:'Modal Chest (rare use)', vrn:'[C+, H++, P+, O+]', color:'orange',
+        notes:['G3','A3','B3'],
+        zones:{C:1,L:0,P:1,O:1,N:0,H:2},
+        desc:'Light modal voice at the bottom of the range. Some countertenors avoid this entirely. Chest resonance is minimal — head mechanism is already dominant even here. This is the speaking-voice anchor that some countertenors use for dramatic color.' },
+      { gear:3, name:'Reinforced Falsetto', vrn:'[H+++, N++, O++, P+]', color:'gold',
+        notes:['C4','D4','E4','F4','G4','A4'],
+        zones:{C:0,L:0,P:1,O:2,N:2,H:3},
+        desc:'The countertenor core. Full-bodied falsetto with strong mask resonance and pharyngeal depth. Not breathy — this is a trained, reinforced head mechanism that carries like a female alto. The sound that defined castrati roles and Baroque opera.' },
+      { gear:4, name:'Light Head / Pure Falsetto', vrn:'[H+++, N+++, O+]', color:'cyan',
+        notes:['B4','C5','D5','E5'],
+        zones:{C:0,L:0,P:0,O:1,N:3,H:3},
+        desc:'Maximum nasal ring and head placement. Pure, crystalline tone with laser focus. The countertenor high range — where the voice becomes almost instrumental in quality. Think Handel arias soaring above the orchestra.' }
+    ],
+    passaggi:[ {at:'C4',shift:'2→3',vrn:'[C+, H++]→[H+++, N++]'}, {at:'B4',shift:'3→4',vrn:'[H+++, N++]→[H+++, N+++]'} ]
+  },
+  alto: {
+    name: 'Alto Voice', range: 'F3 – F5',
+    gears: [
+      { gear:1, name:'Chest / Low Body', vrn:'[C+++, P++]', color:'red',
+        notes:['F3','G3','A3','B3'],
+        zones:{C:3,L:1,P:2,O:0,N:0,H:0},
+        desc:'Warm, dark chest resonance. The contralto depth — rich and velvety with pharyngeal warmth.' },
+      { gear:2, name:'Upper Chest / Mix', vrn:'[C++, H++, O+, N+]', color:'orange',
+        notes:['C4','D4','E4','F4'],
+        zones:{C:2,L:0,P:1,O:1,N:1,H:2},
+        desc:'Blended mix with substantial head resonance. The alto middle voice — expressive and full-bodied.' },
+      { gear:3, name:'Head Dominant', vrn:'[H+++, N++, O++]', color:'gold',
+        notes:['G4','A4','B4','C5','D5'],
+        zones:{C:0,L:0,P:0,O:2,N:2,H:3},
+        desc:'Head voice takes over with brilliant mask resonance. Open oral space for carrying power.' },
+      { gear:4, name:'Light Head', vrn:'[H+++, N+]', color:'cyan',
+        notes:['E5','F5'],
+        zones:{C:0,L:0,P:0,O:1,N:1,H:3},
+        desc:'Light, floating head production. The airy upper extension with minimal body engagement.' }
+    ],
+    passaggi:[ {at:'C4',shift:'1→2',vrn:'[C+++]→[C++, H++]'}, {at:'G4',shift:'2→3',vrn:'[C++, H++]→[H+++, N++]'} ]
+  },
+  mezzo: {
+    name: 'Mezzo-Soprano', range: 'A3 – A5',
+    gears: [
+      { gear:1, name:'Chest', vrn:'[C++, P+]', color:'red',
+        notes:['A3','B3','C4'],
+        zones:{C:2,L:0,P:1,O:0,N:0,H:0},
+        desc:'Warm chest register. Less body resonance than alto — brighter, more forward placement.' },
+      { gear:2, name:'Upper Chest / Mix', vrn:'[C+, H++, O++, N+]', color:'orange',
+        notes:['D4','E4','F4','G4'],
+        zones:{C:1,L:0,P:1,O:2,N:1,H:2},
+        desc:'The mezzo sweet spot. Rich blend of chest warmth and head brightness. Wide oral resonance.' },
+      { gear:3, name:'Head Dominant', vrn:'[H+++, N+++, O++]', color:'gold',
+        notes:['A4','B4','C5','D5','E5'],
+        zones:{C:0,L:0,P:0,O:2,N:3,H:3},
+        desc:'Full brilliant mask. Maximum nasal ring and head resonance. The soaring mezzo upper range.' },
+      { gear:4, name:'Light Head', vrn:'[H+++, N+]', color:'cyan',
+        notes:['F5','G5','A5'],
+        zones:{C:0,L:0,P:0,O:0,N:1,H:3},
+        desc:'Delicate thin-fold production. Shimmering, light. The pianissimo floated tones.' }
+    ],
+    passaggi:[ {at:'D4',shift:'1→2',vrn:'[C++]→[C+, H++]'}, {at:'A4',shift:'2→3',vrn:'[C+, H++]→[H+++, N+++]'} ]
+  },
+  soprano: {
+    name: 'Soprano Voice', range: 'C4 – C6',
+    gears: [
+      { gear:1, name:'Chest', vrn:'[C++, O+]', color:'red',
+        notes:['C4','D4','E4'],
+        zones:{C:2,L:0,P:0,O:1,N:0,H:0},
+        desc:'Light chest register. Forward placement. The soprano speaking-voice zone — clear and warm.' },
+      { gear:2, name:'Mix', vrn:'[C+, H++, N+, O++]', color:'orange',
+        notes:['F4','G4','A4','B4'],
+        zones:{C:1,L:0,P:0,O:2,N:1,H:2},
+        desc:'Chest thins out as head takes over. Oral space opens wide. The first passaggio navigation zone.' },
+      { gear:3, name:'Head Dominant', vrn:'[H+++, N+++, O+++]', color:'gold',
+        notes:['C5','D5','E5','F5','G5'],
+        zones:{C:0,L:0,P:0,O:3,N:3,H:3},
+        desc:'Pure head voice. Maximum mask and oral resonance. The soprano high range — brilliant, piercing, operatic.' },
+      { gear:4, name:'Light Head / Pianissimo', vrn:'[H+++, N++]', color:'cyan',
+        notes:['A5','B5'],
+        zones:{C:0,L:0,P:0,O:1,N:2,H:3},
+        desc:'Thin-fold floating tone. Ethereal and crystal-clear. The pianissimo high extension.' },
+      { gear:5, name:'Whistle / Flageolet', vrn:'[H+++]', color:'purple',
+        notes:['C6'],
+        zones:{C:0,L:0,P:0,O:0,N:0,H:3},
+        desc:'Pure whistle register. Vocal folds barely vibrate. Air whistles through a tiny opening. Superhuman territory.' }
+    ],
+    passaggi:[ {at:'F4',shift:'1→2',vrn:'[C++]→[C+, H++]'}, {at:'C5',shift:'2→3',vrn:'[C+, H++]→[H+++, N+++]'}, {at:'A5',shift:'3→4',vrn:'[H+++, N+++]→[H+++, N++]'}, {at:'C6',shift:'4→5',vrn:'[H+++, N++]→[H+++]'} ]
+  }
+};
+
+// Audio
+let audioCtx = null;
+let currentGain = null;
+let currentOscs = [];
+let playingBtn = null;
+
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+
+function playNote(freq, gear, duration) {
+  const ctx = getAudioCtx();
+  stopNote();
+
+  // Harmonic profiles per gear
+  const profiles = {
+    1: [1.0, 0.8, 0.6, 0.4, 0.2, 0.1, 0.05, 0.02],
+    2: [0.9, 0.7, 0.7, 0.5, 0.4, 0.3, 0.15, 0.08],
+    3: [0.6, 0.5, 0.8, 0.7, 0.6, 0.5, 0.3, 0.2],
+    4: [0.4, 0.3, 0.5, 0.4, 0.3, 0.2, 0.15, 0.1],
+    5: [0.3, 0.15, 0.2, 0.15, 0.1, 0.08, 0.05, 0.03]
+  };
+
+  const profile = profiles[gear] || profiles[3];
+  const masterGain = ctx.createGain();
+  masterGain.gain.setValueAtTime(0, ctx.currentTime);
+  masterGain.gain.linearRampToValueAtTime(0.18, ctx.currentTime + 0.08);
+  masterGain.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.2);
+  masterGain.gain.linearRampToValueAtTime(0, ctx.currentTime + duration);
+  masterGain.connect(ctx.destination);
+
+  const oscs = [];
+  profile.forEach((amp, i) => {
+    const harmonic = i + 1;
+    const hFreq = freq * harmonic;
+    if (hFreq > 8000) return;
+
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(hFreq, ctx.currentTime);
+
+    // Vibrato on gears 3+
+    if (gear >= 3 && harmonic <= 2) {
+      const vib = ctx.createOscillator();
+      const vibGain = ctx.createGain();
+      vib.frequency.value = 5.5;
+      vibGain.gain.value = freq * 0.008;
+      vib.connect(vibGain);
+      vibGain.connect(osc.frequency);
+      vib.start(ctx.currentTime);
+      vib.stop(ctx.currentTime + duration);
+    }
+
+    gain.gain.value = amp * 0.15;
+    osc.connect(gain);
+    gain.connect(masterGain);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + duration);
+    oscs.push(osc);
+  });
+
+  currentGain = masterGain;
+  currentOscs = oscs;
+
+  setTimeout(() => {
+    if (playingBtn) { playingBtn.classList.remove('playing'); playingBtn = null; }
+    clearBody();
+  }, duration * 1000);
+}
+
+function stopNote() {
+  if (currentGain && audioCtx) {
+    try { currentGain.gain.cancelScheduledValues(audioCtx.currentTime); currentGain.gain.setValueAtTime(0, audioCtx.currentTime); } catch(e) {}
+  }
+  if (playingBtn) { playingBtn.classList.remove('playing'); playingBtn = null; }
+}
+
+// ============================================================
+// UI
+// ============================================================
+
+let currentVoice = 'bass';
+
+function renderVoice(voiceKey) {
+  currentVoice = voiceKey;
+  const v = VOICES[voiceKey];
+
+  document.getElementById('voiceTitle').textContent = v.name;
+  document.getElementById('voiceRange').textContent = v.range;
+
+  document.querySelectorAll('.voice-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.voice === voiceKey);
+  });
+
+  const container = document.getElementById('noteGroups');
+  container.innerHTML = '';
+
+  v.gears.forEach(g => {
+    const group = document.createElement('div');
+    group.className = 'gear-group';
+    group.innerHTML =
+      '<div class="gear-label">' +
+        '<span class="gear-badge gear-' + g.gear + '-badge">' + g.gear + '</span>' +
+        '<span class="gear-name">' + g.name + '</span>' +
+        '<span class="gear-vrn-label">' + g.vrn + '</span>' +
+      '</div>' +
+      '<div class="note-row">' +
+        g.notes.map(function(n) {
+          return '<button class="note-btn gear-' + g.gear + '-note" data-note="' + n + '" data-gear="' + g.gear + '">' +
+            '<span class="note-name">' + n + '</span>' +
+            '<span class="note-hz">' + Math.round(NOTES[n]) + 'Hz</span>' +
+          '</button>';
+        }).join('') +
+      '</div>';
+    container.appendChild(group);
+  });
+
+  container.querySelectorAll('.note-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var note = btn.dataset.note;
+      var gear = parseInt(btn.dataset.gear);
+      var freq = NOTES[note];
+
+      if (playingBtn) playingBtn.classList.remove('playing');
+      btn.classList.add('playing');
+      playingBtn = btn;
+
+      playNote(freq, gear, 2.0);
+      updateVRN(note, gear, voiceKey);
+      updateBody(gear, voiceKey);
+    });
+  });
+
+  clearBody();
+  document.getElementById('vrnNoteName').textContent = 'Tap a note to begin';
+  document.getElementById('vrnNotation').textContent = '';
+  document.getElementById('vrnDesc').textContent = 'Select any note above to hear the voice and see the Vocal Resonance Notation for that pitch, showing exactly which body zones resonate and at what intensity.';
+  document.getElementById('vrnDisplay').classList.remove('active');
+  document.getElementById('passaggioBox').classList.remove('show');
+}
+
+function updateVRN(note, gear, voiceKey) {
+  var v = VOICES[voiceKey];
+  var g = null;
+  for (var i = 0; i < v.gears.length; i++) {
+    if (v.gears[i].gear === gear) { g = v.gears[i]; break; }
+  }
+  if (!g) return;
+
+  var colors = {1:'var(--accent-red)',2:'var(--accent-orange)',3:'var(--accent-gold)',4:'var(--accent-cyan)',5:'var(--accent-purple)'};
+
+  document.getElementById('vrnNoteName').textContent = note + ' — ' + Math.round(NOTES[note]) + ' Hz';
+  document.getElementById('vrnNotation').textContent = g.vrn;
+  document.getElementById('vrnDesc').innerHTML =
+    '<strong style="color:' + colors[gear] + '">Gear ' + gear + ': ' + g.name + '</strong><br>' + g.desc;
+  document.getElementById('vrnDisplay').classList.add('active');
+
+  // Check passaggio
+  var pass = null;
+  for (var j = 0; j < v.passaggi.length; j++) {
+    if (v.passaggi[j].at === note) { pass = v.passaggi[j]; break; }
+  }
+  var box = document.getElementById('passaggioBox');
+  if (pass) {
+    box.classList.add('show');
+    document.getElementById('passaggioShift').textContent = 'Shift ' + pass.shift + ': ' + pass.vrn;
+  } else {
+    box.classList.remove('show');
+  }
+}
+
+function updateBody(gear, voiceKey) {
+  var v = VOICES[voiceKey];
+  var g = null;
+  for (var i = 0; i < v.gears.length; i++) {
+    if (v.gears[i].gear === gear) { g = v.gears[i]; break; }
+  }
+  if (!g) return;
+
+  var zones = ['H','N','O','P','C','L'];
+  zones.forEach(function(z) {
+    var el = document.getElementById('zone-' + z);
+    var label = document.getElementById('label-' + z);
+    var legend = document.getElementById('legend-' + z);
+    var level = g.zones[z] || 0;
+
+    if (level > 0) {
+      el.classList.add('active');
+      el.classList.remove('dim');
+      el.style.opacity = 0.2 + (level * 0.25);
+      label.setAttribute('fill', 'rgba(255,255,255,0.9)');
+      legend.classList.add('active');
+    } else {
+      el.classList.remove('active');
+      el.classList.add('dim');
+      el.style.opacity = 0.04;
+      label.setAttribute('fill', 'rgba(255,255,255,0.15)');
+      legend.classList.remove('active');
+    }
+  });
+}
+
+function clearBody() {
+  var zones = ['H','N','O','P','C','L'];
+  zones.forEach(function(z) {
+    var el = document.getElementById('zone-' + z);
+    el.classList.remove('active','dim');
+    el.style.opacity = 0.08;
+    document.getElementById('label-' + z).setAttribute('fill', 'rgba(255,255,255,0.3)');
+    document.getElementById('legend-' + z).classList.remove('active');
+  });
+}
+
+// Init
+document.getElementById('voiceSelector').addEventListener('click', function(e) {
+  var btn = e.target.closest('.voice-btn');
+  if (btn) renderVoice(btn.dataset.voice);
+});
+
+renderVoice('bass');
+</script>
+</body>
+</html>
