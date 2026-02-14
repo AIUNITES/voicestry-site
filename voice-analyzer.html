@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VRN Live Analyzer — Sing and See Your Resonance in Real Time | VoiceStry</title>
+  <meta name="description" content="Sing into your microphone and watch your Vocal Resonance Notation update in real time. See which resonance zones activate, what gear you're in, and how your voice moves through the passaggi.">
+  <meta name="keywords" content="vocal analysis, real-time VRN, singing analyzer, vocal resonance detection, pitch detection, voice register, chest voice, head voice, mixed voice">
+  <meta name="author" content="Tom Sans / AIUNITES">
+  <meta property="og:title" content="VRN Live Analyzer — See Your Voice in Real Time">
+  <meta property="og:description" content="Sing into your mic and watch VRN notation map your resonance zones live.">
+  <meta property="og:type" content="article">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎤</text></svg>">
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{--bg-dark:#0a0a0f;--bg-card:#12121a;--bg-panel:#0e0e18;--text-primary:#fff;--text-secondary:#a0a0b0;--accent-purple:#9d4edd;--accent-cyan:#00d4ff;--accent-gold:#ffd700;--accent-pink:#ff6b9d;--accent-green:#4ade80;--accent-orange:#f59e0b;--accent-red:#ef4444}
+    body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg-dark);color:var(--text-primary);line-height:1.7}
+
+    /* Webring */
+    .aiunites-bar{background:linear-gradient(90deg,#0a0a0f,#1a1a2e);border-bottom:1px solid rgba(99,102,241,.3);padding:8px 0;font-size:12px}.aiunites-bar-content{max-width:1400px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:12px;overflow-x:auto;scrollbar-width:none}.aiunites-bar-content::-webkit-scrollbar{display:none}.aiunites-bar a{color:rgba(255,255,255,.7);text-decoration:none;white-space:nowrap;transition:color .2s}.aiunites-bar a:hover{color:#fff}.aiunites-bar-brand{color:#6366f1!important;font-weight:600}.aiunites-bar-divider{color:rgba(255,255,255,.2)}
+
+    /* Nav */
+    .nav{background:var(--bg-card);padding:15px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,0.1);position:sticky;top:0;z-index:100}
+    .nav-logo{font-size:1.5rem;font-weight:800;text-decoration:none;background:linear-gradient(135deg,var(--accent-green),var(--accent-cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .nav-links{display:flex;gap:22px;flex-wrap:wrap}.nav-links a{color:var(--text-secondary);text-decoration:none;font-size:0.95rem;transition:color 0.3s}.nav-links a:hover,.nav-links a.active{color:var(--accent-cyan)}
+
+    /* Hero */
+    .hero{padding:50px 20px 30px;text-align:center;background:radial-gradient(ellipse at 40% 30%,rgba(239,68,68,0.1) 0%,transparent 50%),radial-gradient(ellipse at 60% 70%,rgba(0,212,255,0.08) 0%,transparent 50%),var(--bg-dark)}
+    .hero h1{font-size:clamp(1.8rem,5vw,3rem);margin-bottom:12px;background:linear-gradient(135deg,#fff,var(--accent-red),var(--accent-gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero-sub{font-size:1.05rem;color:var(--text-secondary);max-width:600px;margin:0 auto}
+
+    /* Voice Type Picker */
+    .voice-picker{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:20px 20px 10px}
+    .vp-btn{padding:8px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);background:var(--bg-card);color:var(--text-secondary);font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:inherit}
+    .vp-btn:hover{border-color:rgba(255,255,255,0.2);color:var(--text-primary)}
+    .vp-btn.active{border-color:var(--accent-cyan);color:var(--accent-cyan);background:rgba(0,212,255,0.08)}
+
+    /* Start Button */
+    .start-section{text-align:center;padding:20px}
+    .start-btn{padding:18px 48px;border-radius:16px;border:none;font-size:1.15rem;font-weight:800;cursor:pointer;transition:all 0.3s;font-family:inherit;color:#fff;background:linear-gradient(135deg,var(--accent-red),var(--accent-orange));box-shadow:0 4px 30px rgba(239,68,68,0.3)}
+    .start-btn:hover{transform:translateY(-3px);box-shadow:0 8px 40px rgba(239,68,68,0.5)}
+    .start-btn.listening{background:linear-gradient(135deg,var(--accent-green),var(--accent-cyan));box-shadow:0 4px 30px rgba(74,222,128,0.3);animation:pulse 2s infinite}
+    .start-btn.listening:hover{box-shadow:0 8px 40px rgba(74,222,128,0.5)}
+    @keyframes pulse{0%,100%{box-shadow:0 4px 30px rgba(74,222,128,0.3)}50%{box-shadow:0 4px 40px rgba(74,222,128,0.6)}}
+    .mic-hint{font-size:0.85rem;color:var(--text-secondary);margin-top:10px}
+
+    /* Main Layout */
+    .analyzer{max-width:1100px;margin:0 auto;padding:20px;display:grid;grid-template-columns:1fr 260px;gap:24px;align-items:start}
+
+    /* Left Panel */
+    .left-panel{display:flex;flex-direction:column;gap:20px}
+
+    /* Pitch Display */
+    .pitch-panel{background:var(--bg-panel);border-radius:18px;padding:24px;border:1px solid rgba(255,255,255,0.05)}
+    .pitch-row{display:flex;align-items:baseline;gap:16px;margin-bottom:6px}
+    .pitch-note{font-size:3rem;font-weight:900;font-family:'Courier New',monospace;color:var(--accent-gold);min-width:100px;transition:color 0.2s}
+    .pitch-hz{font-size:1.3rem;color:var(--text-secondary);font-family:'Courier New',monospace}
+    .pitch-cents{font-size:0.9rem;padding:4px 10px;border-radius:8px;font-weight:700;font-family:'Courier New',monospace}
+    .pitch-cents.sharp{background:rgba(239,68,68,0.15);color:var(--accent-red)}
+    .pitch-cents.flat{background:rgba(0,212,255,0.15);color:var(--accent-cyan)}
+    .pitch-cents.intune{background:rgba(74,222,128,0.15);color:var(--accent-green)}
+    .pitch-bar-wrap{height:8px;background:rgba(255,255,255,0.06);border-radius:10px;position:relative;margin-top:10px}
+    .pitch-bar-center{position:absolute;left:50%;top:-2px;width:2px;height:12px;background:var(--accent-green);border-radius:2px;transform:translateX(-50%)}
+    .pitch-bar-needle{position:absolute;top:-3px;width:6px;height:14px;border-radius:3px;background:var(--accent-gold);transition:left 0.08s ease-out;transform:translateX(-50%)}
+
+    /* Waveform */
+    .waveform-panel{background:var(--bg-panel);border-radius:18px;padding:20px;border:1px solid rgba(255,255,255,0.05)}
+    .waveform-label{font-size:0.75rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+    canvas.waveform{width:100%;height:80px;display:block;border-radius:10px;background:#08080e}
+    .spectrum-row{display:flex;gap:12px;margin-top:12px}
+    .spectrum-stat{flex:1;background:rgba(255,255,255,0.03);border-radius:10px;padding:10px 14px;text-align:center}
+    .spectrum-stat-label{font-size:0.7rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px}
+    .spectrum-stat-val{font-size:1rem;font-weight:800;font-family:'Courier New',monospace;margin-top:2px}
+
+    /* VRN Display */
+    .vrn-panel{background:var(--bg-panel);border-radius:18px;padding:24px;border:1px solid rgba(255,255,255,0.05);transition:border-color 0.3s}
+    .vrn-panel.active{border-color:rgba(255,215,0,0.2)}
+    .vrn-row{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+    .gear-badge{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.1rem;transition:all 0.3s}
+    .gear-1-bg{background:rgba(239,68,68,0.2);color:var(--accent-red)}
+    .gear-2-bg{background:rgba(245,158,11,0.2);color:var(--accent-orange)}
+    .gear-3-bg{background:rgba(255,215,0,0.2);color:var(--accent-gold)}
+    .gear-4-bg{background:rgba(0,212,255,0.2);color:var(--accent-cyan)}
+    .gear-5-bg{background:rgba(157,78,221,0.2);color:var(--accent-purple)}
+    .gear-info .gear-name{font-weight:800;font-size:1rem}
+    .gear-info .gear-range{font-size:0.8rem;color:var(--text-secondary)}
+    .vrn-notation{font-family:'Courier New',monospace;font-size:2rem;font-weight:800;color:var(--accent-gold);margin:8px 0;min-height:44px;transition:all 0.2s}
+    .vrn-desc{font-size:0.92rem;color:var(--text-secondary);line-height:1.6}
+
+    /* Passaggio alert */
+    .passaggio-alert{margin-top:14px;padding:12px 16px;border-radius:12px;background:rgba(157,78,221,0.08);border:1px solid rgba(157,78,221,0.2);text-align:center;opacity:0;transition:opacity 0.3s}
+    .passaggio-alert.show{opacity:1}
+    .passaggio-alert .pa-label{font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--accent-purple);margin-bottom:4px}
+    .passaggio-alert .pa-shift{font-family:'Courier New',monospace;font-size:0.95rem;color:var(--accent-gold)}
+
+    /* History strip */
+    .history-panel{background:var(--bg-panel);border-radius:18px;padding:20px;border:1px solid rgba(255,255,255,0.05)}
+    .history-label{font-size:0.75rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+    .history-strip{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}
+    .history-strip::-webkit-scrollbar{display:none}
+    .history-item{min-width:52px;padding:6px 8px;border-radius:8px;text-align:center;font-size:0.7rem;font-weight:700;border:1px solid rgba(255,255,255,0.06);background:var(--bg-dark);flex-shrink:0}
+    .history-item .hi-note{font-family:'Courier New',monospace;font-size:0.85rem;font-weight:800;color:var(--text-primary)}
+    .history-item .hi-gear{font-size:0.65rem;margin-top:2px}
+    .history-item.gear-1{border-color:rgba(239,68,68,0.2)}.history-item.gear-1 .hi-gear{color:var(--accent-red)}
+    .history-item.gear-2{border-color:rgba(245,158,11,0.2)}.history-item.gear-2 .hi-gear{color:var(--accent-orange)}
+    .history-item.gear-3{border-color:rgba(255,215,0,0.2)}.history-item.gear-3 .hi-gear{color:var(--accent-gold)}
+    .history-item.gear-4{border-color:rgba(0,212,255,0.2)}.history-item.gear-4 .hi-gear{color:var(--accent-cyan)}
+    .history-item.gear-5{border-color:rgba(157,78,221,0.2)}.history-item.gear-5 .hi-gear{color:var(--accent-purple)}
+
+    /* Right Panel - Body Diagram */
+    .body-panel{background:var(--bg-panel);border-radius:18px;padding:22px;border:1px solid rgba(255,255,255,0.05);position:sticky;top:80px}
+    .body-title{font-size:0.9rem;font-weight:700;text-align:center;margin-bottom:14px;color:var(--text-secondary)}
+    .body-svg{width:100%;max-width:200px;margin:0 auto;display:block}
+    .body-zone{transition:opacity 0.15s ease;opacity:0.06}
+    .body-zone.active{opacity:1}
+    .body-outline{fill:none;stroke:rgba(255,255,255,0.15);stroke-width:1.5}
+
+    .zone-legend{margin-top:18px}
+    .zone-item{display:flex;align-items:center;gap:7px;padding:5px 0;font-size:0.78rem;color:var(--text-secondary);transition:all 0.2s}
+    .zone-item.active{color:var(--text-primary)}
+    .zone-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;transition:all 0.2s}
+    .zone-dot.active{box-shadow:0 0 8px currentColor}
+    .zone-vrn{font-family:'Courier New',monospace;font-weight:700;margin-left:auto;font-size:0.7rem;color:var(--accent-gold);opacity:0;transition:opacity 0.2s}
+    .zone-item.active .zone-vrn{opacity:1}
+
+    /* Idle state */
+    .idle-state{text-align:center;padding:40px 20px;color:var(--text-secondary)}
+    .idle-state .idle-icon{font-size:3rem;margin-bottom:15px;opacity:0.4}
+    .idle-state p{font-size:0.95rem}
+
+    /* Footer */
+    .footer{background:var(--bg-card);padding:40px 20px;text-align:center;border-top:1px solid rgba(255,255,255,0.05);margin-top:40px}.footer p{color:var(--text-secondary);font-size:0.9rem}.footer a{color:var(--accent-purple);text-decoration:none}
+
+    @media(max-width:768px){
+      .nav{flex-direction:column;gap:12px}.nav-links{flex-wrap:wrap;justify-content:center;gap:12px}
+      .analyzer{grid-template-columns:1fr}
+      .body-panel{position:static;order:-1}
+      .vp-btn{padding:6px 12px;font-size:0.8rem}
+    }
+  </style>
+</head>
+<body>
+  <div class="aiunites-bar"><div class="aiunites-bar-content"><a href="https://aiunites.github.io/aiunites-site/" class="aiunites-bar-brand">◆ AIUNITES</a><span class="aiunites-bar-divider">|</span><a href="https://aiunites.github.io/aizines-app/">AIZines</a><a href="https://aiunites.github.io/aibyjob-demo/">AIByJob</a><a href="https://aiunites.github.io/redomy-demo/">Redomy</a><a href="https://aiunites.github.io/videobate-site/">VideoBate</a><a href="https://aiunites.github.io/voicestry-site/" style="color:var(--accent-green) !important;font-weight:600;">🎤 VoiceStry</a><a href="https://aiunites.github.io/furnishthings-site/">FurnishThings</a><a href="https://aiunites.github.io/bizstry-site/">BizStry</a><a href="https://aiunites.github.io/aiyhwh-site/">AI YHWH</a><a href="https://aiunites.github.io/cloudsion-site/">Cloudsion</a><a href="https://aiunites.github.io/gameatica-site/">Gameatica</a><a href="https://aiunites.github.io/uptownit-site/">UptownIT</a><a href="https://aiunites.github.io/inthisworld-site/">InThisWorld</a><a href="https://aiunites.github.io/erpise-site/">ERPise</a><a href="https://aiunites.github.io/erpize-site/">ERPize</a><a href="https://aiunites.github.io/cosmostheopera-site/">🌌 COSMOS</a></div></div>
+
+  <nav class="nav"><a href="index.html" class="nav-logo">🎤 VoiceStry</a><div class="nav-links"><a href="index.html">Home</a><a href="vrn-method.html">VRN Method</a><a href="learn.html">Learn VRN</a><a href="5-gears.html">5 Gears</a><a href="vocal-gym.html">Vocal Gym</a><a href="pitch-trainer.html">Pitch Trainer</a><a href="sight-reading.html">Sight Reading</a><a href="voice-lab.html">Voice Lab</a><a href="voice-analyzer.html" class="active">Live Analyzer</a><a href="press.html">Press</a></div></nav>
+
+  <section class="hero">
+    <h1>🎙️ VRN Live Analyzer</h1>
+    <p class="hero-sub">Sing into your microphone. We'll detect your pitch, estimate your register, and show the VRN notation for what your body is doing — in real time.</p>
+  </section>
+
+  <!-- Voice Type Picker -->
+  <div class="voice-picker" id="voicePicker">
+    <button class="vp-btn" data-voice="bass">Bass</button>
+    <button class="vp-btn" data-voice="baritone">Baritone</button>
+    <button class="vp-btn" data-voice="tenor">Tenor</button>
+    <button class="vp-btn" data-voice="countertenor">Countertenor</button>
+    <button class="vp-btn active" data-voice="auto">Auto-Detect</button>
+    <button class="vp-btn" data-voice="alto">Alto</button>
+    <button class="vp-btn" data-voice="mezzo">Mezzo</button>
+    <button class="vp-btn" data-voice="soprano">Soprano</button>
+  </div>
+
+  <!-- Start -->
+  <div class="start-section">
+    <button class="start-btn" id="startBtn">🎤 Start Listening</button>
+    <div class="mic-hint">Requires microphone access. Works best with headphones to avoid feedback.</div>
+  </div>
+
+  <!-- Analyzer -->
+  <div class="analyzer" id="analyzerSection" style="display:none;">
+    <!-- Left -->
+    <div class="left-panel">
+
+      <!-- Pitch -->
+      <div class="pitch-panel">
+        <div class="pitch-row">
+          <div class="pitch-note" id="pitchNote">—</div>
+          <div class="pitch-hz" id="pitchHz"></div>
+          <div class="pitch-cents intune" id="pitchCents"></div>
+        </div>
+        <div class="pitch-bar-wrap">
+          <div class="pitch-bar-center"></div>
+          <div class="pitch-bar-needle" id="pitchNeedle" style="left:50%"></div>
+        </div>
+      </div>
+
+      <!-- Waveform -->
+      <div class="waveform-panel">
+        <div class="waveform-label">Live Waveform &amp; Spectrum</div>
+        <canvas class="waveform" id="waveformCanvas"></canvas>
+        <div class="spectrum-row">
+          <div class="spectrum-stat">
+            <div class="spectrum-stat-label">Spectral Centroid</div>
+            <div class="spectrum-stat-val" id="statCentroid" style="color:var(--accent-cyan)">—</div>
+          </div>
+          <div class="spectrum-stat">
+            <div class="spectrum-stat-label">Harmonic Richness</div>
+            <div class="spectrum-stat-val" id="statHarmonics" style="color:var(--accent-gold)">—</div>
+          </div>
+          <div class="spectrum-stat">
+            <div class="spectrum-stat-label">Volume</div>
+            <div class="spectrum-stat-val" id="statVolume" style="color:var(--accent-green)">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VRN -->
+      <div class="vrn-panel" id="vrnPanel">
+        <div id="vrnContent">
+          <div class="idle-state">
+            <div class="idle-icon">🎤</div>
+            <p>Start singing and your VRN will appear here...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- History -->
+      <div class="history-panel">
+        <div class="history-label">Recent Notes</div>
+        <div class="history-strip" id="historyStrip">
+          <div style="color:var(--text-secondary);font-size:0.85rem;padding:8px;">Notes will appear as you sing...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right - Body -->
+    <div class="body-panel">
+      <div class="body-title">Live Resonance Map</div>
+      <svg class="body-svg" viewBox="0 0 200 420" xmlns="http://www.w3.org/2000/svg">
+        <ellipse class="body-outline" cx="100" cy="42" rx="32" ry="38"/>
+        <line class="body-outline" x1="100" y1="80" x2="100" y2="240"/>
+        <line class="body-outline" x1="100" y1="100" x2="45" y2="180"/>
+        <line class="body-outline" x1="100" y1="100" x2="155" y2="180"/>
+        <line class="body-outline" x1="100" y1="240" x2="65" y2="380"/>
+        <line class="body-outline" x1="100" y1="240" x2="135" y2="380"/>
+        <circle class="body-zone" id="zone-H" cx="100" cy="22" r="24" fill="url(#gH)"/>
+        <ellipse class="body-zone" id="zone-N" cx="100" cy="42" rx="18" ry="10" fill="url(#gN)"/>
+        <ellipse class="body-zone" id="zone-O" cx="100" cy="58" rx="14" ry="8" fill="url(#gO)"/>
+        <ellipse class="body-zone" id="zone-P" cx="100" cy="88" rx="12" ry="14" fill="url(#gP)"/>
+        <ellipse class="body-zone" id="zone-C" cx="100" cy="140" rx="36" ry="35" fill="url(#gC)"/>
+        <ellipse class="body-zone" id="zone-L" cx="100" cy="210" rx="30" ry="30" fill="url(#gL)"/>
+        <text x="155" y="26" fill="rgba(255,255,255,0.3)" font-size="10" font-weight="600" id="label-H">[H]</text>
+        <text x="155" y="46" fill="rgba(255,255,255,0.3)" font-size="10" font-weight="600" id="label-N">[N]</text>
+        <text x="155" y="62" fill="rgba(255,255,255,0.3)" font-size="10" font-weight="600" id="label-O">[O]</text>
+        <text x="155" y="92" fill="rgba(255,255,255,0.3)" font-size="10" font-weight="600" id="label-P">[P]</text>
+        <text x="155" y="144" fill="rgba(255,255,255,0.3)" font-size="10" font-weight="600" id="label-C">[C]</text>
+        <text x="155" y="214" fill="rgba(255,255,255,0.3)" font-size="10" font-weight="600" id="label-L">[L]</text>
+        <defs>
+          <radialGradient id="gC"><stop offset="0%" stop-color="#ef4444" stop-opacity="0.7"/><stop offset="100%" stop-color="#ef4444" stop-opacity="0"/></radialGradient>
+          <radialGradient id="gP"><stop offset="0%" stop-color="#f59e0b" stop-opacity="0.6"/><stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/></radialGradient>
+          <radialGradient id="gN"><stop offset="0%" stop-color="#00d4ff" stop-opacity="0.6"/><stop offset="100%" stop-color="#00d4ff" stop-opacity="0"/></radialGradient>
+          <radialGradient id="gH"><stop offset="0%" stop-color="#9d4edd" stop-opacity="0.6"/><stop offset="100%" stop-color="#9d4edd" stop-opacity="0"/></radialGradient>
+          <radialGradient id="gO"><stop offset="0%" stop-color="#4ade80" stop-opacity="0.5"/><stop offset="100%" stop-color="#4ade80" stop-opacity="0"/></radialGradient>
+          <radialGradient id="gL"><stop offset="0%" stop-color="#ff6b9d" stop-opacity="0.5"/><stop offset="100%" stop-color="#ff6b9d" stop-opacity="0"/></radialGradient>
+        </defs>
+      </svg>
+      <div class="zone-legend">
+        <div class="zone-item" id="legend-H"><span class="zone-dot" style="background:#9d4edd"></span>Head <span class="zone-vrn">[H]</span></div>
+        <div class="zone-item" id="legend-N"><span class="zone-dot" style="background:#00d4ff"></span>Nasal / Mask <span class="zone-vrn">[N]</span></div>
+        <div class="zone-item" id="legend-O"><span class="zone-dot" style="background:#4ade80"></span>Oral <span class="zone-vrn">[O]</span></div>
+        <div class="zone-item" id="legend-P"><span class="zone-dot" style="background:#f59e0b"></span>Pharynx <span class="zone-vrn">[P]</span></div>
+        <div class="zone-item" id="legend-C"><span class="zone-dot" style="background:#ef4444"></span>Chest <span class="zone-vrn">[C]</span></div>
+        <div class="zone-item" id="legend-L"><span class="zone-dot" style="background:#ff6b9d"></span>Low Body <span class="zone-vrn">[L]</span></div>
+      </div>
+      <div class="passaggio-alert" id="passaggioAlert">
+        <div class="pa-label">Passaggio Zone</div>
+        <div class="pa-shift" id="passaggioShift"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>
+      &copy; 2002-2026 VoiceStry. All Rights Reserved. DMCA Protected.<br>
+      Home of the <a href="vrn-method.html">VRN Method</a> — Vocal Resonance Notation<br><br>
+      <a href="index.html">Home</a> |
+      <a href="vrn-method.html">VRN Method</a> |
+      <a href="learn.html">Learn</a> |
+      <a href="5-gears.html">5 Gears</a> |
+      <a href="vocal-gym.html">Vocal Gym</a> |
+      <a href="pitch-trainer.html">Pitch</a> |
+      <a href="sight-reading.html">Sight Reading</a> |
+      <a href="voice-lab.html">Voice Lab</a> |
+      <a href="voice-analyzer.html">Live Analyzer</a> |
+      <a href="press.html">Press</a><br><br>
+      Part of the <a href="https://aiunites.github.io/aiunites-site/">AIUNITES</a> network |
+      Created by <a href="https://aiunites.github.io/cosmostheopera-site/">COSMOS the OPERA</a>
+    </p>
+  </footer>
+
+<script>
+// ============================================================
+// VRN LIVE ANALYZER
+// ============================================================
+
+// --- Note Data ---
+const NOTE_NAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+function freqToMidi(f) { return 12 * Math.log2(f / 440) + 69; }
+function midiToFreq(m) { return 440 * Math.pow(2, (m - 69) / 12); }
+function midiToNote(m) { return NOTE_NAMES[Math.round(m) % 12] + (Math.floor(Math.round(m) / 12) - 1); }
+function freqToNote(f) { return midiToNote(freqToMidi(f)); }
+
+// --- Voice type register boundaries (MIDI note numbers) ---
+const VOICE_REGISTERS = {
+  bass:         { g1:[40,47], g2:[48,55], g3:[56,64] },
+  baritone:     { g1:[45,51], g2:[52,59], g3:[60,69] },
+  tenor:        { g1:[48,53], g2:[54,60], g3:[61,71], g4:[72,76] },
+  countertenor: { g1:[55,59], g2:[60,67], g3:[69,74], g4:[75,76] },
+  alto:         { g1:[53,59], g2:[60,65], g3:[67,74], g4:[75,77] },
+  mezzo:        { g1:[57,60], g2:[62,67], g3:[69,76], g4:[77,81] },
+  soprano:      { g1:[60,64], g2:[65,71], g3:[72,79], g4:[80,83], g5:[84,88] }
+};
+
+// --- VRN zone data per gear ---
+const GEAR_DATA = {
+  1: { name:'Chest / Low Body', zones:{C:3,L:2,P:1,O:0,N:0,H:0}, vrn:'[C+++, L++, P+]', color:'red',
+       desc:'Maximum chest wall vibration. Deep body resonance. You should feel a strong buzz in the sternum and ribs.' },
+  2: { name:'Upper Chest / Mix', zones:{C:2,L:0,P:2,O:1,N:0,H:1}, vrn:'[C++, P++, O+, H+]', color:'orange',
+       desc:'Chest still dominant but the pharynx opens wider. Head resonance begins entering. The blending zone.' },
+  3: { name:'Head Dominant', zones:{C:0,L:0,P:0,O:2,N:3,H:3}, vrn:'[H+++, N+++, O++]', color:'gold',
+       desc:'Full head voice. Maximum mask resonance \u2014 cheekbones, bridge of nose, sinuses buzzing. The operatic zone.' },
+  4: { name:'Light Head / Falsetto', zones:{C:0,L:0,P:0,O:1,N:1,H:3}, vrn:'[H+++, N+]', color:'cyan',
+       desc:'Thin-fold production. Ethereal, light. Only the edges of the vocal folds vibrate.' },
+  5: { name:'Whistle / Flageolet', zones:{C:0,L:0,P:0,O:0,N:0,H:3}, vrn:'[H+++]', color:'purple',
+       desc:'Pure whistle register. Vocal folds barely vibrate. Air whistles through a tiny opening.' }
+};
+
+// Countertenor overrides
+const CT_GEAR_DATA = {
+  1: { name:'Modal Chest', zones:{C:1,L:0,P:1,O:1,N:0,H:1}, vrn:'[C+, P+, H+]', color:'red',
+       desc:'Light modal chest with head resonance already blending in. Not the countertenor\'s home territory.' },
+  2: { name:'Reinforced Falsetto', zones:{C:0,L:0,P:1,O:2,N:2,H:2}, vrn:'[H++, N++, O++, P+]', color:'orange',
+       desc:'The countertenor\'s core voice. Falsetto reinforced with pharyngeal depth and nasal ring.' },
+  3: { name:'Full Head / Mask', zones:{C:0,L:0,P:0,O:2,N:3,H:3}, vrn:'[H+++, N+++, O++]', color:'gold',
+       desc:'Brilliant ringing head voice. Maximum mask resonance \u2014 the countertenor money zone.' },
+  4: { name:'Sopranist', zones:{C:0,L:0,P:0,O:1,N:1,H:3}, vrn:'[H+++, N+]', color:'cyan',
+       desc:'Ultra-light thin-fold production. Ethereal, crystalline, almost instrumental in purity.' }
+};
+
+// Spectral-adjusted VRN
+function getSpectralVRN(gear, centroid, harmonicRichness, voiceType) {
+  var base = (voiceType === 'countertenor') ? (CT_GEAR_DATA[gear] || GEAR_DATA[gear]) : GEAR_DATA[gear];
+  if (!base) base = GEAR_DATA[3];
+  var zones = {};
+  for (var k in base.zones) zones[k] = base.zones[k];
+
+  if (centroid > 2500) {
+    zones.N = Math.min(3, zones.N + 1);
+    zones.H = Math.min(3, zones.H + 1);
+  } else if (centroid < 800) {
+    zones.C = Math.min(3, zones.C + 1);
+    zones.L = Math.min(3, zones.L + 1);
+  }
+
+  if (harmonicRichness > 0.6 && gear <= 2) {
+    zones.P = Math.min(3, zones.P + 1);
+  } else if (harmonicRichness < 0.25 && gear >= 3) {
+    zones.C = 0; zones.L = 0;
+  }
+
+  var labels = {C:'C',L:'L',P:'P',O:'O',N:'N',H:'H'};
+  var plusMap = {0:'',1:'+',2:'++',3:'+++'};
+  var parts = [];
+  for (var key in zones) {
+    if (zones[key] > 0) parts.push(labels[key] + plusMap[zones[key]]);
+  }
+  var vrn = '[' + parts.join(', ') + ']';
+
+  return { name: base.name, desc: base.desc, color: base.color, zones: zones, vrn: vrn, gear: gear };
+}
+
+// --- Determine gear from MIDI note + voice type ---
+function getGear(midi, voiceType) {
+  var regs = VOICE_REGISTERS[voiceType];
+  if (!regs) return 2;
+  for (var g = 1; g <= 5; g++) {
+    var key = 'g' + g;
+    if (regs[key] && midi >= regs[key][0] && midi <= regs[key][1]) return g;
+  }
+  var gears = 0;
+  for (var gk in regs) gears++;
+  var lowest = regs.g1[0];
+  if (midi < lowest) return 1;
+  return gears;
+}
+
+// Auto-detect voice type from pitch
+function autoDetectVoice(midi) {
+  if (midi < 48) return 'bass';
+  if (midi < 55) return 'baritone';
+  if (midi < 62) return 'tenor';
+  if (midi < 68) return 'alto';
+  if (midi < 75) return 'mezzo';
+  return 'soprano';
+}
+
+// --- Audio Engine ---
+var audioCtx = null;
+var analyserNode = null;
+var micStream = null;
+var isListening = false;
+var rafId = null;
+var selectedVoice = 'auto';
+var lastNote = '';
+var noteHoldCount = 0;
+var historyNotes = [];
+
+var startBtn = document.getElementById('startBtn');
+var analyzerSection = document.getElementById('analyzerSection');
+
+// Voice picker
+document.getElementById('voicePicker').addEventListener('click', function(e) {
+  var btn = e.target.closest('.vp-btn');
+  if (!btn) return;
+  document.querySelectorAll('.vp-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  selectedVoice = btn.dataset.voice;
+});
+
+// Start/stop
+startBtn.addEventListener('click', async function() {
+  if (isListening) {
+    stopListening();
+    return;
+  }
+  try {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    micStream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } });
+    var source = audioCtx.createMediaStreamSource(micStream);
+    analyserNode = audioCtx.createAnalyser();
+    analyserNode.fftSize = 4096;
+    analyserNode.smoothingTimeConstant = 0.8;
+    source.connect(analyserNode);
+
+    isListening = true;
+    startBtn.textContent = '\u23F9 Stop Listening';
+    startBtn.classList.add('listening');
+    analyzerSection.style.display = 'grid';
+
+    var canvas = document.getElementById('waveformCanvas');
+    canvas.width = canvas.offsetWidth * 2;
+    canvas.height = 160;
+
+    processAudio();
+  } catch (e) {
+    alert('Could not access microphone. Please allow microphone access and try again.');
+  }
+});
+
+function stopListening() {
+  isListening = false;
+  if (micStream) micStream.getTracks().forEach(function(t) { t.stop(); });
+  if (rafId) cancelAnimationFrame(rafId);
+  if (audioCtx) audioCtx.close();
+  startBtn.textContent = '\uD83C\uDFA4 Start Listening';
+  startBtn.classList.remove('listening');
+}
+
+// --- Pitch Detection (Autocorrelation) ---
+function detectPitch(buf, sampleRate) {
+  var maxVal = 0;
+  for (var i = 0; i < buf.length; i++) {
+    if (Math.abs(buf[i]) > maxVal) maxVal = Math.abs(buf[i]);
+  }
+  if (maxVal < 0.015) return -1;
+
+  var norm = new Float32Array(buf.length);
+  for (var i = 0; i < buf.length; i++) norm[i] = buf[i] / maxVal;
+
+  var minPeriod = Math.floor(sampleRate / 1200);
+  var maxPeriod = Math.floor(sampleRate / 55);
+  var bestCorr = 0, bestPeriod = 0;
+
+  for (var p = minPeriod; p < maxPeriod && p < norm.length / 2; p++) {
+    var corr = 0;
+    for (var i = 0; i < norm.length / 2; i++) {
+      corr += norm[i] * norm[i + p];
+    }
+    if (corr > bestCorr) {
+      bestCorr = corr;
+      bestPeriod = p;
+    }
+  }
+
+  if (bestCorr < norm.length * 0.008) return -1;
+  return sampleRate / bestPeriod;
+}
+
+// --- Spectral Analysis ---
+function getSpectralCentroid(freqData, sampleRate, fftSize) {
+  var weightedSum = 0, sum = 0;
+  var binHz = sampleRate / fftSize;
+  for (var i = 1; i < freqData.length; i++) {
+    var mag = freqData[i];
+    var freq = i * binHz;
+    weightedSum += freq * mag;
+    sum += mag;
+  }
+  return sum > 0 ? weightedSum / sum : 0;
+}
+
+function getHarmonicRichness(freqData, fundamental, sampleRate, fftSize) {
+  if (fundamental <= 0) return 0;
+  var binHz = sampleRate / fftSize;
+  var fundBin = Math.round(fundamental / binHz);
+  var fundEnergy = 0, harmonicEnergy = 0;
+
+  for (var i = Math.max(0, fundBin - 2); i <= Math.min(freqData.length - 1, fundBin + 2); i++) {
+    fundEnergy += freqData[i] * freqData[i];
+  }
+  for (var h = 2; h <= 8; h++) {
+    var hBin = Math.round((fundamental * h) / binHz);
+    for (var i = Math.max(0, hBin - 2); i <= Math.min(freqData.length - 1, hBin + 2); i++) {
+      harmonicEnergy += freqData[i] * freqData[i];
+    }
+  }
+  var total = fundEnergy + harmonicEnergy;
+  return total > 0 ? harmonicEnergy / total : 0;
+}
+
+function getVolume(timeDomainData) {
+  var sum = 0;
+  for (var i = 0; i < timeDomainData.length; i++) {
+    sum += timeDomainData[i] * timeDomainData[i];
+  }
+  return Math.sqrt(sum / timeDomainData.length);
+}
+
+// --- Main Loop ---
+function processAudio() {
+  if (!isListening) return;
+  rafId = requestAnimationFrame(processAudio);
+
+  var bufLen = analyserNode.fftSize;
+  var timeBuf = new Float32Array(bufLen);
+  var freqBuf = new Uint8Array(analyserNode.frequencyBinCount);
+  analyserNode.getFloatTimeDomainData(timeBuf);
+  analyserNode.getByteFrequencyData(freqBuf);
+
+  var sampleRate = audioCtx.sampleRate;
+  var freq = detectPitch(timeBuf, sampleRate);
+  var volume = getVolume(timeBuf);
+  var centroid = getSpectralCentroid(freqBuf, sampleRate, bufLen);
+  var harmonics = freq > 0 ? getHarmonicRichness(freqBuf, freq, sampleRate, bufLen) : 0;
+
+  drawWaveform(freqBuf);
+
+  document.getElementById('statCentroid').textContent = centroid > 0 ? Math.round(centroid) + ' Hz' : '\u2014';
+  document.getElementById('statHarmonics').textContent = harmonics > 0 ? (harmonics * 100).toFixed(0) + '%' : '\u2014';
+  var volDb = volume > 0 ? Math.max(-60, 20 * Math.log10(volume)) : -60;
+  document.getElementById('statVolume').textContent = volume > 0.01 ? volDb.toFixed(0) + ' dB' : '\u2014';
+
+  if (freq > 0 && volume > 0.015) {
+    var midi = freqToMidi(freq);
+    var note = freqToNote(freq);
+    var nearestMidi = Math.round(midi);
+    var cents = Math.round((midi - nearestMidi) * 100);
+
+    document.getElementById('pitchNote').textContent = note;
+    document.getElementById('pitchHz').textContent = Math.round(freq) + ' Hz';
+
+    var centsEl = document.getElementById('pitchCents');
+    if (Math.abs(cents) <= 10) {
+      centsEl.textContent = 'In Tune';
+      centsEl.className = 'pitch-cents intune';
+    } else if (cents > 0) {
+      centsEl.textContent = '+' + cents + '\u00A2';
+      centsEl.className = 'pitch-cents sharp';
+    } else {
+      centsEl.textContent = cents + '\u00A2';
+      centsEl.className = 'pitch-cents flat';
+    }
+
+    var pct = 50 + (Math.max(-50, Math.min(50, cents)) / 50) * 45;
+    document.getElementById('pitchNeedle').style.left = pct + '%';
+
+    var voiceType = selectedVoice === 'auto' ? autoDetectVoice(midi) : selectedVoice;
+    var gear = getGear(nearestMidi, voiceType);
+    var vrnData = getSpectralVRN(gear, centroid, harmonics, voiceType);
+
+    updateVRNDisplay(vrnData, note, voiceType);
+    updateBody(vrnData.zones);
+
+    if (note !== lastNote) {
+      noteHoldCount = 0;
+      lastNote = note;
+    }
+    noteHoldCount++;
+    if (noteHoldCount === 8) {
+      addHistory(note, gear);
+    }
+
+    checkPassaggio(nearestMidi, voiceType);
+  } else {
+    if (volume < 0.008) {
+      document.getElementById('pitchNote').textContent = '\u2014';
+      document.getElementById('pitchHz').textContent = '';
+      document.getElementById('pitchCents').textContent = '';
+      document.getElementById('pitchNeedle').style.left = '50%';
+      dimBody();
+    }
+  }
+}
+
+// --- Drawing ---
+function drawWaveform(freqData) {
+  var canvas = document.getElementById('waveformCanvas');
+  var ctx = canvas.getContext('2d');
+  var w = canvas.width;
+  var h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  var barCount = 100;
+  var barW = w / barCount;
+  var step = Math.floor(freqData.length * 0.4 / barCount);
+
+  for (var i = 0; i < barCount; i++) {
+    var val = freqData[i * step] / 255;
+    var barH = val * h * 0.85;
+    var hue = (i / barCount) * 200;
+
+    ctx.fillStyle = 'hsla(' + hue + ', 75%, ' + (35 + val * 30) + '%, ' + (0.5 + val * 0.5) + ')';
+    ctx.fillRect(i * barW, h - barH, barW - 1, barH);
+
+    ctx.fillStyle = 'hsla(' + hue + ', 75%, ' + (35 + val * 30) + '%, ' + (0.15 + val * 0.15) + ')';
+    ctx.fillRect(i * barW, 0, barW - 1, barH * 0.3);
+  }
+}
+
+// --- VRN Display ---
+function updateVRNDisplay(data, note, voiceType) {
+  var voiceLabels = {bass:'Bass',baritone:'Baritone',tenor:'Tenor',countertenor:'Countertenor',alto:'Alto',mezzo:'Mezzo-Soprano',soprano:'Soprano'};
+
+  document.getElementById('vrnPanel').classList.add('active');
+  document.getElementById('vrnContent').innerHTML =
+    '<div class="vrn-row">' +
+      '<div class="gear-badge gear-' + data.gear + '-bg">' + data.gear + '</div>' +
+      '<div class="gear-info">' +
+        '<div class="gear-name">' + data.name + '</div>' +
+        '<div class="gear-range">Gear ' + data.gear + ' \u2014 ' + (voiceLabels[voiceType] || voiceType) + '</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="vrn-notation">' + data.vrn + '</div>' +
+    '<div class="vrn-desc">' + data.desc + '</div>';
+}
+
+// --- Body Diagram ---
+function updateBody(zones) {
+  var zoneKeys = ['H','N','O','P','C','L'];
+  zoneKeys.forEach(function(z) {
+    var el = document.getElementById('zone-' + z);
+    var label = document.getElementById('label-' + z);
+    var legend = document.getElementById('legend-' + z);
+    var level = zones[z] || 0;
+
+    if (level > 0) {
+      el.classList.add('active');
+      el.style.opacity = 0.2 + (level * 0.25);
+      label.setAttribute('fill', 'rgba(255,255,255,0.9)');
+      legend.classList.add('active');
+      legend.querySelector('.zone-dot').classList.add('active');
+    } else {
+      el.classList.remove('active');
+      el.style.opacity = 0.04;
+      label.setAttribute('fill', 'rgba(255,255,255,0.15)');
+      legend.classList.remove('active');
+      legend.querySelector('.zone-dot').classList.remove('active');
+    }
+  });
+}
+
+function dimBody() {
+  ['H','N','O','P','C','L'].forEach(function(z) {
+    var el = document.getElementById('zone-' + z);
+    el.classList.remove('active');
+    el.style.opacity = 0.06;
+    document.getElementById('label-' + z).setAttribute('fill', 'rgba(255,255,255,0.2)');
+    document.getElementById('legend-' + z).classList.remove('active');
+    document.getElementById('legend-' + z).querySelector('.zone-dot').classList.remove('active');
+  });
+}
+
+// --- History ---
+function addHistory(note, gear) {
+  if (historyNotes.length > 0 && historyNotes[historyNotes.length - 1].note === note) return;
+
+  historyNotes.push({ note: note, gear: gear });
+  if (historyNotes.length > 30) historyNotes.shift();
+
+  var strip = document.getElementById('historyStrip');
+  strip.innerHTML = historyNotes.map(function(h) {
+    return '<div class="history-item gear-' + h.gear + '">' +
+      '<div class="hi-note">' + h.note + '</div>' +
+      '<div class="hi-gear">G' + h.gear + '</div>' +
+    '</div>';
+  }).join('');
+  strip.scrollLeft = strip.scrollWidth;
+}
+
+// --- Passaggio Detection ---
+var PASSAGGIO_ZONES = {
+  bass:         [{midi:48,shift:'1\u21922',vrn:'[C+++]\u2192[C++, H+]'},{midi:57,shift:'2\u21923',vrn:'[C++, P++]\u2192[H++, O++]'}],
+  baritone:     [{midi:52,shift:'1\u21922',vrn:'[C+++]\u2192[C++, H+]'},{midi:60,shift:'2\u21923',vrn:'[C++, P++]\u2192[H+++, N++]'}],
+  tenor:        [{midi:55,shift:'1\u21922',vrn:'[C+++]\u2192[C++, H+]'},{midi:64,shift:'2\u21923',vrn:'[C++, O++]\u2192[H+++, N+++]'},{midi:72,shift:'3\u21924',vrn:'[H+++]\u2192[H+++, N+]'}],
+  countertenor: [{midi:60,shift:'1\u21922',vrn:'[C+, H+]\u2192[H++, N++]'},{midi:69,shift:'2\u21923',vrn:'[H++, N++]\u2192[H+++, N+++]'},{midi:76,shift:'3\u21924',vrn:'[H+++]\u2192[H+++, N+]'}],
+  alto:         [{midi:60,shift:'1\u21922',vrn:'[C+++]\u2192[C++, H++]'},{midi:67,shift:'2\u21923',vrn:'[C++, H++]\u2192[H+++, N++]'}],
+  mezzo:        [{midi:62,shift:'1\u21922',vrn:'[C++]\u2192[C+, H++]'},{midi:69,shift:'2\u21923',vrn:'[C+, H++]\u2192[H+++, N+++]'}],
+  soprano:      [{midi:65,shift:'1\u21922',vrn:'[C++]\u2192[C+, H++]'},{midi:72,shift:'2\u21923',vrn:'[C+, H++]\u2192[H+++, N+++]'},{midi:81,shift:'3\u21924',vrn:'[H+++, N+++]\u2192[H+++, N++]'}]
+};
+
+var passaggioTimeout = null;
+function checkPassaggio(midi, voiceType) {
+  var zones = PASSAGGIO_ZONES[voiceType] || [];
+  var hit = null;
+  for (var i = 0; i < zones.length; i++) {
+    if (Math.abs(midi - zones[i].midi) <= 1) { hit = zones[i]; break; }
+  }
+  var alertEl = document.getElementById('passaggioAlert');
+
+  if (hit) {
+    alertEl.classList.add('show');
+    document.getElementById('passaggioShift').textContent = 'Shift ' + hit.shift + ': ' + hit.vrn;
+    clearTimeout(passaggioTimeout);
+    passaggioTimeout = setTimeout(function() { alertEl.classList.remove('show'); }, 2000);
+  }
+}
+
+// Init
+dimBody();
+</script>
+</body>
+</html>
