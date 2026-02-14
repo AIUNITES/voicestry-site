@@ -124,6 +124,17 @@
     .zone-vrn{font-family:'Courier New',monospace;font-weight:700;margin-left:auto;font-size:0.7rem;color:var(--accent-gold);opacity:0;transition:opacity 0.2s}
     .zone-item.active .zone-vrn{opacity:1}
 
+    /* Voice Confidence Indicator */
+    .voice-conf{display:flex;align-items:center;gap:10px;margin-top:12px;padding:10px 14px;background:rgba(255,255,255,0.02);border-radius:10px}
+    .voice-conf-label{font-size:0.7rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;min-width:52px}
+    .voice-conf-track{flex:1;height:5px;background:rgba(255,255,255,0.06);border-radius:5px;overflow:hidden}
+    .voice-conf-fill{height:100%;border-radius:5px;transition:width 0.15s,background 0.3s}
+    .voice-conf-status{font-size:0.72rem;font-weight:700;font-family:'Courier New',monospace;min-width:70px;text-align:right;transition:color 0.3s}
+    .voice-conf-status.noise{color:var(--accent-red)}
+    .voice-conf-status.maybe{color:var(--accent-orange)}
+    .voice-conf-status.voice{color:var(--accent-green)}
+    .voice-conf-status.singing{color:var(--accent-cyan)}
+
     /* Style Detection Panel */
     .style-panel{background:var(--bg-panel);border-radius:18px;padding:22px;border:1px solid rgba(255,255,255,0.05);transition:border-color 0.3s}
     .style-panel.active{border-color:rgba(157,78,221,0.2)}
@@ -201,6 +212,11 @@
         <div class="pitch-bar-wrap">
           <div class="pitch-bar-center"></div>
           <div class="pitch-bar-needle" id="pitchNeedle" style="left:50%"></div>
+        </div>
+        <div class="voice-conf">
+          <div class="voice-conf-label">Signal</div>
+          <div class="voice-conf-track"><div class="voice-conf-fill" id="voiceConfFill" style="width:0%;background:var(--accent-red)"></div></div>
+          <div class="voice-conf-status noise" id="voiceConfStatus">Silence</div>
         </div>
       </div>
 
@@ -561,6 +577,164 @@ function getVolume(timeDomainData) {
   return Math.sqrt(sum / timeDomainData.length);
 }
 
+// --- Voice Isolation Engine ---
+// Determines if the detected sound is actually a human voice vs background noise
+
+function getSpectralFlatness(freqData) {
+  // Spectral flatness: geometric mean / arithmetic mean of magnitudes
+  // Noise is flat (~1.0), voice/tonal sounds are peaky (~0.0)
+  var logSum = 0;
+  var linSum = 0;
+  var count = 0;
+  for (var i = 2; i < Math.min(freqData.length, 300); i++) {
+    var val = Math.max(freqData[i], 0.001);
+    logSum += Math.log(val);
+    linSum += val;
+    count++;
+  }
+  if (count === 0 || linSum === 0) return 1;
+  var geoMean = Math.exp(logSum / count);
+  var ariMean = linSum / count;
+  return geoMean / ariMean;
+}
+
+function getHarmonicToNoiseRatio(freqData, fundamental, sampleRate, fftSize) {
+  // Measures how much energy is in harmonic peaks vs the noise floor
+  if (fundamental <= 0) return 0;
+  var binHz = sampleRate / fftSize;
+  var harmonicEnergy = 0;
+  var totalEnergy = 0;
+
+  // Sum total energy in voice range (80Hz - 5000Hz)
+  var lowBin = Math.max(1, Math.floor(80 / binHz));
+  var highBin = Math.min(freqData.length - 1, Math.floor(5000 / binHz));
+  for (var i = lowBin; i <= highBin; i++) {
+    totalEnergy += freqData[i] * freqData[i];
+  }
+
+  // Sum energy near harmonic peaks (fundamental + overtones)
+  for (var h = 1; h <= 10; h++) {
+    var hBin = Math.round((fundamental * h) / binHz);
+    if (hBin >= freqData.length) break;
+    for (var j = Math.max(0, hBin - 2); j <= Math.min(freqData.length - 1, hBin + 2); j++) {
+      harmonicEnergy += freqData[j] * freqData[j];
+    }
+  }
+
+  if (totalEnergy === 0) return 0;
+  return harmonicEnergy / totalEnergy;
+}
+
+function getPitchStability(history, count) {
+  // How stable is the pitch over recent frames? Voice holds notes, noise jitters.
+  if (count < 4) return 0;
+  var recent = history.slice(-Math.min(count, 12));
+  if (recent.length < 3) return 0;
+  var mean = 0;
+  for (var i = 0; i < recent.length; i++) mean += recent[i];
+  mean /= recent.length;
+  if (mean === 0) return 0;
+  // Compute coefficient of variation in cents
+  var sumSq = 0;
+  for (var i = 0; i < recent.length; i++) {
+    var cents = 1200 * Math.log2(recent[i] / mean);
+    sumSq += cents * cents;
+  }
+  var rms = Math.sqrt(sumSq / recent.length);
+  // Low RMS = stable pitch = likely voice. <50 cents = very stable, >200 = noise
+  return Math.max(0, Math.min(1, 1 - (rms / 200)));
+}
+
+function isInVoiceRange(freq) {
+  // Human singing range ~65Hz (C2) to ~1400Hz (F6 whistle)
+  return freq >= 65 && freq <= 1400;
+}
+
+// Composite voice confidence score (0-100)
+function getVoiceConfidence(freq, freqData, timeBuf, sampleRate, fftSize, pitchHist, holdCount) {
+  var score = 0;
+  var checks = {};
+
+  // 1. Volume gate (is anything happening?)
+  var rms = 0;
+  for (var i = 0; i < timeBuf.length; i++) rms += timeBuf[i] * timeBuf[i];
+  rms = Math.sqrt(rms / timeBuf.length);
+  if (rms < 0.008) return { score: 0, label: 'Silence', checks: {} };
+
+  // 2. Pitch detected and in voice range?
+  if (freq > 0 && isInVoiceRange(freq)) {
+    score += 25;
+    checks.pitch = true;
+  } else {
+    checks.pitch = false;
+  }
+
+  // 3. Spectral flatness (voice = peaky, noise = flat)
+  var flatness = getSpectralFlatness(freqData);
+  checks.flatness = flatness;
+  if (flatness < 0.3) score += 25;       // very tonal
+  else if (flatness < 0.5) score += 15;  // somewhat tonal
+  else if (flatness < 0.7) score += 5;   // ambiguous
+  // >0.7 = likely noise, no points
+
+  // 4. Harmonic-to-noise ratio
+  var hnr = freq > 0 ? getHarmonicToNoiseRatio(freqData, freq, sampleRate, fftSize) : 0;
+  checks.hnr = hnr;
+  if (hnr > 0.5) score += 25;       // strong harmonics
+  else if (hnr > 0.3) score += 15;  // decent harmonics
+  else if (hnr > 0.15) score += 5;  // weak harmonics
+
+  // 5. Pitch stability
+  var stability = getPitchStability(pitchHist, holdCount);
+  checks.stability = stability;
+  if (stability > 0.7) score += 25;      // rock-solid pitch
+  else if (stability > 0.4) score += 15; // reasonably stable
+  else if (stability > 0.2) score += 5;  // wobbly
+
+  // Classify
+  var label;
+  if (score >= 75) label = 'Singing';
+  else if (score >= 50) label = 'Voice';
+  else if (score >= 25) label = 'Maybe';
+  else label = 'Noise';
+
+  return { score: score, label: label, checks: checks };
+}
+
+function updateVoiceConfUI(conf) {
+  var fill = document.getElementById('voiceConfFill');
+  var status = document.getElementById('voiceConfStatus');
+  var pct = Math.min(100, conf.score);
+
+  fill.style.width = pct + '%';
+
+  if (conf.label === 'Singing') {
+    fill.style.background = 'var(--accent-cyan)';
+    status.className = 'voice-conf-status singing';
+    status.textContent = '\u266B Singing';
+  } else if (conf.label === 'Voice') {
+    fill.style.background = 'var(--accent-green)';
+    status.className = 'voice-conf-status voice';
+    status.textContent = '\u2713 Voice';
+  } else if (conf.label === 'Maybe') {
+    fill.style.background = 'var(--accent-orange)';
+    status.className = 'voice-conf-status maybe';
+    status.textContent = '? Uncertain';
+  } else if (conf.label === 'Noise') {
+    fill.style.background = 'var(--accent-red)';
+    status.className = 'voice-conf-status noise';
+    status.textContent = '\u2718 Noise';
+  } else {
+    fill.style.width = '0%';
+    status.className = 'voice-conf-status noise';
+    status.textContent = 'Silence';
+  }
+}
+
+// Track recent raw frequencies for stability check (separate from pitchHistory)
+var rawFreqHistory = [];
+var rawFreqCount = 0;
+
 // --- Main Loop ---
 function processAudio() {
   if (!isListening) return;
@@ -585,7 +759,24 @@ function processAudio() {
   var volDb = volume > 0 ? Math.max(-60, 20 * Math.log10(volume)) : -60;
   document.getElementById('statVolume').textContent = volume > 0.01 ? volDb.toFixed(0) + ' dB' : '\u2014';
 
-  if (freq > 0 && volume > 0.015) {
+  // Track raw freq for stability measurement
+  if (freq > 0) {
+    rawFreqHistory.push(freq);
+    rawFreqCount++;
+    if (rawFreqHistory.length > 20) rawFreqHistory.shift();
+  } else {
+    rawFreqCount = 0;
+    rawFreqHistory = [];
+  }
+
+  // Voice confidence check — gates all analysis
+  var voiceConf = getVoiceConfidence(freq, freqBuf, timeBuf, sampleRate, bufLen, rawFreqHistory, rawFreqCount);
+  updateVoiceConfUI(voiceConf);
+
+  // Only process as voice if confidence >= 50 ("Voice" or "Singing")
+  var isVoice = voiceConf.score >= 50;
+
+  if (freq > 0 && volume > 0.015 && isVoice) {
     var midi = freqToMidi(freq);
     var note = freqToNote(freq);
     var nearestMidi = Math.round(midi);
@@ -640,7 +831,18 @@ function processAudio() {
       document.getElementById('pitchCents').textContent = '';
       document.getElementById('pitchNeedle').style.left = '50%';
       dimBody();
+      updateVoiceConfUI({ score: 0, label: 'Silence', checks: {} });
+    } else if (!isVoice && freq > 0) {
+      // Sound detected but not voice — show note dimmed but don't process
+      document.getElementById('pitchNote').textContent = freqToNote(freq);
+      document.getElementById('pitchNote').style.opacity = '0.3';
+      document.getElementById('pitchHz').textContent = Math.round(freq) + ' Hz';
     }
+  }
+
+  // Restore pitch opacity when voice is confirmed
+  if (isVoice && freq > 0) {
+    document.getElementById('pitchNote').style.opacity = '1';
   }
 }
 
