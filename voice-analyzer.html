@@ -124,6 +124,24 @@
     .zone-vrn{font-family:'Courier New',monospace;font-weight:700;margin-left:auto;font-size:0.7rem;color:var(--accent-gold);opacity:0;transition:opacity 0.2s}
     .zone-item.active .zone-vrn{opacity:1}
 
+    /* Style Detection Panel */
+    .style-panel{background:var(--bg-panel);border-radius:18px;padding:22px;border:1px solid rgba(255,255,255,0.05);transition:border-color 0.3s}
+    .style-panel.active{border-color:rgba(157,78,221,0.2)}
+    .style-panel-label{font-size:0.75rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
+    .style-detected{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+    .style-icon{font-size:2.2rem;width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:rgba(157,78,221,0.12);flex-shrink:0}
+    .style-name{font-size:1.4rem;font-weight:900;color:var(--accent-purple);transition:color 0.3s}
+    .style-confidence{font-size:0.8rem;color:var(--text-secondary)}
+    .style-bars{display:flex;flex-direction:column;gap:8px}
+    .style-bar-row{display:flex;align-items:center;gap:10px}
+    .style-bar-label{font-size:0.75rem;color:var(--text-secondary);min-width:90px;text-align:right}
+    .style-bar-track{flex:1;height:6px;background:rgba(255,255,255,0.06);border-radius:6px;overflow:hidden;position:relative}
+    .style-bar-fill{height:100%;border-radius:6px;transition:width 0.3s ease,background 0.3s}
+    .style-bar-pct{font-size:0.7rem;font-family:'Courier New',monospace;color:var(--text-secondary);min-width:32px}
+    .style-desc{margin-top:14px;font-size:0.85rem;color:var(--text-secondary);line-height:1.6;padding:12px 14px;background:rgba(255,255,255,0.02);border-radius:10px}
+    .style-traits{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+    .style-trait{padding:4px 10px;border-radius:8px;font-size:0.72rem;font-weight:700;background:rgba(157,78,221,0.1);color:var(--accent-purple);border:1px solid rgba(157,78,221,0.15)}
+
     /* Idle state */
     .idle-state{text-align:center;padding:40px 20px;color:var(--text-secondary)}
     .idle-state .idle-icon{font-size:3rem;margin-bottom:15px;opacity:0.4}
@@ -212,6 +230,16 @@
           <div class="idle-state">
             <div class="idle-icon">🎤</div>
             <p>Start singing and your VRN will appear here...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Style Detection -->
+      <div class="style-panel" id="stylePanel">
+        <div class="style-panel-label">Vocal Style Detection</div>
+        <div id="styleContent">
+          <div class="idle-state" style="padding:20px 10px">
+            <p style="font-size:0.85rem">Style analysis will appear as you sing...</p>
           </div>
         </div>
       </div>
@@ -407,6 +435,11 @@ var lastNote = '';
 var noteHoldCount = 0;
 var historyNotes = [];
 
+// Vibrato & style detection state
+var pitchHistory = [];
+var styleSmoothing = {operatic:0,musical_theatre:0,pop_belt:0,jazz:0,folk:0,rnb:0,rock:0,classical_light:0};
+var styleFrameCount = 0;
+
 var startBtn = document.getElementById('startBtn');
 var analyzerSection = document.getElementById('analyzerSection');
 
@@ -593,6 +626,13 @@ function processAudio() {
     }
 
     checkPassaggio(nearestMidi, voiceType);
+
+    // Style detection
+    pitchHistory.push(freq);
+    if (pitchHistory.length > 120) pitchHistory.shift();
+    if (pitchHistory.length >= 30) {
+      detectAndDisplayStyle(centroid, harmonics, volume, gear, voiceType);
+    }
   } else {
     if (volume < 0.008) {
       document.getElementById('pitchNote').textContent = '\u2014';
@@ -725,6 +765,265 @@ function checkPassaggio(midi, voiceType) {
     clearTimeout(passaggioTimeout);
     passaggioTimeout = setTimeout(function() { alertEl.classList.remove('show'); }, 2000);
   }
+}
+
+// ============================================================
+// VOCAL STYLE DETECTION ENGINE
+// ============================================================
+
+var VOCAL_STYLES = {
+  operatic: {
+    name: 'Operatic', icon: '🎭', color: '#ffd700',
+    desc: 'Classical operatic production. Rich vibrato, full resonance engagement, strong formant tuning. The voice is projected acoustically with maximum head and mask resonance.',
+    traits: ['Wide vibrato', 'High harmonics', 'Head-dominant', 'Full resonance', 'Projected tone']
+  },
+  musical_theatre: {
+    name: 'Musical Theatre', icon: '🎬', color: '#ff6b9d',
+    desc: 'Broadway-style belt and mix. Forward placement with bright, speech-like clarity. Moderate vibrato, strong chest-mix coordination. Designed to carry over a pit orchestra.',
+    traits: ['Forward mix', 'Bright tone', 'Belt quality', 'Speech-like', 'Moderate vibrato']
+  },
+  pop_belt: {
+    name: 'Pop / Belt', icon: '🌟', color: '#00d4ff',
+    desc: 'Contemporary pop production. Chest-dominant mix with controlled, minimal vibrato. Bright and direct with speech-quality vowels. Designed for microphone amplification.',
+    traits: ['Chest-heavy', 'Minimal vibrato', 'Direct tone', 'Bright mix', 'Mic-optimized']
+  },
+  jazz: {
+    name: 'Jazz', icon: '🎷', color: '#9d4edd',
+    desc: 'Warm, intimate jazz phrasing. Relaxed pharyngeal resonance with breathy flexibility. Smooth dynamic control, subtle pitch bending, and gentle delayed vibrato.',
+    traits: ['Warm tone', 'Breathy quality', 'Subtle vibrato', 'Relaxed throat', 'Dynamic control']
+  },
+  folk: {
+    name: 'Folk / Country', icon: '🎶', color: '#4ade80',
+    desc: 'Natural, speech-based singing. Straight tone with chest-dominant production. Minimal resonance manipulation \u2014 the voice sounds close to how you speak, just sustained and pitched.',
+    traits: ['Straight tone', 'Speech-like', 'Chest voice', 'Natural placement', 'Minimal vibrato']
+  },
+  rnb: {
+    name: 'R&B / Soul', icon: '💜', color: '#f59e0b',
+    desc: 'Rich chest-mix with melismatic agility. Warm pharyngeal depth combined with forward brightness. Characteristic runs, ad-libs, and dynamic swells. Gospel-influenced resonance.',
+    traits: ['Rich chest-mix', 'Melismatic', 'Warm depth', 'Dynamic swells', 'Pharyngeal warmth']
+  },
+  rock: {
+    name: 'Rock', icon: '🤘', color: '#ef4444',
+    desc: 'Pushed chest-dominant production with compressed dynamics. High-energy vocal fold engagement, bright and edgy overtones. Designed for maximum impact and raw emotional power.',
+    traits: ['Pushed chest', 'Compressed', 'Edgy tone', 'High energy', 'Raw power']
+  },
+  classical_light: {
+    name: 'Art Song / Lieder', icon: '🌹', color: '#e879f9',
+    desc: 'Refined classical singing with balanced resonance. Moderate vibrato, elegant phrasing, even registration. Less dramatic than opera but still uses trained resonance placement.',
+    traits: ['Balanced resonance', 'Elegant phrasing', 'Moderate vibrato', 'Even registers', 'Refined tone']
+  }
+};
+
+// Analyze vibrato from pitch history
+function analyzeVibrato(history) {
+  if (history.length < 20) return { rate: 0, depth: 0, regularity: 0 };
+
+  // Use last 60 samples (~1 second at 60fps)
+  var recent = history.slice(-60);
+  var mean = 0;
+  for (var i = 0; i < recent.length; i++) mean += recent[i];
+  mean /= recent.length;
+
+  // Convert to cents deviation from mean
+  var cents = [];
+  for (var i = 0; i < recent.length; i++) {
+    cents.push(1200 * Math.log2(recent[i] / mean));
+  }
+
+  // Find zero crossings to estimate rate
+  var crossings = 0;
+  for (var i = 1; i < cents.length; i++) {
+    if ((cents[i] >= 0 && cents[i-1] < 0) || (cents[i] < 0 && cents[i-1] >= 0)) crossings++;
+  }
+  var durationSec = recent.length / 60; // ~60fps
+  var rate = (crossings / 2) / durationSec; // full cycles per second
+
+  // Depth: RMS of cents deviation
+  var sumSq = 0;
+  for (var i = 0; i < cents.length; i++) sumSq += cents[i] * cents[i];
+  var depth = Math.sqrt(sumSq / cents.length);
+
+  // Regularity: how consistent the oscillation is (low variance in peak spacing)
+  var peaks = [];
+  for (var i = 1; i < cents.length - 1; i++) {
+    if (cents[i] > cents[i-1] && cents[i] > cents[i+1] && cents[i] > 5) peaks.push(i);
+  }
+  var regularity = 0;
+  if (peaks.length >= 3) {
+    var spacings = [];
+    for (var i = 1; i < peaks.length; i++) spacings.push(peaks[i] - peaks[i-1]);
+    var avgSpacing = 0;
+    for (var i = 0; i < spacings.length; i++) avgSpacing += spacings[i];
+    avgSpacing /= spacings.length;
+    var variance = 0;
+    for (var i = 0; i < spacings.length; i++) variance += Math.pow(spacings[i] - avgSpacing, 2);
+    variance /= spacings.length;
+    regularity = Math.max(0, 1 - (Math.sqrt(variance) / avgSpacing));
+  }
+
+  return { rate: rate, depth: depth, regularity: regularity };
+}
+
+// Score each style based on spectral features
+function scoreStyles(centroid, harmonics, volume, gear, vibrato) {
+  var scores = {};
+  var vRate = vibrato.rate;
+  var vDepth = vibrato.depth;
+  var vReg = vibrato.regularity;
+
+  // Operatic: wide regular vibrato (5-7Hz), high harmonics, head-dominant (gear 3+), high centroid
+  scores.operatic = 0;
+  if (vRate >= 4.5 && vRate <= 7.5) scores.operatic += 30;
+  else if (vRate >= 3 && vRate <= 9) scores.operatic += 15;
+  if (vDepth > 30) scores.operatic += 25;
+  else if (vDepth > 15) scores.operatic += 12;
+  if (vReg > 0.6) scores.operatic += 15;
+  if (harmonics > 0.5) scores.operatic += 15;
+  if (gear >= 3) scores.operatic += 10;
+  if (centroid > 2000) scores.operatic += 5;
+
+  // Musical Theatre: moderate vibrato, bright centroid, gear 2-3 (belt/mix), moderate harmonics
+  scores.musical_theatre = 0;
+  if (vRate >= 4 && vRate <= 6.5) scores.musical_theatre += 20;
+  if (vDepth >= 10 && vDepth <= 35) scores.musical_theatre += 20;
+  if (centroid > 1800) scores.musical_theatre += 15;
+  if (gear === 2 || gear === 3) scores.musical_theatre += 20;
+  if (harmonics >= 0.3 && harmonics <= 0.6) scores.musical_theatre += 15;
+  if (vReg > 0.4) scores.musical_theatre += 10;
+
+  // Pop/Belt: minimal vibrato, chest-dominant (gear 1-2), bright, moderate harmonics
+  scores.pop_belt = 0;
+  if (vDepth < 15) scores.pop_belt += 25;
+  if (vRate < 3 || vDepth < 8) scores.pop_belt += 20;
+  if (gear <= 2) scores.pop_belt += 20;
+  if (centroid > 1500 && centroid < 3000) scores.pop_belt += 15;
+  if (harmonics >= 0.25 && harmonics <= 0.55) scores.pop_belt += 10;
+  if (vReg < 0.3) scores.pop_belt += 10;
+
+  // Jazz: gentle delayed vibrato, warm (lower centroid), relaxed, moderate harmonics
+  scores.jazz = 0;
+  if (vRate >= 3 && vRate <= 5.5) scores.jazz += 15;
+  if (vDepth >= 8 && vDepth <= 25) scores.jazz += 20;
+  if (centroid < 2000) scores.jazz += 20;
+  if (centroid >= 800 && centroid <= 1800) scores.jazz += 10;
+  if (harmonics >= 0.2 && harmonics <= 0.5) scores.jazz += 15;
+  if (gear >= 2 && gear <= 3) scores.jazz += 10;
+  if (vReg >= 0.3 && vReg <= 0.7) scores.jazz += 10;
+
+  // Folk: straight tone (no vibrato), chest voice, low centroid, speech-like
+  scores.folk = 0;
+  if (vDepth < 10) scores.folk += 30;
+  if (vRate < 2.5) scores.folk += 20;
+  if (gear <= 2) scores.folk += 20;
+  if (centroid < 1800) scores.folk += 15;
+  if (harmonics < 0.35) scores.folk += 15;
+
+  // R&B: warm, chest-mix, moderate-rich harmonics, some vibrato, pharyngeal
+  scores.rnb = 0;
+  if (vRate >= 3.5 && vRate <= 6) scores.rnb += 15;
+  if (vDepth >= 10 && vDepth <= 30) scores.rnb += 15;
+  if (harmonics >= 0.35 && harmonics <= 0.65) scores.rnb += 20;
+  if (centroid >= 1200 && centroid <= 2200) scores.rnb += 15;
+  if (gear >= 1 && gear <= 3) scores.rnb += 15;
+  if (vReg >= 0.3 && vReg <= 0.65) scores.rnb += 10;
+  // Bonus for warmth + richness combo
+  if (centroid < 2000 && harmonics > 0.4) scores.rnb += 10;
+
+  // Rock: pushed chest, high volume, compressed harmonics, minimal vibrato, edgy
+  scores.rock = 0;
+  if (vDepth < 12) scores.rock += 20;
+  if (gear <= 2) scores.rock += 20;
+  if (harmonics > 0.45) scores.rock += 15;
+  if (centroid > 2200) scores.rock += 15;
+  var volDb = volume > 0 ? 20 * Math.log10(volume) : -60;
+  if (volDb > -15) scores.rock += 15;
+  if (vRate < 3) scores.rock += 15;
+
+  // Art Song: balanced vibrato, moderate everything, even registration
+  scores.classical_light = 0;
+  if (vRate >= 4 && vRate <= 6.5) scores.classical_light += 20;
+  if (vDepth >= 12 && vDepth <= 30) scores.classical_light += 20;
+  if (vReg > 0.5) scores.classical_light += 15;
+  if (harmonics >= 0.3 && harmonics <= 0.55) scores.classical_light += 15;
+  if (centroid >= 1200 && centroid <= 2500) scores.classical_light += 15;
+  if (gear >= 2 && gear <= 3) scores.classical_light += 15;
+
+  // Normalize to percentages
+  var maxScore = 0;
+  for (var k in scores) { if (scores[k] > maxScore) maxScore = scores[k]; }
+  if (maxScore > 0) {
+    for (var k in scores) scores[k] = Math.round((scores[k] / maxScore) * 100);
+  }
+
+  return scores;
+}
+
+function detectAndDisplayStyle(centroid, harmonics, volume, gear, voiceType) {
+  styleFrameCount++;
+  if (styleFrameCount % 6 !== 0) return; // Update ~10x/sec
+
+  var vibrato = analyzeVibrato(pitchHistory);
+  var raw = scoreStyles(centroid, harmonics, volume, gear, vibrato);
+
+  // Smooth with exponential moving average
+  var alpha = 0.15;
+  for (var k in raw) {
+    if (styleSmoothing[k] !== undefined) {
+      styleSmoothing[k] = styleSmoothing[k] * (1 - alpha) + raw[k] * alpha;
+    }
+  }
+
+  // Sort by smoothed score
+  var sorted = [];
+  for (var k in styleSmoothing) sorted.push({ key: k, score: styleSmoothing[k] });
+  sorted.sort(function(a, b) { return b.score - a.score; });
+
+  var top = sorted[0];
+  var style = VOCAL_STYLES[top.key];
+  if (!style) return;
+
+  document.getElementById('stylePanel').classList.add('active');
+
+  // Build bars HTML (top 5)
+  var barsHtml = '';
+  var showCount = Math.min(5, sorted.length);
+  for (var i = 0; i < showCount; i++) {
+    var s = sorted[i];
+    var st = VOCAL_STYLES[s.key];
+    if (!st) continue;
+    var pct = Math.round(s.score);
+    var isTop = (i === 0);
+    barsHtml += '<div class="style-bar-row">' +
+      '<div class="style-bar-label"' + (isTop ? ' style="color:' + st.color + ';font-weight:700"' : '') + '>' + st.name + '</div>' +
+      '<div class="style-bar-track"><div class="style-bar-fill" style="width:' + pct + '%;background:' + st.color + (isTop ? '' : ';opacity:0.5') + '"></div></div>' +
+      '<div class="style-bar-pct"' + (isTop ? ' style="color:' + st.color + '"' : '') + '>' + pct + '%</div>' +
+    '</div>';
+  }
+
+  // Traits
+  var traitsHtml = '';
+  for (var i = 0; i < style.traits.length; i++) {
+    traitsHtml += '<span class="style-trait" style="background:' + style.color + '18;color:' + style.color + ';border-color:' + style.color + '30">' + style.traits[i] + '</span>';
+  }
+
+  // Vibrato indicator
+  var vibDesc = '';
+  if (vibrato.depth < 8) vibDesc = 'Straight tone';
+  else if (vibrato.depth < 20) vibDesc = 'Light vibrato ~' + vibrato.rate.toFixed(1) + 'Hz';
+  else if (vibrato.depth < 35) vibDesc = 'Moderate vibrato ~' + vibrato.rate.toFixed(1) + 'Hz';
+  else vibDesc = 'Wide vibrato ~' + vibrato.rate.toFixed(1) + 'Hz';
+
+  document.getElementById('styleContent').innerHTML =
+    '<div class="style-detected">' +
+      '<div class="style-icon" style="background:' + style.color + '18">' + style.icon + '</div>' +
+      '<div>' +
+        '<div class="style-name" style="color:' + style.color + '">' + style.name + '</div>' +
+        '<div class="style-confidence">' + vibDesc + ' \u2022 Brightness: ' + Math.round(centroid) + 'Hz</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="style-bars">' + barsHtml + '</div>' +
+    '<div class="style-traits">' + traitsHtml + '</div>' +
+    '<div class="style-desc">' + style.desc + '</div>';
 }
 
 // Init
