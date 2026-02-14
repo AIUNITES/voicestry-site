@@ -185,6 +185,17 @@
       padding: 8px 12px; border-radius: 8px; font-family: inherit;
     }
 
+    /* Voice Confidence Indicator */
+    .voice-conf{display:flex;align-items:center;gap:10px;margin-top:14px;padding:10px 14px;background:rgba(255,255,255,0.02);border-radius:10px}
+    .voice-conf-label{font-size:0.7rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;min-width:52px}
+    .voice-conf-track{flex:1;height:5px;background:rgba(255,255,255,0.06);border-radius:5px;overflow:hidden}
+    .voice-conf-fill{height:100%;border-radius:5px;transition:width 0.15s,background 0.3s}
+    .voice-conf-status{font-size:0.72rem;font-weight:700;font-family:'Courier New',monospace;min-width:70px;text-align:right;transition:color 0.3s}
+    .voice-conf-status.noise{color:var(--accent-red)}
+    .voice-conf-status.maybe{color:var(--accent-orange)}
+    .voice-conf-status.voice{color:var(--accent-green)}
+    .voice-conf-status.singing{color:var(--accent-cyan)}
+
     /* Footer */
     .footer { background: var(--bg-card); padding: 40px 20px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); }
     .footer p { color: var(--text-secondary); font-size: 0.9rem; }
@@ -244,6 +255,11 @@
         </div>
         <div class="meter-labels"><span>♭ Flat</span><span>✓ In Tune</span><span>♯ Sharp</span></div>
       </div>
+      <div class="voice-conf" id="freeVoiceConf" style="max-width:500px;margin:0 auto 15px">
+        <div class="voice-conf-label">Signal</div>
+        <div class="voice-conf-track"><div class="voice-conf-fill" id="freeConfFill" style="width:0%;background:var(--accent-red)"></div></div>
+        <div class="voice-conf-status noise" id="freeConfStatus">Silence</div>
+      </div>
       <button class="start-btn" id="freeStartBtn" onclick="toggleFreeMic()">🎤 Start Listening</button>
       <p style="text-align:center; color: var(--text-secondary); font-size: 0.85rem; margin-top: 12px;">Sing any note — the display shows your pitch, note name, and how many cents sharp or flat you are.</p>
     </div>
@@ -272,6 +288,11 @@
         <div class="meter-labels"><span>♭ Flat</span><span>✓ In Tune</span><span>♯ Sharp</span></div>
       </div>
 
+      <div class="voice-conf" id="matchVoiceConf" style="max-width:500px;margin:0 auto 15px">
+        <div class="voice-conf-label">Signal</div>
+        <div class="voice-conf-track"><div class="voice-conf-fill" id="matchConfFill" style="width:0%;background:var(--accent-red)"></div></div>
+        <div class="voice-conf-status noise" id="matchConfStatus">Silence</div>
+      </div>
       <div class="match-result" id="matchResult"></div>
       <button class="start-btn" id="matchStartBtn" onclick="toggleMatchMic()">🎤 Start Singing</button>
       <button class="next-note-btn" id="nextNoteBtn" onclick="nextMatchNote()" style="display:none;">Next Note →</button>
@@ -385,6 +406,87 @@
       return sampleRate / bestP;
     }
 
+    // ==================== VOICE ISOLATION ENGINE ====================
+    function getSpectralFlatness(freqData) {
+      var logSum = 0, linSum = 0, count = 0;
+      for (var i = 2; i < Math.min(freqData.length, 300); i++) {
+        var val = Math.max(freqData[i], 0.001);
+        logSum += Math.log(val); linSum += val; count++;
+      }
+      if (count === 0 || linSum === 0) return 1;
+      return Math.exp(logSum / count) / (linSum / count);
+    }
+
+    function getHNR(freqData, fundamental, sampleRate, fftSize) {
+      if (fundamental <= 0) return 0;
+      var binHz = sampleRate / fftSize;
+      var harmonicE = 0, totalE = 0;
+      var lo = Math.max(1, Math.floor(80 / binHz));
+      var hi = Math.min(freqData.length - 1, Math.floor(5000 / binHz));
+      for (var i = lo; i <= hi; i++) totalE += freqData[i] * freqData[i];
+      for (var h = 1; h <= 10; h++) {
+        var hBin = Math.round((fundamental * h) / binHz);
+        if (hBin >= freqData.length) break;
+        for (var j = Math.max(0, hBin - 2); j <= Math.min(freqData.length - 1, hBin + 2); j++)
+          harmonicE += freqData[j] * freqData[j];
+      }
+      return totalE > 0 ? harmonicE / totalE : 0;
+    }
+
+    function getPitchStability(history) {
+      if (history.length < 4) return 0;
+      var recent = history.slice(-12);
+      var mean = 0;
+      for (var i = 0; i < recent.length; i++) mean += recent[i];
+      mean /= recent.length;
+      if (mean === 0) return 0;
+      var sumSq = 0;
+      for (var i = 0; i < recent.length; i++) {
+        var c = 1200 * Math.log2(recent[i] / mean);
+        sumSq += c * c;
+      }
+      return Math.max(0, Math.min(1, 1 - (Math.sqrt(sumSq / recent.length) / 200)));
+    }
+
+    function getVoiceConfidence(freq, freqData, timeBuf, sampleRate, fftSize, pitchHist) {
+      var rms = 0;
+      for (var i = 0; i < timeBuf.length; i++) rms += timeBuf[i] * timeBuf[i];
+      rms = Math.sqrt(rms / timeBuf.length);
+      if (rms < 0.008) return { score: 0, label: 'Silence' };
+      var score = 0;
+      if (freq > 0 && freq >= 65 && freq <= 1400) score += 25;
+      var flatness = getSpectralFlatness(freqData);
+      if (flatness < 0.3) score += 25; else if (flatness < 0.5) score += 15; else if (flatness < 0.7) score += 5;
+      var hnr = freq > 0 ? getHNR(freqData, freq, sampleRate, fftSize) : 0;
+      if (hnr > 0.5) score += 25; else if (hnr > 0.3) score += 15; else if (hnr > 0.15) score += 5;
+      var stab = getPitchStability(pitchHist);
+      if (stab > 0.7) score += 25; else if (stab > 0.4) score += 15; else if (stab > 0.2) score += 5;
+      var label;
+      if (score >= 75) label = 'Singing'; else if (score >= 50) label = 'Voice'; else if (score >= 25) label = 'Maybe'; else label = 'Noise';
+      return { score: score, label: label };
+    }
+
+    function updateConfUI(fillId, statusId, conf) {
+      var fill = document.getElementById(fillId);
+      var status = document.getElementById(statusId);
+      var pct = Math.min(100, conf.score);
+      fill.style.width = pct + '%';
+      if (conf.label === 'Singing') {
+        fill.style.background = 'var(--accent-cyan)'; status.className = 'voice-conf-status singing'; status.textContent = '\u266B Singing';
+      } else if (conf.label === 'Voice') {
+        fill.style.background = 'var(--accent-green)'; status.className = 'voice-conf-status voice'; status.textContent = '\u2713 Voice';
+      } else if (conf.label === 'Maybe') {
+        fill.style.background = 'var(--accent-orange)'; status.className = 'voice-conf-status maybe'; status.textContent = '? Uncertain';
+      } else if (conf.label === 'Noise') {
+        fill.style.background = 'var(--accent-red)'; status.className = 'voice-conf-status noise'; status.textContent = '\u2718 Noise';
+      } else {
+        fill.style.width = '0%'; status.className = 'voice-conf-status noise'; status.textContent = 'Silence';
+      }
+    }
+
+    // Voice isolation tracking per mode
+    var freeFreqHist = [], matchFreqHist = [];
+
     // ==================== MODE SWITCHING ====================
     function switchMode(mode) {
       document.querySelectorAll('.mode-tab').forEach(function(t, i) {
@@ -434,9 +536,28 @@
       freeRaf = requestAnimationFrame(drawFreePitch);
       if (!freeAnalyser) return;
       var buf = new Float32Array(freeAnalyser.fftSize);
+      var freqBuf = new Uint8Array(freeAnalyser.frequencyBinCount);
       freeAnalyser.getFloatTimeDomainData(buf);
-      var freq = detectPitch(buf, getCtx().sampleRate);
+      freeAnalyser.getByteFrequencyData(freqBuf);
+      var sr = getCtx().sampleRate;
+      var freq = detectPitch(buf, sr);
+
+      // Track pitch history for stability
+      if (freq > 0) { freeFreqHist.push(freq); if (freeFreqHist.length > 20) freeFreqHist.shift(); }
+      else { freeFreqHist = []; }
+
+      // Voice confidence check
+      var conf = getVoiceConfidence(freq, freqBuf, buf, sr, freeAnalyser.fftSize, freeFreqHist);
+      updateConfUI('freeConfFill', 'freeConfStatus', conf);
+
       if (freq < 0) return;
+      if (conf.score < 50) {
+        document.getElementById('freeNote').textContent = midiToName(Math.round(freqToMidi(freq)));
+        document.getElementById('freeNote').style.opacity = '0.3';
+        document.getElementById('freeFreq').textContent = freq.toFixed(1) + ' Hz';
+        return;
+      }
+      document.getElementById('freeNote').style.opacity = '1';
       var midi = freqToMidi(freq);
       var nearestMidi = Math.round(midi);
       var cents = Math.round((midi - nearestMidi) * 100);
@@ -515,9 +636,22 @@
       matchRaf = requestAnimationFrame(drawMatchPitch);
       if (!matchAnalyser || matchLocked) return;
       var buf = new Float32Array(matchAnalyser.fftSize);
+      var freqBuf = new Uint8Array(matchAnalyser.frequencyBinCount);
       matchAnalyser.getFloatTimeDomainData(buf);
-      var freq = detectPitch(buf, getCtx().sampleRate);
+      matchAnalyser.getByteFrequencyData(freqBuf);
+      var sr = getCtx().sampleRate;
+      var freq = detectPitch(buf, sr);
+
+      // Track pitch history for stability
+      if (freq > 0) { matchFreqHist.push(freq); if (matchFreqHist.length > 20) matchFreqHist.shift(); }
+      else { matchFreqHist = []; }
+
+      // Voice confidence check
+      var conf = getVoiceConfidence(freq, freqBuf, buf, sr, matchAnalyser.fftSize, matchFreqHist);
+      updateConfUI('matchConfFill', 'matchConfStatus', conf);
+
       if (freq < 0) { matchHeldFrames = 0; return; }
+      if (conf.score < 50) { matchHeldFrames = 0; return; }
       var midi = freqToMidi(freq);
       var nearestMidi = Math.round(midi);
       var centsFromTarget = Math.round((midi - matchTarget) * 100);
