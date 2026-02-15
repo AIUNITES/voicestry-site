@@ -180,6 +180,7 @@ vocal-games.html → learn.html
 | Version | Date | Changes |
 |---------|------|---------|
 | 1.0.0 | February 8, 2026 | Initial site creation: index.html, vrn-method.html, css/style.css. Migration script for 5 COSMOS pages. |
+| 1.1.0 | February 15, 2026 | Legal compliance: updated all footer links to centralized legal.html |
 
 ---
 
