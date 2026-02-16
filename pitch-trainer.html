@@ -403,14 +403,14 @@
       var norm = new Float32Array(buf.length);
       for (var i = 0; i < buf.length; i++) norm[i] = buf[i] / maxVal;
       var minP = Math.floor(sampleRate / 1100);
-      var maxP = Math.floor(sampleRate / 55);
+      var maxP = Math.floor(sampleRate / 40);
       var bestCorr = 0, bestP = 0;
       for (var p = minP; p < maxP && p < norm.length / 2; p++) {
         var corr = 0;
         for (var i = 0; i < norm.length / 2; i++) corr += norm[i] * norm[i + p];
         if (corr > bestCorr) { bestCorr = corr; bestP = p; }
       }
-      if (bestCorr < norm.length * 0.008) return -1;
+      if (bestCorr < norm.length * 0.004) return -1;
       return sampleRate / bestP;
     }
 
@@ -462,7 +462,7 @@
       rms = Math.sqrt(rms / timeBuf.length);
       if (rms < 0.008) return { score: 0, label: 'Silence' };
       var score = 0;
-      if (freq > 0 && freq >= 65 && freq <= 1400) score += 25;
+      if (freq > 0 && freq >= 40 && freq <= 1400) score += 25;
       var flatness = getSpectralFlatness(freqData);
       if (flatness < 0.3) score += 25; else if (flatness < 0.5) score += 15; else if (flatness < 0.7) score += 5;
       var hnr = freq > 0 ? getHNR(freqData, freq, sampleRate, fftSize) : 0;
@@ -519,7 +519,7 @@
         var ctx = getCtx();
         var src = ctx.createMediaStreamSource(stream);
         freeAnalyser = ctx.createAnalyser();
-        freeAnalyser.fftSize = 4096;
+        freeAnalyser.fftSize = 8192;
         src.connect(freeAnalyser);
         freeMicStream = stream;
         document.getElementById('freeStartBtn').classList.add('recording');
@@ -623,7 +623,7 @@
         var ctx = getCtx();
         var src = ctx.createMediaStreamSource(stream);
         matchAnalyser = ctx.createAnalyser();
-        matchAnalyser.fftSize = 4096;
+        matchAnalyser.fftSize = 8192;
         src.connect(matchAnalyser);
         matchMicStream = stream;
         document.getElementById('matchStartBtn').classList.add('recording');

@@ -487,7 +487,7 @@ startBtn.addEventListener('click', async function() {
     micStream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } });
     var source = audioCtx.createMediaStreamSource(micStream);
     analyserNode = audioCtx.createAnalyser();
-    analyserNode.fftSize = 4096;
+    analyserNode.fftSize = 8192;
     analyserNode.smoothingTimeConstant = 0.8;
     source.connect(analyserNode);
 
@@ -521,13 +521,13 @@ function detectPitch(buf, sampleRate) {
   for (var i = 0; i < buf.length; i++) {
     if (Math.abs(buf[i]) > maxVal) maxVal = Math.abs(buf[i]);
   }
-  if (maxVal < 0.015) return -1;
+  if (maxVal < 0.01) return -1;
 
   var norm = new Float32Array(buf.length);
   for (var i = 0; i < buf.length; i++) norm[i] = buf[i] / maxVal;
 
   var minPeriod = Math.floor(sampleRate / 1200);
-  var maxPeriod = Math.floor(sampleRate / 55);
+  var maxPeriod = Math.floor(sampleRate / 40);
   var bestCorr = 0, bestPeriod = 0;
 
   for (var p = minPeriod; p < maxPeriod && p < norm.length / 2; p++) {
@@ -541,7 +541,7 @@ function detectPitch(buf, sampleRate) {
     }
   }
 
-  if (bestCorr < norm.length * 0.008) return -1;
+  if (bestCorr < norm.length * 0.004) return -1;
   return sampleRate / bestPeriod;
 }
 
@@ -654,8 +654,8 @@ function getPitchStability(history, count) {
 }
 
 function isInVoiceRange(freq) {
-  // Human singing range ~65Hz (C2) to ~1400Hz (F6 whistle)
-  return freq >= 65 && freq <= 1400;
+  // Human singing range ~40Hz (E1 low bass) to ~1400Hz (F6 whistle)
+  return freq >= 40 && freq <= 1400;
 }
 
 // Composite voice confidence score (0-100)
