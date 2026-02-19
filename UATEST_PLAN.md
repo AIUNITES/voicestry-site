@@ -8,8 +8,8 @@
 | **Live URL** | https://aiunites.github.io/voicestry-site/ |
 | **Custom Domains** | voicestry.com, vrnmethod.com |
 | **Local Path** | C:/Users/Tom/Documents/GitHub/voicestry-site |
-| **Last Updated** | February 8, 2026 |
-| **Version** | 1.0.0 |
+| **Last Updated** | February 19, 2026 |
+| **Version** | 1.3.0 |
 | **Based On** | Custom (content from COSMOS the OPERA) |
 
 ---
@@ -20,11 +20,14 @@
 |------|------|-------------|--------|
 | Home / Landing | index.html | Main landing with hooks and CTAs | ✅ |
 | VRN Method | vrn-method.html | What is VRN, 6 zones, intensity, examples | ✅ |
-| Learn VRN | learn.html | 8 progressive interactive lessons | 📲 Migrating |
-| 5 Gears | 5-gears.html | "Your Voice Has 5 Gears" promo page | 📲 Migrating |
-| Vocal Gym | vocal-gym.html | "Bodybuilding for the Voice" promo page | 📲 Migrating |
-| Pitch Trainer | pitch-trainer.html | Real-time pitch detection, intervals | 📲 Migrating |
-| Sight Reading | sight-reading.html | Staff notation training | 📲 Migrating |
+| Learn VRN | learn.html | 8 progressive interactive lessons | ✅ Migrated |
+| 5 Gears | 5-gears.html | "Your Voice Has 5 Gears" promo page | ✅ Migrated |
+| Vocal Gym | vocal-gym.html | "Bodybuilding for the Voice" promo page | ✅ Migrated |
+| Pitch Trainer | pitch-trainer.html | Real-time pitch detection, intervals | ✅ Migrated |
+| Sight Reading | sight-reading.html | Staff notation training | ✅ Migrated |
+| Voice Analyzer | voice-analyzer.html | VRN Live Analyzer — sing and see resonance in real time | ✅ Active |
+| Voice Lab | voice-lab.html | Hear voice types with animated VRN notation | ✅ Active |
+| Press | press.html | Press releases and media page | ✅ Active |
 | Vocal Games | vocal-games.html | Gamified VRN challenges | ⬜ Planned |
 
 ---
@@ -164,13 +167,13 @@ vocal-games.html → learn.html
 
 | Issue | Priority | Status |
 |-------|----------|--------|
-| Migrate 5 pages from COSMOS | High | 📲 Script ready |
-| Rebrand migrated pages | High | 📲 After migration |
+| Migrate 5 pages from COSMOS | High | ✅ Complete |
+| Rebrand migrated pages | High | ✅ Complete |
 | Create vocal-games.html | Medium | ⬜ TODO |
 | Set up custom domain (voicestry.com) | Medium | ⬜ TODO |
 | Set up custom domain (vrnmethod.com) | Medium | ⬜ TODO |
-| Create git repo and auto-publish | High | ⬜ TODO |
-| Add to AIUNITES Feature Tracking | Medium | ⬜ TODO |
+| Create git repo and auto-publish | High | ✅ Complete |
+| Add to AIUNITES Feature Tracking | Medium | ✅ Added Feb 19, 2026 |
 | Add cloud-database.js | Low | ⬜ TODO |
 
 ---
@@ -180,7 +183,11 @@ vocal-games.html → learn.html
 | Version | Date | Changes |
 |---------|------|---------|
 | 1.0.0 | February 8, 2026 | Initial site creation: index.html, vrn-method.html, css/style.css. Migration script for 5 COSMOS pages. |
-| 1.1.0 | February 15, 2026 | Legal compliance: updated all footer links to centralized legal.html |
+| 1.1.0 | February 13, 2026 | Webring: Added full 17-site webring to all pages, fixed 7 inner pages with old 8-link bar |
+| 1.1.1 | February 14, 2026 | Webring: Removed BodSpas, updated to 16-site canonical webring across all pages |
+| 1.2.0 | February 15, 2026 | Legal compliance: updated all footer links to centralized legal.html |
+| 1.2.1 | February 16, 2026 | Bass note fix: pitch-trainer + voice-analyzer — voice floor 65→40Hz, FFT 4096→8192, autocorrelation 0.008→0.004 |
+| 1.3.0 | February 19, 2026 | UATEST updated: added 3 missing pages (voice-analyzer, voice-lab, press), marked completed TODOs |
 
 ---
 
