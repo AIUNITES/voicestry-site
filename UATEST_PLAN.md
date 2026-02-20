@@ -8,8 +8,8 @@
 | **Live URL** | https://aiunites.github.io/voicestry-site/ |
 | **Custom Domains** | voicestry.com, vrnmethod.com |
 | **Local Path** | C:/Users/Tom/Documents/GitHub/voicestry-site |
-| **Last Updated** | February 19, 2026 |
-| **Version** | 1.3.0 |
+| **Last Updated** | February 20, 2026 |
+| **Version** | 1.4.0 |
 | **Based On** | Custom (content from COSMOS the OPERA) |
 
 ---
@@ -25,7 +25,7 @@
 | Vocal Gym | vocal-gym.html | "Bodybuilding for the Voice" promo page | ✅ Migrated |
 | Pitch Trainer | pitch-trainer.html | Real-time pitch detection, intervals | ✅ Migrated |
 | Sight Reading | sight-reading.html | Staff notation training | ✅ Migrated |
-| Voice Analyzer | voice-analyzer.html | VRN Live Analyzer — sing and see resonance in real time | ✅ Active |
+| Voice Analyzer | voice-analyzer.html | VRN Live Analyzer — mic + stream input modes with settings | ✅ Active |
 | Voice Lab | voice-lab.html | Hear voice types with animated VRN notation | ✅ Active |
 | Press | press.html | Press releases and media page | ✅ Active |
 | Vocal Games | vocal-games.html | Gamified VRN challenges | ⬜ Planned |

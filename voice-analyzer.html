@@ -36,6 +36,30 @@
     .vp-btn:hover{border-color:rgba(255,255,255,0.2);color:var(--text-primary)}
     .vp-btn.active{border-color:var(--accent-cyan);color:var(--accent-cyan);background:rgba(0,212,255,0.08)}
 
+    /* Input Source Selector */
+    .input-source{max-width:640px;margin:0 auto;padding:16px 20px}
+    .input-source-label{font-size:0.75rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;text-align:center}
+    .source-tabs{display:flex;gap:8px;justify-content:center;margin-bottom:12px}
+    .source-tab{flex:1;max-width:260px;padding:14px 18px;border-radius:14px;border:1px solid rgba(255,255,255,0.08);background:var(--bg-card);color:var(--text-secondary);cursor:pointer;transition:all 0.25s;text-align:left;font-family:inherit}
+    .source-tab:hover{border-color:rgba(255,255,255,0.15);background:rgba(255,255,255,0.03)}
+    .source-tab.active{border-color:var(--accent-cyan);background:rgba(0,212,255,0.06)}
+    .source-tab .st-icon{font-size:1.4rem;margin-bottom:4px;display:block}
+    .source-tab .st-title{font-size:0.95rem;font-weight:700;color:var(--text-primary);display:block;margin-bottom:2px}
+    .source-tab .st-desc{font-size:0.75rem;color:var(--text-secondary);line-height:1.4}
+    .source-tab.active .st-title{color:var(--accent-cyan)}
+    .source-settings{max-width:640px;margin:0 auto;padding:0 20px}
+    .setting-row-inline{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:var(--bg-panel);border-radius:10px;margin-bottom:6px;border:1px solid rgba(255,255,255,0.04)}
+    .setting-row-inline .sri-label{font-size:0.85rem;color:var(--text-secondary)}
+    .setting-row-inline .sri-hint{font-size:0.7rem;color:rgba(255,255,255,0.25);margin-top:2px}
+    .toggle-sm{position:relative;display:inline-block;width:40px;height:22px}
+    .toggle-sm input{opacity:0;width:0;height:0}
+    .toggle-sm .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:rgba(255,255,255,0.1);border-radius:22px;transition:0.3s}
+    .toggle-sm .slider:before{content:"";position:absolute;height:16px;width:16px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:0.3s}
+    .toggle-sm input:checked+.slider{background:var(--accent-cyan)}
+    .toggle-sm input:checked+.slider:before{transform:translateX(18px)}
+    .stream-info{max-width:640px;margin:6px auto 0;padding:10px 16px;background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.15);border-radius:10px;font-size:0.78rem;color:var(--accent-orange);line-height:1.5;display:none;text-align:center}
+    .stream-info.show{display:block}
+
     /* Start Button */
     .start-section{text-align:center;padding:20px}
     .start-btn{padding:18px 48px;border-radius:16px;border:none;font-size:1.15rem;font-weight:800;cursor:pointer;transition:all 0.3s;font-family:inherit;color:#fff;background:linear-gradient(135deg,var(--accent-red),var(--accent-orange));box-shadow:0 4px 30px rgba(239,68,68,0.3)}
@@ -191,10 +215,70 @@
     <button class="vp-btn" data-voice="soprano">Soprano</button>
   </div>
 
+  <!-- Input Source Selector -->
+  <div class="input-source">
+    <div class="input-source-label">Input Source</div>
+    <div class="source-tabs">
+      <button class="source-tab active" data-source="mic" id="srcMic">
+        <span class="st-icon">🎤</span>
+        <span class="st-title">Live Singing</span>
+        <span class="st-desc">Sing into your microphone. Real-time analysis of your own voice.</span>
+      </button>
+      <button class="source-tab" data-source="stream" id="srcStream">
+        <span class="st-icon">🔊</span>
+        <span class="st-title">Stream / Playback</span>
+        <span class="st-desc">Analyze vocals from YouTube, Spotify, radio, or any playing audio.</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Source-specific settings -->
+  <div class="source-settings" id="micSettings">
+    <div class="setting-row-inline">
+      <div>
+        <div class="sri-label">Noise Suppression</div>
+        <div class="sri-hint">Reduces background noise for cleaner detection</div>
+      </div>
+      <label class="toggle-sm"><input type="checkbox" id="optNoiseSuppression" checked><span class="slider"></span></label>
+    </div>
+    <div class="setting-row-inline">
+      <div>
+        <div class="sri-label">Echo Cancellation</div>
+        <div class="sri-hint">Prevents speaker feedback — turn off if using headphones</div>
+      </div>
+      <label class="toggle-sm"><input type="checkbox" id="optEchoCancellation" checked><span class="slider"></span></label>
+    </div>
+  </div>
+
+  <div class="source-settings" id="streamSettings" style="display:none">
+    <div class="setting-row-inline">
+      <div>
+        <div class="sri-label">Sensitivity</div>
+        <div class="sri-hint">Higher = detects quieter vocals in the mix</div>
+      </div>
+      <select id="optStreamSensitivity" style="padding:6px 10px;border-radius:8px;background:var(--bg-dark);border:1px solid rgba(255,255,255,0.1);color:var(--text-primary);font-size:0.85rem;font-family:inherit">
+        <option value="low">Low (solo vocal)</option>
+        <option value="medium" selected>Medium (vocal + music)</option>
+        <option value="high">High (dense mix)</option>
+      </select>
+    </div>
+    <div class="setting-row-inline">
+      <div>
+        <div class="sri-label">Voice Isolation</div>
+        <div class="sri-hint">Try to isolate vocals from instruments (experimental)</div>
+      </div>
+      <label class="toggle-sm"><input type="checkbox" id="optVoiceIsolation" checked><span class="slider"></span></label>
+    </div>
+  </div>
+
+  <div class="stream-info" id="streamInfo">
+    📺 <strong>How it works:</strong> Click "Start Listening" and your browser will ask you to share a tab. Choose the tab playing YouTube, Spotify, etc. The audio from that tab will be analyzed in real time. <em>Your mic will not be used.</em>
+  </div>
+
   <!-- Start -->
   <div class="start-section">
     <button class="start-btn" id="startBtn">🎤 Start Listening</button>
-    <div class="mic-hint">Requires microphone access. Works best with headphones to avoid feedback.</div>
+    <div class="mic-hint" id="micHint">Requires microphone access. Works best with headphones to avoid feedback.</div>
   </div>
 
   <!-- Analyzer -->
@@ -459,6 +543,40 @@ var lastNote = '';
 var noteHoldCount = 0;
 var historyNotes = [];
 
+// --- Input Source ---
+var inputSource = 'mic'; // 'mic' or 'stream'
+var streamFilters = []; // for cleanup
+
+// Source tab switching
+document.querySelectorAll('.source-tab').forEach(function(tab) {
+  tab.addEventListener('click', function() {
+    if (isListening) return; // can't switch while active
+    document.querySelectorAll('.source-tab').forEach(function(t) { t.classList.remove('active'); });
+    tab.classList.add('active');
+    inputSource = tab.dataset.source;
+
+    var micSettings = document.getElementById('micSettings');
+    var streamSettings = document.getElementById('streamSettings');
+    var streamInfo = document.getElementById('streamInfo');
+    var micHint = document.getElementById('micHint');
+    var startBtn = document.getElementById('startBtn');
+
+    if (inputSource === 'stream') {
+      micSettings.style.display = 'none';
+      streamSettings.style.display = 'block';
+      streamInfo.classList.add('show');
+      micHint.textContent = 'Will capture audio from a browser tab. No microphone needed.';
+      startBtn.textContent = '\uD83D\uDD0A Start Listening';
+    } else {
+      micSettings.style.display = 'block';
+      streamSettings.style.display = 'none';
+      streamInfo.classList.remove('show');
+      micHint.textContent = 'Requires microphone access. Works best with headphones to avoid feedback.';
+      startBtn.textContent = '\uD83C\uDFA4 Start Listening';
+    }
+  });
+});
+
 // Vibrato & style detection state
 var pitchHistory = [];
 var styleSmoothing = {operatic:0,musical_theatre:0,pop_belt:0,jazz:0,folk:0,rnb:0,rock:0,classical_light:0};
@@ -476,6 +594,56 @@ document.getElementById('voicePicker').addEventListener('click', function(e) {
   selectedVoice = btn.dataset.voice;
 });
 
+// Stream sensitivity thresholds
+var STREAM_SENSITIVITY = {
+  low:    { silenceFloor: 0.015, voiceGate: 0.02, confThreshold: 55 },
+  medium: { silenceFloor: 0.008, voiceGate: 0.012, confThreshold: 40 },
+  high:   { silenceFloor: 0.004, voiceGate: 0.006, confThreshold: 30 }
+};
+
+function getActiveThresholds() {
+  if (inputSource === 'mic') {
+    return { silenceFloor: 0.008, voiceGate: 0.015, confThreshold: 50 };
+  }
+  var sens = document.getElementById('optStreamSensitivity').value;
+  return STREAM_SENSITIVITY[sens] || STREAM_SENSITIVITY.medium;
+}
+
+// Build vocal isolation filter chain (bandpass 80Hz-5kHz + notch common instrument freqs)
+function buildVocalIsolation(ctx, sourceNode) {
+  var filters = [];
+
+  // High-pass at 80Hz to cut bass rumble / kick drums
+  var hp = ctx.createBiquadFilter();
+  hp.type = 'highpass';
+  hp.frequency.value = 80;
+  hp.Q.value = 0.7;
+  filters.push(hp);
+
+  // Low-pass at 5000Hz to cut cymbals / high hats
+  var lp = ctx.createBiquadFilter();
+  lp.type = 'lowpass';
+  lp.frequency.value = 5000;
+  lp.Q.value = 0.7;
+  filters.push(lp);
+
+  // Presence boost around 2-4kHz (vocal clarity)
+  var presence = ctx.createBiquadFilter();
+  presence.type = 'peaking';
+  presence.frequency.value = 3000;
+  presence.gain.value = 4;
+  presence.Q.value = 1.0;
+  filters.push(presence);
+
+  // Chain: source -> hp -> lp -> presence -> output
+  sourceNode.connect(hp);
+  hp.connect(lp);
+  lp.connect(presence);
+
+  streamFilters = filters;
+  return presence; // last node in chain
+}
+
 // Start/stop
 startBtn.addEventListener('click', async function() {
   if (isListening) {
@@ -484,17 +652,77 @@ startBtn.addEventListener('click', async function() {
   }
   try {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    micStream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } });
-    var source = audioCtx.createMediaStreamSource(micStream);
-    analyserNode = audioCtx.createAnalyser();
-    analyserNode.fftSize = 8192;
-    analyserNode.smoothingTimeConstant = 0.8;
-    source.connect(analyserNode);
+
+    if (inputSource === 'stream') {
+      // --- Stream/Playback mode: capture tab audio ---
+      try {
+        micStream = await navigator.mediaDevices.getDisplayMedia({
+          video: true,  // required by spec, we ignore it
+          audio: true
+        });
+      } catch (e) {
+        alert('Tab audio sharing was cancelled or denied. Please share a tab with audio playing (e.g. YouTube).');
+        if (audioCtx) audioCtx.close();
+        return;
+      }
+
+      // Check if audio track exists
+      var audioTracks = micStream.getAudioTracks();
+      if (audioTracks.length === 0) {
+        alert('No audio track detected. Make sure you selected a tab with audio playing and checked "Share tab audio".');
+        micStream.getTracks().forEach(function(t) { t.stop(); });
+        if (audioCtx) audioCtx.close();
+        return;
+      }
+
+      // Stop video track immediately (we only need audio)
+      micStream.getVideoTracks().forEach(function(t) { t.stop(); });
+
+      var source = audioCtx.createMediaStreamSource(micStream);
+      analyserNode = audioCtx.createAnalyser();
+      analyserNode.fftSize = 8192;
+      analyserNode.smoothingTimeConstant = 0.75;
+
+      // Apply vocal isolation if enabled
+      var useIsolation = document.getElementById('optVoiceIsolation').checked;
+      if (useIsolation) {
+        var lastFilter = buildVocalIsolation(audioCtx, source);
+        lastFilter.connect(analyserNode);
+      } else {
+        source.connect(analyserNode);
+      }
+
+      // Handle stream ending (user stops sharing)
+      micStream.getAudioTracks()[0].addEventListener('ended', function() {
+        stopListening();
+      });
+
+    } else {
+      // --- Live Mic mode ---
+      var echoCancellation = document.getElementById('optEchoCancellation').checked;
+      var noiseSuppression = document.getElementById('optNoiseSuppression').checked;
+
+      micStream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: echoCancellation,
+          noiseSuppression: noiseSuppression,
+          autoGainControl: true
+        }
+      });
+      var source = audioCtx.createMediaStreamSource(micStream);
+      analyserNode = audioCtx.createAnalyser();
+      analyserNode.fftSize = 8192;
+      analyserNode.smoothingTimeConstant = 0.8;
+      source.connect(analyserNode);
+    }
 
     isListening = true;
     startBtn.textContent = '\u23F9 Stop Listening';
     startBtn.classList.add('listening');
     analyzerSection.style.display = 'grid';
+
+    // Lock source tabs while listening
+    document.querySelectorAll('.source-tab').forEach(function(t) { t.style.opacity = '0.5'; t.style.pointerEvents = 'none'; });
 
     var canvas = document.getElementById('waveformCanvas');
     canvas.width = canvas.offsetWidth * 2;
@@ -502,7 +730,12 @@ startBtn.addEventListener('click', async function() {
 
     processAudio();
   } catch (e) {
-    alert('Could not access microphone. Please allow microphone access and try again.');
+    if (inputSource === 'mic') {
+      alert('Could not access microphone. Please allow microphone access and try again.');
+    } else {
+      alert('Could not capture audio. Error: ' + e.message);
+    }
+    if (audioCtx) audioCtx.close();
   }
 });
 
@@ -510,9 +743,16 @@ function stopListening() {
   isListening = false;
   if (micStream) micStream.getTracks().forEach(function(t) { t.stop(); });
   if (rafId) cancelAnimationFrame(rafId);
+  streamFilters = [];
   if (audioCtx) audioCtx.close();
-  startBtn.textContent = '\uD83C\uDFA4 Start Listening';
+  if (inputSource === 'mic') {
+    startBtn.textContent = '\uD83C\uDFA4 Start Listening';
+  } else {
+    startBtn.textContent = '\uD83D\uDD0A Start Listening';
+  }
   startBtn.classList.remove('listening');
+  // Unlock source tabs
+  document.querySelectorAll('.source-tab').forEach(function(t) { t.style.opacity = '1'; t.style.pointerEvents = 'auto'; });
 }
 
 // --- Pitch Detection (Autocorrelation) ---
@@ -781,10 +1021,11 @@ function processAudio() {
   var voiceConf = getVoiceConfidence(freq, freqBuf, timeBuf, sampleRate, bufLen, rawFreqHistory, rawFreqCount);
   updateVoiceConfUI(voiceConf);
 
-  // Only process as voice if confidence >= 50 ("Voice" or "Singing")
-  var isVoice = voiceConf.score >= 50;
+  // Dynamic thresholds based on input source
+  var thresholds = getActiveThresholds();
+  var isVoice = voiceConf.score >= thresholds.confThreshold;
 
-  if (freq > 0 && volume > 0.015 && isVoice) {
+  if (freq > 0 && volume > thresholds.voiceGate && isVoice) {
     var midi = freqToMidi(freq);
     var note = freqToNote(freq);
     var nearestMidi = Math.round(midi);
@@ -833,7 +1074,7 @@ function processAudio() {
       detectAndDisplayStyle(centroid, harmonics, volume, gear, voiceType);
     }
   } else {
-    if (volume < 0.008) {
+    if (volume < thresholds.silenceFloor) {
       document.getElementById('pitchNote').textContent = '\u2014';
       document.getElementById('pitchHz').textContent = '';
       document.getElementById('pitchCents').textContent = '';
