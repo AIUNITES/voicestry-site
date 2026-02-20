@@ -59,6 +59,25 @@
 | Identify Notes Mode | 📲 | Tap the correct note name |
 | Speed Drill | 📲 | Timed identification challenge |
 
+### 🎤 Voice Analyzer — Input Source & Settings
+| Feature | Status | Notes |
+|---------|--------|-------|
+| Input Source Selector | ✅ | Toggle between Live Singing, Room/External, and Browser Tab |
+| Live Singing Mode | ✅ | Mic input with configurable audio settings |
+| Room / External Mode | ✅ | Mic tuned for external audio — radio, TV, speaker, another singer |
+| Browser Tab Mode | ✅ | Tab audio capture via getDisplayMedia |
+| Noise Suppression Toggle | ✅ | Mic mode — reduces background noise |
+| Echo Cancellation Toggle | ✅ | Mic mode — prevents speaker feedback |
+| Room Sensitivity Selector | ✅ | Room mode — Low/Medium/High for varying distances |
+| Room Noise Suppression | ✅ | Room mode — off by default (suppression muffles external audio) |
+| Room Voice Isolation | ✅ | Room mode — bandpass filter to focus on vocal frequencies |
+| Stream Sensitivity Selector | ✅ | Browser Tab mode — Low/Medium/High presets |
+| Voice Isolation Filter | ✅ | Stream mode — bandpass + presence boost to isolate vocals |
+| Dynamic Thresholds | ✅ | Confidence/volume gates adjust per source & sensitivity |
+| Source Lock While Active | ✅ | Tabs disabled during listening |
+| Auto-Stop on Stream End | ✅ | Handles user stopping tab sharing |
+| Info Panel for Stream | ✅ | Explains tab sharing workflow |
+
 ### 🎮 Vocal Games (Planned)
 | Feature | Status | Notes |
 |---------|--------|-------|
@@ -188,6 +207,7 @@ vocal-games.html → learn.html
 | 1.2.0 | February 15, 2026 | Legal compliance: updated all footer links to centralized legal.html |
 | 1.2.1 | February 16, 2026 | Bass note fix: pitch-trainer + voice-analyzer — voice floor 65→40Hz, FFT 4096→8192, autocorrelation 0.008→0.004 |
 | 1.3.0 | February 19, 2026 | UATEST updated: added 3 missing pages (voice-analyzer, voice-lab, press), marked completed TODOs |
+| 1.4.0 | February 20, 2026 | Voice Analyzer: 3 input sources (Live Singing, Room/External, Browser Tab), mic settings (noise suppression, echo cancellation), room settings (sensitivity, voice isolation, noise suppression off by default), stream settings (sensitivity, voice isolation filter), dynamic thresholds per source mode |
 
 ---
 

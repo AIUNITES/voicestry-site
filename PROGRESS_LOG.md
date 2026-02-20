@@ -24,5 +24,27 @@
 
 ---
 
+## February 20, 2026
+
+### Voice Analyzer — 3 Input Sources + Settings (v1.4.0)
+- Added Input Source selector with three modes:
+  - **🎤 Live Singing** — mic input for your own voice
+  - **📻 Room / External** — mic tuned for external audio (radio, TV, speaker, another person singing)
+  - **🔊 Browser Tab** — captures audio directly from a YouTube/Spotify/etc. tab
+- **Live Singing settings:** Noise Suppression toggle, Echo Cancellation toggle
+- **Room / External settings:** Sensitivity (Low/Medium/High for distance), Voice Isolation toggle, Noise Suppression toggle (off by default — suppression muffles external audio). Echo cancellation forced off since we want room audio.
+- **Browser Tab settings:** Sensitivity selector (Low/Medium/High), Voice Isolation toggle
+- Stream mode uses `getDisplayMedia()` to capture browser tab audio
+- Room mode uses `getUserMedia()` with echo cancellation disabled + optional vocal isolation filters
+- Voice Isolation filter chain: highpass 80Hz → lowpass 5kHz → presence boost 3kHz (shared by Room and Browser Tab modes)
+- Dynamic thresholds: silence floor, voice gate, and confidence threshold all adjust based on source mode + sensitivity level
+- Source tabs locked while actively listening to prevent mid-session switching
+- Auto-stop when user stops sharing tab in Browser Tab mode
+- Info panel explains tab sharing workflow
+- Button text/icon and hint text update contextually per selected source
+- UATEST_PLAN.md updated with 15-row Voice Analyzer feature matrix
+
+---
+
 *VoiceStry © 2002-2026 Tom. All Rights Reserved.*
 *Part of the AIUNITES network — Site #19*
