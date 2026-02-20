@@ -7,8 +7,8 @@
   <meta name="description" content="Interactive sight reading trainer. Learn to identify notes on the treble and bass clef, practice reading music by sight, and build speed.">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎤</text></svg>">
 
+  <link rel="stylesheet" href="css/style.css">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
       --bg-dark: #0a0a0f;
       --bg-card: #12121a;
@@ -167,17 +167,28 @@
     <div class="nav-links">
       <a href="index.html">Home</a>
       <a href="vrn-method.html">VRN Method</a>
-      <a href="learn.html">Learn VRN</a>
-      <a href="5-gears.html">5 Gears</a>
-      <a href="vocal-gym.html">Vocal Gym</a>
-      <a href="pitch-trainer.html">Pitch Trainer</a>
-      <a href="sight-reading.html" class="active">Sight Reading</a>
-      <a href="voice-lab.html">Voice Lab</a>
-      <a href="voice-analyzer.html">Live Analyzer</a>
-      <a href="sonic-portrait.html">Sonic Portrait</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-btn">Learn ▾</button>
+        <div class="nav-dropdown-menu">
+          <a href="learn.html">Learn VRN</a>
+          <a href="5-gears.html">5 Gears</a>
+          <a href="vocal-gym.html">Vocal Gym</a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-btn active">Tools ▾</button>
+        <div class="nav-dropdown-menu">
+          <a href="pitch-trainer.html">Pitch Trainer</a>
+          <a href="sight-reading.html" class="active">Sight Reading</a>
+          <a href="voice-lab.html">Voice Lab</a>
+          <a href="voice-analyzer.html">Live Analyzer</a>
+          <a href="sonic-portrait.html">Sonic Portrait</a>
+        </div>
+      </div>
       <a href="press.html">Press</a>
     </div>
   </nav>
+  <script>document.querySelectorAll('.nav-dropdown-btn').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();var d=b.parentElement,o=d.classList.contains('open');document.querySelectorAll('.nav-dropdown.open').forEach(function(x){x.classList.remove('open')});if(!o)d.classList.add('open')})});document.addEventListener('click',function(){document.querySelectorAll('.nav-dropdown.open').forEach(function(d){d.classList.remove('open')})})</script>
 
   <section class="hero">
     <a href="vrn-method.html" style="display:inline-block;margin-bottom:18px;color:var(--accent-cyan);text-decoration:none;font-size:0.95rem;opacity:0.8;transition:opacity .2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">← Back to VRN Method</a>
