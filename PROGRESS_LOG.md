@@ -79,6 +79,13 @@
 - Duplicate footer removed from voice-analyzer.html (old class footer with placeholder links)
 - Sonic Portrait added to nav across voice-analyzer.html
 
+### Navigation Consistency Complete (v1.5.2)
+- All 11 pages now have identical 11-link nav: Home | VRN Method | Learn VRN | 5 Gears | Vocal Gym | Pitch Trainer | Sight Reading | Voice Lab | Live Analyzer | Sonic Portrait | Press
+- **Fixed this session:** vocal-gym.html (was missing Voice Lab, Live Analyzer, Sonic Portrait), pitch-trainer.html (same 3 missing), sight-reading.html (same 3 missing)
+- **Fixed prior session:** index.html, vrn-method.html, learn.html, 5-gears.html
+- **Already correct:** voice-lab.html, voice-analyzer.html, sonic-portrait.html, press.html
+- Version bumped to 1.5.2, UATEST_PLAN.md updated
+
 ---
 
 *VoiceStry © 2002-2026 Tom. All Rights Reserved.*
