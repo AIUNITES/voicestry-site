@@ -64,8 +64,7 @@
     .mic-hint{font-size:0.85rem;color:var(--text-secondary);margin-top:10px}
 
     /* Portrait Layout */
-    .portrait-section{max-width:1100px;margin:0 auto;padding:20px;display:none}
-    .portrait-section.show{display:grid;grid-template-columns:1fr 280px;gap:24px;align-items:start}
+    .portrait-section{max-width:1100px;margin:0 auto;padding:20px;display:grid;grid-template-columns:1fr 280px;gap:24px;align-items:start}
 
     /* Canvas */
     .canvas-wrap{position:relative;background:radial-gradient(ellipse at 50% 40%,rgba(157,78,221,0.04) 0%,var(--bg-dark) 70%);border-radius:24px;border:1px solid rgba(255,255,255,0.05);overflow:hidden;aspect-ratio:3/4;max-height:680px}
@@ -95,7 +94,7 @@
 
     @media(max-width:768px){
       .nav{flex-direction:column;gap:12px}.nav-links{flex-wrap:wrap;justify-content:center;gap:12px}
-      .portrait-section.show{grid-template-columns:1fr}
+      .portrait-section{grid-template-columns:1fr}
       .canvas-wrap{max-height:500px}
     }
   </style>
@@ -196,7 +195,7 @@
     </div>
   </div>
 
-  <div class="idle-portrait" id="idlePortrait">
+  <div class="idle-portrait" id="idlePortrait" style="display:none">
     <div class="idle-icon">🎨</div>
     <p>Start listening and a face will emerge from the sound…</p>
   </div>
@@ -400,8 +399,6 @@ startBtn.addEventListener('click',async function(){
 
     isListening=true;
     startBtn.textContent='⏹ Stop';startBtn.classList.add('listening');
-    document.getElementById('portraitSection').classList.add('show');
-    document.getElementById('idlePortrait').style.display='none';
     document.querySelectorAll('.source-tab').forEach(function(t){t.style.opacity='0.5';t.style.pointerEvents='none'});
 
     // Size canvas
@@ -980,11 +977,19 @@ document.getElementById('snapshotBtn').addEventListener('click',function(){
   link.click();
 });
 
-// --- Init: draw idle state ---
+// --- Init: size canvas and draw idle portrait ---
 (function(){
   var c=document.getElementById('portraitCanvas');
   var wrap=c.parentElement;
-  // Initial placeholder - will be properly sized on start
+  c.width=wrap.offsetWidth*2;
+  c.height=wrap.offsetHeight*2;
+  // Draw idle state face with default values
+  S.pitch=60; S.pitchTarget=60;
+  S.vol=0; S.volTarget=0;
+  S.cent=0.3; S.centTarget=0.3;
+  S.harm=0.3; S.harmTarget=0.3;
+  S.gear=2; S.gearTarget=2;
+  drawPortrait();
 })();
 </script>
 </body>
