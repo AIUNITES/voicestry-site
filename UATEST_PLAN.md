@@ -28,6 +28,7 @@
 | Voice Analyzer | voice-analyzer.html | VRN Live Analyzer — mic + stream input modes with settings | ✅ Active |
 | Voice Lab | voice-lab.html | Hear voice types with animated VRN notation | ✅ Active |
 | Press | press.html | Press releases and media page | ✅ Active |
+| Sonic Portrait | sonic-portrait.html | Real-time face drawn by sound vibrations | ✅ New |
 | Vocal Games | vocal-games.html | Gamified VRN challenges | ⬜ Planned |
 
 ---
@@ -76,6 +77,34 @@
 | Dynamic Thresholds | ✅ | Confidence/volume gates adjust per source & sensitivity |
 | Source Lock While Active | ✅ | Tabs disabled during listening |
 | Auto-Stop on Stream End | ✅ | Handles user stopping tab sharing |
+
+### 🦴 Voice Analyzer — Muscle Focus Estimation
+| Feature | Status | Notes |
+|---------|--------|-------|
+| CT (Cricothyroid) Bar | ✅ | Pitch-stretching muscle — higher pitch = more CT |
+| TA (Thyroarytenoid) Bar | ✅ | Fold-thickening muscle — inverse of CT + harmonics |
+| Soft Palate Position | ✅ | Nasal formant energy ratio (200-500Hz band) |
+| Jaw Opening | ✅ | Volume + lower formant energy correlation |
+| Diaphragm Support | ✅ | Volume stability + pitch stability (CV analysis) |
+| Larynx Position | ✅ | Spectral centroid mapping — low = lowered, high = raised |
+| Contextual Hints | ✅ | Dynamic training tips based on dominant muscle engagement |
+| Smoothed Animation | ✅ | Lerp 0.15 for fluid bar transitions |
+
+### 🎨 Sonic Portrait (sonic-portrait.html)
+| Feature | Status | Notes |
+|---------|--------|-------|
+| Canvas Face Renderer | ✅ | Head/eyes/nose/mouth/brows via bezier curves |
+| Pitch → Face Shape | ✅ | Low = wider/rounder, high = taller/narrower |
+| Volume → Mouth Opening | ✅ | Louder = wider open mouth |
+| Brightness → Eye Size | ✅ | Higher centroid = larger/alert eyes |
+| Harmonics → Feature Detail | ✅ | Richer harmonics = more defined iris/pupils |
+| Register → Color & Glow | ✅ | Gear 1-5 palette system (red → purple) |
+| Vibrato → Expression | ✅ | Oscillation in facial features |
+| VRN Zone Glow | ✅ | Head/mask/chest glow zones on face |
+| Ambient Particles | ✅ | Volume-driven floating particles |
+| Snapshot Export | ✅ | Save portrait as PNG |
+| 3 Input Sources | ✅ | Mic / Room / Browser Tab |
+| Stats Panel | ✅ | Note, freq, volume, centroid, harmonics, gear |
 | Info Panel for Stream | ✅ | Explains tab sharing workflow |
 
 ### 🎮 Vocal Games (Planned)

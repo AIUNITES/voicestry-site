@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sonic Portrait — See a Face Drawn by Sound | VoiceStry</title>
+  <meta name="description" content="Watch a face emerge from sonic vibrations in real time. Pitch shapes the face, volume opens the mouth, harmonics define the eyes — every voice draws a unique portrait.">
+  <meta name="keywords" content="sonic portrait, voice visualization, audio face, sound art, vocal resonance, voice to image, generative art">
+  <meta name="author" content="Tom Sans / AIUNITES">
+  <meta property="og:title" content="Sonic Portrait — A Face Drawn by Sound">
+  <meta property="og:description" content="Every voice draws a unique face. Watch sonic vibrations shape a portrait in real time.">
+  <meta property="og:type" content="article">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎨</text></svg>">
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{--bg-dark:#06060c;--bg-card:#0e0e18;--bg-panel:#0a0a14;--text-primary:#fff;--text-secondary:#a0a0b0;--accent-purple:#9d4edd;--accent-cyan:#00d4ff;--accent-gold:#ffd700;--accent-pink:#ff6b9d;--accent-green:#4ade80;--accent-orange:#f59e0b;--accent-red:#ef4444}
+    body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg-dark);color:var(--text-primary);line-height:1.7}
+
+    /* Webring */
+    .aiunites-bar{background:linear-gradient(90deg,#0a0a0f,#1a1a2e);border-bottom:1px solid rgba(99,102,241,.3);padding:8px 0;font-size:12px}.aiunites-bar-content{max-width:1400px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:12px;overflow-x:auto;scrollbar-width:none}.aiunites-bar-content::-webkit-scrollbar{display:none}.aiunites-bar a{color:rgba(255,255,255,.7);text-decoration:none;white-space:nowrap;transition:color .2s}.aiunites-bar a:hover{color:#fff}.aiunites-bar-brand{color:#6366f1!important;font-weight:600}.aiunites-bar-divider{color:rgba(255,255,255,.2)}
+
+    /* Nav */
+    .nav{background:var(--bg-card);padding:15px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,0.1);position:sticky;top:0;z-index:100}
+    .nav-logo{font-size:1.5rem;font-weight:800;text-decoration:none;background:linear-gradient(135deg,var(--accent-green),var(--accent-cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .nav-links{display:flex;gap:22px;flex-wrap:wrap}.nav-links a{color:var(--text-secondary);text-decoration:none;font-size:0.95rem;transition:color 0.3s}.nav-links a:hover,.nav-links a.active{color:var(--accent-cyan)}
+
+    /* Hero */
+    .hero{padding:40px 20px 20px;text-align:center;background:radial-gradient(ellipse at 30% 40%,rgba(157,78,221,0.12) 0%,transparent 50%),radial-gradient(ellipse at 70% 60%,rgba(0,212,255,0.08) 0%,transparent 50%),var(--bg-dark)}
+    .hero h1{font-size:clamp(1.8rem,5vw,3rem);margin-bottom:10px;background:linear-gradient(135deg,#fff,var(--accent-purple),var(--accent-cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero-sub{font-size:1rem;color:var(--text-secondary);max-width:560px;margin:0 auto}
+
+    /* Input Source */
+    .input-source{max-width:740px;margin:0 auto;padding:16px 20px}
+    .input-source-label{font-size:0.75rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;text-align:center}
+    .source-tabs{display:flex;gap:8px;justify-content:center;margin-bottom:12px;flex-wrap:wrap}
+    .source-tab{flex:1;min-width:170px;max-width:220px;padding:12px 14px;border-radius:14px;border:1px solid rgba(255,255,255,0.08);background:var(--bg-card);color:var(--text-secondary);cursor:pointer;transition:all 0.25s;text-align:left;font-family:inherit}
+    .source-tab:hover{border-color:rgba(255,255,255,0.15);background:rgba(255,255,255,0.03)}
+    .source-tab.active{border-color:var(--accent-cyan);background:rgba(0,212,255,0.06)}
+    .source-tab .st-icon{font-size:1.4rem;margin-bottom:4px;display:block}
+    .source-tab .st-title{font-size:0.95rem;font-weight:700;color:var(--text-primary);display:block;margin-bottom:2px}
+    .source-tab .st-desc{font-size:0.72rem;color:var(--text-secondary);line-height:1.4}
+    .source-tab.active .st-title{color:var(--accent-cyan)}
+
+    .source-settings{max-width:740px;margin:0 auto;padding:0 20px}
+    .setting-row-inline{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:var(--bg-panel);border-radius:10px;margin-bottom:6px;border:1px solid rgba(255,255,255,0.04)}
+    .setting-row-inline .sri-label{font-size:0.85rem;color:var(--text-secondary)}
+    .setting-row-inline .sri-hint{font-size:0.7rem;color:rgba(255,255,255,0.25);margin-top:2px}
+    .toggle-sm{position:relative;display:inline-block;width:40px;height:22px}
+    .toggle-sm input{opacity:0;width:0;height:0}
+    .toggle-sm .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:rgba(255,255,255,0.1);border-radius:22px;transition:0.3s}
+    .toggle-sm .slider:before{content:"";position:absolute;height:16px;width:16px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:0.3s}
+    .toggle-sm input:checked+.slider{background:var(--accent-cyan)}
+    .toggle-sm input:checked+.slider:before{transform:translateX(18px)}
+    .stream-info{max-width:740px;margin:6px auto 0;padding:10px 16px;background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.15);border-radius:10px;font-size:0.78rem;color:var(--accent-orange);line-height:1.5;display:none;text-align:center}
+    .stream-info.show{display:block}
+
+    /* Start */
+    .start-section{text-align:center;padding:16px}
+    .start-btn{padding:16px 44px;border-radius:16px;border:none;font-size:1.1rem;font-weight:800;cursor:pointer;transition:all 0.3s;font-family:inherit;color:#fff;background:linear-gradient(135deg,var(--accent-purple),var(--accent-cyan));box-shadow:0 4px 30px rgba(157,78,221,0.3)}
+    .start-btn:hover{transform:translateY(-3px);box-shadow:0 8px 40px rgba(157,78,221,0.5)}
+    .start-btn.listening{background:linear-gradient(135deg,var(--accent-green),var(--accent-cyan));box-shadow:0 4px 30px rgba(74,222,128,0.3);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{box-shadow:0 4px 30px rgba(74,222,128,0.3)}50%{box-shadow:0 4px 40px rgba(74,222,128,0.6)}}
+    .mic-hint{font-size:0.85rem;color:var(--text-secondary);margin-top:10px}
+
+    /* Portrait Layout */
+    .portrait-section{max-width:1100px;margin:0 auto;padding:20px;display:none}
+    .portrait-section.show{display:grid;grid-template-columns:1fr 280px;gap:24px;align-items:start}
+
+    /* Canvas */
+    .canvas-wrap{position:relative;background:radial-gradient(ellipse at 50% 40%,rgba(157,78,221,0.04) 0%,var(--bg-dark) 70%);border-radius:24px;border:1px solid rgba(255,255,255,0.05);overflow:hidden;aspect-ratio:3/4;max-height:680px}
+    canvas#portraitCanvas{width:100%;height:100%;display:block}
+    .canvas-badge{position:absolute;top:16px;left:16px;padding:6px 14px;border-radius:10px;background:rgba(0,0,0,0.6);backdrop-filter:blur(8px);font-size:0.72rem;font-weight:700;color:var(--accent-cyan);letter-spacing:1px;text-transform:uppercase}
+
+    /* Stats Panel */
+    .stats-panel{display:flex;flex-direction:column;gap:16px}
+    .stat-card{background:var(--bg-panel);border-radius:16px;padding:18px;border:1px solid rgba(255,255,255,0.05)}
+    .stat-card-label{font-size:0.7rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
+    .stat-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0}
+    .stat-name{font-size:0.82rem;color:var(--text-secondary)}
+    .stat-val{font-size:0.9rem;font-weight:800;font-family:'Courier New',monospace}
+    .mapping-row{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:0.78rem;color:var(--text-secondary)}
+    .mapping-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+    .mapping-arrow{color:rgba(255,255,255,0.2);font-size:0.7rem}
+    .mapping-target{color:var(--text-primary);font-weight:600}
+
+    /* Snapshot */
+    .snapshot-btn{width:100%;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.1);background:var(--bg-card);color:var(--text-primary);font-size:0.9rem;font-weight:700;cursor:pointer;transition:all 0.2s;font-family:inherit}
+    .snapshot-btn:hover{border-color:var(--accent-purple);background:rgba(157,78,221,0.08)}
+
+    /* Idle */
+    .idle-portrait{text-align:center;padding:60px 20px;color:var(--text-secondary);max-width:500px;margin:0 auto}
+    .idle-portrait .idle-icon{font-size:4rem;margin-bottom:20px;opacity:0.3}
+    .idle-portrait p{font-size:1rem}
+
+    @media(max-width:768px){
+      .nav{flex-direction:column;gap:12px}.nav-links{flex-wrap:wrap;justify-content:center;gap:12px}
+      .portrait-section.show{grid-template-columns:1fr}
+      .canvas-wrap{max-height:500px}
+    }
+  </style>
+</head>
+<body>
+  <div class="aiunites-bar"><div class="aiunites-bar-content"><a href="https://aiunites.github.io/aiunites-site/" class="aiunites-bar-brand">◆ AIUNITES</a><span class="aiunites-bar-divider">|</span><a href="https://aiunites.github.io/aizines-app/">AIZines</a><a href="https://aiunites.github.io/aibyjob-demo/">AIByJob</a><a href="https://aiunites.github.io/redomy-demo/">Redomy</a><a href="https://aiunites.github.io/videobate-site/">VideoBate</a><a href="https://aiunites.github.io/voicestry-site/" style="color:var(--accent-green) !important;font-weight:600;">🎤 VoiceStry</a><a href="https://aiunites.github.io/furnishthings-site/">FurnishThings</a><a href="https://aiunites.github.io/bizstry-site/">BizStry</a><a href="https://aiunites.github.io/aiyhwh-site/">AI YHWH</a><a href="https://aiunites.github.io/cloudsion-site/">Cloudsion</a><a href="https://aiunites.github.io/gameatica-site/">Gameatica</a><a href="https://aiunites.github.io/uptownit-site/">UptownIT</a><a href="https://aiunites.github.io/inthisworld-site/">InThisWorld</a><a href="https://aiunites.github.io/erpise-site/">ERPise</a><a href="https://aiunites.github.io/erpize-site/">ERPize</a><a href="https://aiunites.github.io/cosmostheopera-site/">🌌 COSMOS</a></div></div>
+
+  <nav class="nav"><a href="index.html" class="nav-logo">🎤 VoiceStry</a><div class="nav-links"><a href="index.html">Home</a><a href="vrn-method.html">VRN Method</a><a href="learn.html">Learn VRN</a><a href="5-gears.html">5 Gears</a><a href="voice-analyzer.html">Live Analyzer</a><a href="sonic-portrait.html" class="active">Sonic Portrait</a><a href="voice-lab.html">Voice Lab</a><a href="press.html">Press</a></div></nav>
+
+  <section class="hero">
+    <h1>🎨 Sonic Portrait</h1>
+    <p class="hero-sub">Every voice draws a unique face. Pitch shapes the skull, volume opens the mouth, harmonics define the eyes. Watch a portrait emerge from pure sound.</p>
+  </section>
+
+  <!-- Input Source -->
+  <div class="input-source">
+    <div class="input-source-label">Input Source</div>
+    <div class="source-tabs">
+      <button class="source-tab active" data-source="mic">
+        <span class="st-icon">🎤</span>
+        <span class="st-title">Live Singing</span>
+        <span class="st-desc">Your voice draws the portrait.</span>
+      </button>
+      <button class="source-tab" data-source="room">
+        <span class="st-icon">📻</span>
+        <span class="st-title">Room / External</span>
+        <span class="st-desc">Radio, TV, speaker, or another person.</span>
+      </button>
+      <button class="source-tab" data-source="stream">
+        <span class="st-icon">🔊</span>
+        <span class="st-title">Browser Tab</span>
+        <span class="st-desc">YouTube, Spotify, or any browser audio.</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Settings panels -->
+  <div class="source-settings" id="micSettings">
+    <div class="setting-row-inline">
+      <div><div class="sri-label">Noise Suppression</div><div class="sri-hint">Reduces background noise</div></div>
+      <label class="toggle-sm"><input type="checkbox" id="optNoiseSuppression" checked><span class="slider"></span></label>
+    </div>
+  </div>
+  <div class="source-settings" id="roomSettings" style="display:none">
+    <div class="setting-row-inline">
+      <div><div class="sri-label">Sensitivity</div><div class="sri-hint">Higher = detects quieter audio</div></div>
+      <select id="optRoomSensitivity" style="padding:6px 10px;border-radius:8px;background:var(--bg-dark);border:1px solid rgba(255,255,255,0.1);color:var(--text-primary);font-size:0.85rem;font-family:inherit">
+        <option value="low">Low</option><option value="medium" selected>Medium</option><option value="high">High</option>
+      </select>
+    </div>
+  </div>
+  <div class="source-settings" id="streamSettings" style="display:none">
+    <div class="setting-row-inline">
+      <div><div class="sri-label">Sensitivity</div><div class="sri-hint">Higher = detects quieter vocals in mix</div></div>
+      <select id="optStreamSensitivity" style="padding:6px 10px;border-radius:8px;background:var(--bg-dark);border:1px solid rgba(255,255,255,0.1);color:var(--text-primary);font-size:0.85rem;font-family:inherit">
+        <option value="low">Low</option><option value="medium" selected>Medium</option><option value="high">High</option>
+      </select>
+    </div>
+  </div>
+  <div class="stream-info" id="streamInfo">📺 Click Start and share the browser tab playing audio. The sound from that tab will shape the portrait.</div>
+
+  <div class="start-section">
+    <button class="start-btn" id="startBtn">🎨 Start Portrait</button>
+    <div class="mic-hint" id="micHint">Requires microphone access.</div>
+  </div>
+
+  <!-- Portrait -->
+  <div class="portrait-section" id="portraitSection">
+    <div class="canvas-wrap">
+      <canvas id="portraitCanvas"></canvas>
+      <div class="canvas-badge" id="canvasBadge">Listening…</div>
+    </div>
+    <div class="stats-panel">
+      <!-- Audio Stats -->
+      <div class="stat-card">
+        <div class="stat-card-label">Audio Signal</div>
+        <div class="stat-row"><span class="stat-name">Note</span><span class="stat-val" id="sNote" style="color:var(--accent-gold)">—</span></div>
+        <div class="stat-row"><span class="stat-name">Frequency</span><span class="stat-val" id="sFreq" style="color:var(--text-secondary)">—</span></div>
+        <div class="stat-row"><span class="stat-name">Volume</span><span class="stat-val" id="sVol" style="color:var(--accent-green)">—</span></div>
+        <div class="stat-row"><span class="stat-name">Centroid</span><span class="stat-val" id="sCent" style="color:var(--accent-cyan)">—</span></div>
+        <div class="stat-row"><span class="stat-name">Harmonics</span><span class="stat-val" id="sHarm" style="color:var(--accent-orange)">—</span></div>
+        <div class="stat-row"><span class="stat-name">Gear</span><span class="stat-val" id="sGear" style="color:var(--accent-red)">—</span></div>
+      </div>
+
+      <!-- Mappings -->
+      <div class="stat-card">
+        <div class="stat-card-label">What Shapes the Face</div>
+        <div class="mapping-row"><span class="mapping-dot" style="background:var(--accent-gold)"></span>Pitch <span class="mapping-arrow">→</span> <span class="mapping-target">Face shape</span></div>
+        <div class="mapping-row"><span class="mapping-dot" style="background:var(--accent-green)"></span>Volume <span class="mapping-arrow">→</span> <span class="mapping-target">Mouth opening</span></div>
+        <div class="mapping-row"><span class="mapping-dot" style="background:var(--accent-cyan)"></span>Brightness <span class="mapping-arrow">→</span> <span class="mapping-target">Eye size</span></div>
+        <div class="mapping-row"><span class="mapping-dot" style="background:var(--accent-orange)"></span>Harmonics <span class="mapping-arrow">→</span> <span class="mapping-target">Feature detail</span></div>
+        <div class="mapping-row"><span class="mapping-dot" style="background:var(--accent-purple)"></span>Register <span class="mapping-arrow">→</span> <span class="mapping-target">Color & glow</span></div>
+        <div class="mapping-row"><span class="mapping-dot" style="background:var(--accent-pink)"></span>Vibrato <span class="mapping-arrow">→</span> <span class="mapping-target">Expression tremor</span></div>
+      </div>
+
+      <!-- Snapshot -->
+      <button class="snapshot-btn" id="snapshotBtn">📸 Save Snapshot</button>
+    </div>
+  </div>
+
+  <div class="idle-portrait" id="idlePortrait">
+    <div class="idle-icon">🎨</div>
+    <p>Start listening and a face will emerge from the sound…</p>
+  </div>
+
+  <footer style="background:rgba(0,0,0,0.4);border-top:1px solid rgba(255,255,255,0.1);padding:2rem 1rem;text-align:center;font-family:system-ui,sans-serif;margin-top:2rem;">
+    <p style="color:rgba(255,255,255,0.5);font-size:0.85rem;margin:0 0 0.5rem;">🎨 Sonic Portrait — by VoiceStry</p>
+    <p style="color:rgba(255,255,255,0.35);font-size:0.75rem;margin:0 0 0.75rem;">&copy; 2026 VoiceStry. Part of the <a href="https://aiunites.github.io/aiunites-site/" style="color:#a78bfa;">AIUNITES</a> network</p>
+    <div style="margin-top:1rem;padding-top:0.75rem;border-top:1px solid rgba(255,255,255,0.1);font-size:0.75rem;color:rgba(255,255,255,0.4);text-align:center;">
+      <a href="https://aiunites.github.io/aiunites-site/legal.html#privacy" style="color:rgba(255,255,255,0.4);margin:0 8px;">Privacy Policy</a> &middot;
+      <a href="https://aiunites.github.io/aiunites-site/legal.html#terms" style="color:rgba(255,255,255,0.4);margin:0 8px;">Terms of Service</a> &middot;
+      <a href="https://github.com/AIUNITES/voicestry-site/issues" target="_blank" style="color:rgba(255,255,255,0.4);margin:0 8px;">Developer Feedback</a>
+    </div>
+  </footer>
+
+<script>
+// ============================================================
+// SONIC PORTRAIT ENGINE
+// ============================================================
+
+// --- Note helpers ---
+var NOTE_NAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+function freqToMidi(f){return 12*Math.log2(f/440)+69}
+function midiToNote(m){return NOTE_NAMES[Math.round(m)%12]+(Math.floor(Math.round(m)/12)-1)}
+
+// --- Gear detection (simplified) ---
+function autoGear(midi){
+  if(midi<48) return 1;
+  if(midi<56) return 1;
+  if(midi<63) return 2;
+  if(midi<72) return 3;
+  if(midi<80) return 4;
+  return 5;
+}
+
+// Gear color palettes
+var GEAR_PALETTES = {
+  1: { primary:'#ef4444', secondary:'#f59e0b', glow:'rgba(239,68,68,0.15)', bg:'rgba(239,68,68,0.03)' },
+  2: { primary:'#f59e0b', secondary:'#ffd700', glow:'rgba(245,158,11,0.15)', bg:'rgba(245,158,11,0.03)' },
+  3: { primary:'#ffd700', secondary:'#fff', glow:'rgba(255,215,0,0.2)', bg:'rgba(255,215,0,0.03)' },
+  4: { primary:'#00d4ff', secondary:'#9d4edd', glow:'rgba(0,212,255,0.15)', bg:'rgba(0,212,255,0.03)' },
+  5: { primary:'#9d4edd', secondary:'#ff6b9d', glow:'rgba(157,78,221,0.2)', bg:'rgba(157,78,221,0.03)' }
+};
+
+// --- Audio state ---
+var audioCtx=null, analyserNode=null, micStream=null, isListening=false, rafId=null;
+var inputSource='mic';
+var streamFilters=[];
+
+// Smoothed values for animation
+var S = {
+  pitch:0, pitchTarget:0,
+  vol:0, volTarget:0,
+  cent:0, centTarget:0,
+  harm:0, harmTarget:0,
+  gear:2, gearTarget:2,
+  vibAmp:0, vibTarget:0,
+  vibPhase:0,
+  breathe:0 // ambient breathing animation
+};
+
+// Pitch history for vibrato detection
+var pitchHist=[], vibratoRate=0, vibratoDepth=0;
+
+// Sensitivity thresholds
+var SENSITIVITY={
+  low:{silenceFloor:0.015,voiceGate:0.02},
+  medium:{silenceFloor:0.008,voiceGate:0.012},
+  high:{silenceFloor:0.004,voiceGate:0.006}
+};
+
+function getThresholds(){
+  if(inputSource==='mic') return {silenceFloor:0.008,voiceGate:0.015};
+  var sel = inputSource==='room' ? 'optRoomSensitivity' : 'optStreamSensitivity';
+  var el = document.getElementById(sel);
+  var v = el ? el.value : 'medium';
+  return SENSITIVITY[v]||SENSITIVITY.medium;
+}
+
+// --- Vocal isolation filter chain ---
+function buildVocalIsolation(ctx,src){
+  var hp=ctx.createBiquadFilter();hp.type='highpass';hp.frequency.value=80;hp.Q.value=0.7;
+  var lp=ctx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=5000;lp.Q.value=0.7;
+  var pk=ctx.createBiquadFilter();pk.type='peaking';pk.frequency.value=3000;pk.gain.value=4;pk.Q.value=1.0;
+  src.connect(hp);hp.connect(lp);lp.connect(pk);
+  streamFilters=[hp,lp,pk];
+  return pk;
+}
+
+// --- Pitch detection (autocorrelation) ---
+function detectPitch(buf,sr){
+  var mx=0;for(var i=0;i<buf.length;i++){var a=Math.abs(buf[i]);if(a>mx)mx=a}
+  if(mx<0.01)return -1;
+  var n=new Float32Array(buf.length);for(var i=0;i<buf.length;i++)n[i]=buf[i]/mx;
+  var minP=Math.floor(sr/1200),maxP=Math.floor(sr/40);
+  var bestC=0,bestP=0;
+  for(var p=minP;p<maxP&&p<n.length/2;p++){
+    var c=0;for(var i=0;i<n.length/2;i++)c+=n[i]*n[i+p];
+    if(c>bestC){bestC=c;bestP=p}
+  }
+  if(bestC<n.length*0.004)return -1;
+  return sr/bestP;
+}
+
+// Spectral centroid
+function getCentroid(fd,sr,fft){
+  var ws=0,s=0,bHz=sr/fft;
+  for(var i=1;i<fd.length;i++){ws+=i*bHz*fd[i];s+=fd[i]}
+  return s>0?ws/s:0;
+}
+
+// Harmonic richness
+function getHarmonics(fd,fund,sr,fft){
+  if(fund<=0)return 0;
+  var bHz=sr/fft,fb=Math.round(fund/bHz),fe=0,he=0;
+  for(var i=Math.max(0,fb-2);i<=Math.min(fd.length-1,fb+2);i++)fe+=fd[i]*fd[i];
+  for(var h=2;h<=8;h++){
+    var hb=Math.round(fund*h/bHz);
+    for(var i=Math.max(0,hb-2);i<=Math.min(fd.length-1,hb+2);i++)he+=fd[i]*fd[i];
+  }
+  var t=fe+he;return t>0?he/t:0;
+}
+
+// Volume (RMS)
+function getVol(buf){var s=0;for(var i=0;i<buf.length;i++)s+=buf[i]*buf[i];return Math.sqrt(s/buf.length)}
+
+// Vibrato detection from pitch history
+function detectVibrato(){
+  if(pitchHist.length<12)return;
+  var recent=pitchHist.slice(-20);
+  var mean=0;for(var i=0;i<recent.length;i++)mean+=recent[i];mean/=recent.length;
+  if(mean===0)return;
+  // Convert to cents deviation
+  var cents=[];for(var i=0;i<recent.length;i++)cents.push(1200*Math.log2(recent[i]/mean));
+  // Peak-to-peak amplitude in cents
+  var mn=Infinity,mx=-Infinity;
+  for(var i=0;i<cents.length;i++){if(cents[i]<mn)mn=cents[i];if(cents[i]>mx)mx=cents[i]}
+  vibratoDepth=mx-mn;
+  // Estimate rate by counting zero crossings
+  var crossings=0;
+  for(var i=1;i<cents.length;i++){if(cents[i-1]*cents[i]<0)crossings++}
+  // Rough rate: crossings/2 per (samples/sampleRate) but we're at ~60fps
+  vibratoRate=crossings*1.5; // approximate Hz
+}
+
+// --- Source tab switching ---
+document.querySelectorAll('.source-tab').forEach(function(tab){
+  tab.addEventListener('click',function(){
+    if(isListening)return;
+    document.querySelectorAll('.source-tab').forEach(function(t){t.classList.remove('active')});
+    tab.classList.add('active');
+    inputSource=tab.dataset.source;
+    document.getElementById('micSettings').style.display='none';
+    document.getElementById('roomSettings').style.display='none';
+    document.getElementById('streamSettings').style.display='none';
+    document.getElementById('streamInfo').classList.remove('show');
+    if(inputSource==='stream'){
+      document.getElementById('streamSettings').style.display='block';
+      document.getElementById('streamInfo').classList.add('show');
+      document.getElementById('micHint').textContent='Captures audio from a browser tab.';
+      document.getElementById('startBtn').textContent='🔊 Start Portrait';
+    } else if(inputSource==='room'){
+      document.getElementById('roomSettings').style.display='block';
+      document.getElementById('micHint').textContent='Uses microphone to pick up room audio. Point mic toward the source.';
+      document.getElementById('startBtn').textContent='📻 Start Portrait';
+    } else {
+      document.getElementById('micSettings').style.display='block';
+      document.getElementById('micHint').textContent='Requires microphone access.';
+      document.getElementById('startBtn').textContent='🎨 Start Portrait';
+    }
+  });
+});
+
+// --- Start / Stop ---
+var startBtn=document.getElementById('startBtn');
+startBtn.addEventListener('click',async function(){
+  if(isListening){stopListening();return}
+  try{
+    audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+
+    if(inputSource==='stream'){
+      try{micStream=await navigator.mediaDevices.getDisplayMedia({video:true,audio:true})}
+      catch(e){alert('Tab sharing cancelled.');if(audioCtx)audioCtx.close();return}
+      if(micStream.getAudioTracks().length===0){alert('No audio track. Make sure "Share tab audio" is checked.');micStream.getTracks().forEach(function(t){t.stop()});audioCtx.close();return}
+      micStream.getVideoTracks().forEach(function(t){t.stop()});
+      var src=audioCtx.createMediaStreamSource(micStream);
+      analyserNode=audioCtx.createAnalyser();analyserNode.fftSize=8192;analyserNode.smoothingTimeConstant=0.75;
+      var last=buildVocalIsolation(audioCtx,src);last.connect(analyserNode);
+      micStream.getAudioTracks()[0].addEventListener('ended',function(){stopListening()});
+    } else if(inputSource==='room'){
+      micStream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:true}});
+      var src=audioCtx.createMediaStreamSource(micStream);
+      analyserNode=audioCtx.createAnalyser();analyserNode.fftSize=8192;analyserNode.smoothingTimeConstant=0.75;
+      var last=buildVocalIsolation(audioCtx,src);last.connect(analyserNode);
+    } else {
+      var ns=document.getElementById('optNoiseSuppression').checked;
+      micStream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:ns,autoGainControl:true}});
+      var src=audioCtx.createMediaStreamSource(micStream);
+      analyserNode=audioCtx.createAnalyser();analyserNode.fftSize=8192;analyserNode.smoothingTimeConstant=0.8;
+      src.connect(analyserNode);
+    }
+
+    isListening=true;
+    startBtn.textContent='⏹ Stop';startBtn.classList.add('listening');
+    document.getElementById('portraitSection').classList.add('show');
+    document.getElementById('idlePortrait').style.display='none';
+    document.querySelectorAll('.source-tab').forEach(function(t){t.style.opacity='0.5';t.style.pointerEvents='none'});
+
+    // Size canvas
+    var canvas=document.getElementById('portraitCanvas');
+    var wrap=canvas.parentElement;
+    canvas.width=wrap.offsetWidth*2;
+    canvas.height=wrap.offsetHeight*2;
+
+    processAudio();
+  } catch(e){
+    alert('Could not access audio: '+e.message);
+    if(audioCtx)audioCtx.close();
+  }
+});
+
+function stopListening(){
+  isListening=false;
+  if(micStream)micStream.getTracks().forEach(function(t){t.stop()});
+  if(rafId)cancelAnimationFrame(rafId);
+  streamFilters=[];
+  if(audioCtx)audioCtx.close();
+  startBtn.textContent='🎨 Start Portrait';startBtn.classList.remove('listening');
+  document.querySelectorAll('.source-tab').forEach(function(t){t.style.opacity='1';t.style.pointerEvents='auto'});
+}
+
+// --- Main audio loop ---
+function processAudio(){
+  if(!isListening)return;
+  rafId=requestAnimationFrame(processAudio);
+
+  var bufLen=analyserNode.fftSize;
+  var timeBuf=new Float32Array(bufLen);
+  var freqBuf=new Uint8Array(analyserNode.frequencyBinCount);
+  analyserNode.getFloatTimeDomainData(timeBuf);
+  analyserNode.getByteFrequencyData(freqBuf);
+
+  var sr=audioCtx.sampleRate;
+  var freq=detectPitch(timeBuf,sr);
+  var vol=getVol(timeBuf);
+  var cent=getCentroid(freqBuf,sr,bufLen);
+  var harm=freq>0?getHarmonics(freqBuf,freq,sr,bufLen):0;
+  var thresh=getThresholds();
+
+  if(freq>0 && vol>thresh.voiceGate){
+    var midi=freqToMidi(freq);
+    S.pitchTarget=midi;
+    S.volTarget=Math.min(1,vol*8);
+    S.centTarget=Math.min(1,cent/4000);
+    S.harmTarget=harm;
+    S.gearTarget=autoGear(midi);
+
+    pitchHist.push(freq);
+    if(pitchHist.length>30)pitchHist.shift();
+    detectVibrato();
+    S.vibTarget=Math.min(1,vibratoDepth/60);
+
+    // Update stats
+    document.getElementById('sNote').textContent=midiToNote(midi);
+    document.getElementById('sFreq').textContent=Math.round(freq)+' Hz';
+    document.getElementById('sVol').textContent=Math.round(vol*1000)/10+'%';
+    document.getElementById('sCent').textContent=Math.round(cent)+' Hz';
+    document.getElementById('sHarm').textContent=Math.round(harm*100)+'%';
+    document.getElementById('sGear').textContent='Gear '+S.gearTarget;
+  } else if(vol<thresh.silenceFloor) {
+    S.volTarget=0;
+    S.vibTarget=0;
+  }
+
+  // Smooth everything
+  var lerp=0.12;
+  S.pitch+=(S.pitchTarget-S.pitch)*lerp;
+  S.vol+=(S.volTarget-S.vol)*lerp;
+  S.cent+=(S.centTarget-S.cent)*lerp;
+  S.harm+=(S.harmTarget-S.harm)*lerp;
+  S.gear+=(S.gearTarget-S.gear)*0.05;
+  S.vibAmp+=(S.vibTarget-S.vibAmp)*0.08;
+  S.vibPhase+=vibratoRate*0.1;
+  S.breathe+=0.015;
+
+  drawPortrait();
+}
+
+// ============================================================
+// PORTRAIT RENDERER
+// ============================================================
+
+function drawPortrait(){
+  var canvas=document.getElementById('portraitCanvas');
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width, H=canvas.height;
+  var cx=W/2, cy=H*0.42;
+
+  // Gear color
+  var gIdx=Math.round(S.gear);
+  if(gIdx<1)gIdx=1;if(gIdx>5)gIdx=5;
+  var pal=GEAR_PALETTES[gIdx];
+
+  // Derived values
+  var pitchNorm=Math.max(0,Math.min(1,(S.pitch-40)/50)); // 0=low, 1=high
+  var volume=S.vol;
+  var brightness=S.cent;
+  var richness=S.harm;
+  var vibOsc=Math.sin(S.vibPhase)*S.vibAmp;
+  var breathOsc=Math.sin(S.breathe)*0.008;
+
+  // --- Clear with subtle gradient ---
+  ctx.clearRect(0,0,W,H);
+  var bg=ctx.createRadialGradient(cx,cy*0.8,0,cx,cy*0.8,H*0.7);
+  bg.addColorStop(0,pal.bg);
+  bg.addColorStop(1,'rgba(6,6,12,1)');
+  ctx.fillStyle=bg;
+  ctx.fillRect(0,0,W,H);
+
+  // Scale factor
+  var sc=Math.min(W,H)/600;
+
+  // --- HEAD SHAPE ---
+  // Low pitch = wider rounder face, high pitch = taller narrower
+  var headW=(130+pitchNorm*(-30)+volume*15+breathOsc*200)*sc;
+  var headH=(160+pitchNorm*30-volume*5)*sc;
+  var jawW=headW*(0.85-pitchNorm*0.15); // narrower jaw for higher pitch
+
+  ctx.save();
+  ctx.translate(cx,cy);
+
+  // Head glow
+  var glowR=Math.max(headW,headH)*1.3;
+  var glow=ctx.createRadialGradient(0,0,glowR*0.3,0,0,glowR);
+  glow.addColorStop(0,pal.glow);
+  glow.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=glow;
+  ctx.fillRect(-glowR,-glowR,glowR*2,glowR*2);
+
+  // Head outline with bezier for organic shape
+  ctx.beginPath();
+  // Start at top center
+  ctx.moveTo(0,-headH);
+  // Right side of head
+  ctx.bezierCurveTo(headW*0.7,-headH, headW,-headH*0.5, headW,-headH*0.1);
+  // Right cheek to jaw
+  ctx.bezierCurveTo(headW,headH*0.2, jawW,headH*0.65, jawW*0.4,headH*0.85);
+  // Chin
+  ctx.bezierCurveTo(jawW*0.15,headH*(0.95+volume*0.05+vibOsc*0.02), -jawW*0.15,headH*(0.95+volume*0.05+vibOsc*0.02), -jawW*0.4,headH*0.85);
+  // Left jaw to cheek
+  ctx.bezierCurveTo(-jawW,headH*0.65, -headW,headH*0.2, -headW,-headH*0.1);
+  // Left side to top
+  ctx.bezierCurveTo(-headW,-headH*0.5, -headW*0.7,-headH, 0,-headH);
+  ctx.closePath();
+
+  // Fill
+  var headGrad=ctx.createLinearGradient(0,-headH,0,headH);
+  headGrad.addColorStop(0,'rgba(25,22,35,0.9)');
+  headGrad.addColorStop(0.5,'rgba(20,18,30,0.95)');
+  headGrad.addColorStop(1,'rgba(15,12,22,0.9)');
+  ctx.fillStyle=headGrad;
+  ctx.fill();
+
+  // Outline
+  ctx.strokeStyle=pal.primary;
+  ctx.lineWidth=1.5*sc;
+  ctx.globalAlpha=0.4+volume*0.4;
+  ctx.stroke();
+  ctx.globalAlpha=1;
+
+  // --- EYES ---
+  var eyeSpread=(38+pitchNorm*(-5))*sc;
+  var eyeY=(-headH*0.15)*1;
+  var eyeW=(18+brightness*14+richness*6)*sc;
+  var eyeH=(8+brightness*10+volume*4)*sc;
+  var pupilR=(3+richness*5)*sc;
+
+  // Left eye
+  drawEye(ctx,-eyeSpread,eyeY,eyeW,eyeH,pupilR,pal,sc,vibOsc);
+  // Right eye
+  drawEye(ctx,eyeSpread,eyeY,eyeW,eyeH,pupilR,pal,sc,vibOsc);
+
+  // --- EYEBROWS ---
+  var browY=eyeY-eyeH*1.6;
+  var browLen=eyeW*1.4;
+  var browLift=volume*6*sc+vibOsc*3*sc;
+  ctx.strokeStyle=pal.primary;
+  ctx.lineWidth=2.5*sc;
+  ctx.globalAlpha=0.5+richness*0.3;
+  // Left brow
+  ctx.beginPath();
+  ctx.moveTo(-eyeSpread-browLen*0.5,browY+browLift*0.3);
+  ctx.quadraticCurveTo(-eyeSpread,browY-browLift,-eyeSpread+browLen*0.5,browY);
+  ctx.stroke();
+  // Right brow
+  ctx.beginPath();
+  ctx.moveTo(eyeSpread-browLen*0.5,browY);
+  ctx.quadraticCurveTo(eyeSpread,browY-browLift,eyeSpread+browLen*0.5,browY+browLift*0.3);
+  ctx.stroke();
+  ctx.globalAlpha=1;
+
+  // --- NOSE ---
+  var noseLen=(25+pitchNorm*5)*sc;
+  var noseW=(8+volume*4)*sc;
+  ctx.strokeStyle=pal.primary;
+  ctx.lineWidth=1.2*sc;
+  ctx.globalAlpha=0.3+richness*0.2;
+  ctx.beginPath();
+  ctx.moveTo(0,eyeY+eyeH*2);
+  ctx.lineTo(-noseW,eyeY+eyeH*2+noseLen);
+  ctx.moveTo(0,eyeY+eyeH*2);
+  ctx.lineTo(noseW,eyeY+eyeH*2+noseLen);
+  // Nostrils hint
+  ctx.moveTo(-noseW,eyeY+eyeH*2+noseLen);
+  ctx.quadraticCurveTo(0,eyeY+eyeH*2+noseLen+3*sc,noseW,eyeY+eyeH*2+noseLen);
+  ctx.stroke();
+  ctx.globalAlpha=1;
+
+  // --- MOUTH ---
+  var mouthY=headH*0.45+vibOsc*5*sc;
+  var mouthW=(20+pitchNorm*10+volume*20)*sc;
+  var mouthOpen=(2+volume*35)*sc;
+  var mouthCurve=pitchNorm*8*sc; // higher pitch = slight smile
+
+  ctx.beginPath();
+  // Upper lip
+  ctx.moveTo(-mouthW,mouthY);
+  ctx.quadraticCurveTo(-mouthW*0.3,mouthY-mouthCurve-3*sc,0,mouthY-mouthCurve);
+  ctx.quadraticCurveTo(mouthW*0.3,mouthY-mouthCurve-3*sc,mouthW,mouthY);
+  // Lower lip
+  ctx.quadraticCurveTo(mouthW*0.5,mouthY+mouthOpen,0,mouthY+mouthOpen+mouthCurve*0.3);
+  ctx.quadraticCurveTo(-mouthW*0.5,mouthY+mouthOpen,-mouthW,mouthY);
+  ctx.closePath();
+
+  // Mouth fill when open
+  if(volume>0.05){
+    var mGrad=ctx.createRadialGradient(0,mouthY+mouthOpen*0.3,0,0,mouthY+mouthOpen*0.3,mouthOpen*1.5);
+    mGrad.addColorStop(0,'rgba(20,5,10,0.95)');
+    mGrad.addColorStop(1,'rgba(40,10,20,0.6)');
+    ctx.fillStyle=mGrad;
+    ctx.fill();
+  }
+  ctx.strokeStyle=pal.primary;
+  ctx.lineWidth=1.5*sc;
+  ctx.globalAlpha=0.5+volume*0.4;
+  ctx.stroke();
+  ctx.globalAlpha=1;
+
+  // --- RESONANCE GLOW ZONES ---
+  // Head resonance (forehead) — gears 3-5
+  if(gIdx>=3){
+    var headGlowA=0.08+(gIdx-3)*0.06;
+    var hg=ctx.createRadialGradient(0,-headH*0.7,0,0,-headH*0.7,headW*0.8);
+    hg.addColorStop(0,'rgba(157,78,221,'+headGlowA+')');
+    hg.addColorStop(1,'rgba(157,78,221,0)');
+    ctx.fillStyle=hg;
+    ctx.fillRect(-headW,-headH*1.2,headW*2,headH);
+  }
+
+  // Nasal/mask (cheekbones) — brightness indicator
+  if(brightness>0.3){
+    var maskA=Math.min(0.15,(brightness-0.3)*0.3);
+    [-1,1].forEach(function(side){
+      var mg=ctx.createRadialGradient(side*eyeSpread*0.8,eyeY+eyeH*3,0,side*eyeSpread*0.8,eyeY+eyeH*3,25*sc);
+      mg.addColorStop(0,'rgba(0,212,255,'+maskA+')');
+      mg.addColorStop(1,'rgba(0,212,255,0)');
+      ctx.fillStyle=mg;
+      ctx.fillRect(side*eyeSpread*0.8-30*sc,eyeY+eyeH,60*sc,50*sc);
+    });
+  }
+
+  // Chest resonance (chin/neck) — gears 1-2
+  if(gIdx<=2){
+    var chestA=0.06+(2-gIdx)*0.05;
+    var cg=ctx.createRadialGradient(0,headH*1.1,0,0,headH*1.1,headW*0.9);
+    cg.addColorStop(0,'rgba(239,68,68,'+chestA+')');
+    cg.addColorStop(1,'rgba(239,68,68,0)');
+    ctx.fillStyle=cg;
+    ctx.fillRect(-headW,headH*0.6,headW*2,headH);
+  }
+
+  ctx.restore();
+
+  // --- AMBIENT PARTICLES ---
+  if(volume>0.05){
+    var numP=Math.floor(volume*15+richness*10);
+    for(var i=0;i<numP;i++){
+      var angle=S.breathe*2+i*1.618;
+      var dist=(headW*1.5+Math.sin(angle*3+S.breathe)*30)*sc/sc;
+      var px=cx+Math.cos(angle)*dist*sc;
+      var py=cy+Math.sin(angle)*dist*sc*0.8;
+      var pSize=(1+Math.random()*2)*sc;
+      ctx.beginPath();
+      ctx.arc(px,py,pSize,0,Math.PI*2);
+      ctx.fillStyle=pal.primary;
+      ctx.globalAlpha=0.1+Math.random()*0.2;
+      ctx.fill();
+    }
+    ctx.globalAlpha=1;
+  }
+
+  // Badge update
+  var badge=document.getElementById('canvasBadge');
+  if(volume>0.05 && S.pitchTarget>0){
+    badge.textContent=midiToNote(Math.round(S.pitch))+' • Gear '+gIdx;
+    badge.style.color=pal.primary;
+  } else {
+    badge.textContent='Listening…';
+    badge.style.color='var(--accent-cyan)';
+  }
+}
+
+// --- Draw a single eye ---
+function drawEye(ctx,x,y,w,h,pupilR,pal,sc,vib){
+  // Eye white
+  ctx.beginPath();
+  ctx.ellipse(x,y+vib*2*sc,w,h,0,0,Math.PI*2);
+  ctx.fillStyle='rgba(200,200,220,0.06)';
+  ctx.fill();
+  ctx.strokeStyle=pal.primary;
+  ctx.lineWidth=1.2*sc;
+  ctx.globalAlpha=0.5;
+  ctx.stroke();
+  ctx.globalAlpha=1;
+
+  // Iris
+  var irisR=Math.min(w*0.55,h*0.9);
+  var iGrad=ctx.createRadialGradient(x,y+vib*2*sc,pupilR*0.5,x,y+vib*2*sc,irisR);
+  iGrad.addColorStop(0,pal.primary);
+  iGrad.addColorStop(0.6,pal.secondary);
+  iGrad.addColorStop(1,'rgba(0,0,0,0.3)');
+  ctx.beginPath();
+  ctx.arc(x,y+vib*2*sc,irisR,0,Math.PI*2);
+  ctx.fillStyle=iGrad;
+  ctx.globalAlpha=0.7;
+  ctx.fill();
+  ctx.globalAlpha=1;
+
+  // Pupil
+  ctx.beginPath();
+  ctx.arc(x,y+vib*2*sc,pupilR,0,Math.PI*2);
+  ctx.fillStyle='#050510';
+  ctx.fill();
+
+  // Highlight
+  ctx.beginPath();
+  ctx.arc(x-w*0.2,y-h*0.2+vib*2*sc,pupilR*0.4,0,Math.PI*2);
+  ctx.fillStyle='rgba(255,255,255,0.6)';
+  ctx.fill();
+}
+
+// --- Snapshot ---
+document.getElementById('snapshotBtn').addEventListener('click',function(){
+  var canvas=document.getElementById('portraitCanvas');
+  var link=document.createElement('a');
+  link.download='sonic-portrait-'+Date.now()+'.png';
+  link.href=canvas.toDataURL('image/png');
+  link.click();
+});
+
+// --- Init: draw idle state ---
+(function(){
+  var c=document.getElementById('portraitCanvas');
+  var wrap=c.parentElement;
+  // Initial placeholder - will be properly sized on start
+})();
+</script>
+</body>
+</html>

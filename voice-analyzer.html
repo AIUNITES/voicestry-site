@@ -177,6 +177,17 @@
     .style-traits{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
     .style-trait{padding:4px 10px;border-radius:8px;font-size:0.72rem;font-weight:700;background:rgba(157,78,221,0.1);color:var(--accent-purple);border:1px solid rgba(157,78,221,0.15)}
 
+    /* Muscle Focus Panel */
+    .muscle-panel{background:var(--bg-panel);border-radius:18px;padding:22px;border:1px solid rgba(255,255,255,0.05);transition:border-color 0.3s}
+    .muscle-panel.active{border-color:rgba(74,222,128,0.2)}
+    .muscle-panel-label{font-size:0.75rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
+    .muscle-row{display:flex;align-items:center;gap:10px;padding:6px 0}
+    .muscle-name{font-size:0.78rem;color:var(--text-secondary);min-width:90px;text-align:right}
+    .muscle-bar-track{flex:1;height:7px;background:rgba(255,255,255,0.05);border-radius:7px;overflow:hidden;position:relative}
+    .muscle-bar-fill{height:100%;border-radius:7px;transition:width 0.2s ease,background 0.3s}
+    .muscle-pct{font-size:0.7rem;font-family:'Courier New',monospace;color:var(--text-secondary);min-width:32px;text-align:right}
+    .muscle-hint{font-size:0.7rem;color:rgba(255,255,255,0.2);margin-top:8px;line-height:1.5;padding:8px 12px;background:rgba(255,255,255,0.015);border-radius:8px}
+
     /* Idle state */
     .idle-state{text-align:center;padding:40px 20px;color:var(--text-secondary)}
     .idle-state .idle-icon{font-size:3rem;margin-bottom:15px;opacity:0.4}
@@ -196,7 +207,7 @@
 <body>
   <div class="aiunites-bar"><div class="aiunites-bar-content"><a href="https://aiunites.github.io/aiunites-site/" class="aiunites-bar-brand">◆ AIUNITES</a><span class="aiunites-bar-divider">|</span><a href="https://aiunites.github.io/aizines-app/">AIZines</a><a href="https://aiunites.github.io/aibyjob-demo/">AIByJob</a><a href="https://aiunites.github.io/redomy-demo/">Redomy</a><a href="https://aiunites.github.io/videobate-site/">VideoBate</a><a href="https://aiunites.github.io/voicestry-site/" style="color:var(--accent-green) !important;font-weight:600;">🎤 VoiceStry</a><a href="https://aiunites.github.io/furnishthings-site/">FurnishThings</a><a href="https://aiunites.github.io/bizstry-site/">BizStry</a><a href="https://aiunites.github.io/aiyhwh-site/">AI YHWH</a><a href="https://aiunites.github.io/cloudsion-site/">Cloudsion</a><a href="https://aiunites.github.io/gameatica-site/">Gameatica</a><a href="https://aiunites.github.io/uptownit-site/">UptownIT</a><a href="https://aiunites.github.io/inthisworld-site/">InThisWorld</a><a href="https://aiunites.github.io/erpise-site/">ERPise</a><a href="https://aiunites.github.io/erpize-site/">ERPize</a><a href="https://aiunites.github.io/cosmostheopera-site/">🌌 COSMOS</a></div></div>
 
-  <nav class="nav"><a href="index.html" class="nav-logo">🎤 VoiceStry</a><div class="nav-links"><a href="index.html">Home</a><a href="vrn-method.html">VRN Method</a><a href="learn.html">Learn VRN</a><a href="5-gears.html">5 Gears</a><a href="vocal-gym.html">Vocal Gym</a><a href="pitch-trainer.html">Pitch Trainer</a><a href="sight-reading.html">Sight Reading</a><a href="voice-lab.html">Voice Lab</a><a href="voice-analyzer.html" class="active">Live Analyzer</a><a href="press.html">Press</a></div></nav>
+  <nav class="nav"><a href="index.html" class="nav-logo">🎤 VoiceStry</a><div class="nav-links"><a href="index.html">Home</a><a href="vrn-method.html">VRN Method</a><a href="learn.html">Learn VRN</a><a href="5-gears.html">5 Gears</a><a href="vocal-gym.html">Vocal Gym</a><a href="pitch-trainer.html">Pitch Trainer</a><a href="sight-reading.html">Sight Reading</a><a href="voice-lab.html">Voice Lab</a><a href="voice-analyzer.html" class="active">Live Analyzer</a><a href="sonic-portrait.html">Sonic Portrait</a><a href="press.html">Press</a></div></nav>
 
   <section class="hero">
     <h1>🎙️ VRN Live Analyzer</h1>
@@ -364,6 +375,44 @@
             <div class="idle-icon">🎤</div>
             <p>Start singing and your VRN will appear here...</p>
           </div>
+        </div>
+      </div>
+
+      <!-- Muscle Focus -->
+      <div class="muscle-panel" id="musclePanel">
+        <div class="muscle-panel-label">Muscle Focus Estimation</div>
+        <div id="muscleContent">
+          <div class="muscle-row">
+            <span class="muscle-name">CT (Stretch)</span>
+            <div class="muscle-bar-track"><div class="muscle-bar-fill" id="mCT" style="width:0%;background:var(--accent-cyan)"></div></div>
+            <span class="muscle-pct" id="mCTpct">—</span>
+          </div>
+          <div class="muscle-row">
+            <span class="muscle-name">TA (Thick)</span>
+            <div class="muscle-bar-track"><div class="muscle-bar-fill" id="mTA" style="width:0%;background:var(--accent-red)"></div></div>
+            <span class="muscle-pct" id="mTApct">—</span>
+          </div>
+          <div class="muscle-row">
+            <span class="muscle-name">Soft Palate</span>
+            <div class="muscle-bar-track"><div class="muscle-bar-fill" id="mPalate" style="width:0%;background:var(--accent-green)"></div></div>
+            <span class="muscle-pct" id="mPalatepct">—</span>
+          </div>
+          <div class="muscle-row">
+            <span class="muscle-name">Jaw Opening</span>
+            <div class="muscle-bar-track"><div class="muscle-bar-fill" id="mJaw" style="width:0%;background:var(--accent-orange)"></div></div>
+            <span class="muscle-pct" id="mJawpct">—</span>
+          </div>
+          <div class="muscle-row">
+            <span class="muscle-name">Diaphragm</span>
+            <div class="muscle-bar-track"><div class="muscle-bar-fill" id="mDiaph" style="width:0%;background:var(--accent-gold)"></div></div>
+            <span class="muscle-pct" id="mDiaphpct">—</span>
+          </div>
+          <div class="muscle-row">
+            <span class="muscle-name">Larynx Pos.</span>
+            <div class="muscle-bar-track"><div class="muscle-bar-fill" id="mLarynx" style="width:0%;background:var(--accent-purple)"></div></div>
+            <span class="muscle-pct" id="mLarynxpct">—</span>
+          </div>
+          <div class="muscle-hint" id="muscleHint">Sing a sustained note to see estimated muscle engagement…</div>
         </div>
       </div>
 
@@ -1031,6 +1080,111 @@ function updateVoiceConfUI(conf) {
 var rawFreqHistory = [];
 var rawFreqCount = 0;
 
+// --- Muscle Focus Estimation ---
+// Smoothed muscle values
+var muscleSmooth = { ct:0, ta:0, palate:0, jaw:0, diaph:0, larynx:0 };
+var volHistory = []; // for diaphragm stability
+
+function estimateMuscleFocus(midi, freq, vol, centroid, harmonics, gear, freqData, sampleRate, fftSize) {
+  // --- CT (Cricothyroid) = pitch-stretching muscle ---
+  // Higher pitch within voice type = more CT activation
+  // Normalize MIDI 40-85 to 0-100
+  var ctRaw = Math.max(0, Math.min(100, ((midi - 40) / 45) * 100));
+
+  // --- TA (Thyroarytenoid) = fold-thickening muscle ---
+  // Inverse of CT, boosted by chest resonance / lower harmonics
+  var taRaw = Math.max(0, 100 - ctRaw + harmonics * 20);
+  taRaw = Math.min(100, taRaw);
+
+  // --- Soft Palate (velum) position ---
+  // Raised palate = less nasal = higher value
+  // Estimate: check energy ratio in nasal formant band (~250-450Hz) vs total
+  var binHz = sampleRate / fftSize;
+  var nasalEnergy = 0, totalVoice = 0;
+  var nasalLo = Math.floor(200 / binHz), nasalHi = Math.ceil(500 / binHz);
+  var voiceLo = Math.floor(80 / binHz), voiceHi = Math.ceil(5000 / binHz);
+  for (var i = voiceLo; i <= Math.min(voiceHi, freqData.length - 1); i++) {
+    totalVoice += freqData[i];
+    if (i >= nasalLo && i <= nasalHi) nasalEnergy += freqData[i];
+  }
+  var nasalRatio = totalVoice > 0 ? nasalEnergy / totalVoice : 0;
+  // High nasal ratio = lowered palate (nasal), so invert for "palate raised" indicator
+  var palateRaw = Math.max(0, Math.min(100, (1 - nasalRatio * 4) * 100));
+
+  // --- Jaw Opening ---
+  // Correlated with volume and first formant energy (lower formants stronger = wider jaw)
+  var jawRaw = Math.min(100, vol * 300 + (gear <= 2 ? 20 : 0));
+
+  // --- Diaphragm Support ---
+  // Steady volume + steady pitch = good breath support
+  volHistory.push(vol);
+  if (volHistory.length > 30) volHistory.shift();
+  var volStability = 0;
+  if (volHistory.length >= 8) {
+    var vMean = 0;
+    for (var i = 0; i < volHistory.length; i++) vMean += volHistory[i];
+    vMean /= volHistory.length;
+    if (vMean > 0.01) {
+      var vVar = 0;
+      for (var i = 0; i < volHistory.length; i++) {
+        var d = volHistory[i] - vMean;
+        vVar += d * d;
+      }
+      vVar = Math.sqrt(vVar / volHistory.length) / vMean; // coefficient of variation
+      volStability = Math.max(0, 1 - vVar * 5); // lower CV = better support
+    }
+  }
+  var pitchStab = getPitchStability(rawFreqHistory, rawFreqCount);
+  var diaphRaw = Math.min(100, (volStability * 60 + pitchStab * 40));
+
+  // --- Larynx Position ---
+  // Low centroid = lowered larynx (dark/warm), high centroid = raised (bright)
+  // Normalize centroid: 500Hz=very low, 3000Hz=very high
+  var larynxRaw = Math.max(0, Math.min(100, ((centroid - 500) / 2500) * 100));
+
+  // Smooth values
+  var lerpM = 0.15;
+  muscleSmooth.ct += (ctRaw - muscleSmooth.ct) * lerpM;
+  muscleSmooth.ta += (taRaw - muscleSmooth.ta) * lerpM;
+  muscleSmooth.palate += (palateRaw - muscleSmooth.palate) * lerpM;
+  muscleSmooth.jaw += (jawRaw - muscleSmooth.jaw) * lerpM;
+  muscleSmooth.diaph += (diaphRaw - muscleSmooth.diaph) * lerpM;
+  muscleSmooth.larynx += (larynxRaw - muscleSmooth.larynx) * lerpM;
+
+  // Update UI
+  updateMuscleUI();
+}
+
+function updateMuscleUI() {
+  var m = muscleSmooth;
+  var pairs = [
+    ['mCT', 'mCTpct', m.ct, 'var(--accent-cyan)'],
+    ['mTA', 'mTApct', m.ta, 'var(--accent-red)'],
+    ['mPalate', 'mPalatepct', m.palate, 'var(--accent-green)'],
+    ['mJaw', 'mJawpct', m.jaw, 'var(--accent-orange)'],
+    ['mDiaph', 'mDiaphpct', m.diaph, 'var(--accent-gold)'],
+    ['mLarynx', 'mLarynxpct', m.larynx, 'var(--accent-purple)']
+  ];
+  for (var i = 0; i < pairs.length; i++) {
+    var bar = document.getElementById(pairs[i][0]);
+    var pct = document.getElementById(pairs[i][1]);
+    var val = Math.round(pairs[i][2]);
+    bar.style.width = val + '%';
+    pct.textContent = val + '%';
+  }
+  document.getElementById('musclePanel').classList.add('active');
+
+  // Contextual hint
+  var hint = document.getElementById('muscleHint');
+  if (m.ct > 70) hint.textContent = 'High CT stretch — vocal folds are thin and elongated. Typical of head voice and upper range.';
+  else if (m.ta > 70) hint.textContent = 'Strong TA engagement — thick fold vibration. Rich chest resonance, powerful lower register.';
+  else if (m.diaph > 75) hint.textContent = 'Excellent breath support — steady airflow from the diaphragm. This stability enables clean tone.';
+  else if (m.palate < 30) hint.textContent = 'Lowered soft palate detected — nasal resonance is prominent. Raise the palate for a more open sound.';
+  else if (m.larynx > 75) hint.textContent = 'Raised larynx — brighter, thinner tone. Try yawning gently to lower the larynx for warmth.';
+  else if (m.larynx < 25) hint.textContent = 'Lowered larynx — dark, warm tone quality. Common in classical technique and deep chest voice.';
+  else hint.textContent = 'Balanced muscle engagement — CT and TA are sharing the workload in a mixed-voice coordination.';
+}
+
 // --- Main Loop ---
 function processAudio() {
   if (!isListening) return;
@@ -1121,6 +1275,9 @@ function processAudio() {
     if (pitchHistory.length >= 30) {
       detectAndDisplayStyle(centroid, harmonics, volume, gear, voiceType);
     }
+
+    // Muscle focus estimation
+    estimateMuscleFocus(midi, freq, volume, centroid, harmonics, gear, freqBuf, sampleRate, bufLen);
   } else {
     if (volume < thresholds.silenceFloor) {
       document.getElementById('pitchNote').textContent = '\u2014';
