@@ -9,7 +9,7 @@
 | **Custom Domains** | voicestry.com, vrnmethod.com |
 | **Local Path** | C:/Users/Tom/Documents/GitHub/voicestry-site |
 | **Last Updated** | February 20, 2026 |
-| **Version** | 1.4.0 |
+| **Version** | 1.5.0 |
 | **Based On** | Custom (content from COSMOS the OPERA) |
 
 ---
@@ -236,7 +236,8 @@ vocal-games.html → learn.html
 | 1.2.0 | February 15, 2026 | Legal compliance: updated all footer links to centralized legal.html |
 | 1.2.1 | February 16, 2026 | Bass note fix: pitch-trainer + voice-analyzer — voice floor 65→40Hz, FFT 4096→8192, autocorrelation 0.008→0.004 |
 | 1.3.0 | February 19, 2026 | UATEST updated: added 3 missing pages (voice-analyzer, voice-lab, press), marked completed TODOs |
-| 1.4.0 | February 20, 2026 | Voice Analyzer: 3 input sources (Live Singing, Room/External, Browser Tab), mic settings (noise suppression, echo cancellation), room settings (sensitivity, voice isolation, noise suppression off by default), stream settings (sensitivity, voice isolation filter), dynamic thresholds per source mode |
+| 1.4.0 | February 20, 2026 | Voice Analyzer: 3 input sources (Live Singing, Room/External, Browser Tab), mic/room/stream settings, dynamic thresholds |
+| 1.5.0 | February 20, 2026 | Sonic Portrait standalone page (canvas face renderer, 6 audio-to-face mappings, gear colors, VRN glow, snapshot export). Voice Analyzer: muscle focus estimation (CT, TA, soft palate, jaw, diaphragm, larynx) with contextual hints. Duplicate footer removed. Sonic Portrait added to nav. |
 
 ---
 

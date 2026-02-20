@@ -44,6 +44,41 @@
 - Button text/icon and hint text update contextually per selected source
 - UATEST_PLAN.md updated with 15-row Voice Analyzer feature matrix
 
+### Sonic Portrait — Standalone Page (v1.5.0)
+- New page: `sonic-portrait.html` — a face drawn entirely by sound vibrations
+- Canvas renderer draws head, eyes, nose, mouth, eyebrows using bezier curves
+- **6 audio-to-face mappings:**
+  - Pitch → face shape (low = wider/rounder, high = taller/narrower jaw)
+  - Volume → mouth opening (louder = wider)
+  - Spectral centroid → eye size (brighter = larger, more alert)
+  - Harmonic richness → iris/pupil detail and feature definition
+  - Register (Gear 1-5) → color palette and glow zones
+  - Vibrato → expression tremor (oscillation in facial features)
+- VRN resonance glow zones: head (forehead glow for Gears 3-5), mask (cheekbone glow for bright centroid), chest (chin/throat glow for Gears 1-2)
+- Ambient particles float around portrait scaled by volume and richness
+- Gear-indexed color palettes: red → orange → gold → cyan → purple
+- Smoothed animation with lerp (0.12) for organic movement + breathing oscillation
+- Stats panel shows: note, frequency, volume, centroid, harmonics, gear
+- Mapping legend explains what shapes the face
+- 📸 Snapshot export saves current portrait as PNG
+- 3 input sources (Mic / Room / Browser Tab) with source-specific settings
+- Full SEO meta tags, webring, VoiceStry nav with Sonic Portrait link
+
+### Voice Analyzer — Muscle Focus Estimation (v1.5.0)
+- New panel: **Muscle Focus Estimation** between VRN panel and Style Detection
+- 6 muscles tracked with animated bars:
+  - **CT (Cricothyroid)** — pitch-stretching muscle, MIDI 40-85 normalized to 0-100%
+  - **TA (Thyroarytenoid)** — fold-thickening, inverse of CT boosted by harmonics
+  - **Soft Palate** — nasal formant energy ratio (200-500Hz band vs total voice energy)
+  - **Jaw Opening** — volume correlation + first formant energy
+  - **Diaphragm Support** — volume stability (CV) + pitch stability over 30 frames
+  - **Larynx Position** — spectral centroid mapped 500-3000Hz to 0-100%
+- Contextual hints update based on dominant muscle engagement
+- Smoothed animation (lerp 0.15) for fluid bar transitions
+- Panel border highlights green when active
+- Duplicate footer removed from voice-analyzer.html (old class footer with placeholder links)
+- Sonic Portrait added to nav across voice-analyzer.html
+
 ---
 
 *VoiceStry © 2002-2026 Tom. All Rights Reserved.*
