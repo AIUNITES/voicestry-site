@@ -9,7 +9,7 @@
 | **Custom Domains** | voicestry.com, vrnmethod.com |
 | **Local Path** | C:/Users/Tom/Documents/GitHub/voicestry-site |
 | **Last Updated** | February 20, 2026 |
-| **Version** | 1.5.0 |
+| **Version** | 1.5.1 |
 | **Based On** | Custom (content from COSMOS the OPERA) |
 
 ---
@@ -155,15 +155,20 @@
 - VoiceStry credits COSMOS as origin
 
 ### Navigation Structure
+All 10 active pages share a consistent 11-link nav bar:
 ```
-index.html (Home) → All pages
+Home | VRN Method | Learn VRN | 5 Gears | Vocal Gym | Pitch Trainer |
+Sight Reading | Voice Lab | Live Analyzer | Sonic Portrait | Press
+```
+
+Cross-page links:
+```
 vrn-method.html → learn.html, 5-gears.html, vocal-gym.html
 learn.html → vrn-method.html (completion), pitch-trainer.html
 5-gears.html → learn.html, vrn-method.html, vocal-gym.html
 vocal-gym.html → learn.html, 5-gears.html, vrn-method.html
 pitch-trainer.html → learn.html
 sight-reading.html → learn.html
-vocal-games.html → learn.html
 ```
 
 ---
@@ -238,6 +243,7 @@ vocal-games.html → learn.html
 | 1.3.0 | February 19, 2026 | UATEST updated: added 3 missing pages (voice-analyzer, voice-lab, press), marked completed TODOs |
 | 1.4.0 | February 20, 2026 | Voice Analyzer: 3 input sources (Live Singing, Room/External, Browser Tab), mic/room/stream settings, dynamic thresholds |
 | 1.5.0 | February 20, 2026 | Sonic Portrait standalone page (canvas face renderer, 6 audio-to-face mappings, gear colors, VRN glow, snapshot export). Voice Analyzer: muscle focus estimation (CT, TA, soft palate, jaw, diaphragm, larynx) with contextual hints. Duplicate footer removed. Sonic Portrait added to nav. |
+| 1.5.1 | February 20, 2026 | Nav consistency: all 10 pages now have full 11-link nav (added Voice Lab, Live Analyzer, Sonic Portrait links to index, vrn-method, learn, 5-gears, vocal-gym, pitch-trainer, sight-reading). UI visible by default: analyzer + portrait panels shown on load without requiring Start. |
 
 ---
 
