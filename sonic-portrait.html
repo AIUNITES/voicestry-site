@@ -492,7 +492,7 @@ function drawPortrait(){
   var canvas=document.getElementById('portraitCanvas');
   var ctx=canvas.getContext('2d');
   var W=canvas.width, H=canvas.height;
-  var cx=W/2, cy=H*0.42;
+  var cx=W/2, cy=H*0.38;
 
   // Gear color
   var gIdx=Math.round(S.gear);
@@ -500,141 +500,358 @@ function drawPortrait(){
   var pal=GEAR_PALETTES[gIdx];
 
   // Derived values
-  var pitchNorm=Math.max(0,Math.min(1,(S.pitch-40)/50)); // 0=low, 1=high
+  var pitchNorm=Math.max(0,Math.min(1,(S.pitch-40)/50));
   var volume=S.vol;
   var brightness=S.cent;
   var richness=S.harm;
   var vibOsc=Math.sin(S.vibPhase)*S.vibAmp;
   var breathOsc=Math.sin(S.breathe)*0.008;
 
-  // --- Clear with subtle gradient ---
+  // --- Clear ---
   ctx.clearRect(0,0,W,H);
-  var bg=ctx.createRadialGradient(cx,cy*0.8,0,cx,cy*0.8,H*0.7);
+  var bg=ctx.createRadialGradient(cx,cy*0.9,0,cx,cy*0.9,H*0.7);
   bg.addColorStop(0,pal.bg);
   bg.addColorStop(1,'rgba(6,6,12,1)');
   ctx.fillStyle=bg;
   ctx.fillRect(0,0,W,H);
 
-  // Scale factor
   var sc=Math.min(W,H)/600;
 
-  // --- HEAD SHAPE ---
-  // Low pitch = wider rounder face, high pitch = taller narrower
-  var headW=(130+pitchNorm*(-30)+volume*15+breathOsc*200)*sc;
-  var headH=(160+pitchNorm*30-volume*5)*sc;
-  var jawW=headW*(0.85-pitchNorm*0.15); // narrower jaw for higher pitch
+  // --- HEAD DIMENSIONS (masculine proportions) ---
+  var headW=(125+pitchNorm*(-25)+volume*12+breathOsc*200)*sc;
+  var headH=(155+pitchNorm*25-volume*5)*sc;
+  var jawW=headW*(0.92-pitchNorm*0.12); // wider stronger jaw
+  var chinW=jawW*0.35;
 
   ctx.save();
   ctx.translate(cx,cy);
 
   // Head glow
-  var glowR=Math.max(headW,headH)*1.3;
-  var glow=ctx.createRadialGradient(0,0,glowR*0.3,0,0,glowR);
+  var glowR=Math.max(headW,headH)*1.4;
+  var glow=ctx.createRadialGradient(0,0,glowR*0.2,0,0,glowR);
   glow.addColorStop(0,pal.glow);
   glow.addColorStop(1,'rgba(0,0,0,0)');
   ctx.fillStyle=glow;
   ctx.fillRect(-glowR,-glowR,glowR*2,glowR*2);
 
-  // Head outline with bezier for organic shape
+  // --- NECK & SUIT COLLAR (drawn first, behind head) ---
+  var neckW=headW*0.32;
+  var neckTop=headH*0.82;
+  var neckBot=headH*1.25;
+  var shoulderW=headW*1.8;
+
+  // Suit shoulders
   ctx.beginPath();
-  // Start at top center
+  ctx.moveTo(-neckW,neckBot);
+  ctx.bezierCurveTo(-neckW*1.5,neckBot+10*sc, -shoulderW*0.5,neckBot+15*sc, -shoulderW,neckBot+50*sc);
+  ctx.lineTo(-shoulderW,H*0.4);
+  ctx.lineTo(shoulderW,H*0.4);
+  ctx.lineTo(shoulderW,neckBot+50*sc);
+  ctx.bezierCurveTo(shoulderW*0.5,neckBot+15*sc, neckW*1.5,neckBot+10*sc, neckW,neckBot);
+  ctx.closePath();
+  ctx.fillStyle='rgba(12,10,18,0.95)';
+  ctx.fill();
+  ctx.strokeStyle=pal.primary;
+  ctx.lineWidth=1*sc;
+  ctx.globalAlpha=0.2;
+  ctx.stroke();
+  ctx.globalAlpha=1;
+
+  // Lapels
+  ctx.beginPath();
+  ctx.moveTo(-neckW*0.6,neckBot-5*sc);
+  ctx.lineTo(-neckW*1.8,neckBot+45*sc);
+  ctx.lineTo(-neckW*0.3,neckBot+65*sc);
+  ctx.strokeStyle=pal.primary;
+  ctx.lineWidth=1.2*sc;
+  ctx.globalAlpha=0.25;
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(neckW*0.6,neckBot-5*sc);
+  ctx.lineTo(neckW*1.8,neckBot+45*sc);
+  ctx.lineTo(neckW*0.3,neckBot+65*sc);
+  ctx.stroke();
+  ctx.globalAlpha=1;
+
+  // Tie
+  ctx.beginPath();
+  ctx.moveTo(-4*sc,neckBot);
+  ctx.lineTo(0,neckBot+55*sc);
+  ctx.lineTo(4*sc,neckBot);
+  ctx.fillStyle='rgba(255,255,255,0.06)';
+  ctx.fill();
+  ctx.strokeStyle=pal.primary;
+  ctx.lineWidth=0.8*sc;
+  ctx.globalAlpha=0.2;
+  ctx.stroke();
+  ctx.globalAlpha=1;
+
+  // Shirt collar V
+  ctx.beginPath();
+  ctx.moveTo(-neckW-4*sc,neckTop+8*sc);
+  ctx.lineTo(0,neckBot+20*sc);
+  ctx.lineTo(neckW+4*sc,neckTop+8*sc);
+  ctx.strokeStyle='rgba(255,255,255,0.15)';
+  ctx.lineWidth=1.2*sc;
+  ctx.stroke();
+
+  // Neck
+  ctx.beginPath();
+  ctx.moveTo(-neckW,neckTop);
+  ctx.lineTo(-neckW*1.05,neckBot);
+  ctx.moveTo(neckW,neckTop);
+  ctx.lineTo(neckW*1.05,neckBot);
+  ctx.strokeStyle=pal.primary;
+  ctx.lineWidth=1.2*sc;
+  ctx.globalAlpha=0.3;
+  ctx.stroke();
+  ctx.globalAlpha=1;
+
+  // --- EARS (behind head edges) ---
+  [-1,1].forEach(function(side){
+    var earX=side*headW*0.98;
+    var earY=-headH*0.05;
+    var earH=22*sc;
+    ctx.beginPath();
+    ctx.ellipse(earX,earY,7*sc,earH,side*0.15,0,Math.PI*2);
+    ctx.fillStyle='rgba(20,18,28,0.8)';
+    ctx.fill();
+    ctx.strokeStyle=pal.primary;
+    ctx.lineWidth=1*sc;
+    ctx.globalAlpha=0.25;
+    ctx.stroke();
+    ctx.globalAlpha=1;
+    // Inner ear detail
+    ctx.beginPath();
+    ctx.ellipse(earX-side*2*sc,earY,3.5*sc,earH*0.6,side*0.15,0,Math.PI*2);
+    ctx.strokeStyle=pal.primary;
+    ctx.lineWidth=0.7*sc;
+    ctx.globalAlpha=0.15;
+    ctx.stroke();
+    ctx.globalAlpha=1;
+  });
+
+  // --- HEAD OUTLINE (strong angular jaw) ---
+  ctx.beginPath();
   ctx.moveTo(0,-headH);
-  // Right side of head
-  ctx.bezierCurveTo(headW*0.7,-headH, headW,-headH*0.5, headW,-headH*0.1);
-  // Right cheek to jaw
-  ctx.bezierCurveTo(headW,headH*0.2, jawW,headH*0.65, jawW*0.4,headH*0.85);
-  // Chin
-  ctx.bezierCurveTo(jawW*0.15,headH*(0.95+volume*0.05+vibOsc*0.02), -jawW*0.15,headH*(0.95+volume*0.05+vibOsc*0.02), -jawW*0.4,headH*0.85);
-  // Left jaw to cheek
-  ctx.bezierCurveTo(-jawW,headH*0.65, -headW,headH*0.2, -headW,-headH*0.1);
+  // Right forehead
+  ctx.bezierCurveTo(headW*0.65,-headH, headW,-headH*0.55, headW,-headH*0.1);
+  // Right temple to cheekbone (wider, more angular)
+  ctx.bezierCurveTo(headW*1.02,headH*0.1, headW*1.0,headH*0.3, jawW,headH*0.5);
+  // Strong jaw angle
+  ctx.lineTo(jawW*0.85,headH*0.65);
+  // Jaw to chin (angular, not round)
+  ctx.bezierCurveTo(jawW*0.6,headH*0.82, chinW*1.2,headH*(0.92+volume*0.04+vibOsc*0.015), 0,headH*(0.95+volume*0.04+vibOsc*0.015));
+  // Left chin to jaw
+  ctx.bezierCurveTo(-chinW*1.2,headH*(0.92+volume*0.04+vibOsc*0.015), -jawW*0.6,headH*0.82, -jawW*0.85,headH*0.65);
+  // Left jaw angle
+  ctx.lineTo(-jawW,headH*0.5);
+  // Left cheekbone to temple
+  ctx.bezierCurveTo(-headW*1.0,headH*0.3, -headW*1.02,headH*0.1, -headW,-headH*0.1);
   // Left side to top
-  ctx.bezierCurveTo(-headW,-headH*0.5, -headW*0.7,-headH, 0,-headH);
+  ctx.bezierCurveTo(-headW,-headH*0.55, -headW*0.65,-headH, 0,-headH);
   ctx.closePath();
 
-  // Fill
   var headGrad=ctx.createLinearGradient(0,-headH,0,headH);
-  headGrad.addColorStop(0,'rgba(25,22,35,0.9)');
-  headGrad.addColorStop(0.5,'rgba(20,18,30,0.95)');
-  headGrad.addColorStop(1,'rgba(15,12,22,0.9)');
+  headGrad.addColorStop(0,'rgba(28,24,38,0.92)');
+  headGrad.addColorStop(0.4,'rgba(22,20,32,0.95)');
+  headGrad.addColorStop(1,'rgba(16,13,24,0.92)');
   ctx.fillStyle=headGrad;
   ctx.fill();
 
-  // Outline
   ctx.strokeStyle=pal.primary;
   ctx.lineWidth=1.5*sc;
-  ctx.globalAlpha=0.4+volume*0.4;
+  ctx.globalAlpha=0.35+volume*0.45;
+  ctx.stroke();
+  ctx.globalAlpha=1;
+
+  // --- CROPPED HAIR (buzz cut / short hair on top) ---
+  ctx.save();
+  ctx.clip(); // clip to head shape
+  var hairGrad=ctx.createLinearGradient(0,-headH*1.1,0,-headH*0.2);
+  hairGrad.addColorStop(0,'rgba(40,35,50,0.7)');
+  hairGrad.addColorStop(1,'rgba(25,22,35,0)');
+  ctx.fillStyle=hairGrad;
+  ctx.fillRect(-headW*1.1,-headH*1.1,headW*2.2,headH*0.9);
+  // Hair texture - tiny stipples
+  ctx.fillStyle=pal.primary;
+  for(var hi=0;hi<60;hi++){
+    var hx=(Math.random()-0.5)*headW*1.6;
+    var hy=-headH*(0.4+Math.random()*0.55);
+    // Only draw if roughly inside head top
+    if(hx*hx/(headW*headW)+hy*hy/(headH*headH*0.7)<0.8){
+      ctx.globalAlpha=0.03+Math.random()*0.04;
+      ctx.fillRect(hx-0.5*sc,hy-0.5*sc,1*sc,1.5*sc);
+    }
+  }
+  ctx.globalAlpha=1;
+  ctx.restore();
+
+  // Re-draw head outline after clip
+  ctx.beginPath();
+  ctx.moveTo(0,-headH);
+  ctx.bezierCurveTo(headW*0.65,-headH, headW,-headH*0.55, headW,-headH*0.1);
+  ctx.bezierCurveTo(headW*1.02,headH*0.1, headW*1.0,headH*0.3, jawW,headH*0.5);
+  ctx.lineTo(jawW*0.85,headH*0.65);
+  ctx.bezierCurveTo(jawW*0.6,headH*0.82, chinW*1.2,headH*(0.92+volume*0.04), 0,headH*(0.95+volume*0.04));
+  ctx.bezierCurveTo(-chinW*1.2,headH*(0.92+volume*0.04), -jawW*0.6,headH*0.82, -jawW*0.85,headH*0.65);
+  ctx.lineTo(-jawW,headH*0.5);
+  ctx.bezierCurveTo(-headW*1.0,headH*0.3, -headW*1.02,headH*0.1, -headW,-headH*0.1);
+  ctx.bezierCurveTo(-headW,-headH*0.55, -headW*0.65,-headH, 0,-headH);
+  ctx.closePath();
+  ctx.strokeStyle=pal.primary;
+  ctx.lineWidth=1.5*sc;
+  ctx.globalAlpha=0.35+volume*0.45;
+  ctx.stroke();
+  ctx.globalAlpha=1;
+
+  // --- BEARD (textured lower face) ---
+  var beardTop=headH*0.2;
+  var beardBot=headH*(0.96+volume*0.04);
+  // Beard shape follows jaw
+  ctx.save();
+  ctx.beginPath();
+  // Sideburn right
+  ctx.moveTo(headW*0.85,beardTop-10*sc);
+  ctx.bezierCurveTo(headW*0.95,beardTop+10*sc, jawW*1.0,headH*0.45, jawW,headH*0.5);
+  ctx.lineTo(jawW*0.85,headH*0.65);
+  ctx.bezierCurveTo(jawW*0.6,headH*0.82, chinW*1.2,beardBot, 0,beardBot+5*sc);
+  // Left side
+  ctx.bezierCurveTo(-chinW*1.2,beardBot, -jawW*0.6,headH*0.82, -jawW*0.85,headH*0.65);
+  ctx.lineTo(-jawW,headH*0.5);
+  ctx.bezierCurveTo(-jawW*1.0,headH*0.45, -headW*0.95,beardTop+10*sc, -headW*0.85,beardTop-10*sc);
+  // Close through mouth area (leave mouth gap)
+  ctx.lineTo(-headW*0.3,beardTop);
+  ctx.lineTo(headW*0.3,beardTop);
+  ctx.closePath();
+  ctx.clip();
+
+  // Beard fill - dark textured
+  var beardGrad=ctx.createLinearGradient(0,beardTop,0,beardBot);
+  beardGrad.addColorStop(0,'rgba(30,25,40,0.5)');
+  beardGrad.addColorStop(0.5,'rgba(25,20,35,0.7)');
+  beardGrad.addColorStop(1,'rgba(20,16,28,0.6)');
+  ctx.fillStyle=beardGrad;
+  ctx.fillRect(-headW*1.1,beardTop-20*sc,headW*2.2,beardBot-beardTop+40*sc);
+
+  // Beard hair texture - directional strokes
+  for(var bi=0;bi<120;bi++){
+    var bx=(Math.random()-0.5)*jawW*2.2;
+    var by=beardTop+(Math.random())*(beardBot-beardTop+10*sc);
+    ctx.beginPath();
+    ctx.moveTo(bx,by);
+    // Hair grows downward with slight curve toward chin
+    var bDir=bx*0.01;
+    ctx.lineTo(bx+bDir*sc,by+(2+Math.random()*4)*sc);
+    ctx.strokeStyle=pal.primary;
+    ctx.lineWidth=(0.5+Math.random()*0.8)*sc;
+    ctx.globalAlpha=0.04+Math.random()*0.06;
+    ctx.stroke();
+  }
+  ctx.globalAlpha=1;
+  ctx.restore();
+
+  // Beard outline contour
+  ctx.beginPath();
+  ctx.moveTo(headW*0.85,beardTop-10*sc);
+  ctx.bezierCurveTo(headW*0.95,beardTop+10*sc, jawW*1.0,headH*0.45, jawW,headH*0.5);
+  ctx.lineTo(jawW*0.85,headH*0.65);
+  ctx.bezierCurveTo(jawW*0.6,headH*0.82, chinW*1.2,beardBot, 0,beardBot+5*sc);
+  ctx.bezierCurveTo(-chinW*1.2,beardBot, -jawW*0.6,headH*0.82, -jawW*0.85,headH*0.65);
+  ctx.lineTo(-jawW,headH*0.5);
+  ctx.bezierCurveTo(-jawW*1.0,headH*0.45, -headW*0.95,beardTop+10*sc, -headW*0.85,beardTop-10*sc);
+  ctx.strokeStyle=pal.primary;
+  ctx.lineWidth=0.8*sc;
+  ctx.globalAlpha=0.15+volume*0.1;
   ctx.stroke();
   ctx.globalAlpha=1;
 
   // --- EYES ---
   var eyeSpread=(38+pitchNorm*(-5))*sc;
-  var eyeY=(-headH*0.15)*1;
+  var eyeY=(-headH*0.15);
   var eyeW=(18+brightness*14+richness*6)*sc;
   var eyeH=(8+brightness*10+volume*4)*sc;
   var pupilR=(3+richness*5)*sc;
 
-  // Left eye
   drawEye(ctx,-eyeSpread,eyeY,eyeW,eyeH,pupilR,pal,sc,vibOsc);
-  // Right eye
   drawEye(ctx,eyeSpread,eyeY,eyeW,eyeH,pupilR,pal,sc,vibOsc);
 
-  // --- EYEBROWS ---
-  var browY=eyeY-eyeH*1.6;
-  var browLen=eyeW*1.4;
-  var browLift=volume*6*sc+vibOsc*3*sc;
+  // --- BROW RIDGE (stronger, more masculine) ---
+  var browY=eyeY-eyeH*1.5;
+  var browLen=eyeW*1.5;
+  var browLift=volume*5*sc+vibOsc*3*sc;
+  var browThick=(3+richness*1.5)*sc;
+  ctx.lineCap='round';
   ctx.strokeStyle=pal.primary;
-  ctx.lineWidth=2.5*sc;
-  ctx.globalAlpha=0.5+richness*0.3;
-  // Left brow
+  ctx.lineWidth=browThick;
+  ctx.globalAlpha=0.45+richness*0.35;
+  // Left brow - slightly furrowed
   ctx.beginPath();
-  ctx.moveTo(-eyeSpread-browLen*0.5,browY+browLift*0.3);
-  ctx.quadraticCurveTo(-eyeSpread,browY-browLift,-eyeSpread+browLen*0.5,browY);
+  ctx.moveTo(-eyeSpread-browLen*0.5,browY+browLift*0.4+2*sc);
+  ctx.quadraticCurveTo(-eyeSpread,browY-browLift,-eyeSpread+browLen*0.5,browY+1*sc);
   ctx.stroke();
   // Right brow
   ctx.beginPath();
-  ctx.moveTo(eyeSpread-browLen*0.5,browY);
-  ctx.quadraticCurveTo(eyeSpread,browY-browLift,eyeSpread+browLen*0.5,browY+browLift*0.3);
+  ctx.moveTo(eyeSpread-browLen*0.5,browY+1*sc);
+  ctx.quadraticCurveTo(eyeSpread,browY-browLift,eyeSpread+browLen*0.5,browY+browLift*0.4+2*sc);
   ctx.stroke();
+  ctx.lineCap='butt';
   ctx.globalAlpha=1;
 
-  // --- NOSE ---
-  var noseLen=(25+pitchNorm*5)*sc;
-  var noseW=(8+volume*4)*sc;
+  // --- NOSE (more defined, bridge + nostrils) ---
+  var noseTop=eyeY+eyeH*1.5;
+  var noseBot=eyeY+eyeH*2+(20+pitchNorm*5)*sc;
+  var noseW=(9+volume*5)*sc;
   ctx.strokeStyle=pal.primary;
-  ctx.lineWidth=1.2*sc;
-  ctx.globalAlpha=0.3+richness*0.2;
+  ctx.lineWidth=1.3*sc;
+  ctx.globalAlpha=0.3+richness*0.25;
+  // Nose bridge (subtle shadow line)
   ctx.beginPath();
-  ctx.moveTo(0,eyeY+eyeH*2);
-  ctx.lineTo(-noseW,eyeY+eyeH*2+noseLen);
-  ctx.moveTo(0,eyeY+eyeH*2);
-  ctx.lineTo(noseW,eyeY+eyeH*2+noseLen);
-  // Nostrils hint
-  ctx.moveTo(-noseW,eyeY+eyeH*2+noseLen);
-  ctx.quadraticCurveTo(0,eyeY+eyeH*2+noseLen+3*sc,noseW,eyeY+eyeH*2+noseLen);
+  ctx.moveTo(-2*sc,eyeY-eyeH*0.5);
+  ctx.bezierCurveTo(-1*sc,noseTop, -noseW*0.3,noseBot-8*sc, -noseW,noseBot);
   ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(2*sc,eyeY-eyeH*0.5);
+  ctx.bezierCurveTo(1*sc,noseTop, noseW*0.3,noseBot-8*sc, noseW,noseBot);
+  ctx.stroke();
+  // Nostrils
+  ctx.beginPath();
+  ctx.moveTo(-noseW,noseBot);
+  ctx.quadraticCurveTo(-noseW*0.5,noseBot+4*sc,0,noseBot+2*sc);
+  ctx.quadraticCurveTo(noseW*0.5,noseBot+4*sc,noseW,noseBot);
+  ctx.stroke();
+  // Nostril openings hint
+  ctx.beginPath();
+  ctx.ellipse(-noseW*0.55,noseBot+1*sc,3*sc,2*sc,0.2,0,Math.PI*2);
+  ctx.fillStyle=pal.primary;
+  ctx.globalAlpha=0.08;
+  ctx.fill();
+  ctx.beginPath();
+  ctx.ellipse(noseW*0.55,noseBot+1*sc,3*sc,2*sc,-0.2,0,Math.PI*2);
+  ctx.fill();
   ctx.globalAlpha=1;
 
-  // --- MOUTH ---
-  var mouthY=headH*0.45+vibOsc*5*sc;
-  var mouthW=(20+pitchNorm*10+volume*20)*sc;
-  var mouthOpen=(2+volume*35)*sc;
-  var mouthCurve=pitchNorm*8*sc; // higher pitch = slight smile
+  // --- MOUTH (through beard) ---
+  var mouthY=headH*0.48+vibOsc*5*sc;
+  var mouthW=(22+pitchNorm*10+volume*22)*sc;
+  var mouthOpen=(2+volume*38)*sc;
+  var mouthCurve=pitchNorm*7*sc;
 
   ctx.beginPath();
-  // Upper lip
+  // Upper lip (cupid's bow)
   ctx.moveTo(-mouthW,mouthY);
-  ctx.quadraticCurveTo(-mouthW*0.3,mouthY-mouthCurve-3*sc,0,mouthY-mouthCurve);
-  ctx.quadraticCurveTo(mouthW*0.3,mouthY-mouthCurve-3*sc,mouthW,mouthY);
+  ctx.quadraticCurveTo(-mouthW*0.5,mouthY-2*sc,-mouthW*0.15,mouthY-mouthCurve-2*sc);
+  ctx.quadraticCurveTo(0,mouthY-mouthCurve-5*sc,mouthW*0.15,mouthY-mouthCurve-2*sc);
+  ctx.quadraticCurveTo(mouthW*0.5,mouthY-2*sc,mouthW,mouthY);
   // Lower lip
-  ctx.quadraticCurveTo(mouthW*0.5,mouthY+mouthOpen,0,mouthY+mouthOpen+mouthCurve*0.3);
-  ctx.quadraticCurveTo(-mouthW*0.5,mouthY+mouthOpen,-mouthW,mouthY);
+  ctx.quadraticCurveTo(mouthW*0.5,mouthY+mouthOpen+3*sc,0,mouthY+mouthOpen+mouthCurve*0.3);
+  ctx.quadraticCurveTo(-mouthW*0.5,mouthY+mouthOpen+3*sc,-mouthW,mouthY);
   ctx.closePath();
 
-  // Mouth fill when open
-  if(volume>0.05){
-    var mGrad=ctx.createRadialGradient(0,mouthY+mouthOpen*0.3,0,0,mouthY+mouthOpen*0.3,mouthOpen*1.5);
-    mGrad.addColorStop(0,'rgba(20,5,10,0.95)');
-    mGrad.addColorStop(1,'rgba(40,10,20,0.6)');
+  if(volume>0.03){
+    var mGrad=ctx.createRadialGradient(0,mouthY+mouthOpen*0.3,0,0,mouthY+mouthOpen*0.3,mouthOpen*1.8);
+    mGrad.addColorStop(0,'rgba(18,4,8,0.95)');
+    mGrad.addColorStop(1,'rgba(35,8,16,0.5)');
     ctx.fillStyle=mGrad;
     ctx.fill();
   }
@@ -644,37 +861,44 @@ function drawPortrait(){
   ctx.stroke();
   ctx.globalAlpha=1;
 
+  // Mustache area (above mouth, part of beard)
+  ctx.beginPath();
+  ctx.moveTo(-mouthW*1.2,mouthY-6*sc);
+  ctx.quadraticCurveTo(0,mouthY-10*sc-richness*4*sc,mouthW*1.2,mouthY-6*sc);
+  ctx.strokeStyle=pal.primary;
+  ctx.lineWidth=1*sc;
+  ctx.globalAlpha=0.12;
+  ctx.stroke();
+  ctx.globalAlpha=1;
+
   // --- RESONANCE GLOW ZONES ---
-  // Head resonance (forehead) — gears 3-5
   if(gIdx>=3){
-    var headGlowA=0.08+(gIdx-3)*0.06;
-    var hg=ctx.createRadialGradient(0,-headH*0.7,0,0,-headH*0.7,headW*0.8);
+    var headGlowA=0.08+(gIdx-3)*0.07;
+    var hg=ctx.createRadialGradient(0,-headH*0.75,0,0,-headH*0.75,headW*0.9);
     hg.addColorStop(0,'rgba(157,78,221,'+headGlowA+')');
     hg.addColorStop(1,'rgba(157,78,221,0)');
     ctx.fillStyle=hg;
-    ctx.fillRect(-headW,-headH*1.2,headW*2,headH);
+    ctx.fillRect(-headW*1.1,-headH*1.3,headW*2.2,headH);
   }
 
-  // Nasal/mask (cheekbones) — brightness indicator
   if(brightness>0.3){
     var maskA=Math.min(0.15,(brightness-0.3)*0.3);
     [-1,1].forEach(function(side){
-      var mg=ctx.createRadialGradient(side*eyeSpread*0.8,eyeY+eyeH*3,0,side*eyeSpread*0.8,eyeY+eyeH*3,25*sc);
+      var mg=ctx.createRadialGradient(side*eyeSpread*0.9,eyeY+eyeH*3,0,side*eyeSpread*0.9,eyeY+eyeH*3,28*sc);
       mg.addColorStop(0,'rgba(0,212,255,'+maskA+')');
       mg.addColorStop(1,'rgba(0,212,255,0)');
       ctx.fillStyle=mg;
-      ctx.fillRect(side*eyeSpread*0.8-30*sc,eyeY+eyeH,60*sc,50*sc);
+      ctx.fillRect(side*eyeSpread*0.9-35*sc,eyeY+eyeH,70*sc,55*sc);
     });
   }
 
-  // Chest resonance (chin/neck) — gears 1-2
   if(gIdx<=2){
-    var chestA=0.06+(2-gIdx)*0.05;
-    var cg=ctx.createRadialGradient(0,headH*1.1,0,0,headH*1.1,headW*0.9);
+    var chestA=0.06+(2-gIdx)*0.06;
+    var cg=ctx.createRadialGradient(0,headH*1.2,0,0,headH*1.2,headW);
     cg.addColorStop(0,'rgba(239,68,68,'+chestA+')');
     cg.addColorStop(1,'rgba(239,68,68,0)');
     ctx.fillStyle=cg;
-    ctx.fillRect(-headW,headH*0.6,headW*2,headH);
+    ctx.fillRect(-headW*1.2,headH*0.6,headW*2.4,headH*1.2);
   }
 
   ctx.restore();
@@ -684,20 +908,20 @@ function drawPortrait(){
     var numP=Math.floor(volume*15+richness*10);
     for(var i=0;i<numP;i++){
       var angle=S.breathe*2+i*1.618;
-      var dist=(headW*1.5+Math.sin(angle*3+S.breathe)*30)*sc/sc;
-      var px=cx+Math.cos(angle)*dist*sc;
-      var py=cy+Math.sin(angle)*dist*sc*0.8;
-      var pSize=(1+Math.random()*2)*sc;
+      var dist=headW*1.8+Math.sin(angle*3+S.breathe)*30;
+      var px=cx+Math.cos(angle)*dist;
+      var py=cy+Math.sin(angle)*dist*0.7;
+      var pSize=(1+Math.random()*2.5)*sc;
       ctx.beginPath();
       ctx.arc(px,py,pSize,0,Math.PI*2);
       ctx.fillStyle=pal.primary;
-      ctx.globalAlpha=0.1+Math.random()*0.2;
+      ctx.globalAlpha=0.08+Math.random()*0.15;
       ctx.fill();
     }
     ctx.globalAlpha=1;
   }
 
-  // Badge update
+  // Badge
   var badge=document.getElementById('canvasBadge');
   if(volume>0.05 && S.pitchTarget>0){
     badge.textContent=midiToNote(Math.round(S.pitch))+' • Gear '+gIdx;
