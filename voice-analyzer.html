@@ -70,7 +70,7 @@
     .mic-hint{font-size:0.85rem;color:var(--text-secondary);margin-top:10px}
 
     /* Main Layout */
-    .analyzer{max-width:1100px;margin:0 auto;padding:20px;display:grid;grid-template-columns:1fr 260px;gap:24px;align-items:start}
+    .analyzer{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-columns:1fr 320px;gap:24px;align-items:start}
 
     /* Left Panel */
     .left-panel{display:flex;flex-direction:column;gap:20px}
@@ -135,10 +135,12 @@
     /* Right Panel - Body Diagram */
     .body-panel{background:var(--bg-panel);border-radius:18px;padding:22px;border:1px solid rgba(255,255,255,0.05);position:sticky;top:80px}
     .body-title{font-size:0.9rem;font-weight:700;text-align:center;margin-bottom:14px;color:var(--text-secondary)}
-    .body-svg{width:100%;max-width:200px;margin:0 auto;display:block}
+    .body-img-wrap{position:relative;width:100%;margin:0 auto}
+    .body-img-wrap img{width:100%;border-radius:12px;display:block;filter:brightness(0.75) contrast(1.1)}
+    .body-svg{position:absolute;top:0;left:0;width:100%;height:100%}
     .body-zone{transition:opacity 0.15s ease;opacity:0.06}
     .body-zone.active{opacity:1}
-    .body-outline{fill:none;stroke:rgba(255,255,255,0.15);stroke-width:1.5}
+    .body-outline{fill:none;stroke:none;stroke-width:0}
 
     .zone-legend{margin-top:18px}
     .zone-item{display:flex;align-items:center;gap:7px;padding:5px 0;font-size:0.78rem;color:var(--text-secondary);transition:all 0.2s}
@@ -326,7 +328,7 @@
   </div>
 
   <!-- Analyzer -->
-  <div class="analyzer" id="analyzerSection" style="display:none;">
+  <div class="analyzer" id="analyzerSection">
     <!-- Left -->
     <div class="left-panel">
 
@@ -438,50 +440,30 @@
     <!-- Right - Body -->
     <div class="body-panel">
       <div class="body-title">Live Resonance Map</div>
-      <svg class="body-svg" viewBox="0 0 200 420" xmlns="http://www.w3.org/2000/svg">
-        <!-- Male singer silhouette - head -->
-        <path class="body-outline" d="M100,6 C118,6 130,18 130,38 C130,50 126,58 122,64 L120,66 C118,68 116,70 114,72 L86,72 C84,70 82,68 80,66 L78,64 C74,58 70,50 70,38 C70,18 82,6 100,6 Z"/>
-        <!-- Cropped hair/buzz cut -->
-        <path class="body-outline" d="M100,7 C117,7 128,17 129,34" style="stroke:rgba(255,255,255,0.1);stroke-width:3;fill:none"/>
-        <path class="body-outline" d="M100,7 C83,7 72,17 71,34" style="stroke:rgba(255,255,255,0.1);stroke-width:3;fill:none"/>
-        <!-- Beard -->
-        <path d="M78,52 C78,56 80,64 86,70 C90,74 95,76 100,76 C105,76 110,74 114,70 C120,64 122,56 122,52" style="fill:none;stroke:rgba(255,255,255,0.12);stroke-width:2.5"/>
-        <path d="M82,54 C82,58 85,66 92,72 C96,75 100,76 100,76 C100,76 104,75 108,72 C115,66 118,58 118,54" style="fill:rgba(255,255,255,0.04);stroke:none"/>
-        <!-- Neck -->
-        <path class="body-outline" d="M90,72 L90,86 M110,72 L110,86"/>
-        <!-- Shoulders & suit jacket -->
-        <path class="body-outline" d="M90,86 C85,86 60,90 42,106 C38,110 36,116 36,120 L36,200 C36,204 38,206 42,206 L60,206 L60,180 M110,86 C115,86 140,90 158,106 C162,110 164,116 164,120 L164,200 C164,204 162,206 158,206 L140,206 L140,180"/>
-        <!-- Lapels -->
-        <path class="body-outline" d="M90,86 L94,104 L88,120 M110,86 L106,104 L112,120"/>
-        <!-- Shirt & tie -->
-        <line class="body-outline" x1="100" y1="86" x2="100" y2="120"/>
-        <path d="M96,88 L100,120 L104,88" style="fill:rgba(255,255,255,0.06);stroke:rgba(255,255,255,0.12);stroke-width:1"/>
-        <!-- Torso -->
-        <path class="body-outline" d="M80,120 L80,230 M120,120 L120,230"/>
-        <!-- Belt line -->
-        <line class="body-outline" x1="72" y1="230" x2="128" y2="230" style="stroke-width:2"/>
-        <!-- Legs (trousers) -->
-        <path class="body-outline" d="M80,230 L74,380 M96,230 L92,380 M104,230 L108,380 M120,230 L126,380"/>
-        <!-- Arms at sides -->
-        <path class="body-outline" d="M42,120 C40,140 38,160 40,180 L46,206 M158,120 C160,140 162,160 160,180 L154,206"/>
-        <!-- Pocket square hint -->
-        <rect x="118" y="110" width="6" height="8" rx="1" style="fill:rgba(255,255,255,0.08);stroke:none"/>
+      <div class="body-img-wrap">
+      <img src="images/pexels-foto-art-events-332286070-17907373.jpg" alt="Male singer in tuxedo - resonance map overlay" loading="lazy">
+      <svg class="body-svg" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Resonance zones mapped to photo anatomy (% based) -->
+        <!-- H = Head/cranium (top of skull) -->
+        <circle class="body-zone" id="zone-H" cx="50" cy="12" r="14" fill="url(#gH)"/>
+        <!-- N = Nasal/sinus (nose/cheekbones) -->
+        <ellipse class="body-zone" id="zone-N" cx="50" cy="22" rx="10" ry="5" fill="url(#gN)"/>
+        <!-- O = Oral (mouth/jaw) -->
+        <ellipse class="body-zone" id="zone-O" cx="50" cy="28" rx="8" ry="4" fill="url(#gO)"/>
+        <!-- P = Pharynx (throat/neck) -->
+        <ellipse class="body-zone" id="zone-P" cx="50" cy="35" rx="7" ry="5" fill="url(#gP)"/>
+        <!-- C = Chest (upper torso) -->
+        <ellipse class="body-zone" id="zone-C" cx="50" cy="52" rx="22" ry="14" fill="url(#gC)"/>
+        <!-- L = Lower body (diaphragm/belly) -->
+        <ellipse class="body-zone" id="zone-L" cx="50" cy="78" rx="18" ry="14" fill="url(#gL)"/>
 
-        <!-- Resonance zones (positioned on anatomical body) -->
-        <circle class="body-zone" id="zone-H" cx="100" cy="22" r="26" fill="url(#gH)"/>
-        <ellipse class="body-zone" id="zone-N" cx="100" cy="42" rx="20" ry="12" fill="url(#gN)"/>
-        <ellipse class="body-zone" id="zone-O" cx="100" cy="60" rx="16" ry="10" fill="url(#gO)"/>
-        <ellipse class="body-zone" id="zone-P" cx="100" cy="82" rx="14" ry="16" fill="url(#gP)"/>
-        <ellipse class="body-zone" id="zone-C" cx="100" cy="155" rx="42" ry="40" fill="url(#gC)"/>
-        <ellipse class="body-zone" id="zone-L" cx="100" cy="240" rx="30" ry="30" fill="url(#gL)"/>
-
-        <!-- Zone labels -->
-        <text x="160" y="26" fill="rgba(255,255,255,0.3)" font-size="10" font-weight="600" id="label-H">[H]</text>
-        <text x="160" y="46" fill="rgba(255,255,255,0.3)" font-size="10" font-weight="600" id="label-N">[N]</text>
-        <text x="160" y="64" fill="rgba(255,255,255,0.3)" font-size="10" font-weight="600" id="label-O">[O]</text>
-        <text x="160" y="86" fill="rgba(255,255,255,0.3)" font-size="10" font-weight="600" id="label-P">[P]</text>
-        <text x="160" y="158" fill="rgba(255,255,255,0.3)" font-size="10" font-weight="600" id="label-C">[C]</text>
-        <text x="160" y="244" fill="rgba(255,255,255,0.3)" font-size="10" font-weight="600" id="label-L">[L]</text>
+        <!-- Zone labels (right edge) -->
+        <text x="80" y="14" fill="rgba(255,255,255,0.5)" font-size="5" font-weight="700" id="label-H">[H]</text>
+        <text x="80" y="23" fill="rgba(255,255,255,0.5)" font-size="5" font-weight="700" id="label-N">[N]</text>
+        <text x="80" y="30" fill="rgba(255,255,255,0.5)" font-size="5" font-weight="700" id="label-O">[O]</text>
+        <text x="80" y="37" fill="rgba(255,255,255,0.5)" font-size="5" font-weight="700" id="label-P">[P]</text>
+        <text x="80" y="54" fill="rgba(255,255,255,0.5)" font-size="5" font-weight="700" id="label-C">[C]</text>
+        <text x="80" y="80" fill="rgba(255,255,255,0.5)" font-size="5" font-weight="700" id="label-L">[L]</text>
         <defs>
           <radialGradient id="gC"><stop offset="0%" stop-color="#ef4444" stop-opacity="0.7"/><stop offset="100%" stop-color="#ef4444" stop-opacity="0"/></radialGradient>
           <radialGradient id="gP"><stop offset="0%" stop-color="#f59e0b" stop-opacity="0.6"/><stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/></radialGradient>
@@ -491,6 +473,7 @@
           <radialGradient id="gL"><stop offset="0%" stop-color="#ff6b9d" stop-opacity="0.5"/><stop offset="100%" stop-color="#ff6b9d" stop-opacity="0"/></radialGradient>
         </defs>
       </svg>
+      </div><!-- /body-img-wrap -->
       <div class="zone-legend">
         <div class="zone-item" id="legend-H"><span class="zone-dot" style="background:#9d4edd"></span>Head <span class="zone-vrn">[H]</span></div>
         <div class="zone-item" id="legend-N"><span class="zone-dot" style="background:#00d4ff"></span>Nasal / Mask <span class="zone-vrn">[N]</span></div>
@@ -839,7 +822,7 @@ startBtn.addEventListener('click', async function() {
     isListening = true;
     startBtn.textContent = '\u23F9 Stop Listening';
     startBtn.classList.add('listening');
-    analyzerSection.style.display = 'grid';
+    // analyzerSection always visible now
 
     // Lock source tabs while listening
     document.querySelectorAll('.source-tab').forEach(function(t) { t.style.opacity = '0.5'; t.style.pointerEvents = 'none'; });
@@ -1709,6 +1692,13 @@ function detectAndDisplayStyle(centroid, harmonics, volume, gear, voiceType) {
 
 // Init
 dimBody();
+
+// Size canvas on load so it renders properly before mic starts
+var initCanvas = document.getElementById('waveformCanvas');
+if (initCanvas) {
+  initCanvas.width = initCanvas.offsetWidth * 2;
+  initCanvas.height = 160;
+}
 </script>
 
   <footer style="background:rgba(0,0,0,0.4);border-top:1px solid rgba(255,255,255,0.1);padding:2rem 1rem;text-align:center;font-family:system-ui,sans-serif;margin-top:2rem;">
