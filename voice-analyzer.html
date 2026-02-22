@@ -200,13 +200,23 @@
     .footer{background:var(--bg-card);padding:40px 20px;text-align:center;border-top:1px solid rgba(255,255,255,0.05);margin-top:40px}.footer p{color:var(--text-secondary);font-size:0.9rem}.footer a{color:var(--accent-purple);text-decoration:none}
 
     @media(max-width:768px){
-      .nav{flex-direction:column;gap:12px}.nav-links{flex-wrap:wrap;justify-content:center;gap:12px}
-      .analyzer{grid-template-columns:1fr}
-      .body-panel{position:static;order:-1}
-      .vp-btn{padding:6px 12px;font-size:0.8rem}
-      .source-tabs{flex-direction:column}.source-tab{min-width:0;max-width:100%}
+      .nav{flex-direction:column;gap:10px;padding:10px 16px}.nav-links{flex-wrap:wrap;justify-content:center;gap:10px}
+      .hero{padding:24px 16px 14px}.hero h1{font-size:1.5rem;margin-bottom:6px}.hero-sub{font-size:0.88rem}
+      .voice-picker{padding:10px 16px 6px;gap:5px}.vp-btn{padding:5px 10px;font-size:0.75rem}
+      .input-source{padding:8px 16px}.input-source-label{margin-bottom:6px;font-size:0.7rem}
+      .source-tabs{gap:6px}.source-tab{min-width:0;max-width:none;padding:8px 12px;border-radius:10px;display:flex;align-items:center;gap:10px;flex:none;width:100%}
+      .source-tab .st-icon{font-size:1.1rem;margin-bottom:0;display:inline}
+      .source-tab .st-title{font-size:0.85rem;display:inline;margin-bottom:0}
       .source-tab .st-desc{display:none}
-      .setting-row-inline{flex-wrap:wrap;gap:8px}
+      .source-settings{padding:0 16px}
+      .setting-row-inline{padding:8px 12px;flex-wrap:wrap;gap:6px}.setting-row-inline .sri-label{font-size:0.8rem}.setting-row-inline .sri-hint{display:none}
+      .start-section{padding:14px}.start-btn{padding:14px 36px;font-size:1rem}.mic-hint{font-size:0.78rem;margin-top:6px}
+      .stream-info{font-size:0.72rem;padding:8px 12px}
+      .analyzer{grid-template-columns:1fr;padding:14px;gap:16px}
+      .body-panel{position:static;order:-1;padding:16px}
+      .pitch-panel{padding:16px}.pitch-note{font-size:2.2rem}.pitch-hz{font-size:1rem}
+      .vrn-panel{padding:16px}.vrn-notation{font-size:1.5rem}
+      .muscle-panel{padding:16px}.style-panel{padding:16px}
     }
   </style>
 </head>
@@ -827,7 +837,10 @@ startBtn.addEventListener('click', async function() {
     isListening = true;
     startBtn.textContent = '\u23F9 Stop Listening';
     startBtn.classList.add('listening');
-    // analyzerSection always visible now
+    // Scroll to analyzer on mobile so user sees results immediately
+    if (window.innerWidth <= 768) {
+      setTimeout(function() { document.getElementById('analyzerSection').scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 300);
+    }
 
     // Lock source tabs while listening
     document.querySelectorAll('.source-tab').forEach(function(t) { t.style.opacity = '0.5'; t.style.pointerEvents = 'none'; });
