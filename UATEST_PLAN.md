@@ -8,8 +8,8 @@
 | **Live URL** | https://aiunites.github.io/voicestry-site/ |
 | **Custom Domains** | voicestry.com, vrnmethod.com |
 | **Local Path** | C:/Users/Tom/Documents/GitHub/voicestry-site |
-| **Last Updated** | February 20, 2026 |
-| **Version** | 1.5.2 |
+| **Last Updated** | February 22, 2026 |
+| **Version** | 1.6.0 |
 | **Based On** | Custom (content from COSMOS the OPERA) |
 
 ---
@@ -121,7 +121,10 @@
 | 6 Zone Overview | ✅ | Cards with symbols |
 | Intensity Scale | ✅ | +, ++, +++ explanation |
 | Full Example Breakdown | ✅ | Line-by-line reading |
-| 75+ Symbol Categories | ✅ | Grouped by type |
+| 75+ Symbol Categories | ✅ | Grouped by type (CD/CS methods) |
+| 13 Graphical Symbols | ✅ | SY05 Symbols Method (▽, △, ⬬↑, |〇, ⌒〇, etc.) |
+| Three-Method Framework | ✅ | CD (Character Digit), CS (Character Signs), SY (Symbols) |
+| Version History Table | ✅ | Tracks VSV versions through SY05 |
 | Origin/History | ✅ | Why VRN didn't exist before |
 
 ### 🔄 Promotional Pages
@@ -245,6 +248,7 @@ sight-reading.html → learn.html
 | 1.5.0 | February 20, 2026 | Sonic Portrait standalone page (canvas face renderer, 6 audio-to-face mappings, gear colors, VRN glow, snapshot export). Voice Analyzer: muscle focus estimation (CT, TA, soft palate, jaw, diaphragm, larynx) with contextual hints. Duplicate footer removed. Sonic Portrait added to nav. |
 | 1.5.1 | February 20, 2026 | Nav consistency: initial pass — added Voice Lab, Live Analyzer, Sonic Portrait links to index, vrn-method, learn, 5-gears. UI visible by default: analyzer + portrait panels shown on load without requiring Start. |
 | 1.5.2 | February 20, 2026 | Nav consistency complete: all 11 pages verified with full 11-link nav. Fixed vocal-gym (was missing voice-lab, voice-analyzer, sonic-portrait), pitch-trainer and sight-reading (same 3 missing). Verified voice-lab, voice-analyzer, sonic-portrait, press already had full nav. |
+| 1.6.0 | February 22, 2026 | VRN Method: Updated version history (s05→SY05), added 13-symbol description with CD/CS/SY three-method framework. UATEST: Added SY05 Symbols Method and Three-Method Framework features. Webring highlight fix pending (font-weight:600 → .aiunites-bar-active class). |
 
 ---
 
