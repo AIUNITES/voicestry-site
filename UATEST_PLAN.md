@@ -138,7 +138,7 @@
 |---------|--------|-------|
 | Dark Theme | ✅ | CSS variables in css/style.css |
 | Responsive Design | ✅ | Mobile-friendly |
-| AIUNITES Webring | ✅ | Top bar |
+| AIUNITES Webring | ✅ | Top bar, .aiunites-bar-active white highlight |
 | Shared CSS | ✅ | css/style.css |
 
 ---
@@ -248,7 +248,8 @@ sight-reading.html → learn.html
 | 1.5.0 | February 20, 2026 | Sonic Portrait standalone page (canvas face renderer, 6 audio-to-face mappings, gear colors, VRN glow, snapshot export). Voice Analyzer: muscle focus estimation (CT, TA, soft palate, jaw, diaphragm, larynx) with contextual hints. Duplicate footer removed. Sonic Portrait added to nav. |
 | 1.5.1 | February 20, 2026 | Nav consistency: initial pass — added Voice Lab, Live Analyzer, Sonic Portrait links to index, vrn-method, learn, 5-gears. UI visible by default: analyzer + portrait panels shown on load without requiring Start. |
 | 1.5.2 | February 20, 2026 | Nav consistency complete: all 11 pages verified with full 11-link nav. Fixed vocal-gym (was missing voice-lab, voice-analyzer, sonic-portrait), pitch-trainer and sight-reading (same 3 missing). Verified voice-lab, voice-analyzer, sonic-portrait, press already had full nav. |
-| 1.6.0 | February 22, 2026 | VRN Method: Updated version history (s05→SY05), added 13-symbol description with CD/CS/SY three-method framework. UATEST: Added SY05 Symbols Method and Three-Method Framework features. Webring highlight fix pending (font-weight:600 → .aiunites-bar-active class). |
+| 1.6.0 | February 22, 2026 | VRN Method: Updated version history (s05→SY05), added 13-symbol description with CD/CS/SY three-method framework. UATEST: Added SY05 Symbols Method and Three-Method Framework features. |
+| 1.6.1 | February 22, 2026 | Webring highlight fix: standardized all 11 pages to .aiunites-bar-active class with white (#fff) color + underline. Removed legacy .current class and green var(--accent-green) from index.html. Consistent across entire site. |
 
 ---
 
