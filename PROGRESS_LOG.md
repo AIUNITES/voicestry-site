@@ -88,5 +88,39 @@
 
 ---
 
+## February 24, 2026
+
+### ai-vrn.html — Why AI Needs VRN Page (Previous Session)
+- Created ai-vrn.html — full article on why AI voice synthesis needs VRN
+- 10 sections: The Gap, VRN as Instruction Set, Without vs With VRN, Use Cases, Code Examples, Pipeline Diagram, Spec Table, Ethics Quote, CTA
+- Navigation updated across all 11 pages (nav + footer) to include AI + VRN link
+
+### vrn-nerves.html — VRN & the Nervous System Page (v1.6.0)
+- Created vrn-nerves.html — maps every VRN symbol to its neural command chain
+- **11 major sections:**
+  - Two Layers of Vocal Production (mechanical vs neural)
+  - The Neural Command Chain (motor cortex → brainstem → cranial nerves → sound)
+  - The 6 Cranial Nerves of Singing (CN V, VII, IX, X, XI, XII)
+  - The Vagus Nerve Deep Dive (RLN vs SLN branches)
+  - Complete VRN → Nerve Mapping Tables (4 tables: Resonance, Fold, Breath, Articulation + Advanced)
+  - Full Neural Trace Example (COSMOS climax phrase with 11 simultaneous pathways)
+  - Why This Matters (6 use-case cards: singers, teachers, clinicians, AI, scientists, rehab)
+  - The Emotional Brain & Voice (PAG, cortical vs subcortical pathways)
+  - Vagus Nerve, Singing & Wellbeing (vagal tone, parasympathetic activation)
+  - VRN as Neural Training Framework (myelination, neural circuit training)
+  - Quote & CTA
+- Pink/red accent theme to distinguish from cyan (ai-vrn) and gold (vrn-method)
+- Hero stats: 6 cranial nerves, 100+ muscles, 75+ VRN symbols, 50ms response time
+- Site total: 13 pages
+
+### Navigation Update for vrn-nerves.html
+- Added `<a href="vrn-nerves.html">Nerves</a>` to nav and footer across all 13 pages
+- 8 pages already had the link from prior work (index, vrn-method, 5-gears, learn, vocal-gym, pitch-trainer, sight-reading, ai-vrn)
+- 4 pages needed updates: voice-lab (nav+footer), voice-analyzer (nav only), sonic-portrait (nav only), press (nav+footer)
+- Note: voice-analyzer and sonic-portrait have no footer nav section — only top nav
+- Nav order: Home | VRN Method | Learn ▾ | Tools ▾ | AI + VRN | Nerves | Press
+
+---
+
 *VoiceStry © 2002-2026 Tom. All Rights Reserved.*
 *Part of the AIUNITES network — Site #19*

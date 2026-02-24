@@ -8,8 +8,8 @@
 | **Live URL** | https://aiunites.github.io/voicestry-site/ |
 | **Custom Domains** | voicestry.com, vrnmethod.com |
 | **Local Path** | C:/Users/Tom/Documents/GitHub/voicestry-site |
-| **Last Updated** | February 22, 2026 |
-| **Version** | 1.6.0 |
+| **Last Updated** | February 24, 2026 |
+| **Version** | 1.7.0 |
 | **Based On** | Custom (content from COSMOS the OPERA) |
 
 ---
@@ -29,6 +29,8 @@
 | Voice Lab | voice-lab.html | Hear voice types with animated VRN notation | ✅ Active |
 | Press | press.html | Press releases and media page | ✅ Active |
 | Sonic Portrait | sonic-portrait.html | Real-time face drawn by sound vibrations | ✅ New |
+| AI + VRN | ai-vrn.html | Why AI voice synthesis needs VRN | ✅ New |
+| VRN & Nerves | vrn-nerves.html | VRN mapping the nervous system | ✅ New |
 | Vocal Games | vocal-games.html | Gamified VRN challenges | ⬜ Planned |
 
 ---
@@ -158,10 +160,11 @@
 - VoiceStry credits COSMOS as origin
 
 ### Navigation Structure
-All 10 active pages share a consistent 11-link nav bar:
+All 13 active pages share a consistent nav bar:
 ```
-Home | VRN Method | Learn VRN | 5 Gears | Vocal Gym | Pitch Trainer |
-Sight Reading | Voice Lab | Live Analyzer | Sonic Portrait | Press
+Home | VRN Method | Learn ▾ (Learn VRN, 5 Gears, Vocal Gym) |
+Tools ▾ (Pitch Trainer, Sight Reading, Voice Lab, Live Analyzer, Sonic Portrait) |
+AI + VRN | Nerves | Press
 ```
 
 Cross-page links:
@@ -251,6 +254,8 @@ sight-reading.html → learn.html
 | 1.6.0 | February 22, 2026 | VRN Method: Updated version history (s05→SY05), added 13-symbol description with CD/CS/SY three-method framework. UATEST: Added SY05 Symbols Method and Three-Method Framework features. |
 | 1.6.1 | February 22, 2026 | Webring highlight fix: standardized all 11 pages to .aiunites-bar-active class with white (#fff) color + underline. Removed legacy .current class and green var(--accent-green) from index.html. Consistent across entire site. |
 | 1.6.2 | February 23, 2026 | Removed duplicate footer from 5 pages (learn, pitch-trainer, sight-reading, voice-lab, voice-analyzer). Fixed broken legal links (href="#" → legal.html). Added missing Voice Lab + Live Analyzer to learn.html footer nav. |
+| 1.6.3 | February 24, 2026 | ai-vrn.html: Why AI Needs VRN article page. Navigation updated across all pages for AI + VRN link. |
+| 1.7.0 | February 24, 2026 | vrn-nerves.html: VRN & the Nervous System — maps every VRN symbol to cranial nerves, motor cortex, brainstem circuits. 11 sections, 4 mapping tables, neural trace examples. Navigation updated across all 13 pages (nav + footer where present). Site now 13 pages. |
 
 ---
 
