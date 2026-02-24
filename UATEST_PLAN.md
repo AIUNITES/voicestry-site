@@ -9,7 +9,7 @@
 | **Custom Domains** | voicestry.com, vrnmethod.com |
 | **Local Path** | C:/Users/Tom/Documents/GitHub/voicestry-site |
 | **Last Updated** | February 24, 2026 |
-| **Version** | 1.7.0 |
+| **Version** | 1.7.1 |
 | **Based On** | Custom (content from COSMOS the OPERA) |
 
 ---
@@ -30,7 +30,7 @@
 | Press | press.html | Press releases and media page | ✅ Active |
 | Sonic Portrait | sonic-portrait.html | Real-time face drawn by sound vibrations | ✅ New |
 | AI + VRN | ai-vrn.html | Why AI voice synthesis needs VRN | ✅ New |
-| VRN & Nerves | vrn-nerves.html | VRN mapping the nervous system | ✅ New |
+| AI + Neuro | ai-neuro.html | VRN mapping the nervous system — cranial nerves, motor cortex, neural command chains | ✅ New |
 | Vocal Games | vocal-games.html | Gamified VRN challenges | ⬜ Planned |
 
 ---
@@ -256,6 +256,7 @@ sight-reading.html → learn.html
 | 1.6.2 | February 23, 2026 | Removed duplicate footer from 5 pages (learn, pitch-trainer, sight-reading, voice-lab, voice-analyzer). Fixed broken legal links (href="#" → legal.html). Added missing Voice Lab + Live Analyzer to learn.html footer nav. |
 | 1.6.3 | February 24, 2026 | ai-vrn.html: Why AI Needs VRN article page. Navigation updated across all pages for AI + VRN link. |
 | 1.7.0 | February 24, 2026 | vrn-nerves.html: VRN & the Nervous System — maps every VRN symbol to cranial nerves, motor cortex, brainstem circuits. 11 sections, 4 mapping tables, neural trace examples. Navigation updated across all 13 pages (nav + footer where present). Site now 13 pages. |
+| 1.7.1 | February 24, 2026 | Renamed vrn-nerves.html → ai-neuro.html with "AI + Neuro" nav label. Updated all 13 pages (nav + footer). Matches AI + VRN naming convention. |
 
 ---
 

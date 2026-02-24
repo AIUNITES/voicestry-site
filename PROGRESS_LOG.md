@@ -120,6 +120,16 @@
 - Note: voice-analyzer and sonic-portrait have no footer nav section — only top nav
 - Nav order: Home | VRN Method | Learn ▾ | Tools ▾ | AI + VRN | Nerves | Press
 
+### Renamed vrn-nerves.html → ai-neuro.html ("AI + Neuro")
+- Renamed file: vrn-nerves.html → ai-neuro.html
+- Updated nav label: "Nerves" → "AI + Neuro" (matches naming pattern of "AI + VRN")
+- Updated all 13 pages — nav and footer references
+  - Nav updated: all 13 pages ✅
+  - Footer updated: 11 pages with standard footer ✅
+  - 2 interactive tools (voice-analyzer, sonic-portrait) have nav-only links ✅
+- Nav order: Home | VRN Method | Learn ▾ | Tools ▾ | AI + VRN | AI + Neuro | Press
+- Site total: 13 pages
+
 ---
 
 *VoiceStry © 2002-2026 Tom. All Rights Reserved.*
