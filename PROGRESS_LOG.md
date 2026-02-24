@@ -146,6 +146,18 @@
 - ai-neuro.html: IP notice above CTA with full DMCA claim for VNN
 - VNN is the first system to map symbolic vocal production notation to its underlying neural command chains
 
+### "Who Needs VNN" — Press Page Section (Session 3d)
+- Added "Who Needs VNN" section to press.html Technical Brief, between VNN feature box and Additional Applications
+- 7 target audiences with specific use cases:
+  - Voice Clinicians & SLPs (surgical recovery documentation)
+  - Neurologists — Parkinson's, Stroke, ALS (early diagnostic data)
+  - Voice Teachers (mechanism-based pedagogy)
+  - AI Voice Researchers (neuromuscular parameter space for synthesis)
+  - Vocal Rehabilitation Therapists (targeted neural retraining protocols)
+  - Singing Scientists & Phoniatrists (three-way correlation research)
+  - Opera Companies & Choral Programs (neuromuscular casting profiles)
+- Closing line: "VNN is the notation for the wiring diagram. Nobody else has one."
+
 ---
 
 *VoiceStry © 2002-2026 Tom. All Rights Reserved.*

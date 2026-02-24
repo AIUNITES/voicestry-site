@@ -45,11 +45,25 @@
 - **Version:** 1.7.1
 - **Ready to commit and push** for auto-publish
 
-### DMCA / Copyright Updates
-- **press.html** IP section: Expanded to explicitly name "neural mapping frameworks (including the VRN-to-Nerve mapping tables, Neural Command Chain architecture, and Vocal Neural Notation system)"
-- **press.html** copyright lines: Added dedicated line "Vocal Neural Notation / VRN Neural Mapping © 2026 Tom Sans. All Rights Reserved. DMCA Protected."
-- **ai-neuro.html**: Added inline IP notice section above CTA with full DMCA claim and licensing reference back to press page
-- Rationale: VRN-to-nerve mapping is a novel organizational framework (nobody else has mapped vocal notation symbols to specific cranial nerves). Explicitly naming it strengthens the copyright claim beyond the general "organizational systems" language.
+### Vocal Neuro Notation (VNN) — Official Naming &amp; DMCA
+- Named the neural mapping system: **Vocal Neuro Notation (VNN)**
+- Mirrors "Vocal Resonance Notation (VRN)" — same naming DNA, clear sister system
+- VRN = what happens. VNN = what fires to make it happen.
+- **press.html**: Added full VNN feature section in Technical Brief (purple highlight box) with:
+  - System description and novelty claim
+  - Three VRN→VNN examples ([Zy], [Tn], [D+++])
+  - Applications list (rehab, clinical, AI, pedagogy, research)
+- **press.html**: IP section expanded to describe VNN as companion system
+- **press.html**: Copyright line: "VNN / Vocal Neuro Notation © 2026 Tom Sans"
+- **ai-neuro.html**: Full rebrand throughout:
+  - Title: "Vocal Neuro Notation (VNN) — What Fires to Make You Sing"
+  - Hero: introduces VRN + VNN as dual systems
+  - Section headers: "Complete VRN → VNN Mapping", "VNN as Neural Training Framework"
+  - Key paragraphs: "VRN is the score. VNN is the orchestra."
+  - IP notice: full DMCA claim for VNN
+- **UATEST_PLAN.md**: Page description updated for VNN
+- **PROGRESS_LOG.md**: Full session entry for VNN naming
+- VNN is the first system to map symbolic vocal production notation to its underlying neural command chains. Nobody else has built that bridge between notation and neuroscience.
 
 ### Pending
 - Git commit and push (triggers auto-publish within 10 minutes)
