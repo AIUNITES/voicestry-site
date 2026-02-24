@@ -413,6 +413,8 @@
       <a href="vocal-gym.html">Vocal Gym</a> |
       <a href="pitch-trainer.html">Pitch</a> |
       <a href="sight-reading.html">Sight Reading</a> |
+      <a href="voice-lab.html">Voice Lab</a> |
+      <a href="voice-analyzer.html">Live Analyzer</a> |
       <a href="press.html">Press</a><br><br>
       Part of the <a href="https://aiunites.github.io/aiunites-site/">AIUNITES</a> network |
       Created by <a href="https://aiunites.github.io/cosmostheopera-site/">COSMOS the OPERA</a>
@@ -421,8 +423,8 @@
       <strong style="color:#f87171;">&#9888;&#65039; Voice Health Disclaimer:</strong> VoiceStry is an educational tool and is not a substitute for professional vocal instruction or medical advice. Stop immediately if you experience pain, strain, hoarseness, or discomfort while singing. Consult a vocal coach or ENT specialist before beginning any intensive vocal training program. VoiceStry and AIUNITES are not responsible for vocal injury resulting from misuse of exercises or tools on this site.
     </div>
     <div style="margin-top:1rem;padding-top:0.75rem;border-top:1px solid rgba(255,255,255,0.1);font-size:0.75rem;color:rgba(255,255,255,0.4);text-align:center;">
-      <a href="#" style="color:rgba(255,255,255,0.4);margin:0 8px;">Privacy Policy</a> &middot;
-      <a href="#" style="color:rgba(255,255,255,0.4);margin:0 8px;">Terms of Service</a> &middot;
+      <a href="https://aiunites.github.io/aiunites-site/legal.html#privacy" style="color:rgba(255,255,255,0.4);margin:0 8px;">Privacy Policy</a> &middot;
+      <a href="https://aiunites.github.io/aiunites-site/legal.html#terms" style="color:rgba(255,255,255,0.4);margin:0 8px;">Terms of Service</a> &middot;
       <a href="https://github.com/AIUNITES/voicestry-site/issues" target="_blank" style="color:rgba(255,255,255,0.4);margin:0 8px;">Developer Feedback</a>
     </div>
   </footer>
@@ -503,19 +505,6 @@
     function detectPitch(buf,sampleRate){var maxVal=0;for(var i=0;i<buf.length;i++)if(Math.abs(buf[i])>maxVal)maxVal=Math.abs(buf[i]);if(maxVal<0.01)return-1;var norm=new Float32Array(buf.length);for(var i=0;i<buf.length;i++)norm[i]=buf[i]/maxVal;var minP=Math.floor(sampleRate/1000),maxP=Math.floor(sampleRate/60),bestC=0,bestP=0;for(var p=minP;p<maxP&&p<norm.length/2;p++){var c=0;for(var i=0;i<norm.length/2;i++)c+=norm[i]*norm[i+p];if(c>bestC){bestC=c;bestP=p;}}if(bestC<norm.length*0.01)return-1;return sampleRate/bestP;}
     function freqToNote(f){var n=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'],m=12*Math.log2(f/440)+69;return n[Math.round(m)%12]+(Math.floor(Math.round(m)/12)-1);}
   </script>
-
-  <footer style="background:rgba(0,0,0,0.4);border-top:1px solid rgba(255,255,255,0.1);padding:2rem 1rem;text-align:center;font-family:system-ui,sans-serif;margin-top:2rem;">
-    <p style="color:rgba(255,255,255,0.5);font-size:0.85rem;margin:0 0 0.5rem;">&#127925; VoiceStry &mdash; Vocal Training Reimagined</p>
-    <p style="color:rgba(255,255,255,0.35);font-size:0.75rem;margin:0 0 0.75rem;">&copy; 2026 VoiceStry. Part of the <a href="https://aiunites.github.io/aiunites-site/" style="color:#a78bfa;">AIUNITES</a> network</p>
-    <div style="max-width:680px;margin:0 auto;padding:1rem 1.5rem;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:8px;font-size:0.8rem;line-height:1.5;color:rgba(255,255,255,0.7);">
-      <strong style="color:#f87171;">&#9888;&#65039; Voice Health Disclaimer:</strong> VoiceStry is an educational tool and is not a substitute for professional vocal instruction or medical advice. Stop immediately if you experience pain, strain, hoarseness, or discomfort while singing. Consult a vocal coach or ENT specialist before beginning any intensive vocal training program. VoiceStry and AIUNITES are not responsible for vocal injury resulting from misuse of exercises or tools on this site.
-    </div>
-    <div style="margin-top:1rem;padding-top:0.75rem;border-top:1px solid rgba(255,255,255,0.1);font-size:0.75rem;color:rgba(255,255,255,0.4);text-align:center;">
-      <a href="https://aiunites.github.io/aiunites-site/legal.html#privacy" style="color:rgba(255,255,255,0.4);margin:0 8px;">Privacy Policy</a> &middot;
-      <a href="https://aiunites.github.io/aiunites-site/legal.html#terms" style="color:rgba(255,255,255,0.4);margin:0 8px;">Terms of Service</a> &middot;
-      <a href="https://github.com/AIUNITES/voicestry-site/issues" target="_blank" style="color:rgba(255,255,255,0.4);margin:0 8px;">Developer Feedback</a>
-    </div>
-  </footer>
 
 </body>
 </html>

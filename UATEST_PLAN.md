@@ -250,6 +250,7 @@ sight-reading.html → learn.html
 | 1.5.2 | February 20, 2026 | Nav consistency complete: all 11 pages verified with full 11-link nav. Fixed vocal-gym (was missing voice-lab, voice-analyzer, sonic-portrait), pitch-trainer and sight-reading (same 3 missing). Verified voice-lab, voice-analyzer, sonic-portrait, press already had full nav. |
 | 1.6.0 | February 22, 2026 | VRN Method: Updated version history (s05→SY05), added 13-symbol description with CD/CS/SY three-method framework. UATEST: Added SY05 Symbols Method and Three-Method Framework features. |
 | 1.6.1 | February 22, 2026 | Webring highlight fix: standardized all 11 pages to .aiunites-bar-active class with white (#fff) color + underline. Removed legacy .current class and green var(--accent-green) from index.html. Consistent across entire site. |
+| 1.6.2 | February 23, 2026 | Removed duplicate footer from 5 pages (learn, pitch-trainer, sight-reading, voice-lab, voice-analyzer). Fixed broken legal links (href="#" → legal.html). Added missing Voice Lab + Live Analyzer to learn.html footer nav. |
 
 ---
 
