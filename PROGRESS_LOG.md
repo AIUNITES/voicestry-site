@@ -168,6 +168,21 @@
 - Clinical nerve tests section, VNN cross-link, DMCA IP notice covering both MNN and BodWave
 - Nav updated on all 3 BodSpas pages, sitemap updated
 
+### MNN Symbol Set (Session 3f)
+- Added full 8-category MNN notation system to bodwave.html:
+  1. Muscle Symbols (48+ codes: [Pec.S], [Lat], [Quad.RF], etc.)
+  2. Activation Intensity (+, ++, +++, −, −−)
+  3. Contraction Type (Con:, Ecc:, Iso:, Ply:, Pas:)
+  4. Nerve Tags (16 tags: → MedPec, → Axil, → Fem, etc.)
+  5. Movement Pattern ({Push.H}, {Sqt}, {Hng}, {Rot}, etc.)
+  6. Tempo & Control (t[3-1-2], Hold:Xs, Wave→, Flex!, Pulse:X)
+  7. Clinical Status (❌, Atr:, Spas:, Fib:, Rec↑, Comp:)
+  8. BodWave Level Markers (BW1: through BW4:)
+- 4 worked examples: flat bench, heavy squat, clinical shoulder note, BW3 ab wave
+- Mirrors VRN's 8-category structure for the body
+- Hero stats updated: 48+ Muscle Symbols, 16 Nerve Tags, 8 Notation Categories, 4 BodWave Levels
+- IP notice expanded to cover full symbol set
+
 ---
 
 *VoiceStry © 2002-2026 Tom. All Rights Reserved.*
