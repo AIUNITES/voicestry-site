@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VRN &amp; the Nervous System — What Fires to Make You Sing | VoiceStry</title>
+  <meta name="description" content="Every VRN symbol implies a neural command chain. Map the cranial nerves, motor cortex, and brainstem circuits that control vocal resonance, fold behavior, breath, and articulation.">
+  <meta name="keywords" content="vocal nervous system, cranial nerves singing, vagus nerve voice, recurrent laryngeal, VRN, vocal resonance notation, neuroscience of singing, vocal neurology">
+  <meta name="author" content="Tom Sans / AIUNITES">
+  <meta property="og:title" content="VRN &amp; the Nervous System — What Fires to Make You Sing">
+  <meta property="og:description" content="Behind every VRN symbol is a neural command chain. Map the nerves that make your voice work.">
+  <meta property="og:type" content="article">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎤</text></svg>">
+
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    :root{--bg-dark:#0a0a0f;--bg-card:#12121a;--bg-highlight:#1a1a2e;--text-primary:#fff;--text-secondary:#a0a0b0;--text-dim:#707080;--accent-purple:#9d4edd;--accent-cyan:#00d4ff;--accent-gold:#ffd700;--accent-green:#4ade80;--accent-red:#ef4444;--accent-orange:#f59e0b;--accent-pink:#ff6b9d}
+    body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg-dark);color:var(--text-primary);line-height:1.8}
+
+    /* Webring */
+    .aiunites-bar{background:linear-gradient(90deg,#0a0a0f,#1a1a2e);border-bottom:1px solid rgba(99,102,241,.3);padding:8px 0;font-size:12px}.aiunites-bar-content{max-width:1400px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:12px;overflow-x:auto;scrollbar-width:none}.aiunites-bar-content::-webkit-scrollbar{display:none}.aiunites-bar a{color:rgba(255,255,255,.7);text-decoration:none;white-space:nowrap;transition:color .2s}.aiunites-bar a:hover{color:#fff}.aiunites-bar-brand{color:#6366f1!important;font-weight:600}.aiunites-bar-active{color:#fff!important;text-decoration:underline;text-underline-offset:3px}.aiunites-bar-divider{color:rgba(255,255,255,.2)}
+
+    /* Nav */
+    .nav{background:var(--bg-card);padding:15px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,0.1);position:sticky;top:0;z-index:100}
+    .nav-logo{font-size:1.5rem;font-weight:800;text-decoration:none;background:linear-gradient(135deg,var(--accent-green),var(--accent-cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .nav-links{display:flex;gap:22px;flex-wrap:wrap}.nav-links a{color:var(--text-secondary);text-decoration:none;font-size:0.95rem;transition:color 0.3s}.nav-links a:hover,.nav-links a.active{color:var(--accent-cyan)}
+
+    /* Hero */
+    .hero{padding:80px 20px 60px;text-align:center;background:radial-gradient(ellipse at 30% 20%,rgba(239,68,68,0.1) 0%,transparent 50%),radial-gradient(ellipse at 70% 80%,rgba(157,78,221,0.12) 0%,transparent 50%),var(--bg-dark)}
+    .hero h1{font-size:clamp(2.2rem,5vw,3.5rem);margin-bottom:15px;background:linear-gradient(135deg,#fff,var(--accent-pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero-sub{font-size:1.15rem;color:var(--text-secondary);max-width:700px;margin:0 auto 30px}
+    .hero-stat-row{display:flex;gap:30px;justify-content:center;flex-wrap:wrap;margin-top:25px}
+    .hero-stat{text-align:center}
+    .hero-stat .num{font-size:2.2rem;font-weight:800;background:linear-gradient(135deg,var(--accent-red),var(--accent-pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero-stat .label{font-size:0.85rem;color:var(--text-dim)}
+
+    /* Content */
+    .content{max-width:900px;margin:0 auto;padding:0 20px 80px}
+    .section{margin-bottom:60px;padding-top:40px}
+    .section h2{font-size:1.7rem;margin-bottom:20px;color:var(--accent-gold);display:flex;align-items:center;gap:15px}
+    .section h2::before{content:"";width:5px;height:28px;background:linear-gradient(180deg,var(--accent-red),var(--accent-pink));border-radius:3px;flex-shrink:0}
+    .section h3{font-size:1.2rem;margin:25px 0 12px;color:var(--accent-cyan)}
+    .section p{color:var(--text-secondary);margin-bottom:16px}
+
+    /* Nerve cards */
+    .nerve-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin:25px 0}
+    .nerve-card{background:var(--bg-card);border-radius:15px;padding:25px;border:1px solid rgba(255,255,255,0.05);transition:all 0.3s}
+    .nerve-card:hover{border-color:var(--accent-pink);transform:translateY(-3px)}
+    .nerve-num{font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent-red);margin-bottom:8px}
+    .nerve-card h4{font-size:1.1rem;font-weight:700;margin-bottom:8px;color:var(--text-primary)}
+    .nerve-card p{color:var(--text-secondary);font-size:0.9rem;margin:0 0 10px}
+    .nerve-vrn{font-family:'Courier New',monospace;color:var(--accent-gold);font-size:0.85rem;background:rgba(255,215,0,0.06);padding:6px 10px;border-radius:6px;display:inline-block}
+
+    /* Mapping table */
+    .map-table{width:100%;border-collapse:collapse;margin:20px 0;background:var(--bg-card);border-radius:15px;overflow:hidden}
+    .map-table th,.map-table td{padding:14px 18px;text-align:left;border-bottom:1px solid rgba(255,255,255,0.05)}
+    .map-table th{background:rgba(239,68,68,0.15);color:var(--accent-pink);font-weight:600;font-size:0.9rem}
+    .map-table tr:last-child td{border-bottom:none}
+    .map-table tr:hover{background:rgba(239,68,68,0.03)}
+    .map-table .sym{font-family:'Courier New',monospace;font-weight:700;color:var(--accent-gold)}
+    .map-table .nerve{color:var(--accent-cyan);font-weight:600}
+
+    /* Chain diagram */
+    .chain{display:flex;align-items:center;gap:0;margin:30px 0;flex-wrap:wrap;justify-content:center}
+    .chain-step{background:var(--bg-card);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px 20px;text-align:center;min-width:130px;transition:all 0.3s}
+    .chain-step:hover{border-color:var(--accent-pink)}
+    .chain-step .icon{font-size:1.6rem;margin-bottom:4px}
+    .chain-step .name{font-size:0.85rem;font-weight:700;color:var(--text-primary)}
+    .chain-step .desc{font-size:0.72rem;color:var(--text-dim);margin-top:3px}
+    .chain-arrow{color:var(--accent-red);font-size:1.5rem;padding:0 6px;flex-shrink:0}
+
+    /* Insight box */
+    .insight-box{background:linear-gradient(135deg,rgba(157,78,221,0.08),rgba(255,107,157,0.05));border:1px solid rgba(157,78,221,0.2);border-radius:15px;padding:30px;margin:25px 0}
+    .insight-box h3{color:var(--accent-purple);margin-top:0}
+
+    /* Layer cards */
+    .layer-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:25px 0}
+    .layer-card{border-radius:12px;padding:22px;border:1px solid rgba(255,255,255,0.05)}
+    .layer-card.mechanical{background:rgba(0,212,255,0.05);border-color:rgba(0,212,255,0.15)}
+    .layer-card.neural{background:rgba(239,68,68,0.05);border-color:rgba(239,68,68,0.15)}
+    .layer-label{font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px}
+    .layer-card.mechanical .layer-label{color:var(--accent-cyan)}
+    .layer-card.neural .layer-label{color:var(--accent-red)}
+    .layer-card code{font-family:'Courier New',monospace;color:var(--accent-gold);font-size:0.9rem;display:block;margin:6px 0;background:rgba(255,215,0,0.05);padding:6px 10px;border-radius:6px}
+    .layer-card p{color:var(--text-secondary);font-size:0.9rem;margin:0}
+
+    /* Code block */
+    .code-block{background:var(--bg-highlight);border-radius:10px;padding:22px;font-family:'Courier New',monospace;font-size:0.9rem;overflow-x:auto;border:1px solid rgba(255,255,255,0.08);margin:20px 0;line-height:1.8}
+    .code-block .comment{color:var(--accent-green)}
+    .code-block .key{color:var(--accent-cyan)}
+    .code-block .val{color:var(--accent-gold)}
+    .code-block .nerve-tag{color:var(--accent-red)}
+
+    /* Quote block */
+    .quote-block{background:var(--bg-highlight);border-radius:12px;padding:25px 30px;margin:25px 0;border-left:4px solid var(--accent-red)}
+    .quote-block p{color:var(--text-primary);font-size:1.05rem;font-style:italic;margin-bottom:8px}
+    .quote-block .attribution{color:var(--text-dim);font-size:0.85rem;font-style:normal}
+
+    /* CTA */
+    .cta-section{text-align:center;padding:50px 20px;background:radial-gradient(ellipse at 50% 50%,rgba(239,68,68,0.08) 0%,transparent 60%);border-radius:20px;margin:40px 0}
+    .cta-section h2{justify-content:center;font-size:1.9rem}
+    .cta-section h2::before{display:none}
+    .cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:25px}
+    .cta-btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:14px;text-decoration:none;font-weight:700;font-size:1rem;transition:transform 0.2s,box-shadow 0.2s;color:#fff}
+    .cta-btn:hover{transform:translateY(-3px)}
+    .cta-btn--red{background:linear-gradient(135deg,var(--accent-red),var(--accent-pink));box-shadow:0 4px 20px rgba(239,68,68,0.3)}
+    .cta-btn--purple{background:linear-gradient(135deg,var(--accent-purple),#7c3aed);box-shadow:0 4px 20px rgba(157,78,221,0.3)}
+    .cta-btn--cyan{background:linear-gradient(135deg,#0891b2,var(--accent-cyan));box-shadow:0 4px 20px rgba(0,212,255,0.25)}
+
+    /* Footer */
+    .footer{background:var(--bg-card);padding:40px 20px;text-align:center;border-top:1px solid rgba(255,255,255,0.05)}
+    .footer p{color:var(--text-secondary);font-size:0.9rem}.footer a{color:var(--accent-purple);text-decoration:none}
+
+    @media(max-width:768px){
+      .nav{flex-direction:column;gap:12px}.nav-links{flex-wrap:wrap;justify-content:center;gap:12px}
+      .nerve-grid{grid-template-columns:1fr}
+      .layer-grid{grid-template-columns:1fr}
+      .chain{flex-direction:column}.chain-arrow{transform:rotate(90deg)}
+      .hero-stat-row{gap:15px}
+    }
+  </style>
+</head>
+<body>
+  <div class="aiunites-bar"><div class="aiunites-bar-content"><a href="https://aiunites.github.io/aiunites-site/" class="aiunites-bar-brand">◆ AIUNITES</a><span class="aiunites-bar-divider">|</span><a href="https://aiunites.github.io/aizines-app/">AIZines</a><a href="https://aiunites.github.io/aibyjob-demo/">AIByJob</a><a href="https://aiunites.github.io/redomy-demo/">Redomy</a><a href="https://aiunites.github.io/videobate-site/">VideoBate</a><a href="https://aiunites.github.io/voicestry-site/" class="aiunites-bar-active">🎤 VoiceStry</a><a href="https://aiunites.github.io/furnishthings-site/">FurnishThings</a><a href="https://aiunites.github.io/bizstry-site/">BizStry</a><a href="https://aiunites.github.io/aiyhwh-site/">AI YHWH</a><a href="https://aiunites.github.io/cloudsion-site/">Cloudsion</a><a href="https://aiunites.github.io/gameatica-site/">Gameatica</a><a href="https://aiunites.github.io/uptownit-site/">UptownIT</a><a href="https://aiunites.github.io/inthisworld-site/">InThisWorld</a><a href="https://aiunites.github.io/erpise-site/">ERPise</a><a href="https://aiunites.github.io/erpize-site/">ERPize</a><a href="https://aiunites.github.io/aitsql-site/">AITSQL</a><a href="https://aiunites.github.io/cosmostheopera-site/">🌌 COSMOS</a></div></div>
+
+  <nav class="nav"><a href="index.html" class="nav-logo">🎤 VoiceStry</a><div class="nav-links"><a href="index.html">Home</a><a href="vrn-method.html">VRN Method</a><div class="nav-dropdown"><button class="nav-dropdown-btn">Learn ▾</button><div class="nav-dropdown-menu"><a href="learn.html">Learn VRN</a><a href="5-gears.html">5 Gears</a><a href="vocal-gym.html">Vocal Gym</a></div></div><div class="nav-dropdown"><button class="nav-dropdown-btn">Tools ▾</button><div class="nav-dropdown-menu"><a href="pitch-trainer.html">Pitch Trainer</a><a href="sight-reading.html">Sight Reading</a><a href="voice-lab.html">Voice Lab</a><a href="voice-analyzer.html">Live Analyzer</a><a href="sonic-portrait.html">Sonic Portrait</a></div></div><a href="ai-vrn.html">AI + VRN</a><a href="vrn-nerves.html" class="active">Nerves</a><a href="press.html">Press</a></div></nav>
+  <script>document.querySelectorAll('.nav-dropdown-btn').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();var d=b.parentElement,o=d.classList.contains('open');document.querySelectorAll('.nav-dropdown.open').forEach(function(x){x.classList.remove('open')});if(!o)d.classList.add('open')})});document.addEventListener('click',function(){document.querySelectorAll('.nav-dropdown.open').forEach(function(d){d.classList.remove('open')})})</script>
+
+  <!-- Hero -->
+  <section class="hero">
+    <h1>🧬 VRN &amp; the Nervous System</h1>
+    <p class="hero-sub">VRN maps <em>what happens</em> in the voice. But behind every symbol is a neural command chain — cranial nerves, motor cortex, brainstem circuits — that <em>fires to make it happen.</em></p>
+    <div class="hero-stat-row">
+      <div class="hero-stat"><div class="num">6</div><div class="label">Cranial Nerves</div></div>
+      <div class="hero-stat"><div class="num">100+</div><div class="label">Muscles Coordinated</div></div>
+      <div class="hero-stat"><div class="num">75+</div><div class="label">VRN Symbols Mapped</div></div>
+      <div class="hero-stat"><div class="num">50ms</div><div class="label">Neural Response Time</div></div>
+    </div>
+  </section>
+
+  <main class="content">
+
+    <!-- 1. The Two Layers -->
+    <section class="section">
+      <h2>Two Layers of Vocal Production</h2>
+      <p>Traditional vocal pedagogy tells you <em>what to do</em>: open the throat, lift the palate, support from the diaphragm. VRN gives you symbols for these mechanical events. But there's a deeper layer — the nervous system that actually <em>executes</em> those commands.</p>
+      <div class="layer-grid">
+        <div class="layer-card mechanical">
+          <div class="layer-label">🔵 Mechanical Layer (Current VRN)</div>
+          <code>[H+++, N++, O++, Sq+, Vib.r6]</code>
+          <p>Describes the output: where resonance lives, fold configuration, airflow, vibrato rate. What you <em>feel and hear.</em></p>
+        </div>
+        <div class="layer-card neural">
+          <div class="layer-label">🔴 Neural Layer (What Fires)</div>
+          <code>CN X → RLN → fold adduction | CN VII → zygomatic lift | C3-C5 → diaphragm</code>
+          <p>Describes the control: which nerves fire, which muscles contract, which brain regions coordinate. What <em>makes it happen.</em></p>
+        </div>
+      </div>
+      <p>Every VRN symbol implies a neural command chain. When a score says [Zy] (zygomatic lift), the facial nerve (CN VII) is sending signals to the zygomaticus major. When it says [D+++] (maximum diaphragm), the phrenic nerve (C3–C5) is driving the primary breathing muscle. The mechanical layer is the score. The neural layer is the orchestra.</p>
+    </section>
+
+    <!-- 2. The Command Chain -->
+    <section class="section">
+      <h2>The Neural Command Chain</h2>
+      <p>When you decide to sing a phrase, here's what fires — in order — before a single sound emerges:</p>
+      <div class="chain">
+        <div class="chain-step"><div class="icon">🧠</div><div class="name">Motor Cortex</div><div class="desc">Voluntary intent</div></div>
+        <div class="chain-arrow">→</div>
+        <div class="chain-step"><div class="icon">📍</div><div class="name">Broca's Area</div><div class="desc">Motor planning</div></div>
+        <div class="chain-arrow">→</div>
+        <div class="chain-step"><div class="icon">🎯</div><div class="name">Basal Ganglia</div><div class="desc">Learned sequences</div></div>
+        <div class="chain-arrow">→</div>
+        <div class="chain-step"><div class="icon">⏱️</div><div class="name">Cerebellum</div><div class="desc">Timing &amp; precision</div></div>
+        <div class="chain-arrow">→</div>
+        <div class="chain-step"><div class="icon">🔌</div><div class="name">Brainstem Nuclei</div><div class="desc">Nerve relay</div></div>
+        <div class="chain-arrow">→</div>
+        <div class="chain-step"><div class="icon">⚡</div><div class="name">Cranial Nerves</div><div class="desc">Muscle activation</div></div>
+        <div class="chain-arrow">→</div>
+        <div class="chain-step"><div class="icon">🎤</div><div class="name">Sound</div><div class="desc">VRN output</div></div>
+      </div>
+      <p>This entire chain fires in under 100 milliseconds. Trained singers have optimized the basal ganglia pathway — learned motor sequences that bypass conscious processing. That's why a professional can sight-read VRN notation and execute it instantly: the neural pathways are already wired.</p>
+    </section>
+
+    <!-- 3. The 6 Cranial Nerves of Singing -->
+    <section class="section">
+      <h2>The 6 Cranial Nerves of Singing</h2>
+      <p>Six cranial nerves form the core "wiring harness" of the vocal instrument. Every VRN symbol traces back to one or more of these nerves.</p>
+
+      <div class="nerve-grid">
+        <div class="nerve-card">
+          <div class="nerve-num">CN V — Trigeminal</div>
+          <h4>The Jaw Controller</h4>
+          <p>Motor division controls the muscles of mastication — temporalis, masseter, pterygoids. Opens, closes, and positions the jaw. Every [Jw] symbol in VRN is a trigeminal command.</p>
+          <div class="nerve-vrn">Controls: [Jw↓] [Jw→] [Jw~]</div>
+        </div>
+        <div class="nerve-card">
+          <div class="nerve-num">CN VII — Facial</div>
+          <h4>The Embouchure Architect</h4>
+          <p>Controls all muscles of facial expression — lips, cheeks, the "inner smile." The zygomatic branch lifts the cheekbones, the buccal branch shapes the lips. Mask resonance depends on this nerve.</p>
+          <div class="nerve-vrn">Controls: [Lp] [Lp+] [Lp→] [Zy] [Ey] [B]</div>
+        </div>
+        <div class="nerve-card">
+          <div class="nerve-num">CN IX — Glossopharyngeal</div>
+          <h4>The Pharynx Opener</h4>
+          <p>Motor fibers to the stylopharyngeus muscle — the primary pharyngeal elevator. When VRN says [P++], the glossopharyngeal nerve is lifting and widening the throat. Also provides sensory feedback from the oropharynx.</p>
+          <div class="nerve-vrn">Controls: [P] [P+] [P++] [P+++]</div>
+        </div>
+        <div class="nerve-card">
+          <div class="nerve-num">CN X — Vagus</div>
+          <h4>The Master Controller</h4>
+          <p>The most important nerve in singing. Two critical branches: the <strong>recurrent laryngeal nerve</strong> controls most intrinsic laryngeal muscles (fold adduction, abduction, tension), and the <strong>superior laryngeal nerve</strong> controls the cricothyroid (pitch stretching). Also controls the soft palate via the pharyngeal branch.</p>
+          <div class="nerve-vrn">Controls: [Th] [Tn] [Fl] [Prs] [Br] [Gl] [Co] [As] [Vib] [SP] [Sq] + all fold behavior</div>
+        </div>
+        <div class="nerve-card">
+          <div class="nerve-num">CN XI — Accessory</div>
+          <h4>The Posture Support</h4>
+          <p>Controls the sternocleidomastoid and trapezius muscles. While not directly vocal, proper head and neck position affects laryngeal alignment. Excessive tension here (sternocleidomastoid bracing) is a common source of vocal strain.</p>
+          <div class="nerve-vrn">Influences: [M] posture &amp; laryngeal stability</div>
+        </div>
+        <div class="nerve-card">
+          <div class="nerve-num">CN XII — Hypoglossal</div>
+          <h4>The Tongue Engine</h4>
+          <p>Sole motor nerve to the tongue — controls all intrinsic and most extrinsic tongue muscles. Tongue position fundamentally shapes the oral cavity and affects formant frequencies. Every [Tg] symbol is a hypoglossal command.</p>
+          <div class="nerve-vrn">Controls: [Tg(F)] [Tg(B)] [O] [F1] [F2] formant shaping</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. The Vagus Deep Dive -->
+    <section class="section">
+      <h2>The Vagus Nerve — Deep Dive</h2>
+      <p>CN X deserves its own section because it controls the larynx itself — the sound source. Two branches do most of the work:</p>
+
+      <div class="layer-grid">
+        <div class="layer-card neural">
+          <div class="layer-label">🔴 Recurrent Laryngeal Nerve (RLN)</div>
+          <p>Controls <strong>4 of 5</strong> intrinsic laryngeal muscles:</p>
+          <code>Thyroarytenoid → fold body tension [Th]</code>
+          <code>Lateral Cricoarytenoid → fold adduction [Prs]</code>
+          <code>Posterior Cricoarytenoid → fold abduction [Br]</code>
+          <code>Interarytenoid → fold closure [Fl]</code>
+          <p style="margin-top:10px;">The RLN takes a remarkable anatomical path — it descends from the brainstem, loops under the aortic arch (left) or subclavian artery (right), then ascends back to the larynx. This long path makes it vulnerable to injury during thyroid or cardiac surgery — a known cause of vocal fold paralysis.</p>
+        </div>
+        <div class="layer-card neural">
+          <div class="layer-label">🔴 Superior Laryngeal Nerve (SLN)</div>
+          <p>Controls <strong>1</strong> critical muscle:</p>
+          <code>Cricothyroid → fold lengthening &amp; thinning [Tn]</code>
+          <p style="margin-top:10px;">The cricothyroid is the "pitch" muscle — it stretches the vocal folds longitudinally, increasing tension and raising pitch. This is why the SLN is called the "tenor's nerve." Damage to it causes loss of upper range and inability to project. Every VRN register transition ([Pz1], [Pz2]) involves a shift in cricothyroid vs. thyroarytenoid dominance.</p>
+        </div>
+      </div>
+
+      <div class="quote-block">
+        <p>"The recurrent laryngeal nerve controls WHAT the folds do. The superior laryngeal nerve controls HOW TIGHT they stretch. Together, they are the entire engine of phonation."</p>
+        <div class="attribution">— The neural basis of VRN fold notation</div>
+      </div>
+    </section>
+
+    <!-- 5. VRN-to-Nerve Mapping Table -->
+    <section class="section">
+      <h2>Complete VRN → Nerve Mapping</h2>
+      <p>Every VRN symbol can be traced to a specific nerve or nerve combination. This is the master reference table.</p>
+
+      <h3>Resonance &amp; Placement</h3>
+      <table class="map-table">
+        <thead><tr><th>VRN Symbol</th><th>Mechanical Action</th><th>Primary Nerve(s)</th><th>Target Muscle(s)</th></tr></thead>
+        <tbody>
+          <tr><td class="sym">[C]</td><td>Chest resonance</td><td class="nerve">CN X (RLN)</td><td>Thyroarytenoid (thick fold mass)</td></tr>
+          <tr><td class="sym">[H]</td><td>Head resonance</td><td class="nerve">CN X (SLN)</td><td>Cricothyroid (stretched, thinned folds)</td></tr>
+          <tr><td class="sym">[N]</td><td>Nasal resonance</td><td class="nerve">CN X (pharyngeal)</td><td>Levator veli palatini (lowered palate)</td></tr>
+          <tr><td class="sym">[O]</td><td>Oral resonance</td><td class="nerve">CN XII + CN VII</td><td>Tongue shaping + lip/cheek configuration</td></tr>
+          <tr><td class="sym">[P]</td><td>Pharyngeal space</td><td class="nerve">CN IX + CN X</td><td>Stylopharyngeus + pharyngeal constrictors (released)</td></tr>
+          <tr><td class="sym">[L]</td><td>Low body resonance</td><td class="nerve">CN X (RLN) + Phrenic</td><td>Maximum fold mass + deep diaphragmatic anchor</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Vocal Fold Behavior</h3>
+      <table class="map-table">
+        <thead><tr><th>VRN Symbol</th><th>Mechanical Action</th><th>Primary Nerve(s)</th><th>Target Muscle(s)</th></tr></thead>
+        <tbody>
+          <tr><td class="sym">[Th]</td><td>Thick fold</td><td class="nerve">CN X (RLN)</td><td>Thyroarytenoid (shortened, thickened)</td></tr>
+          <tr><td class="sym">[Tn]</td><td>Thin fold</td><td class="nerve">CN X (SLN)</td><td>Cricothyroid (stretched, thinned edges)</td></tr>
+          <tr><td class="sym">[Fl]</td><td>Flow phonation</td><td class="nerve">CN X (RLN)</td><td>Balanced interarytenoid + lateral cricoarytenoid</td></tr>
+          <tr><td class="sym">[Prs]</td><td>Pressed phonation</td><td class="nerve">CN X (RLN)</td><td>Lateral cricoarytenoid (hyperadduction)</td></tr>
+          <tr><td class="sym">[Br]</td><td>Breathy phonation</td><td class="nerve">CN X (RLN)</td><td>Posterior cricoarytenoid (partial abduction)</td></tr>
+          <tr><td class="sym">[Gl]</td><td>Glottal onset</td><td class="nerve">CN X (RLN)</td><td>Interarytenoid (full closure before air)</td></tr>
+          <tr><td class="sym">[Co]</td><td>Coordinated onset</td><td class="nerve">CN X (RLN) + Phrenic</td><td>Simultaneous fold closure + air release</td></tr>
+          <tr><td class="sym">[Zp]</td><td>Zip (partial closure)</td><td class="nerve">CN X (RLN)</td><td>Interarytenoid (posterior approximation)</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Breath &amp; Airflow</h3>
+      <table class="map-table">
+        <thead><tr><th>VRN Symbol</th><th>Mechanical Action</th><th>Primary Nerve(s)</th><th>Target Muscle(s)</th></tr></thead>
+        <tbody>
+          <tr><td class="sym">[D]</td><td>Diaphragm engagement</td><td class="nerve">Phrenic (C3–C5)</td><td>Diaphragm (descent and flattening)</td></tr>
+          <tr><td class="sym">[IC]</td><td>Intercostal expansion</td><td class="nerve">Intercostal (T1–T11)</td><td>External intercostals (rib elevation)</td></tr>
+          <tr><td class="sym">[PF]</td><td>Pelvic floor</td><td class="nerve">Pudendal (S2–S4)</td><td>Pelvic diaphragm muscles</td></tr>
+          <tr><td class="sym">[Ap]</td><td>Appoggio</td><td class="nerve">Phrenic + Intercostal</td><td>Diaphragm vs. intercostal antagonism</td></tr>
+          <tr><td class="sym">Sp1–Sp5</td><td>Subglottic pressure</td><td class="nerve">Phrenic + Intercostal + CN X</td><td>Combined: breath pressure vs. fold resistance</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Articulation &amp; Shaping</h3>
+      <table class="map-table">
+        <thead><tr><th>VRN Symbol</th><th>Mechanical Action</th><th>Primary Nerve(s)</th><th>Target Muscle(s)</th></tr></thead>
+        <tbody>
+          <tr><td class="sym">[Tg]</td><td>Tongue position</td><td class="nerve">CN XII</td><td>Genioglossus, styloglossus, hyoglossus, intrinsic tongue</td></tr>
+          <tr><td class="sym">[SP]</td><td>Soft palate</td><td class="nerve">CN X (pharyngeal)</td><td>Levator veli palatini, tensor veli palatini (CN V)</td></tr>
+          <tr><td class="sym">[Jw]</td><td>Jaw position</td><td class="nerve">CN V (motor)</td><td>Temporalis, masseter, pterygoids</td></tr>
+          <tr><td class="sym">[Lp]</td><td>Lip shaping</td><td class="nerve">CN VII</td><td>Orbicularis oris, buccinator</td></tr>
+          <tr><td class="sym">[Zy]</td><td>Zygomatic lift</td><td class="nerve">CN VII (zygomatic branch)</td><td>Zygomaticus major</td></tr>
+          <tr><td class="sym">[Ey]</td><td>Eye muscle engagement</td><td class="nerve">CN VII (temporal branch)</td><td>Orbicularis oculi</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Advanced: Vibrato, Squillo &amp; Timbral Color</h3>
+      <table class="map-table">
+        <thead><tr><th>VRN Symbol</th><th>Mechanical Action</th><th>Primary Nerve(s)</th><th>Neural Mechanism</th></tr></thead>
+        <tbody>
+          <tr><td class="sym">[Vib]</td><td>Vibrato</td><td class="nerve">CN X (RLN + SLN)</td><td>Oscillation between cricothyroid and thyroarytenoid — rate set by cerebellar timing circuits</td></tr>
+          <tr><td class="sym">[Sq]</td><td>Squillo</td><td class="nerve">CN X + CN IX</td><td>Aryepiglottic sphincter narrowing — coordinated pharyngeal and laryngeal nerve activation</td></tr>
+          <tr><td class="sym">[Mes]</td><td>Messa di voce</td><td class="nerve">Phrenic + CN X (RLN)</td><td>Gradual subglottic pressure increase/decrease with fold tension matching — requires precise cerebellar coordination</td></tr>
+          <tr><td class="sym">[Ch]</td><td>Chiaroscuro</td><td class="nerve">All cranial + spinal</td><td>Balanced activation across all vocal systems — the "neural sweet spot" of trained singing</td></tr>
+          <tr><td class="sym">[Sob]</td><td>Sob quality</td><td class="nerve">CN X + Periaqueductal Gray</td><td>Lowered larynx via extrinsic muscles + emotional brainstem circuits that trigger mournful quality</td></tr>
+          <tr><td class="sym">[Cr]</td><td>Cry quality</td><td class="nerve">CN X (SLN)</td><td>Thyroid cartilage tilt via cricothyroid — fold edge thinning with maintained connection</td></tr>
+          <tr><td class="sym">[Met]</td><td>Metallic edge</td><td class="nerve">CN X + CN IX</td><td>Aryepiglottic sphincter narrowing (similar to squillo but with higher medial compression)</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 6. Example: Full Neural Trace -->
+    <section class="section">
+      <h2>Example: Full Neural Trace of a Climax Phrase</h2>
+      <p>Let's trace the complete neural pathway for the COSMOS the OPERA climax phrase "I SEE THE UNIVERSE!":</p>
+
+      <div class="code-block">
+<span class="comment">// VRN Score (Mechanical Layer)</span>
+<span class="val">[H+++, Sq+, Mes, Ch, Tn, F2↓, Cov, Zy, Ap, D+++, Sp4]</span>
+<span class="comment">// "I SEE THE UNIVERSE!" (fff)</span>
+
+<span class="comment">// Neural Trace (What Fires)</span>
+<span class="nerve-tag">Motor Cortex</span> → Voluntary intent to produce climactic phrase
+<span class="nerve-tag">Broca's Area</span> → Motor planning: sequence articulatory + laryngeal + breath commands
+<span class="nerve-tag">Basal Ganglia</span> → Retrieve learned motor sequence (trained VRN pattern)
+<span class="nerve-tag">Cerebellum</span> → Coordinate timing: vibrato rate, messa di voce arc, breath release
+
+<span class="nerve-tag">CN X (SLN)</span> → Cricothyroid: maximum stretch for [Tn] thin fold, upper register
+<span class="nerve-tag">CN X (RLN)</span> → Interarytenoid: clean adduction for [Fl] flow phonation
+<span class="nerve-tag">CN X (RLN+SLN)</span> → Oscillate cricothyroid vs thyroarytenoid for [Vib]
+<span class="nerve-tag">CN X + CN IX</span> → Aryepiglottic narrowing for [Sq+] squillo ring
+<span class="nerve-tag">CN X (pharyngeal)</span> → Levator veli palatini: raise palate for [Cov] covering
+<span class="nerve-tag">CN VII (zygomatic)</span> → Zygomaticus major: cheekbone lift for [Zy]
+<span class="nerve-tag">CN XII</span> → Tongue retraction for [F2↓] darker formant
+<span class="nerve-tag">Phrenic (C3-C5)</span> → Maximum diaphragm descent for [D+++]
+<span class="nerve-tag">Intercostal (T1-T11)</span> → Rib expansion resistance for [Ap] appoggio
+<span class="nerve-tag">Periaqueductal Gray</span> → Emotional coloring for [Ch] chiaroscuro
+      </div>
+
+      <p>That's <strong>at least 11 distinct neural pathways firing simultaneously</strong>, coordinated to within milliseconds, producing a single sustained vowel. And the singer experiences it as one unified sensation — "I'm singing with full resonance." VRN captures the mechanical output. The nervous system is the engine room that makes it real.</p>
+    </section>
+
+    <!-- 7. Why This Matters -->
+    <section class="section">
+      <h2>Why This Matters</h2>
+
+      <div class="nerve-grid">
+        <div class="nerve-card">
+          <div class="nerve-num">For Singers</div>
+          <h4>Understand Your Instrument</h4>
+          <p>Knowing which nerve controls which muscle transforms vague instructions like "place it forward" into concrete understanding: "activate the facial nerve's zygomatic branch." When something goes wrong, you can trace the problem to its neural source.</p>
+        </div>
+        <div class="nerve-card">
+          <div class="nerve-num">For Voice Teachers</div>
+          <h4>Diagnose Problems Precisely</h4>
+          <p>A student with persistent breathiness might have a coordination issue between the recurrent laryngeal nerve's adduction command and the phrenic nerve's air release timing — not a "weak voice." VRN + neural mapping gives teachers a diagnostic framework.</p>
+        </div>
+        <div class="nerve-card">
+          <div class="nerve-num">For Clinicians</div>
+          <h4>Document &amp; Track Recovery</h4>
+          <p>After thyroid surgery, vocal fold paralysis from RLN damage can be tracked with VRN: "Patient presents with [Br+++, Prs-], consistent with unilateral RLN deficit. Post-therapy: [Fl, Co] — adduction improving." Objective notation for clinical progress.</p>
+        </div>
+        <div class="nerve-card">
+          <div class="nerve-num">For AI Researchers</div>
+          <h4>Build Better Voice Models</h4>
+          <p>Current AI voice synthesis models black-box the entire production pipeline. VRN's neural mapping provides a structured parameter space that mirrors actual human neuromuscular control — enabling AI systems that understand <em>how</em> voices are made, not just what they sound like.</p>
+        </div>
+        <div class="nerve-card">
+          <div class="nerve-num">For Vocal Scientists</div>
+          <h4>Bridge Sensation &amp; Measurement</h4>
+          <p>VRN already bridges the gap between subjective sensation and acoustic measurement. Adding the neural layer creates a three-way map: <strong>sensation ↔ VRN ↔ nerve/muscle</strong>. Research can correlate all three.</p>
+        </div>
+        <div class="nerve-card">
+          <div class="nerve-num">For Rehabilitation</div>
+          <h4>Targeted Neural Retraining</h4>
+          <p>Stroke patients, Parkinson's patients, and those with vocal fold paralysis can use VRN as a retraining framework: target specific neural pathways with specific VRN exercises. [Tg(F)] exercises target CN XII. [Fl] exercises target CN X (RLN) adduction circuits.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. The Emotional Layer -->
+    <section class="section">
+      <h2>The Emotional Brain &amp; Voice</h2>
+      <p>Not all vocal production is voluntary. Emotional vocalizations — the gasp of surprise, the sob of grief, the war cry — originate in the <strong>periaqueductal gray (PAG)</strong> of the brainstem, bypassing the motor cortex entirely. This is the oldest vocal control system in mammals.</p>
+
+      <div class="insight-box">
+        <h3>🧠 Two Pathways, One Voice</h3>
+        <p>The <strong>cortical pathway</strong> (motor cortex → brainstem → cranial nerves) handles deliberate singing and speech. The <strong>subcortical pathway</strong> (limbic system → PAG → brainstem) handles emotional vocalization.</p>
+        <p style="margin-top:12px;">Great singers learn to <strong>blend both pathways</strong>. VRN timbral color symbols like [Sob], [Cr], and [Ang] describe sounds that activate the subcortical emotional pathway <em>while maintaining cortical pitch and resonance control.</em> That's what makes a performance feel authentic rather than mechanical — the nervous system is producing genuine emotional signals alongside deliberate technique.</p>
+        <p style="margin-top:12px;">This is also why singing can be therapeutic: the PAG connects to the limbic system, the vagus nerve modulates autonomic state, and deliberate vocal production (VRN's domain) creates a feedback loop between voluntary control and emotional regulation.</p>
+      </div>
+    </section>
+
+    <!-- 9. Vagus Nerve & Wellbeing -->
+    <section class="section">
+      <h2>The Vagus Nerve, Singing &amp; Wellbeing</h2>
+      <p>The vagus nerve doesn't just control the larynx — it's the longest cranial nerve in the body, reaching from the brainstem to the gut. Its sensory fibers carry information back to the brain about heart rate, breathing, digestion, and emotional state. This bidirectional communication is called <strong>vagal tone.</strong></p>
+      <p>When you sing with proper VRN technique — diaphragmatic breathing [D++], flow phonation [Fl], coordinated onset [Co], controlled vibrato [Vib] — you are simultaneously:</p>
+      <div class="code-block">
+<span class="comment">// VRN singing activates vagal pathways that:</span>
+<span class="val">[D++, Ap]</span>    → Slow, deep breathing → activates vagal brake → <span class="key">heart rate decreases</span>
+<span class="val">[Fl, Co]</span>     → Balanced phonation → gentle fold vibration → <span class="key">vagal afferent stimulation</span>
+<span class="val">[Vib]</span>        → Rhythmic oscillation → autonomic regulation → <span class="key">stress response dampens</span>
+<span class="val">[H++, N+]</span>   → Head/mask resonance → sinus cavity vibration → <span class="key">cranial nerve stimulation</span>
+<span class="val">[Ch]</span>         → Balanced production → whole-system engagement → <span class="key">parasympathetic activation</span>
+      </div>
+      <p>This is why choir singing consistently shows health benefits in research — reduced cortisol, increased oxytocin, improved immune markers, better mood. It's not just "feeling good from music." It's systematic vagal nerve activation through precise neuromuscular coordination — the same coordination that VRN maps and trains.</p>
+    </section>
+
+    <!-- 10. VRN as Neural Training -->
+    <section class="section">
+      <h2>VRN as Neural Training Framework</h2>
+      <p>When a student practices a VRN exercise like <span style="color:var(--accent-gold);font-family:monospace;">[C++, H+, Fl, Vib.r5, D++, Zy]</span>, they aren't just "working on resonance." They are training a specific neural circuit:</p>
+
+      <table class="map-table">
+        <thead><tr><th>VRN Target</th><th>Neural Circuit Being Trained</th><th>Training Effect</th></tr></thead>
+        <tbody>
+          <tr><td class="sym">[C++, H+]</td><td class="nerve">RLN↔SLN balance</td><td>Thyroarytenoid vs. cricothyroid coordination for register mixing</td></tr>
+          <tr><td class="sym">[Fl]</td><td class="nerve">RLN adduction circuit</td><td>Balanced interarytenoid closure without hyperadduction</td></tr>
+          <tr><td class="sym">[Vib.r5]</td><td class="nerve">Cerebellar timing loop</td><td>Oscillation rate calibration between RLN and SLN</td></tr>
+          <tr><td class="sym">[D++]</td><td class="nerve">Phrenic nerve (C3-C5)</td><td>Diaphragmatic descent control and sustained engagement</td></tr>
+          <tr><td class="sym">[Zy]</td><td class="nerve">CN VII zygomatic branch</td><td>Zygomaticus major activation for mask resonance</td></tr>
+        </tbody>
+      </table>
+
+      <p>Repeated practice strengthens these neural pathways through <strong>myelination</strong> — the process of coating nerve fibers with insulating myelin sheaths that speed signal transmission. A beginner's neural signal for [Zy] is slow and imprecise. A trained singer's is fast, automatic, and precise. VRN provides the targets. Repetition builds the wiring.</p>
+    </section>
+
+    <!-- 11. Quote & CTA -->
+    <section class="section">
+      <div class="quote-block">
+        <p>"VRN describes the what. The nervous system is the how. Together, they give us the first complete map of human vocal production — from intention to sound."</p>
+        <div class="attribution">— From mechanics to neuroscience: the VRN roadmap</div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+      <h2>Explore the Full VRN System</h2>
+      <p style="color:var(--text-secondary);max-width:600px;margin:0 auto 10px;">Now you know what fires when you sing. Learn the symbols, practice the techniques, and build the neural pathways that turn VRN notation into sound.</p>
+      <div class="cta-actions">
+        <a href="vrn-method.html" class="cta-btn cta-btn--red">📖 Full VRN Reference</a>
+        <a href="learn.html" class="cta-btn cta-btn--purple">🎓 Learn VRN</a>
+        <a href="ai-vrn.html" class="cta-btn cta-btn--cyan">🤖 AI + VRN</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>
+      © 2002-2026 VoiceStry. All Rights Reserved. DMCA Protected.<br>
+      Home of the <a href="vrn-method.html">VRN Method</a> — Vocal Resonance Notation<br><br>
+      <a href="index.html">Home</a> |
+      <a href="vrn-method.html">VRN Method</a> |
+      <a href="learn.html">Learn</a> |
+      <a href="5-gears.html">5 Gears</a> |
+      <a href="vocal-gym.html">Vocal Gym</a> |
+      <a href="pitch-trainer.html">Pitch</a> |
+      <a href="sight-reading.html">Sight Reading</a> |
+      <a href="voice-lab.html">Voice Lab</a> |
+      <a href="voice-analyzer.html">Live Analyzer</a> |
+      <a href="ai-vrn.html">AI + VRN</a> |
+      <a href="vrn-nerves.html">Nerves</a> |
+      <a href="press.html">Press</a><br><br>
+      Part of the <a href="https://aiunites.github.io/aiunites-site/">AIUNITES</a> network |
+      Created by <a href="https://aiunites.github.io/cosmostheopera-site/">COSMOS the OPERA</a>
+    </p>
+    <div style="max-width:680px;margin:1.5rem auto 0;padding:1rem 1.5rem;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:8px;font-size:0.8rem;line-height:1.5;color:rgba(255,255,255,0.7);">
+      <strong style="color:#f87171;">&#9888;&#65039; Voice Health Disclaimer:</strong> VoiceStry is an educational tool and is not a substitute for professional vocal instruction or medical advice. Stop immediately if you experience pain, strain, hoarseness, or discomfort while singing. Consult a vocal coach or ENT specialist before beginning any intensive vocal training program. VoiceStry and AIUNITES are not responsible for vocal injury resulting from misuse of exercises or tools on this site.
+    </div>
+    <div style="margin-top:1rem;padding-top:0.75rem;border-top:1px solid rgba(255,255,255,0.1);font-size:0.75rem;color:rgba(255,255,255,0.4);text-align:center;">
+      <a href="https://aiunites.github.io/aiunites-site/legal.html#privacy" style="color:rgba(255,255,255,0.4);margin:0 8px;">Privacy Policy</a> &middot;
+      <a href="https://aiunites.github.io/aiunites-site/legal.html#terms" style="color:rgba(255,255,255,0.4);margin:0 8px;">Terms of Service</a> &middot;
+      <a href="https://github.com/AIUNITES/voicestry-site/issues" target="_blank" style="color:rgba(255,255,255,0.4);margin:0 8px;">Developer Feedback</a>
+    </div>
+  </footer>
+</body>
+</html>
