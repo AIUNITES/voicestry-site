@@ -164,7 +164,7 @@ All 13 active pages share a consistent nav bar:
 ```
 Home | VRN Method | Learn ▾ (Learn VRN, 5 Gears, Vocal Gym) |
 Tools ▾ (Pitch Trainer, Sight Reading, Voice Lab, Live Analyzer, Sonic Portrait) |
-AI + VRN | Nerves | Press
+AI + VRN | AI + Neuro | Press
 ```
 
 Cross-page links:
