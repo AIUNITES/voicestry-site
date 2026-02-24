@@ -158,6 +158,14 @@
   - Opera Companies & Choral Programs (neuromuscular casting profiles)
 - Closing line: "VNN is the notation for the wiring diagram. Nobody else has one."
 
+### BodWave — BodSpas Page (Session 3e)
+- Created bodwave.html on bodspas-site — the body equivalent of VNN
+- BodWave maps every skeletal muscle to its nerve, spinal root, and exercises
+- BodWave Scale: BW1 (Group Flexion) → BW2 (Head Isolation) → BW3 (Sequential Control) → BW4 (Full BodWave)
+- 8 mapping tables: Chest, Back, Shoulders, Arms, Core, Legs Anterior, Legs Posterior, Glutes
+- Clinical nerve tests section, VNN cross-link, DMCA IP notice
+- Nav updated on all 3 BodSpas pages, sitemap updated
+
 ---
 
 *VoiceStry © 2002-2026 Tom. All Rights Reserved.*
