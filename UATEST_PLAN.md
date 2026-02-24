@@ -30,7 +30,7 @@
 | Press | press.html | Press releases and media page | ✅ Active |
 | Sonic Portrait | sonic-portrait.html | Real-time face drawn by sound vibrations | ✅ New |
 | AI + VRN | ai-vrn.html | Why AI voice synthesis needs VRN | ✅ New |
-| AI + Neuro | ai-neuro.html | VRN mapping the nervous system — cranial nerves, motor cortex, neural command chains | ✅ New |
+| AI + Neuro | ai-neuro.html | Vocal Neuro Notation (VNN) — maps VRN symbols to cranial nerves, motor cortex, neural command chains. First framework bridging vocal notation and neuroscience. | ✅ New |
 | Vocal Games | vocal-games.html | Gamified VRN challenges | ⬜ Planned |
 
 ---

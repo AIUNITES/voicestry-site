@@ -130,6 +130,22 @@
 - Nav order: Home | VRN Method | Learn ▾ | Tools ▾ | AI + VRN | AI + Neuro | Press
 - Site total: 13 pages
 
+### Housekeeping Completion (Session 3)
+- UATEST_PLAN.md: Fixed nav structure section — "Nerves" → "AI + Neuro"
+- sitemap.xml: Added 3 missing pages (sonic-portrait, ai-vrn, ai-neuro)
+- Full verification: no stale vrn-nerves references anywhere in project
+- Transcript saved to project transcripts folder
+
+### Vocal Neuro Notation (VNN) — Official Naming &amp; DMCA (Session 3b/3c)
+- Named the neural mapping system: **Vocal Neuro Notation (VNN)** — mirrors "Vocal Resonance Notation (VRN)"
+- VRN = what happens. VNN = what fires to make it happen.
+- press.html: Added full VNN feature section in Technical Brief with examples, applications, and IP claim
+- press.html: Copyright line: "VNN / Vocal Neuro Notation © 2026 Tom Sans. All Rights Reserved. DMCA Protected."
+- press.html: IP section expanded to describe VNN as "the first framework to bridge vocal notation and neuroscience"
+- ai-neuro.html: Title, meta, hero, section headers, and key paragraphs all updated to reference VNN
+- ai-neuro.html: IP notice above CTA with full DMCA claim for VNN
+- VNN is the first system to map symbolic vocal production notation to its underlying neural command chains
+
 ---
 
 *VoiceStry © 2002-2026 Tom. All Rights Reserved.*
