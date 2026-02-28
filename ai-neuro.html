@@ -40,6 +40,7 @@
     .section h2{font-size:1.7rem;margin-bottom:20px;color:var(--accent-gold);display:flex;align-items:center;gap:15px}
     .section h2::before{content:"";width:5px;height:28px;background:linear-gradient(180deg,var(--accent-red),var(--accent-pink));border-radius:3px;flex-shrink:0}
     .section h3{font-size:1.2rem;margin:25px 0 12px;color:var(--accent-cyan)}
+    .section h4{font-size:1.05rem;margin:22px 0 10px;color:var(--accent-orange);font-weight:700}
     .section p{color:var(--text-secondary);margin-bottom:16px}
 
     /* Nerve cards */
@@ -287,7 +288,7 @@
         </tbody>
       </table>
 
-      <h3>Vocal Fold Behavior</h3>
+      <h3>🟢 Vocal Fold Behavior</h3>
       <table class="map-table">
         <thead><tr><th>VRN Symbol</th><th>Mechanical Action</th><th>Primary Nerve(s)</th><th>Target Muscle(s)</th></tr></thead>
         <tbody>
@@ -302,7 +303,7 @@
         </tbody>
       </table>
 
-      <h3>Breath &amp; Airflow</h3>
+      <h3>🟢 Breath &amp; Airflow</h3>
       <table class="map-table">
         <thead><tr><th>VRN Symbol</th><th>Mechanical Action</th><th>Primary Nerve(s)</th><th>Target Muscle(s)</th></tr></thead>
         <tbody>
@@ -314,7 +315,7 @@
         </tbody>
       </table>
 
-      <h3>Articulation &amp; Shaping</h3>
+      <h3>🟢 Articulation &amp; Shaping</h3>
       <table class="map-table">
         <thead><tr><th>VRN Symbol</th><th>Mechanical Action</th><th>Primary Nerve(s)</th><th>Target Muscle(s)</th></tr></thead>
         <tbody>
@@ -327,7 +328,7 @@
         </tbody>
       </table>
 
-      <h3>Advanced: Vibrato, Squillo &amp; Timbral Color</h3>
+      <h3>🟡 Advanced: Vibrato, Squillo &amp; Timbral Color</h3>
       <table class="map-table">
         <thead><tr><th>VRN Symbol</th><th>Mechanical Action</th><th>Primary Nerve(s)</th><th>Neural Mechanism</th></tr></thead>
         <tbody>
@@ -340,6 +341,105 @@
           <tr><td class="sym">[Met]</td><td>Metallic edge</td><td class="nerve">CN X + CN IX</td><td>Aryepiglottic sphincter narrowing (similar to squillo but with higher medial compression)</td></tr>
         </tbody>
       </table>
+
+      <h3>🟡 Articulatory Position Codes</h3>
+      <p>VRN says "tongue forward" or "larynx low" but doesn’t specify <em>how much.</em> These codes add directional precision to articulator placement — essential for teachers diagnosing positioning problems and for AI voice synthesis that needs exact articulatory targets.</p>
+
+      <h4>Tongue Position</h4>
+      <table class="map-table">
+        <thead><tr><th>Symbol</th><th>Position</th><th>Nerve</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td class="sym">[Tg↑]</td><td>Tongue raised (high)</td><td class="nerve">CN XII</td><td class="sym">[Tg↑, H++] — high tongue for bright head resonance (/i/ vowel)</td></tr>
+          <tr><td class="sym">[Tg↓]</td><td>Tongue lowered (flat)</td><td class="nerve">CN XII</td><td class="sym">[Tg↓, C++] — low flat tongue for open chest tone (/ɑ/ vowel)</td></tr>
+          <tr><td class="sym">[Tg→F]</td><td>Tongue forward</td><td class="nerve">CN XII (genioglossus)</td><td class="sym">[Tg→F, O++] — forward tongue for bright oral resonance</td></tr>
+          <tr><td class="sym">[Tg→B]</td><td>Tongue retracted (back)</td><td class="nerve">CN XII (styloglossus)</td><td class="sym">[Tg→B, F2↓] — retracted tongue darkens F2 formant</td></tr>
+          <tr><td class="sym">[Tg.Gr]</td><td>Tongue grooved (midline channel)</td><td class="nerve">CN XII (intrinsic)</td><td class="sym">[Tg.Gr, Fl] — grooved tongue for /s/, /z/ airstream</td></tr>
+          <tr><td class="sym">[Tg.Sp]</td><td>Tongue spread (lateral widening)</td><td class="nerve">CN XII (intrinsic)</td><td class="sym">[Tg.Sp, N+] — spread tongue for nasal /n/ placement</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Larynx Height</h4>
+      <table class="map-table">
+        <thead><tr><th>Symbol</th><th>Position</th><th>Nerve</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td class="sym">[Lx↑]</td><td>Larynx raised</td><td class="nerve">CN X + CN V (suprahyoid)</td><td class="sym">[Lx↑, Met] — raised larynx for belting / metallic edge</td></tr>
+          <tr><td class="sym">[Lx↓]</td><td>Larynx lowered</td><td class="nerve">CN X (infrahyoid via ansa cervicalis)</td><td class="sym">[Lx↓, Cov, P++] — lowered larynx for operatic covering</td></tr>
+          <tr><td class="sym">[Lx—]</td><td>Larynx neutral (speech height)</td><td class="nerve">Balanced extrinsic muscles</td><td class="sym">[Lx—, Fl] — neutral larynx for CCM/pop flow phonation</td></tr>
+          <tr><td class="sym">[Lx.Tlt]</td><td>Thyroid cartilage tilt</td><td class="nerve">CN X (SLN → cricothyroid)</td><td class="sym">[Lx.Tlt, Cr, Tn] — thyroid tilt for cry quality, fold thinning</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Jaw &amp; Palate</h4>
+      <table class="map-table">
+        <thead><tr><th>Symbol</th><th>Position</th><th>Nerve</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td class="sym">[Jw:X°]</td><td>Jaw opening in degrees</td><td class="nerve">CN V (motor)</td><td class="sym">[Jw:35°, P++] — moderate jaw opening for pharyngeal space</td></tr>
+          <tr><td class="sym">[Jw:Max]</td><td>Maximum jaw opening</td><td class="nerve">CN V (lateral pterygoid)</td><td class="sym">[Jw:Max, C+++] — full jaw drop for belt chest voice</td></tr>
+          <tr><td class="sym">[SP↑]</td><td>Soft palate fully raised</td><td class="nerve">CN X (pharyngeal branch)</td><td class="sym">[SP↑, H+++] — raised palate blocking nasal airflow, full head resonance</td></tr>
+          <tr><td class="sym">[SP↓]</td><td>Soft palate lowered</td><td class="nerve">CN X (relaxed levator)</td><td class="sym">[SP↓, N+++] — lowered palate for maximum nasality (humming)</td></tr>
+          <tr><td class="sym">[SP~]</td><td>Soft palate partially lowered</td><td class="nerve">CN X (partial activation)</td><td class="sym">[SP~, N+, O++] — slight nasal color mixed with oral resonance (French nasals)</td></tr>
+        </tbody>
+      </table>
+
+      <h3>🟡 Antagonist Balance</h3>
+      <p>Vocal production depends on muscle <em>pairs</em> that oppose each other. The balance point between them determines the sound. This is the vocal equivalent of MNN’s agonist/antagonist pairing — and it’s where most vocal problems live.</p>
+      <table class="map-table">
+        <thead><tr><th>Pair</th><th>Agonist</th><th>Antagonist</th><th>What the Balance Controls</th></tr></thead>
+        <tbody>
+          <tr><td class="sym">CT ↔ TA</td><td class="nerve">Cricothyroid (SLN)</td><td class="nerve">Thyroarytenoid (RLN)</td><td>Fold length vs. fold mass — the fundamental pitch/register mechanism. CT-dominant = head voice. TA-dominant = chest voice.</td></tr>
+          <tr><td class="sym">LCA ↔ PCA</td><td class="nerve">Lat. Cricoarytenoid (RLN)</td><td class="nerve">Post. Cricoarytenoid (RLN)</td><td>Fold adduction vs. abduction — the fundamental open/close mechanism. LCA-dominant = pressed. PCA-dominant = breathy.</td></tr>
+          <tr><td class="sym">Elev ↔ Depr</td><td class="nerve">Suprahyoid (CN V, VII, XII)</td><td class="nerve">Infrahyoid (Ansa cervicalis)</td><td>Larynx height — elevator muscles pull up (belt), depressors pull down (cover). Neutral = balanced.</td></tr>
+          <tr><td class="sym">D ↔ IC</td><td class="nerve">Diaphragm (Phrenic)</td><td class="nerve">Intercostals + Abdominals</td><td>Inhalation vs. exhalation force — appoggio is the trained balance between these. Too much diaphragm = pushed. Too little = collapsed.</td></tr>
+          <tr><td class="sym">Gn ↔ St</td><td class="nerve">Genioglossus (CN XII)</td><td class="nerve">Styloglossus (CN XII)</td><td>Tongue forward vs. tongue back — formant shaping. Genioglossus protrudes and flattens. Styloglossus retracts and arches.</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Notation for Balance</h4>
+      <p>Use a ratio to express the balance point between antagonist pairs:</p>
+      <table class="map-table">
+        <thead><tr><th>Symbol</th><th>Meaning</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td class="sym">CT:TA 70:30</td><td>CT-dominant (head mix)</td><td class="sym">[H++, C+, CT:TA 70:30] — head-dominant mix voice</td></tr>
+          <tr><td class="sym">CT:TA 30:70</td><td>TA-dominant (chest mix)</td><td class="sym">[C++, H+, CT:TA 30:70] — chest-dominant belt</td></tr>
+          <tr><td class="sym">CT:TA 50:50</td><td>Balanced (neutral mix)</td><td class="sym">[C+, H+, Fl, CT:TA 50:50] — even mix, speech-quality phonation</td></tr>
+          <tr><td class="sym">LCA:PCA 80:20</td><td>Firm adduction</td><td class="sym">[Prs, LCA:PCA 80:20] — pressed phonation, strong closure</td></tr>
+          <tr><td class="sym">LCA:PCA 40:60</td><td>Loose adduction</td><td class="sym">[Br, LCA:PCA 40:60] — breathy phonation, air leak</td></tr>
+          <tr><td class="sym">D:IC 60:40</td><td>Diaphragm-dominant breath</td><td class="sym">[D++, Ap, D:IC 60:40] — strong appoggio, diaphragm resisting rib collapse</td></tr>
+        </tbody>
+      </table>
+
+      <div class="quote-block">
+        <p style="font-family:'Courier New',monospace;font-style:normal;font-size:0.95rem;color:var(--accent-gold);">Classical Tenor High A:<br>[H+++, Sq+, Cov, Lx↓, CT:TA 65:35, LCA:PCA 70:30, D:IC 60:40, SP↑, Zy, Tg→B] → SLN/RLN/Phrenic</p>
+        <div class="attribution">Head-dominant mix with squillo ring. Larynx low, palate high, tongue retracted for dark vowel. CT-dominant fold stretch with firm adduction and strong appoggio. Every parameter specified.</div>
+      </div>
+
+      <h3>🔴 Clinical Status Codes</h3>
+      <p>For ENTs, speech-language pathologists, and vocal therapists. These codes document pathology, track recovery, and identify compensation patterns — the vocal equivalent of MNN’s clinical layer.</p>
+      <table class="map-table">
+        <thead><tr><th>Symbol</th><th>Status</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td class="sym">❌</td><td>Paralysis / no activation</td><td class="sym">[Fold.L❌] → RLN — left vocal fold paralysis, no adduction</td></tr>
+          <tr><td class="sym">Par:</td><td>Paresis (partial weakness)</td><td class="sym">[Par:Fold.L–] → RLN — left fold paresis, reduced adduction but not absent</td></tr>
+          <tr><td class="sym">Atr:</td><td>Atrophy present</td><td class="sym">[Atr:Fold.R] → SLN — right fold bowing from muscle wasting</td></tr>
+          <tr><td class="sym">Spas:</td><td>Spasmodic / involuntary contraction</td><td class="sym">[Spas:LCA] → RLN — adductor spasmodic dysphonia, involuntary fold closure</td></tr>
+          <tr><td class="sym">Trem:</td><td>Tremor</td><td class="sym">[Trem:CT, Vib.irreg] — cricothyroid tremor causing irregular vibrato (essential tremor)</td></tr>
+          <tr><td class="sym">Comp:</td><td>Compensation pattern</td><td class="sym">[Comp:FVF for Fold.L❌] — false vocal folds compensating for true fold paralysis</td></tr>
+          <tr><td class="sym">Rec↑</td><td>Recovery / reinnervation improving</td><td class="sym">[Rec↑:Fold.L+, LCA:PCA 50:50] — left fold returning, adduction improving post-surgery</td></tr>
+          <tr><td class="sym">Les:</td><td>Lesion present</td><td class="sym">[Les:Fold.R.ant⅓] — lesion on right fold, anterior third (nodule location)</td></tr>
+          <tr><td class="sym">Str:</td><td>Stiffness / scarring</td><td class="sym">[Str:Fold.L, Vib↓] — left fold stiffness reducing mucosal wave</td></tr>
+          <tr><td class="sym">Gap:</td><td>Glottal gap (incomplete closure)</td><td class="sym">[Gap:Post, Br++] — posterior glottal gap causing breathiness</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Clinical Documentation Example</h4>
+      <div class="quote-block">
+        <p style="font-family:'Courier New',monospace;font-style:normal;font-size:0.95rem;color:var(--accent-gold);">Post-Thyroidectomy Assessment (Day 14):<br>[Par:Fold.L–, Gap:Post, Br++, Comp:Trp.U++] → RLN (left) | [Rec↑:Fold.L, LCA:PCA 45:55]</p>
+        <div class="attribution">Left fold paresis from RLN damage during thyroid surgery. Posterior glottal gap causing breathiness. Patient compensating with upper trapezius tension (neck strain). Early signs of reinnervation — adduction improving toward balanced. Compare at 6 weeks.</div>
+      </div>
+      <div class="quote-block">
+        <p style="font-family:'Courier New',monospace;font-style:normal;font-size:0.95rem;color:var(--accent-gold);">Spasmodic Dysphonia (Adductor Type):<br>[Spas:LCA+++, Prs+++, Fl❌] → RLN | Voice breaks on voiced consonants | Botox target: LCA bilateral</p>
+        <div class="attribution">Involuntary hyperadduction via lateral cricoarytenoid. Flow phonation impossible. Characteristic voice breaks mid-word. Botox injection targets the LCA muscles bilaterally to weaken involuntary adduction.</div>
+      </div>
     </section>
 
     <!-- 6. Example: Full Neural Trace -->
@@ -470,7 +570,7 @@
     <!-- IP Notice -->
     <section class="section" style="padding-top:20px;margin-bottom:30px;">
       <div style="background:var(--bg-highlight);border-radius:10px;padding:20px 25px;border:1px solid rgba(255,255,255,0.08);font-size:0.85rem;color:var(--text-dim);line-height:1.7;">
-        <strong style="color:var(--text-secondary);">Intellectual Property Notice:</strong> Vocal Neuro Notation (VNN), the VRN-to-Nerve mapping tables, the Neural Command Chain architecture, and all original frameworks on this page are © 2026 Tom Sans / VoiceStry. All Rights Reserved. DMCA Protected. VNN is the first system to map vocal production notation to its underlying neural command chains. Published freely for educational and professional use. Commercial licensing inquiries should be directed to the creator via the <a href="press.html" style="color:var(--accent-purple);">Press</a> page.
+        <strong style="color:var(--text-secondary);">Intellectual Property Notice:</strong> Vocal Neuro Notation (VNN), the VRN-to-Nerve mapping tables, the Neural Command Chain architecture, the Articulatory Position Codes, the Antagonist Balance notation (CT:TA, LCA:PCA ratio system), the Clinical Status Codes for vocal pathology documentation, and all original frameworks on this page are © 2026 Tom Sans / VoiceStry. All Rights Reserved. DMCA Protected. VNN is the first system to map vocal production notation to its underlying neural command chains. Published freely for educational and professional use. Commercial licensing inquiries should be directed to the creator via the <a href="press.html" style="color:var(--accent-purple);">Press</a> page.
       </div>
     </section>
 
