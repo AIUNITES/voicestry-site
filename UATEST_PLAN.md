@@ -8,8 +8,8 @@
 | **Live URL** | https://aiunites.github.io/voicestry-site/ |
 | **Custom Domains** | voicestry.com, vrnmethod.com |
 | **Local Path** | C:/Users/Tom/Documents/GitHub/voicestry-site |
-| **Last Updated** | February 24, 2026 |
-| **Version** | 1.8.0 |
+| **Last Updated** | February 27, 2026 |
+| **Version** | 1.9.0 |
 | **Based On** | Custom (content from COSMOS the OPERA) |
 
 ---
@@ -258,6 +258,7 @@ sight-reading.html → learn.html
 | 1.7.0 | February 24, 2026 | vrn-nerves.html: VRN & the Nervous System — maps every VRN symbol to cranial nerves, motor cortex, brainstem circuits. 11 sections, 4 mapping tables, neural trace examples. Navigation updated across all 13 pages (nav + footer where present). Site now 13 pages. |
 | 1.7.1 | February 24, 2026 | Renamed vrn-nerves.html → ai-neuro.html with "AI + Neuro" nav label. Updated all 13 pages (nav + footer). Matches AI + VRN naming convention. |
 | 1.8.0 | February 24, 2026 | VNN (Vocal Neuro Notation) branding: ai-neuro.html title/meta/hero updated to "Vocal Neuro Notation (VNN) — What Fires to Make You Sing". press.html: VNN feature section added to Technical Brief (purple highlight box, 3 VRN→VNN examples), IP section expanded with VNN copyright, "Who Needs VNN" section with 7 target audiences (clinicians, neurologists, voice teachers, AI researchers, rehab therapists, phoniatrists, opera companies). DMCA copyright: VNN / Vocal Neuro Notation © 2026 Tom Sans. |
+| 1.9.0 | February 27, 2026 | VNN Complexity Tiers (🟢 Singer / 🟡 Teacher / 🔴 Clinical). Tier badges on all existing mapping table headings. h4 CSS styling added. NEW: Articulatory Position Codes — Tongue (Tg↑↓→F→B, .Gr, .Sp), Larynx Height (Lx↑↓—, .Tlt), Jaw & Palate (Jw:X°/Max, SP↑↓~). NEW: Antagonist Balance — 5 muscle pairs (CT↔TA, LCA↔PCA, Elev↔Depr, D↔IC, Gn↔St), ratio notation (CT:TA 70:30, etc.), Classical Tenor High A worked example. NEW: Clinical Status Codes — 10 codes (❌, Par:, Atr:, Spas:, Trem:, Comp:, Rec↑, Les:, Str:, Gap:), post-thyroidectomy and spasmodic dysphonia documentation examples. IP notice updated with all new notation layers. |
 
 ---
 
