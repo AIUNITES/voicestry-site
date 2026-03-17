@@ -262,9 +262,9 @@
   <!-- Navigation -->
   <nav class="nav">
     <a href="index.html" class="nav-logo">🎤 VoiceStry</a>
-    <div class="nav-links">
-      <a href="index.html" class="active">Home</a>
-      <a href="vrn-method.html">VRN Method</a>
+    <div class="nav-links" id="vs-nav">
+      <a href="index.html" class="active" onclick="vsClose()">Home</a>
+      <a href="vrn-method.html" onclick="vsClose()">VRN Method</a>
       <div class="nav-dropdown">
         <button class="nav-dropdown-btn">Learn ▾</button>
         <div class="nav-dropdown-menu">
@@ -283,12 +283,13 @@
           <a href="sonic-portrait.html">Sonic Portrait</a>
         </div>
       </div>
-      <a href="ai-vrn.html">AI + VRN</a>
-      <a href="ai-neuro.html">AI + Neuro</a>
-      <a href="press.html">Press</a>
+      <a href="ai-vrn.html" onclick="vsClose()">AI + VRN</a>
+      <a href="ai-neuro.html" onclick="vsClose()">AI + Neuro</a>
+      <a href="press.html" onclick="vsClose()">Press</a>
     </div>
+    <button class="nav-hamburger" id="vs-hbg" aria-label="Menu" onclick="this.classList.toggle('open');document.getElementById('vs-nav').classList.toggle('open')"><span></span><span></span><span></span></button>
   </nav>
-  <script>document.querySelectorAll('.nav-dropdown-btn').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();var d=b.parentElement,o=d.classList.contains('open');document.querySelectorAll('.nav-dropdown.open').forEach(function(x){x.classList.remove('open')});if(!o)d.classList.add('open')})});document.addEventListener('click',function(){document.querySelectorAll('.nav-dropdown.open').forEach(function(d){d.classList.remove('open')})})</script>
+  <script>function vsClose(){document.getElementById('vs-nav').classList.remove('open');document.getElementById('vs-hbg').classList.remove('open');}document.querySelectorAll('.nav-dropdown-btn').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();var d=b.parentElement,o=d.classList.contains('open');document.querySelectorAll('.nav-dropdown.open').forEach(function(x){x.classList.remove('open')});if(!o)d.classList.add('open')})});document.addEventListener('click',function(){document.querySelectorAll('.nav-dropdown.open').forEach(function(d){d.classList.remove('open')})})</script>
 
   <!-- Hero -->
   <section class="hero">

@@ -239,9 +239,16 @@ a:hover { opacity: 0.85; }
 /* ======================== */
 /* Responsive               */
 /* ======================== */
+.nav-hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;background:none;border:none;cursor:pointer;padding:6px;color:#fff;z-index:200;flex-shrink:0}
+.nav-hamburger span{display:block;width:22px;height:2px;background:currentColor;border-radius:2px;transition:all .25s}
+.nav-hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-hamburger.open span:nth-child(2){opacity:0}
+.nav-hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 @media (max-width: 768px) {
-  .nav { flex-direction: column; gap: 12px; }
-  .nav-links { flex-wrap: wrap; justify-content: center; gap: 12px; }
+  .nav { flex-direction: row; }
+  .nav-hamburger { display: flex; }
+  .nav-links { display: none !important; position: absolute; top: 100%; left: 0; right: 0; background: rgba(10,10,15,0.98); backdrop-filter: blur(10px); flex-direction: column !important; flex-wrap: nowrap; padding: 1rem 1.5rem; gap: 1rem !important; border-bottom: 1px solid rgba(0,212,255,0.15); z-index: 199; }
+  .nav-links.open { display: flex !important; }
   .nav-dropdown-menu {
     position: fixed;
     top: auto; left: 16px; right: 16px;
