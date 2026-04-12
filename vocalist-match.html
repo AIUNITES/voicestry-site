@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VP15KRLV6P"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-VP15KRLV6P');
+  </script>
+
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4573596965267859" crossorigin="anonymous"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vocalist Match — Sing Along Any YouTube Video | VoiceStry</title>
+  <meta name="description" content="Play any YouTube vocalist, capture their pitch profile, then sing live and see exactly how closely you match — note by note, in real time.">
+  <meta name="keywords" content="voice analyzer, pitch matching, vocal analysis, YouTube singer comparison, real-time pitch detection, vocal training">
+  <meta name="author" content="VoiceStry">
+  <link rel="canonical" href="https://voicestry.com/vocalist-match.html">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎤</text></svg>">
+
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    :root {
+      --ref-color: #00d4ff;
+      --ref-glow: rgba(0, 212, 255, 0.35);
+      --ref-bg: rgba(0, 212, 255, 0.06);
+      --live-color: #4ade80;
+      --live-glow: rgba(74, 222, 128, 0.35);
+      --live-bg: rgba(74, 222, 128, 0.06);
+    }
+
+    body { overflow-x: hidden; }
+
+    /* ---- Hero ---- */
+    .vm-hero {
+      padding: 60px 20px 30px;
+      text-align: center;
+      background:
+        radial-gradient(ellipse at 20% 30%, rgba(0,212,255,0.09) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 60%, rgba(74,222,128,0.07) 0%, transparent 50%),
+        var(--bg-dark);
+    }
+    .vm-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 18px; border-radius: 24px; font-size: 0.82rem; font-weight: 700;
+      background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.22);
+      color: var(--accent-cyan); margin-bottom: 18px; letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .vm-hero h1 { font-size: clamp(1.9rem,5vw,3rem); font-weight: 900; line-height: 1.15; margin-bottom: 14px; }
+    .vm-hero p { color: var(--text-secondary); max-width: 560px; margin: 0 auto 20px; font-size: 1.05rem; line-height: 1.7; }
+
+    .vm-how-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 14px; border-radius: 20px; font-size: 0.8rem;
+      background: rgba(157,78,221,0.1); border: 1px solid rgba(157,78,221,0.25);
+      color: var(--accent-purple); cursor: pointer; transition: all 0.2s;
+    }
+    .vm-how-btn:hover { background: rgba(157,78,221,0.18); }
+
+    /* ---- How It Works ---- */
+    .vm-explainer {
+      max-width: 820px; margin: 14px auto 0;
+      background: var(--bg-card); border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg); padding: 24px 28px; display: none; text-align: left;
+    }
+    .vm-explainer.open { display: block; }
+    .vm-steps-row {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px; margin-top: 14px;
+    }
+    .vm-step {
+      padding: 14px; background: rgba(255,255,255,0.03);
+      border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);
+    }
+    .vm-step-num {
+      width: 26px; height: 26px; border-radius: 50%; background: var(--gradient-cosmic);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 800; margin-bottom: 8px;
+    }
+    .vm-step h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 4px; }
+    .vm-step p  { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5; }
+    .vm-tip {
+      margin-top: 14px; padding: 10px 14px;
+      background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.2);
+      border-radius: var(--radius-sm); font-size: 0.82rem; color: var(--accent-gold);
+    }
+
+    /* ---- Main container ---- */
+    .vm-main { max-width: 1200px; margin: 0 auto; padding: 24px 16px 60px; }
+
+    /* ---- Permission error ---- */
+    .vm-perm-error {
+      padding: 20px; border-radius: var(--radius-lg);
+      background: rgba(239,68,68,0.07); border: 1px solid rgba(239,68,68,0.25);
+      color: var(--accent-red); font-size: 0.9rem; text-align: center; display: none;
+      margin-bottom: 16px;
+    }
+
+    /* ---- YouTube Panel ---- */
+    .yt-panel {
+      background: var(--bg-card); border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl); padding: 22px; margin-bottom: 18px;
+    }
+    .yt-panel-title {
+      font-size: 0.82rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--text-secondary); margin-bottom: 14px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .yt-panel-title::before {
+      content: ''; width: 8px; height: 8px; border-radius: 50%;
+      background: #ef4444; display: inline-block;
+    }
+    .yt-url-row { display: flex; gap: 10px; margin-bottom: 16px; }
+    .yt-url-input {
+      flex: 1; background: var(--bg-input); border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm); padding: 11px 14px; color: var(--text-primary);
+      font-size: 0.92rem; outline: none; transition: border-color 0.2s;
+    }
+    .yt-url-input:focus { border-color: rgba(0,212,255,0.4); }
+    .yt-url-input::placeholder { color: var(--text-dim); }
+    .btn-yt-load {
+      background: #ef4444; color: #fff; border: none; border-radius: var(--radius-sm);
+      padding: 11px 20px; font-weight: 700; font-size: 0.88rem;
+      cursor: pointer; white-space: nowrap; transition: all 0.2s;
+    }
+    .btn-yt-load:hover { background: #dc2626; transform: translateY(-1px); }
+    .yt-embed-wrap {
+      position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
+      border-radius: var(--radius-md); background: #000; border: 1px solid var(--border-subtle);
+    }
+    .yt-embed-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .yt-placeholder {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      background: #0a0a0f; color: var(--text-dim); gap: 10px;
+    }
+    .yt-placeholder span { font-size: 2.5rem; }
+    .yt-placeholder p { font-size: 0.9rem; }
+
+    /* ---- Status / Controls ---- */
+    .vm-status {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+      background: var(--bg-card); border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg); padding: 14px 20px; margin-bottom: 16px;
+    }
+    .vm-state { display: flex; align-items: center; gap: 10px; font-size: 0.88rem; font-weight: 600; }
+    .vm-dot {
+      width: 10px; height: 10px; border-radius: 50%; background: var(--text-dim);
+      transition: all 0.3s;
+    }
+    .vm-dot.ref  { background: var(--ref-color);  box-shadow: 0 0 10px var(--ref-glow);  animation: pdot 1.4s infinite; }
+    .vm-dot.live { background: var(--live-color); box-shadow: 0 0 10px var(--live-glow); animation: pdot 1s infinite; }
+    @keyframes pdot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.7;transform:scale(1.3)} }
+
+    .vm-controls { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .btn-capture {
+      background: var(--ref-bg); border: 1.5px solid var(--ref-color); color: var(--ref-color);
+      border-radius: var(--radius-sm); padding: 9px 18px; font-weight: 700; font-size: 0.85rem;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .btn-capture:hover, .btn-capture.active {
+      background: rgba(0,212,255,0.15); box-shadow: 0 0 16px var(--ref-glow);
+    }
+    .btn-sing {
+      background: var(--live-bg); border: 1.5px solid var(--live-color); color: var(--live-color);
+      border-radius: var(--radius-sm); padding: 9px 18px; font-weight: 700; font-size: 0.85rem;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .btn-sing:hover, .btn-sing.active {
+      background: rgba(74,222,128,0.15); box-shadow: 0 0 16px var(--live-glow);
+    }
+    .btn-stop-vm {
+      background: rgba(239,68,68,0.08); border: 1.5px solid var(--accent-red); color: var(--accent-red);
+      border-radius: var(--radius-sm); padding: 9px 14px; font-weight: 700; font-size: 0.85rem;
+      cursor: pointer; transition: all 0.2s; display: none;
+    }
+    .btn-stop-vm:hover { background: rgba(239,68,68,0.15); }
+    .btn-reset-vm {
+      background: transparent; border: 1px solid var(--border-hover); color: var(--text-secondary);
+      border-radius: var(--radius-sm); padding: 9px 14px; font-size: 0.82rem;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .btn-reset-vm:hover { border-color: var(--text-secondary); color: var(--text-primary); }
+
+    /* ---- Hint strip ---- */
+    .vm-hint {
+      font-size: 0.83rem; color: var(--text-secondary);
+      background: rgba(157,78,221,0.07); border: 1px solid rgba(157,78,221,0.15);
+      border-radius: var(--radius-md); padding: 12px 20px; margin-bottom: 16px;
+      text-align: center;
+    }
+
+    /* ---- Dual analysis panels ---- */
+    .vm-panels {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 16px; margin-bottom: 18px;
+    }
+    @media (max-width: 680px) { .vm-panels { grid-template-columns: 1fr; } }
+
+    .vm-panel {
+      background: var(--bg-card); border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl); padding: 20px; transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .vm-panel--ref  { border-color: rgba(0,212,255,0.15); }
+    .vm-panel--live { border-color: rgba(74,222,128,0.15); }
+    .vm-panel--ref.on  { border-color: rgba(0,212,255,0.45);  box-shadow: 0 0 30px rgba(0,212,255,0.07); }
+    .vm-panel--live.on { border-color: rgba(74,222,128,0.45); box-shadow: 0 0 30px rgba(74,222,128,0.07); }
+
+    .vm-panel-hdr { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
+    .vm-panel-lbl { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 2px; }
+    .vm-panel-lbl--ref  { color: var(--ref-color); }
+    .vm-panel-lbl--live { color: var(--live-color); }
+    .vm-panel-name { font-size: 1rem; font-weight: 700; }
+
+    .vm-badge-pill {
+      font-size: 0.7rem; font-weight: 700; padding: 3px 10px;
+      border-radius: 12px; text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .pill-idle { background: rgba(255,255,255,0.04); color: var(--text-dim); border: 1px solid var(--border-subtle); }
+    .pill-ref  { background: var(--ref-bg);  color: var(--ref-color);  border: 1px solid rgba(0,212,255,0.25); }
+    .pill-live { background: var(--live-bg); color: var(--live-color); border: 1px solid rgba(74,222,128,0.25); }
+
+    /* Note display */
+    .note-big { text-align: center; padding: 14px 0 8px; }
+    .note-name { font-size: 3.8rem; font-weight: 900; line-height: 1; font-family: 'Courier New', monospace; transition: all 0.12s; }
+    .note-name.idle { color: var(--text-dim); }
+    .note-name.ref  { color: var(--ref-color);  text-shadow: 0 0 28px var(--ref-glow); }
+    .note-name.live { color: var(--live-color); text-shadow: 0 0 28px var(--live-glow); }
+    .note-freq    { font-size: 0.8rem; color: var(--text-dim); margin-top: 3px; font-family: 'Courier New', monospace; }
+    .note-octave  { font-size: 0.72rem; font-weight: 600; padding: 2px 8px; border-radius: 8px; background: rgba(255,255,255,0.06); color: var(--text-secondary); display: inline-block; margin-top: 4px; }
+
+    /* Canvases */
+    .cv-wrap  { border-radius: var(--radius-sm); background: rgba(0,0,0,0.3); overflow: hidden; margin: 8px 0; }
+    .cv-wave  { display: block; width: 100%; height: 68px; }
+    .cv-spec  { display: block; width: 100%; height: 48px; }
+
+    /* Stats row */
+    .vm-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-top: 12px; }
+    .vm-stat  { background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: 10px 8px; text-align: center; border: 1px solid var(--border-subtle); }
+    .vm-stat-v { font-size: 1.05rem; font-weight: 800; font-family: 'Courier New', monospace; }
+    .sv-idle { color: var(--text-dim); }
+    .sv-ref  { color: var(--ref-color); }
+    .sv-live { color: var(--live-color); }
+    .vm-stat-l { font-size: 0.65rem; color: var(--text-dim); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    /* VRN readout */
+    .vrn-label { font-size: 0.63rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); margin-top: 12px; margin-bottom: 3px; }
+    .vrn-box {
+      font-family: 'Courier New', monospace; font-size: 0.8rem;
+      padding: 8px 10px; background: rgba(0,0,0,0.3); border-radius: var(--radius-sm);
+      color: var(--accent-gold); border: 1px solid rgba(255,215,0,0.12);
+      min-height: 30px; word-break: break-all;
+    }
+
+    /* ---- Match panel ---- */
+    .match-panel {
+      background: var(--bg-card); border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl); padding: 22px; margin-bottom: 16px;
+    }
+    .match-title {
+      font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--text-secondary); margin-bottom: 18px; display: flex; align-items: center; gap: 8px;
+    }
+    .match-title::before { content:''; width:8px; height:8px; border-radius:50%; background:var(--accent-gold); display:inline-block; }
+
+    .match-row { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+    .match-pct { font-size: 4.2rem; font-weight: 900; line-height: 1; font-family: 'Courier New', monospace; transition: color 0.3s; color: var(--text-dim); }
+    .match-pct-lbl { font-size: 0.78rem; color: var(--text-dim); margin-top: 3px; }
+    .match-grade { font-size: 1.35rem; font-weight: 800; padding: 6px 16px; border-radius: 12px; background: rgba(255,255,255,0.04); color: var(--text-dim); }
+    .match-phrase { font-size: 0.93rem; color: var(--text-secondary); flex: 1; min-width: 160px; }
+
+    .match-bar-bg { margin-top: 16px; background: rgba(0,0,0,0.4); border-radius: 8px; height: 10px; overflow: hidden; border: 1px solid var(--border-subtle); }
+    .match-bar-fill { height: 100%; border-radius: 8px; background: linear-gradient(90deg,#ef4444,#ffd700,#4ade80); width: 0%; transition: width 0.3s ease-out; }
+
+    /* Pitch needle */
+    .needle-row { display: flex; align-items: center; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
+    .needle-lbl { font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; }
+    .needle-val { font-family: 'Courier New', monospace; font-size: 0.95rem; font-weight: 700; color: var(--text-secondary); min-width: 80px; }
+    .needle-track { flex: 1; min-width: 100px; height: 6px; position: relative; background: rgba(255,255,255,0.05); border-radius: 6px; }
+    .needle-center { position: absolute; left: 50%; top: 50%; width: 2px; height: 14px; transform: translate(-50%,-50%); background: rgba(255,255,255,0.3); border-radius: 1px; }
+    .needle-thumb { position: absolute; top: 50%; width: 12px; height: 12px; border-radius: 50%; transform: translate(-50%,-50%); background: var(--accent-gold); box-shadow: 0 0 8px rgba(255,215,0,0.5); transition: left 0.12s ease-out; left: 50%; }
+
+    /* Dual pitch overlay graph */
+    .overlay-wrap { border-radius: var(--radius-md); overflow: hidden; margin-top: 16px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-subtle); }
+    .overlay-cv { display: block; width: 100%; height: 120px; }
+    .overlay-legend { display: flex; gap: 16px; margin-top: 8px; font-size: 0.76rem; color: var(--text-dim); }
+    .legend-dot { display: inline-block; width: 14px; height: 3px; vertical-align: middle; border-radius: 2px; margin-right: 4px; }
+
+    /* Health notice */
+    .health-note {
+      padding: 12px 16px; background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.18);
+      border-radius: var(--radius-md); font-size: 0.77rem; line-height: 1.5;
+      color: rgba(255,255,255,0.6); margin-bottom: 16px;
+    }
+
+    @media (max-width: 480px) {
+      .vm-hero h1 { font-size: 1.7rem; }
+      .note-name { font-size: 3rem; }
+      .match-pct  { font-size: 3rem; }
+      .yt-url-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- AIUNITES Webring -->
+  <style>.aiunites-bar{position:fixed;top:0;left:0;right:0;z-index:10000;background:linear-gradient(90deg,#0a0a0f,#1a1a2e);border-bottom:1px solid rgba(99,102,241,.3);padding:8px 0;font-size:12px}.aiunites-bar-content{max-width:1400px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:12px;overflow-x:auto;scrollbar-width:none}.aiunites-bar-content::-webkit-scrollbar{display:none}.aiunites-bar a{color:rgba(255,255,255,.7);text-decoration:none;white-space:nowrap;transition:color .2s}.aiunites-bar a:hover{color:#fff}.aiunites-bar-brand{color:#6366f1!important;font-weight:600}.aiunites-bar-brand:hover{color:#818cf8!important}.aiunites-bar-divider{color:rgba(255,255,255,.2)}.aiunites-bar-active{color:#fff!important;text-decoration:underline;text-underline-offset:3px}.aiunites-bar .current{color:#fff!important;font-weight:600;text-decoration:underline;text-underline-offset:3px;}body{padding-top:36px!important}.nav{top:36px!important}</style>
+  <style>.wb-arrow{display:none;position:fixed;top:0;width:36px;height:33px;align-items:center;justify-content:center;cursor:pointer;z-index:10001;border:none;padding:0;font-size:16px;line-height:1;color:rgba(255,255,255,.8);transition:color .2s,opacity .2s}.wb-arrow:hover{color:#fff}.wb-left{left:0;background:linear-gradient(90deg,#0d0d1a 55%,transparent)}.wb-right{right:0;background:linear-gradient(270deg,#0d0d1a 55%,transparent)}@media (hover:hover) and (pointer:fine){.wb-arrow{display:flex}}</style>
+  <button class="wb-arrow wb-left" id="wb-left" aria-label="Scroll webring left">&#8249;</button>
+  <div class="aiunites-bar"><div class="aiunites-bar-content" id="wb-content"><a href="https://aiunites.github.io/aiunites-site/" class="aiunites-bar-brand">&#9670; AIUNITES</a><span class="aiunites-bar-divider">|</span><a href="https://aiunites.github.io/aizines-app/">AIZines</a><a href="https://aiunites.github.io/aibyjob-demo/">AIByJob</a><a href="https://aiunites.github.io/redomy-demo/">Redomy</a><a href="https://aiunites.github.io/videobate-site/">VideoBate</a><a href="https://aiunites.github.io/voicestry-site/" class="aiunites-bar-active">&#127908; VoiceStry</a><a href="https://aiunites.github.io/furnishthings-site/">FurnishThings</a><a href="https://aiunites.github.io/bizstry-site/">BizStry</a><a href="https://aiunites.github.io/aiyhwh-site/">AI YHWH</a><a href="https://aiunites.github.io/cloudsion-site/">Cloudsion</a><a href="https://aiunites.github.io/gameatica-site/">Gameatica</a><a href="https://aiunites.github.io/uptownit-site/">UptownIT</a><a href="https://aiunites.github.io/inthisworld-site/">InThisWorld</a><a href="https://aiunites.github.io/erpise-site/">ERPise</a><a href="https://aiunites.github.io/erpize-site/">ERPize</a><a href="https://aiunites.github.io/aitsql-site/">AITSQL</a><a href="https://aiunites.github.io/cosmostheopera-site/">&#127756; COSMOS</a></div></div>
+  <button class="wb-arrow wb-right" id="wb-right" aria-label="Scroll webring right">&#8250;</button>
+  <script>(function(){if(location.protocol==='file:'||location.hostname==='localhost'||location.hostname==='127.0.0.1'){document.querySelectorAll('.aiunites-bar a').forEach(a=>{a.href=a.href.replace('https://aiunites.github.io/','../')+'index.html';});}document.querySelectorAll('.aiunites-bar a:not(.aiunites-bar-brand)').forEach(function(a){var h=a.getAttribute('href');if(h){var p=h.replace('https://aiunites.github.io','');if(p&&location.pathname.indexOf(p)!==-1)a.classList.add('current');}});var c=document.getElementById('wb-content'),l=document.getElementById('wb-left'),r=document.getElementById('wb-right');if(!c||!l||!r)return;function upd(){var atL=c.scrollLeft<8,atR=c.scrollLeft>=c.scrollWidth-c.clientWidth-8;l.style.opacity=atL?'0':'1';l.style.pointerEvents=atL?'none':'auto';r.style.opacity=atR?'0':'1';r.style.pointerEvents=atR?'none':'auto';}l.onclick=function(){c.scrollBy({left:-220,behavior:'smooth'});};r.onclick=function(){c.scrollBy({left:220,behavior:'smooth'});};c.addEventListener('scroll',upd,{passive:true});upd();})()</script>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <a href="index.html" class="nav-logo">&#127908; VoiceStry</a>
+    <div class="nav-links" id="vs-nav">
+      <a href="index.html" onclick="vsClose()">Home</a>
+      <a href="vrn-method.html" onclick="vsClose()">VRN Method</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-btn">Learn &#9662;</button>
+        <div class="nav-dropdown-menu">
+          <a href="learn.html">Learn VRN</a>
+          <a href="5-gears.html">5 Gears</a>
+          <a href="vocal-gym.html">Vocal Gym</a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-btn">Tools &#9662;</button>
+        <div class="nav-dropdown-menu">
+          <a href="pitch-trainer.html">Pitch Trainer</a>
+          <a href="sight-reading.html">Sight Reading</a>
+          <a href="voice-lab.html">Voice Lab</a>
+          <a href="voice-analyzer.html">Live Analyzer</a>
+          <a href="vocalist-match.html" class="active">Vocalist Match</a>
+          <a href="sonic-portrait.html">Sonic Portrait</a>
+        </div>
+      </div>
+      <a href="ai-vrn.html" onclick="vsClose()">AI + VRN</a>
+      <a href="ai-neuro.html" onclick="vsClose()">AI + Neuro</a>
+      <a href="press.html" onclick="vsClose()">Press</a>
+    </div>
+    <button class="nav-hamburger" id="vs-hbg" aria-label="Menu" onclick="this.classList.toggle('open');document.getElementById('vs-nav').classList.toggle('open')"><span></span><span></span><span></span></button>
+  </nav>
+  <script>function vsClose(){document.getElementById('vs-nav').classList.remove('open');document.getElementById('vs-hbg').classList.remove('open');}document.querySelectorAll('.nav-dropdown-btn').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();var d=b.parentElement,o=d.classList.contains('open');document.querySelectorAll('.nav-dropdown.open').forEach(function(x){x.classList.remove('open')});if(!o)d.classList.add('open')})});document.addEventListener('click',function(){document.querySelectorAll('.nav-dropdown.open').forEach(function(d){d.classList.remove('open')})})</script>
+
+  <!-- Hero -->
+  <section class="vm-hero">
+    <div class="vm-badge">&#127776; Real-time Vocal Match</div>
+    <h1><span class="text-gradient-nature">Hear Them.</span> <span class="text-gradient-cosmic">Match Them.</span></h1>
+    <p>Play any YouTube vocalist, capture their pitch profile, then sing live and see exactly how closely you match — note by note, in real time.</p>
+    <button class="vm-how-btn" onclick="document.getElementById('vm-explainer').classList.toggle('open')">&#9432; How does this work?</button>
+    <div id="vm-explainer" class="vm-explainer">
+      <strong>How It Works</strong>
+      <div class="vm-steps-row">
+        <div class="vm-step">
+          <div class="vm-step-num">1</div>
+          <h4>Load a YouTube Video</h4>
+          <p>Paste any YouTube URL — the video loads in the player below.</p>
+        </div>
+        <div class="vm-step">
+          <div class="vm-step-num">2</div>
+          <h4>Capture Reference</h4>
+          <p>Play YouTube through your <strong>speakers</strong>. Press <strong style="color:var(--ref-color)">Capture Vocalist</strong> — your mic listens to the room and builds the vocalist's pitch profile over 12 seconds.</p>
+        </div>
+        <div class="vm-step">
+          <div class="vm-step-num">3</div>
+          <h4>Sing Live</h4>
+          <p>Press <strong style="color:var(--live-color)">Sing Live</strong>. Sing into the mic — your pitch is analyzed and compared to the reference in real time.</p>
+        </div>
+        <div class="vm-step">
+          <div class="vm-step-num">4</div>
+          <h4>See Your Score</h4>
+          <p>Watch your match %, grade, pitch offset needle, and a VRN readout update live.</p>
+        </div>
+      </div>
+      <div class="vm-tip">
+        &#128161; <strong>Best setup:</strong> Phone with YouTube playing through the speaker. Hold the phone at arm's length during Capture, then bring it close to your mouth while singing.
+        Earphones reduce reference quality — use speakers for that step.
+      </div>
+    </div>
+  </section>
+
+  <div class="vm-main">
+
+    <div id="vm-perm-error" class="vm-perm-error">
+      <strong>&#128254; Microphone access denied.</strong> This tool needs mic access to analyze your voice.
+      Please allow microphone access in your browser settings and reload the page.
+    </div>
+
+    <!-- YouTube Panel -->
+    <div class="yt-panel">
+      <div class="yt-panel-title">YouTube Vocalist</div>
+      <div class="yt-url-row">
+        <input type="text" id="yt-url" class="yt-url-input" placeholder="Paste YouTube URL or video ID (e.g. dQw4w9WgXcQ)" autocomplete="off" autocorrect="off" spellcheck="false">
+        <button class="btn-yt-load" onclick="loadYT()">&#9654; Load Video</button>
+      </div>
+      <div class="yt-embed-wrap">
+        <div class="yt-placeholder" id="yt-ph">
+          <span>&#127926;</span>
+          <p>Paste a YouTube URL above to load a video</p>
+        </div>
+        <div id="yt-frame" style="display:none;position:absolute;top:0;left:0;width:100%;height:100%;"></div>
+      </div>
+    </div>
+
+    <!-- Status / Controls -->
+    <div class="vm-status">
+      <div class="vm-state">
+        <div class="vm-dot" id="vm-dot"></div>
+        <span id="vm-status-txt">Ready — click a button to begin</span>
+      </div>
+      <div class="vm-controls">
+        <button class="btn-capture" id="btn-capture" onclick="startCapture()">&#127908; Capture Vocalist</button>
+        <button class="btn-sing"    id="btn-sing"    onclick="startSing()">&#127774; Sing Live</button>
+        <button class="btn-stop-vm" id="btn-stop"    onclick="stopAll()">&#9632; Stop</button>
+        <button class="btn-reset-vm"                 onclick="resetAll()">&#8635; Reset</button>
+      </div>
+    </div>
+
+    <!-- Hint -->
+    <div class="vm-hint" id="vm-hint">
+      <strong>Step 1:</strong> Load a YouTube video above. Play it through your speakers, then press <strong style="color:var(--ref-color)">Capture Vocalist</strong>.
+    </div>
+
+    <!-- Analysis Panels -->
+    <div class="vm-panels">
+
+      <!-- Reference -->
+      <div class="vm-panel vm-panel--ref" id="panel-ref">
+        <div class="vm-panel-hdr">
+          <div>
+            <div class="vm-panel-lbl vm-panel-lbl--ref">&#127926; YouTube Vocalist</div>
+            <div class="vm-panel-name" id="ref-name">Reference</div>
+          </div>
+          <span class="vm-badge-pill pill-idle" id="ref-badge">Idle</span>
+        </div>
+        <div class="note-big">
+          <div class="note-name idle" id="ref-note">--</div>
+          <div class="note-freq"     id="ref-freq">-- Hz</div>
+          <div class="note-octave"   id="ref-oct">Octave --</div>
+        </div>
+        <div class="cv-wrap"><canvas class="cv-wave" id="ref-wave"></canvas></div>
+        <div class="cv-wrap"><canvas class="cv-spec" id="ref-spec"></canvas></div>
+        <div class="vm-stats">
+          <div class="vm-stat"><div class="vm-stat-v sv-idle" id="ref-range">--</div><div class="vm-stat-l">Range</div></div>
+          <div class="vm-stat"><div class="vm-stat-v sv-idle" id="ref-cents">-- c</div><div class="vm-stat-l">Cents</div></div>
+          <div class="vm-stat"><div class="vm-stat-v sv-idle" id="ref-clarity">--%</div><div class="vm-stat-l">Clarity</div></div>
+        </div>
+        <div class="vrn-label">VRN Snapshot</div>
+        <div class="vrn-box" id="ref-vrn">—</div>
+      </div>
+
+      <!-- Live -->
+      <div class="vm-panel vm-panel--live" id="panel-live">
+        <div class="vm-panel-hdr">
+          <div>
+            <div class="vm-panel-lbl vm-panel-lbl--live">&#127774; Your Live Voice</div>
+            <div class="vm-panel-name">Real-time Analysis</div>
+          </div>
+          <span class="vm-badge-pill pill-idle" id="live-badge">Idle</span>
+        </div>
+        <div class="note-big">
+          <div class="note-name idle" id="live-note">--</div>
+          <div class="note-freq"      id="live-freq">-- Hz</div>
+          <div class="note-octave"    id="live-oct">Octave --</div>
+        </div>
+        <div class="cv-wrap"><canvas class="cv-wave" id="live-wave"></canvas></div>
+        <div class="cv-wrap"><canvas class="cv-spec" id="live-spec"></canvas></div>
+        <div class="vm-stats">
+          <div class="vm-stat"><div class="vm-stat-v sv-idle" id="live-timer">0:00</div><div class="vm-stat-l">Session</div></div>
+          <div class="vm-stat"><div class="vm-stat-v sv-idle" id="live-cents">-- c</div><div class="vm-stat-l">Cents</div></div>
+          <div class="vm-stat"><div class="vm-stat-v sv-idle" id="live-clarity">--%</div><div class="vm-stat-l">Clarity</div></div>
+        </div>
+        <div class="vrn-label">VRN Snapshot</div>
+        <div class="vrn-box" id="live-vrn">—</div>
+      </div>
+
+    </div>
+
+    <!-- Match Panel -->
+    <div class="match-panel">
+      <div class="match-title">Match Score</div>
+      <div class="match-row">
+        <div>
+          <div class="match-pct" id="match-pct">--%</div>
+          <div class="match-pct-lbl">Vocal Match</div>
+        </div>
+        <div class="match-grade"  id="match-grade">—</div>
+        <div class="match-phrase" id="match-phrase">Start singing to see your match score.</div>
+      </div>
+      <div class="match-bar-bg"><div class="match-bar-fill" id="match-bar"></div></div>
+      <div class="needle-row">
+        <div class="needle-lbl">Pitch Offset</div>
+        <div class="needle-val"  id="needle-val">-- cents</div>
+        <div class="needle-track">
+          <div class="needle-center"></div>
+          <div class="needle-thumb" id="needle"></div>
+        </div>
+      </div>
+      <div class="overlay-wrap">
+        <canvas class="overlay-cv" id="overlay-cv"></canvas>
+      </div>
+      <div class="overlay-legend">
+        <span><span class="legend-dot" style="background:var(--ref-color)"></span>Vocalist</span>
+        <span><span class="legend-dot" style="background:var(--live-color)"></span>Your Voice</span>
+      </div>
+    </div>
+
+    <div class="health-note">
+      <strong style="color:#f87171;">&#9888; Voice Health:</strong> Stop immediately if you feel strain, pain, or unusual hoarseness.
+      This tool is for education and training — not a substitute for professional vocal coaching or medical advice.
+    </div>
+
+  </div><!-- /vm-main -->
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>
+      &#169; 2002-2026 VoiceStry. All Rights Reserved.<br>
+      <a href="index.html">Home</a> |
+      <a href="vrn-method.html">VRN Method</a> |
+      <a href="pitch-trainer.html">Pitch Trainer</a> |
+      <a href="voice-analyzer.html">Live Analyzer</a> |
+      <a href="vocalist-match.html">Vocalist Match</a> |
+      <a href="voice-lab.html">Voice Lab</a>
+      <br><br>
+      Part of the <a href="https://aiunites.github.io/aiunites-site/">AIUNITES</a> network
+    </p>
+    <div style="margin-top:0.75rem;padding-top:0.75rem;border-top:1px solid rgba(255,255,255,0.1);font-size:0.75rem;color:rgba(255,255,255,0.4);text-align:center;">
+      <a href="https://aiunites.github.io/aiunites-site/legal.html#privacy" style="color:rgba(255,255,255,0.4);margin:0 8px;">Privacy</a> &middot;
+      <a href="https://aiunites.github.io/aiunites-site/legal.html#terms" style="color:rgba(255,255,255,0.4);margin:0 8px;">Terms</a>
+    </div>
+  </footer>
+
+  <!-- ============================================================ -->
+  <!-- ENGINE                                                        -->
+  <!-- ============================================================ -->
+  <script>
+  (function(){
+    'use strict';
+
+    var NOTES     = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+    var HIST_LEN  = 200;
+    var CAP_MS    = 12000;
+    var MIN_F     = 60;
+    var MAX_F     = 1400;
+
+    var audioCtx  = null;
+    var analyser  = null;
+    var micStream = null;
+    var raf       = null;
+    var mode      = 'idle'; // idle | capture | sing
+
+    var refState  = { collected:[], medianFreq:null };
+    var liveStart = null;
+    var refHist   = [];
+    var liveHist  = [];
+    var capStart  = null;
+
+    // Canvas refs
+    var cvs = {
+      rw: get('ref-wave'),  rs: get('ref-spec'),
+      lw: get('live-wave'), ls: get('live-spec'),
+      ov: get('overlay-cv')
+    };
+
+    function get(id){ return document.getElementById(id); }
+
+    function resizeCv(c){
+      var r = c.getBoundingClientRect();
+      c.width  = Math.round(r.width  * (window.devicePixelRatio||1));
+      c.height = Math.round(r.height * (window.devicePixelRatio||1));
+    }
+    function resizeAll(){ Object.values(cvs).forEach(resizeCv); }
+    window.addEventListener('resize', resizeAll);
+    setTimeout(resizeAll, 200);
+
+    /* ---- YouTube ---- */
+    window.loadYT = function(){
+      var raw = get('yt-url').value.trim();
+      if(!raw) return;
+      var vid = extractId(raw);
+      if(!vid){ alert('Could not find a YouTube video ID. Try pasting the full URL.'); return; }
+      get('yt-ph').style.display = 'none';
+      var f = get('yt-frame');
+      f.style.display = 'block';
+      f.innerHTML = '<iframe src="https://www.youtube.com/embed/'+vid+'?autoplay=0&rel=0&modestbranding=1" allowfullscreen allow="autoplay; encrypted-media"></iframe>';
+      hint('Video loaded! Play it through your speakers, then press <strong style="color:var(--ref-color)">Capture Vocalist</strong>.');
+    };
+    get('yt-url').addEventListener('keydown', function(e){ if(e.key==='Enter') window.loadYT(); });
+
+    function extractId(s){
+      var m = s.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([A-Za-z0-9_-]{11})/);
+      if(m) return m[1];
+      if(/^[A-Za-z0-9_-]{11}$/.test(s)) return s;
+      return null;
+    }
+
+    /* ---- Mic ---- */
+    function initMic(cb){
+      if(micStream){ if(audioCtx && audioCtx.state==='suspended') audioCtx.resume(); cb(null); return; }
+      navigator.mediaDevices.getUserMedia({ audio:{ echoCancellation:false, noiseSuppression:false, autoGainControl:false }, video:false })
+        .then(function(stream){
+          micStream = stream;
+          audioCtx  = new (window.AudioContext||window.webkitAudioContext)();
+          analyser  = audioCtx.createAnalyser();
+          analyser.fftSize = 4096;
+          analyser.smoothingTimeConstant = 0.6;
+          audioCtx.createMediaStreamSource(stream).connect(analyser);
+          cb(null);
+        })
+        .catch(function(err){
+          get('vm-perm-error').style.display = 'block';
+          cb(err);
+        });
+    }
+
+    /* ---- Pitch (autocorrelation) ---- */
+    function detectPitch(buf){
+      var sr  = audioCtx ? audioCtx.sampleRate : 44100;
+      var mn  = Math.floor(sr / MAX_F);
+      var mx  = Math.floor(sr / MIN_F);
+      var n   = buf.length;
+      var rms = 0;
+      for(var i=0;i<n;i++) rms += buf[i]*buf[i];
+      rms = Math.sqrt(rms/n);
+      if(rms < 0.004) return { freq:null, clarity:0 };
+
+      var ac = new Float32Array(mx+1);
+      for(var tau=mn;tau<=mx;tau++){
+        var s=0; for(var j=0;j<n-mx;j++) s+=buf[j]*buf[j+tau]; ac[tau]=s;
+      }
+      var best=-1, bestV=-1, up=false;
+      for(var t=mn+1;t<=mx;t++){
+        if(ac[t]>ac[t-1]){ up=true; }
+        else if(up && ac[t]<ac[t-1]){ if(ac[t-1]>bestV){ bestV=ac[t-1]; best=t-1; } up=false; }
+      }
+      if(best<0) return { freq:null, clarity:0 };
+      var a0=ac[best-1]||0, a1=ac[best], a2=ac[best+1]||0;
+      var d=(a0-a2)/(2*(a0-2*a1+a2))||0;
+      var freq = sr/(best+d);
+      var clarity = Math.max(0, Math.min(100, Math.round((bestV/(rms*rms*(n-mx)))*100)));
+      return { freq:freq, clarity:clarity };
+    }
+
+    function freqToNote(f){
+      if(!f||f<=0) return { name:'--', oct:-1, cents:0 };
+      var midi = 12*Math.log2(f/440)+69;
+      var mr   = Math.round(midi);
+      return { name:NOTES[((mr%12)+12)%12], oct:Math.floor(mr/12)-1, cents:Math.round((midi-mr)*100) };
+    }
+
+    function toVRN(ni, clarity){
+      if(!ni||ni.name==='--') return '—';
+      var gear = ni.oct>=5?'H++':ni.oct===4?'M+':'C+';
+      var cl   = clarity>70?'Cl++':clarity>40?'Cl+':'Cl-';
+      return '['+gear+', '+cl+'] '+ni.name+ni.oct;
+    }
+
+    /* ---- Drawing ---- */
+    function drawWave(c, tb, col){
+      resizeCv(c);
+      var ctx=c.getContext('2d'), w=c.width, h=c.height, dpr=window.devicePixelRatio||1;
+      ctx.clearRect(0,0,w,h);
+      ctx.strokeStyle=col; ctx.lineWidth=1.5*dpr; ctx.beginPath();
+      var sw=w/tb.length, x=0;
+      for(var i=0;i<tb.length;i++){
+        var y=(tb[i]/128)*h/2;
+        i===0?ctx.moveTo(x,y):ctx.lineTo(x,y); x+=sw;
+      }
+      ctx.stroke();
+    }
+
+    function drawSpec(c, fb, col){
+      resizeCv(c);
+      var ctx=c.getContext('2d'), w=c.width, h=c.height;
+      ctx.clearRect(0,0,w,h);
+      var bw=Math.max(1,Math.floor(w/(fb.length/4)));
+      var g=ctx.createLinearGradient(0,h,0,0);
+      g.addColorStop(0,col+'33'); g.addColorStop(1,col+'cc');
+      ctx.fillStyle=g;
+      var nb=Math.floor(w/bw);
+      for(var i=0;i<nb;i++){ var bh=Math.max(1,((fb[i]||0)/255)*h); ctx.fillRect(i*bw,h-bh,bw-1,bh); }
+    }
+
+    function drawOverlay(){
+      var c=cvs.ov; resizeCv(c);
+      var ctx=c.getContext('2d'), w=c.width, h=c.height, dpr=window.devicePixelRatio||1;
+      ctx.clearRect(0,0,w,h);
+      ctx.strokeStyle='rgba(255,255,255,0.05)'; ctx.lineWidth=1;
+      for(var i=1;i<4;i++){ ctx.beginPath(); ctx.moveTo(0,h*i/4); ctx.lineTo(w,h*i/4); ctx.stroke(); }
+      function line(hist,col){
+        if(hist.length<2) return;
+        ctx.strokeStyle=col; ctx.lineWidth=2*dpr; ctx.lineJoin='round'; ctx.beginPath();
+        var mn=80, mx2=900;
+        for(var j=0;j<hist.length;j++){
+          var f=hist[j]; if(!f) continue;
+          var xp=(j/(HIST_LEN-1))*w;
+          var yp=h-((Math.log2(f/mn)/Math.log2(mx2/mn))*h);
+          yp=Math.max(2,Math.min(h-2,yp));
+          (!j||!hist[j-1])?ctx.moveTo(xp,yp):ctx.lineTo(xp,yp);
+        }
+        ctx.stroke();
+      }
+      line(refHist,'#00d4ff');
+      line(liveHist,'#4ade80');
+    }
+
+    /* ---- Dot / hint / status helpers ---- */
+    function dot(s){
+      var d=get('vm-dot');
+      d.className='vm-dot'+(s==='capture'?' ref':s==='sing'?' live':'');
+    }
+    function status(t){ get('vm-status-txt').textContent=t; }
+    function hint(h)  { get('vm-hint').innerHTML=h; }
+    function showStop(v){ get('btn-stop').style.display=v?'inline-block':'none'; }
+
+    /* ---- Capture mode ---- */
+    window.startCapture = function(){
+      initMic(function(err){ if(err) return; doCapture(); });
+    };
+
+    function doCapture(){
+      cancelRaf();
+      mode='capture'; dot('capture'); showStop(true);
+      get('btn-capture').classList.add('active');
+      get('btn-sing').classList.remove('active');
+      get('panel-ref').classList.add('on');
+      badge('ref','CAPTURING','pill-ref');
+      status('Capturing vocalist — play YouTube through your speakers now');
+      hint('<strong>Capturing!</strong> Make sure YouTube is playing through your speakers. Capturing for 12 seconds...');
+
+      refState.collected = [];
+      refHist = [];
+      capStart = Date.now();
+
+      var tb = new Uint8Array(analyser.fftSize);
+      var fb = new Uint8Array(analyser.frequencyBinCount);
+
+      function loop(){
+        if(mode!=='capture') return;
+        analyser.getByteTimeDomainData(tb);
+        analyser.getByteFrequencyData(fb);
+
+        var fl = new Float32Array(tb.length);
+        for(var i=0;i<tb.length;i++) fl[i]=(tb[i]-128)/128;
+        var r = detectPitch(fl);
+
+        if(r.freq && r.clarity>20){
+          refState.collected.push(r.freq);
+          var ni = freqToNote(r.freq);
+          setText('ref-note', ni.name+ni.oct, 'note-name ref');
+          setText('ref-freq', r.freq.toFixed(1)+' Hz');
+          setText('ref-oct',  'Octave '+ni.oct);
+          setStatV('ref-cents', ni.cents+' c', 'sv-ref');
+          setStatV('ref-clarity', r.clarity+'%', 'sv-ref');
+          get('ref-vrn').textContent = toVRN(ni, r.clarity);
+        }
+
+        refHist.push(r.freq||null);
+        if(refHist.length>HIST_LEN) refHist.shift();
+
+        drawWave(cvs.rw, tb, '#00d4ff');
+        drawSpec(cvs.rs, fb, '#00d4ff');
+        drawOverlay();
+
+        var rem = Math.max(0, Math.ceil((CAP_MS-(Date.now()-capStart))/1000));
+        status('Capturing... '+rem+'s remaining');
+
+        if(Date.now()-capStart >= CAP_MS){ finalizeCapture(); return; }
+        raf = requestAnimationFrame(loop);
+      }
+      raf = requestAnimationFrame(loop);
+    }
+
+    function finalizeCapture(){
+      var freqs = refState.collected;
+      if(!freqs.length){
+        status('No pitch detected — try again with louder audio.');
+        mode='idle'; dot('idle'); showStop(false);
+        get('panel-ref').classList.remove('on');
+        badge('ref','No Signal','pill-idle');
+        return;
+      }
+      var sorted = freqs.slice().sort(function(a,b){return a-b;});
+      var med = sorted[Math.floor(sorted.length/2)];
+      refState.medianFreq = med;
+      var ni = freqToNote(med);
+      var lo = freqToNote(sorted[0]), hi = freqToNote(sorted[sorted.length-1]);
+
+      setText('ref-note', ni.name+ni.oct, 'note-name ref');
+      setText('ref-freq', med.toFixed(1)+' Hz');
+      setText('ref-oct',  'Octave '+ni.oct);
+      setStatV('ref-range',   lo.name+lo.oct+'-'+hi.name+hi.oct, 'sv-ref');
+      setStatV('ref-cents',   ni.cents+' c', 'sv-ref');
+      setStatV('ref-clarity', '~'+Math.round(freqs.length/CAP_MS*1000)+'Hz', 'sv-ref');
+      get('ref-vrn').textContent = toVRN(ni, 80)+'  [Ref]';
+      get('ref-name').textContent = 'Captured ('+freqs.length+' samples)';
+      badge('ref','CAPTURED','pill-ref');
+
+      mode='idle'; dot('idle'); showStop(false);
+      get('btn-capture').classList.remove('active');
+      get('panel-ref').classList.remove('on');
+      status('Vocalist captured! Now press Sing Live.');
+      hint('&#10003; Reference captured! Press <strong style="color:var(--live-color)">Sing Live</strong> and start singing.');
+    }
+
+    /* ---- Sing mode ---- */
+    window.startSing = function(){
+      initMic(function(err){ if(err) return; doSing(); });
+    };
+
+    function doSing(){
+      cancelRaf();
+      mode='sing'; dot('sing'); showStop(true);
+      get('btn-sing').classList.add('active');
+      get('btn-capture').classList.remove('active');
+      get('panel-live').classList.add('on');
+      badge('live','LIVE','pill-live');
+      liveStart = Date.now();
+      liveHist  = [];
+
+      if(!refState.medianFreq){
+        hint('<strong>Tip:</strong> No reference captured yet. Capture one first for match scoring.');
+      } else {
+        hint('&#127909; Sing now! Watch your match score update in real time below.');
+      }
+      status('Singing live — match score updating...');
+
+      var tb = new Uint8Array(analyser.fftSize);
+      var fb = new Uint8Array(analyser.frequencyBinCount);
+
+      function loop(){
+        if(mode!=='sing') return;
+        analyser.getByteTimeDomainData(tb);
+        analyser.getByteFrequencyData(fb);
+
+        var fl = new Float32Array(tb.length);
+        for(var i=0;i<tb.length;i++) fl[i]=(tb[i]-128)/128;
+        var r = detectPitch(fl);
+
+        if(r.freq && r.clarity>18){
+          var ni = freqToNote(r.freq);
+          setText('live-note', ni.name+ni.oct, 'note-name live');
+          setText('live-freq', r.freq.toFixed(1)+' Hz');
+          setText('live-oct',  'Octave '+ni.oct);
+          setStatV('live-cents',   ni.cents+' c',  'sv-live');
+          setStatV('live-clarity', r.clarity+'%',  'sv-live');
+          get('live-vrn').textContent = toVRN(ni, r.clarity);
+          liveHist.push(r.freq);
+          if(refState.medianFreq) updateMatch(r.freq, refState.medianFreq);
+        } else {
+          setText('live-note','...','note-name idle');
+          liveHist.push(null);
+        }
+
+        if(liveHist.length>HIST_LEN) liveHist.shift();
+
+        // Keep ref median line alive on overlay
+        if(refState.medianFreq){ refHist.push(refState.medianFreq); if(refHist.length>HIST_LEN) refHist.shift(); }
+
+        // Session timer
+        var sec = Math.floor((Date.now()-liveStart)/1000);
+        var mm=Math.floor(sec/60), ss=sec%60;
+        setStatV('live-timer', mm+':'+(ss<10?'0':'')+ss, 'sv-live');
+
+        drawWave(cvs.lw, tb, '#4ade80');
+        drawSpec(cvs.ls, fb, '#4ade80');
+        drawOverlay();
+
+        raf = requestAnimationFrame(loop);
+      }
+      raf = requestAnimationFrame(loop);
+    }
+
+    function updateMatch(liveF, refF){
+      var semis = Math.abs(12*Math.log2(liveF/refF));
+      var cents = semis*100;
+      var score = Math.max(0, Math.round(100-(cents/2)));
+      var diff  = Math.round(cents * (liveF<refF?-1:1));
+      var g     = grade(score);
+
+      get('match-pct').textContent = score+'%';
+      get('match-pct').style.color = g.color;
+      get('match-grade').textContent = g.letter;
+      get('match-grade').style.color  = g.color;
+      get('match-phrase').textContent = g.phrase;
+      get('match-bar').style.width    = score+'%';
+
+      get('needle-val').textContent = (diff>=0?'+':'')+diff+' cents';
+      var pct = 50 + Math.max(-48,Math.min(48,diff/4));
+      get('needle').style.left       = pct+'%';
+      get('needle').style.background = g.color;
+    }
+
+    function grade(s){
+      if(s>=95) return { letter:'S+', phrase:'Flawless — studio-level match.',      color:'#4ade80' };
+      if(s>=85) return { letter:'A',  phrase:'Excellent — nearly on pitch!',         color:'#86efac' };
+      if(s>=72) return { letter:'B',  phrase:'Good match with minor drift.',          color:'#ffd700' };
+      if(s>=55) return { letter:'C',  phrase:'Close — keep adjusting your pitch.',    color:'#f59e0b' };
+      if(s>=35) return { letter:'D',  phrase:'Off — try moving up or down.',          color:'#ef4444' };
+      return            { letter:'F',  phrase:'Far off — check your octave.',          color:'#dc2626' };
+    }
+
+    /* ---- Stop / reset ---- */
+    function cancelRaf(){ if(raf){ cancelAnimationFrame(raf); raf=null; } }
+
+    window.stopAll = function(){
+      cancelRaf();
+      mode='idle'; dot('idle'); showStop(false);
+      get('btn-capture').classList.remove('active');
+      get('btn-sing').classList.remove('active');
+      get('panel-ref').classList.remove('on');
+      get('panel-live').classList.remove('on');
+      badge('ref','Idle','pill-idle');
+      badge('live','Idle','pill-idle');
+      status('Stopped. Press a button to continue.');
+      hint('Analysis stopped. Press <strong style="color:var(--ref-color)">Capture Vocalist</strong> or <strong style="color:var(--live-color)">Sing Live</strong> to continue.');
+    };
+
+    window.resetAll = function(){
+      window.stopAll();
+      refState = { collected:[], medianFreq:null };
+      refHist=[]; liveHist=[];
+
+      // Reset ref panel
+      setText('ref-note','--','note-name idle');
+      setText('ref-freq','-- Hz'); setText('ref-oct','Octave --');
+      setStatV('ref-range','--','sv-idle'); setStatV('ref-cents','-- c','sv-idle');
+      setStatV('ref-clarity','--%','sv-idle');
+      get('ref-vrn').textContent='—'; get('ref-name').textContent='Reference';
+      badge('ref','Idle','pill-idle');
+
+      // Reset live panel
+      setText('live-note','--','note-name idle');
+      setText('live-freq','-- Hz'); setText('live-oct','Octave --');
+      setStatV('live-timer','0:00','sv-idle'); setStatV('live-cents','-- c','sv-idle');
+      setStatV('live-clarity','--%','sv-idle');
+      get('live-vrn').textContent='—';
+      badge('live','Idle','pill-idle');
+
+      // Reset match
+      get('match-pct').textContent='--%'; get('match-pct').style.color='var(--text-dim)';
+      get('match-grade').textContent='—'; get('match-grade').style.color='var(--text-dim)';
+      get('match-phrase').textContent='Start singing to see your match score.';
+      get('match-bar').style.width='0%';
+      get('needle-val').textContent='-- cents';
+      get('needle').style.left='50%'; get('needle').style.background='var(--accent-gold)';
+
+      Object.values(cvs).forEach(function(c){ var ctx=c.getContext('2d'); ctx.clearRect(0,0,c.width,c.height); });
+      hint('<strong>Step 1:</strong> Load a YouTube video above. Play it through your speakers, then press <strong style="color:var(--ref-color)">Capture Vocalist</strong>.');
+      status('Ready — click a button to begin');
+    };
+
+    /* ---- Tiny helpers ---- */
+    function setText(id, txt, cls){
+      var el=get(id); el.textContent=txt; if(cls) el.className=cls;
+    }
+    function setStatV(id, txt, cls){
+      var el=get(id); el.textContent=txt; el.className='vm-stat-v '+(cls||'sv-idle');
+    }
+    function badge(who, txt, cls){
+      var el=get(who+'-badge'); el.textContent=txt; el.className='vm-badge-pill '+cls;
+    }
+
+  })();
+  </script>
+
+</body>
+</html>
