@@ -2,1354 +2,1732 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-
-  <!-- Google Analytics 4 -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VP15KRLV6P"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-VP15KRLV6P');
-  </script>
-
-  <!-- Google AdSense -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4573596965267859" crossorigin="anonymous"></script>
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Voice Analyzer — Match Any YouTube Vocalist | VoiceStry</title>
-  <meta name="description" content="Analyze any YouTube vocalist in real time and compare your live voice against theirs. See pitch, tone, and match score side by side.">
-  <meta name="keywords" content="voice analyzer, pitch matching, vocal analysis, YouTube singer comparison, real-time pitch detection, vocal training">
-  <meta name="author" content="VoiceStry">
-  <link rel="canonical" href="https://voicestry.com/voice-analyzer.html">
+  <title>VRN Live Analyzer — Sing and See Your Resonance in Real Time | VoiceStry</title>
+  <meta name="description" content="Sing into your microphone and watch your Vocal Resonance Notation update in real time. See which resonance zones activate, what gear you're in, and how your voice moves through the passaggi.">
+  <meta name="keywords" content="vocal analysis, real-time VRN, singing analyzer, vocal resonance detection, pitch detection, voice register, chest voice, head voice, mixed voice">
+  <meta name="author" content="Tom Sans / AIUNITES">
+  <meta property="og:title" content="VRN Live Analyzer — See Your Voice in Real Time">
+  <meta property="og:description" content="Sing into your mic and watch VRN notation map your resonance zones live.">
+  <meta property="og:type" content="article">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎤</text></svg>">
 
   <link rel="stylesheet" href="css/style.css">
-
   <style>
-    /* ================================================ */
-    /* Voice Analyzer Page Styles                       */
-    /* ================================================ */
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{--bg-dark:#0a0a0f;--bg-card:#12121a;--bg-panel:#0e0e18;--text-primary:#fff;--text-secondary:#a0a0b0;--accent-purple:#9d4edd;--accent-cyan:#00d4ff;--accent-gold:#ffd700;--accent-pink:#ff6b9d;--accent-green:#4ade80;--accent-orange:#f59e0b;--accent-red:#ef4444}
+    body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg-dark);color:var(--text-primary);line-height:1.7;overflow-x:hidden}
 
-    :root {
-      --ref-color: #00d4ff;
-      --ref-glow: rgba(0, 212, 255, 0.35);
-      --ref-bg: rgba(0, 212, 255, 0.06);
-      --live-color: #4ade80;
-      --live-glow: rgba(74, 222, 128, 0.35);
-      --live-bg: rgba(74, 222, 128, 0.06);
-      --match-low: #ef4444;
-      --match-mid: #ffd700;
-      --match-high: #4ade80;
-    }
+    /* Webring */
+    .aiunites-bar{background:linear-gradient(90deg,#0a0a0f,#1a1a2e);border-bottom:1px solid rgba(99,102,241,.3);padding:8px 0;font-size:12px}.aiunites-bar-content{max-width:1400px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:12px;overflow-x:auto;scrollbar-width:none}.aiunites-bar-content::-webkit-scrollbar{display:none}.aiunites-bar a{color:rgba(255,255,255,.7);text-decoration:none;white-space:nowrap;transition:color .2s}.aiunites-bar a:hover{color:#fff}.aiunites-bar-brand{color:#6366f1!important;font-weight:600}.aiunites-bar-active{color:#fff!important;text-decoration:underline;text-underline-offset:3px}.aiunites-bar-divider{color:rgba(255,255,255,.2)}
 
-    body { overflow-x: hidden; }
+    /* Nav */
+    .nav{background:var(--bg-card);padding:15px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,0.1);position:sticky;top:0;z-index:100}
+    .nav-logo{font-size:1.5rem;font-weight:800;text-decoration:none;background:linear-gradient(135deg,var(--accent-green),var(--accent-cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .nav-links{display:flex;gap:22px;flex-wrap:wrap}.nav-links a{color:var(--text-secondary);text-decoration:none;font-size:0.95rem;transition:color 0.3s}.nav-links a:hover,.nav-links a.active{color:var(--accent-cyan)}
 
-    /* ---- Page Hero ---- */
-    .va-hero {
-      padding: 60px 20px 30px;
-      text-align: center;
-      background:
-        radial-gradient(ellipse at 20% 30%, rgba(0, 212, 255, 0.09) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 60%, rgba(74, 222, 128, 0.07) 0%, transparent 50%),
-        var(--bg-dark);
-    }
-    .va-hero-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 6px 18px; border-radius: 24px; font-size: 0.82rem; font-weight: 700;
-      background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.22);
-      color: var(--accent-cyan); margin-bottom: 18px; letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-    .va-hero h1 {
-      font-size: clamp(1.9rem, 5vw, 3rem);
-      font-weight: 900; line-height: 1.15; margin-bottom: 14px;
-    }
-    .va-hero p {
-      color: var(--text-secondary); max-width: 560px;
-      margin: 0 auto 20px; font-size: 1.05rem; line-height: 1.7;
-    }
-    .va-how-badge {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 4px 14px; border-radius: 20px; font-size: 0.8rem;
-      background: rgba(157,78,221,0.1); border: 1px solid rgba(157,78,221,0.25);
-      color: var(--accent-purple); cursor: pointer; transition: all 0.2s;
-    }
-    .va-how-badge:hover { background: rgba(157,78,221,0.18); }
+    /* Hero */
+    .hero{padding:50px 20px 30px;text-align:center;background:radial-gradient(ellipse at 40% 30%,rgba(239,68,68,0.1) 0%,transparent 50%),radial-gradient(ellipse at 60% 70%,rgba(0,212,255,0.08) 0%,transparent 50%),var(--bg-dark)}
+    .hero h1{font-size:clamp(1.8rem,5vw,3rem);margin-bottom:12px;background:linear-gradient(135deg,#fff,var(--accent-red),var(--accent-gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero-sub{font-size:1.05rem;color:var(--text-secondary);max-width:600px;margin:0 auto}
 
-    /* ---- How It Works Explainer ---- */
-    .va-explainer {
-      max-width: 820px; margin: 0 auto;
-      background: var(--bg-card); border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-lg); padding: 24px 28px; display: none;
-    }
-    .va-explainer.open { display: block; }
-    .va-steps-row {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 16px; margin-top: 14px;
-    }
-    .va-step {
-      padding: 14px; background: rgba(255,255,255,0.03);
-      border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);
-    }
-    .va-step-num {
-      width: 26px; height: 26px; border-radius: 50%;
-      background: var(--gradient-cosmic); display: flex; align-items: center;
-      justify-content: center; font-size: 0.75rem; font-weight: 800;
-      margin-bottom: 8px;
-    }
-    .va-step h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 4px; }
-    .va-step p { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5; }
-    .va-tip {
-      margin-top: 14px; padding: 10px 14px;
-      background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.2);
-      border-radius: var(--radius-sm); font-size: 0.82rem; color: var(--accent-gold);
-    }
+    /* Voice Type Picker */
+    .voice-picker{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:20px 20px 10px}
+    .vp-btn{padding:8px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);background:var(--bg-card);color:var(--text-secondary);font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:inherit}
+    .vp-btn:hover{border-color:rgba(255,255,255,0.2);color:var(--text-primary)}
+    .vp-btn.active{border-color:var(--accent-cyan);color:var(--accent-cyan);background:rgba(0,212,255,0.08)}
 
-    /* ---- Main Layout ---- */
-    .va-main {
-      max-width: 1200px; margin: 0 auto;
-      padding: 24px 16px 60px;
-    }
+    /* Input Source Selector */
+    .input-source{max-width:740px;margin:0 auto;padding:16px 20px}
+    .input-source-label{font-size:0.75rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;text-align:center}
+    .source-tabs{display:flex;gap:8px;justify-content:center;margin-bottom:12px;flex-wrap:wrap}
+    .source-tab{flex:1;min-width:170px;max-width:220px;padding:12px 14px;border-radius:14px;border:1px solid rgba(255,255,255,0.08);background:var(--bg-card);color:var(--text-secondary);cursor:pointer;transition:all 0.25s;text-align:left;font-family:inherit}
+    .source-tab:hover{border-color:rgba(255,255,255,0.15);background:rgba(255,255,255,0.03)}
+    .source-tab.active{border-color:var(--accent-cyan);background:rgba(0,212,255,0.06)}
+    .source-tab .st-icon{font-size:1.4rem;margin-bottom:4px;display:block}
+    .source-tab .st-title{font-size:0.95rem;font-weight:700;color:var(--text-primary);display:block;margin-bottom:2px}
+    .source-tab .st-desc{font-size:0.75rem;color:var(--text-secondary);line-height:1.4}
+    .source-tab.active .st-title{color:var(--accent-cyan)}
+    .source-settings{max-width:740px;margin:0 auto;padding:0 20px}
+    .setting-row-inline{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:var(--bg-panel);border-radius:10px;margin-bottom:6px;border:1px solid rgba(255,255,255,0.04)}
+    .setting-row-inline .sri-label{font-size:0.85rem;color:var(--text-secondary)}
+    .setting-row-inline .sri-hint{font-size:0.7rem;color:rgba(255,255,255,0.25);margin-top:2px}
+    .toggle-sm{position:relative;display:inline-block;width:40px;height:22px}
+    .toggle-sm input{opacity:0;width:0;height:0}
+    .toggle-sm .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:rgba(255,255,255,0.1);border-radius:22px;transition:0.3s}
+    .toggle-sm .slider:before{content:"";position:absolute;height:16px;width:16px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:0.3s}
+    .toggle-sm input:checked+.slider{background:var(--accent-cyan)}
+    .toggle-sm input:checked+.slider:before{transform:translateX(18px)}
+    .stream-info{max-width:740px;margin:6px auto 0;padding:10px 16px;background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.15);border-radius:10px;font-size:0.78rem;color:var(--accent-orange);line-height:1.5;display:none;text-align:center}
+    .stream-info.show{display:block}
 
-    /* ---- YouTube Panel ---- */
-    .yt-panel {
-      background: var(--bg-card); border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-xl); padding: 22px; margin-bottom: 22px;
-    }
-    .yt-panel-title {
-      font-size: 0.85rem; font-weight: 700; color: var(--text-secondary);
-      text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px;
-      display: flex; align-items: center; gap: 8px;
-    }
-    .yt-panel-title::before {
-      content: ''; width: 8px; height: 8px; border-radius: 50%;
-      background: #ef4444; display: inline-block;
-    }
-    .yt-url-row {
-      display: flex; gap: 10px; margin-bottom: 16px;
-    }
-    .yt-url-input {
-      flex: 1; background: var(--bg-input); border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-sm); padding: 11px 14px; color: var(--text-primary);
-      font-size: 0.92rem; outline: none; transition: border-color 0.2s;
-    }
-    .yt-url-input:focus { border-color: rgba(0,212,255,0.4); }
-    .yt-url-input::placeholder { color: var(--text-dim); }
-    .btn-load-yt {
-      background: #ef4444; color: #fff; border: none; border-radius: var(--radius-sm);
-      padding: 11px 20px; font-weight: 700; font-size: 0.88rem; cursor: pointer;
-      white-space: nowrap; transition: all 0.2s;
-    }
-    .btn-load-yt:hover { background: #dc2626; transform: translateY(-1px); }
-    .yt-embed-wrap {
-      position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
-      border-radius: var(--radius-md); background: #000;
-      border: 1px solid var(--border-subtle);
-    }
-    .yt-embed-wrap iframe {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;
-    }
-    .yt-placeholder {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      background: #0a0a0f; border-radius: var(--radius-md); color: var(--text-dim);
-      gap: 10px;
-    }
-    .yt-placeholder span { font-size: 2.5rem; }
-    .yt-placeholder p { font-size: 0.9rem; }
+    /* Start Button */
+    .start-section{text-align:center;padding:20px}
+    .start-btn{padding:18px 48px;border-radius:16px;border:none;font-size:1.15rem;font-weight:800;cursor:pointer;transition:all 0.3s;font-family:inherit;color:#fff;background:linear-gradient(135deg,var(--accent-red),var(--accent-orange));box-shadow:0 4px 30px rgba(239,68,68,0.3)}
+    .start-btn:hover{transform:translateY(-3px);box-shadow:0 8px 40px rgba(239,68,68,0.5)}
+    .start-btn.listening{background:linear-gradient(135deg,var(--accent-green),var(--accent-cyan));box-shadow:0 4px 30px rgba(74,222,128,0.3);animation:pulse 2s infinite}
+    .start-btn.listening:hover{box-shadow:0 8px 40px rgba(74,222,128,0.5)}
+    @keyframes pulse{0%,100%{box-shadow:0 4px 30px rgba(74,222,128,0.3)}50%{box-shadow:0 4px 40px rgba(74,222,128,0.6)}}
+    .mic-hint{font-size:0.85rem;color:var(--text-secondary);margin-top:10px}
 
-    /* ---- Status Bar ---- */
-    .va-status {
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 12px;
-      background: var(--bg-card); border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-lg); padding: 14px 20px; margin-bottom: 18px;
-    }
-    .va-status-state {
-      display: flex; align-items: center; gap: 10px;
-      font-size: 0.88rem; font-weight: 600;
-    }
-    .va-dot {
-      width: 10px; height: 10px; border-radius: 50%;
-      background: var(--text-dim);
-      box-shadow: none; transition: all 0.3s;
-    }
-    .va-dot.active-ref {
-      background: var(--ref-color);
-      box-shadow: 0 0 10px var(--ref-glow);
-      animation: pulse-dot 1.4s infinite;
-    }
-    .va-dot.active-live {
-      background: var(--live-color);
-      box-shadow: 0 0 10px var(--live-glow);
-      animation: pulse-dot 1s infinite;
-    }
-    @keyframes pulse-dot {
-      0%,100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.7; transform: scale(1.3); }
-    }
-    .va-controls { display: flex; gap: 10px; flex-wrap: wrap; }
+    /* Main Layout */
+    .analyzer{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-columns:1fr 320px;gap:24px;align-items:start}
 
-    /* Buttons */
-    .btn-ref {
-      background: var(--ref-bg); border: 1.5px solid var(--ref-color);
-      color: var(--ref-color); border-radius: var(--radius-sm);
-      padding: 9px 18px; font-weight: 700; font-size: 0.85rem;
-      cursor: pointer; transition: all 0.2s;
-    }
-    .btn-ref:hover, .btn-ref.active {
-      background: rgba(0,212,255,0.15);
-      box-shadow: 0 0 16px var(--ref-glow);
-    }
-    .btn-live {
-      background: var(--live-bg); border: 1.5px solid var(--live-color);
-      color: var(--live-color); border-radius: var(--radius-sm);
-      padding: 9px 18px; font-weight: 700; font-size: 0.85rem;
-      cursor: pointer; transition: all 0.2s;
-    }
-    .btn-live:hover, .btn-live.active {
-      background: rgba(74,222,128,0.15);
-      box-shadow: 0 0 16px var(--live-glow);
-    }
-    .btn-stop {
-      background: rgba(239,68,68,0.08); border: 1.5px solid var(--accent-red);
-      color: var(--accent-red); border-radius: var(--radius-sm);
-      padding: 9px 14px; font-weight: 700; font-size: 0.85rem;
-      cursor: pointer; transition: all 0.2s; display: none;
-    }
-    .btn-stop:hover { background: rgba(239,68,68,0.15); }
-    .btn-reset {
-      background: transparent; border: 1px solid var(--border-hover);
-      color: var(--text-secondary); border-radius: var(--radius-sm);
-      padding: 9px 14px; font-size: 0.82rem; cursor: pointer;
-      transition: all 0.2s;
-    }
-    .btn-reset:hover { border-color: var(--text-secondary); color: var(--text-primary); }
+    /* Left Panel */
+    .left-panel{display:flex;flex-direction:column;gap:20px}
 
-    /* ---- Two-Panel Analysis ---- */
-    .va-panels {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 16px; margin-bottom: 18px;
-    }
-    @media (max-width: 680px) {
-      .va-panels { grid-template-columns: 1fr; }
-    }
+    /* Pitch Display */
+    .pitch-panel{background:var(--bg-panel);border-radius:18px;padding:24px;border:1px solid rgba(255,255,255,0.05)}
+    .pitch-row{display:flex;align-items:baseline;gap:16px;margin-bottom:6px}
+    .pitch-note{font-size:3rem;font-weight:900;font-family:'Courier New',monospace;color:var(--accent-gold);min-width:100px;transition:color 0.2s}
+    .pitch-hz{font-size:1.3rem;color:var(--text-secondary);font-family:'Courier New',monospace}
+    .pitch-cents{font-size:0.9rem;padding:4px 10px;border-radius:8px;font-weight:700;font-family:'Courier New',monospace}
+    .pitch-cents.sharp{background:rgba(239,68,68,0.15);color:var(--accent-red)}
+    .pitch-cents.flat{background:rgba(0,212,255,0.15);color:var(--accent-cyan)}
+    .pitch-cents.intune{background:rgba(74,222,128,0.15);color:var(--accent-green)}
+    .pitch-bar-wrap{height:8px;background:rgba(255,255,255,0.06);border-radius:10px;position:relative;margin-top:10px}
+    .pitch-bar-center{position:absolute;left:50%;top:-2px;width:2px;height:12px;background:var(--accent-green);border-radius:2px;transform:translateX(-50%)}
+    .pitch-bar-needle{position:absolute;top:-3px;width:6px;height:14px;border-radius:3px;background:var(--accent-gold);transition:left 0.08s ease-out;transform:translateX(-50%)}
 
-    .va-panel {
-      background: var(--bg-card); border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-xl); padding: 20px; position: relative;
-      overflow: hidden; transition: border-color 0.3s;
-    }
-    .va-panel--ref { border-color: rgba(0,212,255,0.15); }
-    .va-panel--live { border-color: rgba(74,222,128,0.15); }
-    .va-panel--ref.recording { border-color: rgba(0,212,255,0.45); box-shadow: 0 0 30px rgba(0,212,255,0.08); }
-    .va-panel--live.recording { border-color: rgba(74,222,128,0.45); box-shadow: 0 0 30px rgba(74,222,128,0.08); }
+    /* Waveform */
+    .waveform-panel{background:var(--bg-panel);border-radius:18px;padding:20px;border:1px solid rgba(255,255,255,0.05)}
+    .waveform-label{font-size:0.75rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+    canvas.waveform{width:100%;height:80px;display:block;border-radius:10px;background:#08080e}
+    .spectrum-row{display:flex;gap:12px;margin-top:12px}
+    .spectrum-stat{flex:1;background:rgba(255,255,255,0.03);border-radius:10px;padding:10px 14px;text-align:center}
+    .spectrum-stat-label{font-size:0.7rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px}
+    .spectrum-stat-val{font-size:1rem;font-weight:800;font-family:'Courier New',monospace;margin-top:2px}
 
-    .va-panel-header {
-      display: flex; justify-content: space-between; align-items: flex-start;
-      margin-bottom: 14px;
-    }
-    .va-panel-label {
-      font-size: 0.78rem; font-weight: 800; text-transform: uppercase;
-      letter-spacing: 0.1em; margin-bottom: 2px;
-    }
-    .va-panel-label--ref { color: var(--ref-color); }
-    .va-panel-label--live { color: var(--live-color); }
-    .va-panel-name { font-size: 1rem; font-weight: 700; }
+    /* VRN Display */
+    .vrn-panel{background:var(--bg-panel);border-radius:18px;padding:24px;border:1px solid rgba(255,255,255,0.05);transition:border-color 0.3s}
+    .vrn-panel.active{border-color:rgba(255,215,0,0.2)}
+    .vrn-row{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+    .gear-badge{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.1rem;transition:all 0.3s}
+    .gear-1-bg{background:rgba(239,68,68,0.2);color:var(--accent-red)}
+    .gear-2-bg{background:rgba(245,158,11,0.2);color:var(--accent-orange)}
+    .gear-3-bg{background:rgba(255,215,0,0.2);color:var(--accent-gold)}
+    .gear-4-bg{background:rgba(0,212,255,0.2);color:var(--accent-cyan)}
+    .gear-5-bg{background:rgba(157,78,221,0.2);color:var(--accent-purple)}
+    .gear-info .gear-name{font-weight:800;font-size:1rem}
+    .gear-info .gear-range{font-size:0.8rem;color:var(--text-secondary)}
+    .vrn-notation{font-family:'Courier New',monospace;font-size:2rem;font-weight:800;color:var(--accent-gold);margin:8px 0;min-height:44px;transition:all 0.2s}
+    .vrn-desc{font-size:0.92rem;color:var(--text-secondary);line-height:1.6}
 
-    .va-badge {
-      font-size: 0.72rem; font-weight: 700; padding: 3px 10px;
-      border-radius: 12px; text-transform: uppercase; letter-spacing: 0.06em;
-    }
-    .va-badge--ref { background: var(--ref-bg); color: var(--ref-color); border: 1px solid rgba(0,212,255,0.25); }
-    .va-badge--live { background: var(--live-bg); color: var(--live-color); border: 1px solid rgba(74,222,128,0.25); }
-    .va-badge--idle { background: rgba(255,255,255,0.04); color: var(--text-dim); border: 1px solid var(--border-subtle); }
+    /* Passaggio alert */
+    .passaggio-alert{margin-top:14px;padding:12px 16px;border-radius:12px;background:rgba(157,78,221,0.08);border:1px solid rgba(157,78,221,0.2);text-align:center;opacity:0;transition:opacity 0.3s}
+    .passaggio-alert.show{opacity:1}
+    .passaggio-alert .pa-label{font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--accent-purple);margin-bottom:4px}
+    .passaggio-alert .pa-shift{font-family:'Courier New',monospace;font-size:0.95rem;color:var(--accent-gold)}
 
-    /* Note display */
-    .note-display {
-      text-align: center; padding: 16px 0 10px;
-    }
-    .note-name {
-      font-size: 4rem; font-weight: 900; line-height: 1;
-      font-family: 'Courier New', monospace;
-      transition: all 0.15s;
-    }
-    .note-name--ref { color: var(--ref-color); text-shadow: 0 0 30px var(--ref-glow); }
-    .note-name--live { color: var(--live-color); text-shadow: 0 0 30px var(--live-glow); }
-    .note-name--idle { color: var(--text-dim); }
-    .note-freq {
-      font-size: 0.82rem; color: var(--text-dim); margin-top: 4px;
-      font-family: 'Courier New', monospace;
-    }
-    .note-octave {
-      font-size: 0.75rem; font-weight: 600; padding: 2px 8px;
-      border-radius: 8px; background: rgba(255,255,255,0.06);
-      color: var(--text-secondary); display: inline-block; margin-top: 4px;
-    }
+    /* History strip */
+    .history-panel{background:var(--bg-panel);border-radius:18px;padding:20px;border:1px solid rgba(255,255,255,0.05)}
+    .history-label{font-size:0.75rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+    .history-strip{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}
+    .history-strip::-webkit-scrollbar{display:none}
+    .history-item{min-width:52px;padding:6px 8px;border-radius:8px;text-align:center;font-size:0.7rem;font-weight:700;border:1px solid rgba(255,255,255,0.06);background:var(--bg-dark);flex-shrink:0}
+    .history-item .hi-note{font-family:'Courier New',monospace;font-size:0.85rem;font-weight:800;color:var(--text-primary)}
+    .history-item .hi-gear{font-size:0.65rem;margin-top:2px}
+    .history-item.gear-1{border-color:rgba(239,68,68,0.2)}.history-item.gear-1 .hi-gear{color:var(--accent-red)}
+    .history-item.gear-2{border-color:rgba(245,158,11,0.2)}.history-item.gear-2 .hi-gear{color:var(--accent-orange)}
+    .history-item.gear-3{border-color:rgba(255,215,0,0.2)}.history-item.gear-3 .hi-gear{color:var(--accent-gold)}
+    .history-item.gear-4{border-color:rgba(0,212,255,0.2)}.history-item.gear-4 .hi-gear{color:var(--accent-cyan)}
+    .history-item.gear-5{border-color:rgba(157,78,221,0.2)}.history-item.gear-5 .hi-gear{color:var(--accent-purple)}
 
-    /* Waveform canvas */
-    .va-canvas-wrap {
-      position: relative; border-radius: var(--radius-sm);
-      background: rgba(0,0,0,0.3); overflow: hidden; margin: 10px 0;
-    }
-    .va-canvas { display: block; width: 100%; height: 70px; }
+    /* Right Panel - Body Diagram */
+    .body-panel{background:var(--bg-panel);border-radius:18px;padding:22px;border:1px solid rgba(255,255,255,0.05);position:sticky;top:80px}
+    .body-title{font-size:0.9rem;font-weight:700;text-align:center;margin-bottom:14px;color:var(--text-secondary)}
+    .body-img-wrap{position:relative;width:100%;margin:0 auto}
+    .body-img-wrap img{width:100%;border-radius:12px;display:block;filter:brightness(0.75) contrast(1.1)}
+    .body-svg{position:absolute;top:0;left:0;width:100%;height:100%}
+    .body-zone{transition:opacity 0.15s ease;opacity:0.06}
+    .body-zone.active{opacity:1}
+    .body-outline{fill:none;stroke:none;stroke-width:0}
 
-    /* Pitch meter (vertical bar) */
-    .pitch-meter-wrap {
-      display: flex; gap: 8px; align-items: flex-end; height: 100px;
-      margin: 8px 0;
-    }
-    .pitch-meter {
-      flex: 1; border-radius: 4px 4px 0 0;
-      transition: height 0.08s ease-out, background 0.2s;
-      min-height: 3px;
-      height: 3px;
-    }
-    .pitch-meter--ref { background: var(--ref-color); }
-    .pitch-meter--live { background: var(--live-color); }
+    .zone-legend{margin-top:18px}
+    .zone-item{display:flex;align-items:center;gap:7px;padding:5px 0;font-size:0.78rem;color:var(--text-secondary);transition:all 0.2s}
+    .zone-item.active{color:var(--text-primary)}
+    .zone-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;transition:all 0.2s}
+    .zone-dot.active{box-shadow:0 0 8px currentColor}
+    .zone-vrn{font-family:'Courier New',monospace;font-weight:700;margin-left:auto;font-size:0.7rem;color:var(--accent-gold);opacity:0;transition:opacity 0.2s}
+    .zone-item.active .zone-vrn{opacity:1}
 
-    /* Stats row */
-    .va-stats {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 8px; margin-top: 12px;
-    }
-    .va-stat {
-      background: rgba(255,255,255,0.03); border-radius: var(--radius-sm);
-      padding: 10px 8px; text-align: center;
-      border: 1px solid var(--border-subtle);
-    }
-    .va-stat-val {
-      font-size: 1.1rem; font-weight: 800; font-family: 'Courier New', monospace;
-    }
-    .va-stat-val--ref { color: var(--ref-color); }
-    .va-stat-val--live { color: var(--live-color); }
-    .va-stat-val--idle { color: var(--text-dim); }
-    .va-stat-lbl { font-size: 0.68rem; color: var(--text-dim); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.05em; }
+    /* Voice Confidence Indicator */
+    .voice-conf{display:flex;align-items:center;gap:10px;margin-top:12px;padding:10px 14px;background:rgba(255,255,255,0.02);border-radius:10px}
+    .voice-conf-label{font-size:0.7rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;min-width:52px}
+    .voice-conf-track{flex:1;height:5px;background:rgba(255,255,255,0.06);border-radius:5px;overflow:hidden}
+    .voice-conf-fill{height:100%;border-radius:5px;transition:width 0.15s,background 0.3s}
+    .voice-conf-status{font-size:0.72rem;font-weight:700;font-family:'Courier New',monospace;min-width:70px;text-align:right;transition:color 0.3s}
+    .voice-conf-status.noise{color:var(--accent-red)}
+    .voice-conf-status.maybe{color:var(--accent-orange)}
+    .voice-conf-status.voice{color:var(--accent-green)}
+    .voice-conf-status.singing{color:var(--accent-cyan)}
 
-    /* VRN readout */
-    .vrn-readout {
-      font-family: 'Courier New', monospace;
-      font-size: 0.82rem; padding: 8px 10px;
-      background: rgba(0,0,0,0.3); border-radius: var(--radius-sm);
-      color: var(--accent-gold); margin-top: 10px;
-      min-height: 30px; border: 1px solid rgba(255,215,0,0.12);
-      word-break: break-all;
-    }
-    .vrn-readout-label {
-      font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.06em;
-      color: var(--text-dim); margin-bottom: 4px;
-    }
+    /* Style Detection Panel */
+    .style-panel{background:var(--bg-panel);border-radius:18px;padding:22px;border:1px solid rgba(255,255,255,0.05);transition:border-color 0.3s}
+    .style-panel.active{border-color:rgba(157,78,221,0.2)}
+    .style-panel-label{font-size:0.75rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
+    .style-detected{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+    .style-icon{font-size:2.2rem;width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:rgba(157,78,221,0.12);flex-shrink:0}
+    .style-name{font-size:1.4rem;font-weight:900;color:var(--accent-purple);transition:color 0.3s}
+    .style-confidence{font-size:0.8rem;color:var(--text-secondary)}
+    .style-bars{display:flex;flex-direction:column;gap:8px}
+    .style-bar-row{display:flex;align-items:center;gap:10px}
+    .style-bar-label{font-size:0.75rem;color:var(--text-secondary);min-width:90px;text-align:right}
+    .style-bar-track{flex:1;height:6px;background:rgba(255,255,255,0.06);border-radius:6px;overflow:hidden;position:relative}
+    .style-bar-fill{height:100%;border-radius:6px;transition:width 0.3s ease,background 0.3s}
+    .style-bar-pct{font-size:0.7rem;font-family:'Courier New',monospace;color:var(--text-secondary);min-width:32px}
+    .style-desc{margin-top:14px;font-size:0.85rem;color:var(--text-secondary);line-height:1.6;padding:12px 14px;background:rgba(255,255,255,0.02);border-radius:10px}
+    .style-traits{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+    .style-trait{padding:4px 10px;border-radius:8px;font-size:0.72rem;font-weight:700;background:rgba(157,78,221,0.1);color:var(--accent-purple);border:1px solid rgba(157,78,221,0.15)}
 
-    /* ---- Match Score Panel ---- */
-    .match-panel {
-      background: var(--bg-card); border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-xl); padding: 22px; margin-bottom: 16px;
-    }
-    .match-panel-title {
-      font-size: 0.82rem; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.08em; color: var(--text-secondary); margin-bottom: 18px;
-      display: flex; align-items: center; gap: 8px;
-    }
-    .match-panel-title::before {
-      content: ''; width: 8px; height: 8px; border-radius: 50%;
-      background: var(--accent-gold); display: inline-block;
-    }
+    /* Muscle Focus Panel */
+    .muscle-panel{background:var(--bg-panel);border-radius:18px;padding:22px;border:1px solid rgba(255,255,255,0.05);transition:border-color 0.3s}
+    .muscle-panel.active{border-color:rgba(74,222,128,0.2)}
+    .muscle-panel-label{font-size:0.75rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
+    .muscle-row{display:flex;align-items:center;gap:10px;padding:6px 0}
+    .muscle-name{font-size:0.78rem;color:var(--text-secondary);min-width:90px;text-align:right}
+    .muscle-bar-track{flex:1;height:7px;background:rgba(255,255,255,0.05);border-radius:7px;overflow:hidden;position:relative}
+    .muscle-bar-fill{height:100%;border-radius:7px;transition:width 0.2s ease,background 0.3s}
+    .muscle-pct{font-size:0.7rem;font-family:'Courier New',monospace;color:var(--text-secondary);min-width:32px;text-align:right}
+    .muscle-hint{font-size:0.7rem;color:rgba(255,255,255,0.2);margin-top:8px;line-height:1.5;padding:8px 12px;background:rgba(255,255,255,0.015);border-radius:8px}
 
-    /* Big match number */
-    .match-score-row {
-      display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
-    }
-    .match-score-big {
-      font-size: 4.5rem; font-weight: 900; line-height: 1;
-      font-family: 'Courier New', monospace;
-      transition: color 0.3s;
-    }
-    .match-score-label {
-      font-size: 0.8rem; color: var(--text-dim); margin-top: 4px;
-    }
-    .match-grade {
-      font-size: 1.4rem; font-weight: 800; padding: 6px 16px;
-      border-radius: 12px; background: rgba(255,255,255,0.04);
-    }
-    .match-phrase {
-      font-size: 0.95rem; color: var(--text-secondary); flex: 1;
-      min-width: 160px;
-    }
+    /* Idle state */
+    .idle-state{text-align:center;padding:40px 20px;color:var(--text-secondary)}
+    .idle-state .idle-icon{font-size:3rem;margin-bottom:15px;opacity:0.4}
+    .idle-state p{font-size:0.95rem}
 
-    /* Match meter bar */
-    .match-bar-wrap {
-      margin-top: 16px; background: rgba(0,0,0,0.4);
-      border-radius: 8px; height: 10px; overflow: hidden;
-      border: 1px solid var(--border-subtle);
-    }
-    .match-bar {
-      height: 100%; border-radius: 8px;
-      background: linear-gradient(90deg, var(--match-low), var(--match-mid), var(--match-high));
-      width: 0%; transition: width 0.3s ease-out;
-    }
+    /* Footer */
+    .footer{background:var(--bg-card);padding:40px 20px;text-align:center;border-top:1px solid rgba(255,255,255,0.05);margin-top:40px}.footer p{color:var(--text-secondary);font-size:0.9rem}.footer a{color:var(--accent-purple);text-decoration:none}
 
-    /* Pitch distance display */
-    .pitch-diff-row {
-      display: flex; align-items: center; gap: 12px; margin-top: 16px;
-      flex-wrap: wrap;
-    }
-    .pitch-diff-label { font-size: 0.78rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; }
-    .pitch-diff-val {
-      font-family: 'Courier New', monospace; font-size: 1rem; font-weight: 700;
-    }
-    .pitch-diff-bar-wrap {
-      flex: 1; min-width: 100px; height: 6px; position: relative;
-      background: rgba(255,255,255,0.05); border-radius: 6px; overflow: visible;
-    }
-    .pitch-diff-center {
-      position: absolute; left: 50%; top: 50%; width: 2px; height: 14px;
-      transform: translate(-50%,-50%); background: rgba(255,255,255,0.3);
-      border-radius: 1px;
-    }
-    .pitch-diff-needle {
-      position: absolute; top: 50%; width: 12px; height: 12px;
-      border-radius: 50%; transform: translate(-50%,-50%);
-      background: var(--accent-gold);
-      box-shadow: 0 0 8px rgba(255,215,0,0.5);
-      transition: left 0.15s ease-out;
-      left: 50%;
-    }
-
-    /* Pitch overlay canvas (shared, shows both curves on same graph) */
-    .pitch-overlay-wrap {
-      border-radius: var(--radius-md); overflow: hidden; margin-top: 16px;
-      background: rgba(0,0,0,0.3); border: 1px solid var(--border-subtle);
-    }
-    .pitch-overlay-canvas { display: block; width: 100%; height: 130px; }
-
-    /* ---- Hint / Instruction strip ---- */
-    .va-hint {
-      text-align: center; font-size: 0.83rem; color: var(--text-secondary);
-      background: rgba(157,78,221,0.07); border: 1px solid rgba(157,78,221,0.15);
-      border-radius: var(--radius-md); padding: 12px 20px; margin-bottom: 16px;
-    }
-    .va-hint strong { color: var(--accent-purple); }
-
-    /* Permission / error states */
-    .va-permission-box {
-      padding: 20px; border-radius: var(--radius-lg);
-      background: rgba(239,68,68,0.07); border: 1px solid rgba(239,68,68,0.25);
-      color: var(--accent-red); font-size: 0.9rem; text-align: center; display: none;
-    }
-
-    /* Spectrum canvas */
-    .spectrum-wrap { margin-top: 10px; }
-    .spectrum-canvas { display: block; width: 100%; height: 50px; border-radius: var(--radius-sm); }
-
-    @media (max-width: 480px) {
-      .va-hero h1 { font-size: 1.7rem; }
-      .note-name { font-size: 3rem; }
-      .match-score-big { font-size: 3.2rem; }
-      .yt-url-row { flex-direction: column; }
+    @media(max-width:768px){
+      .nav{flex-direction:column;gap:10px;padding:10px 16px}.nav-links{flex-wrap:wrap;justify-content:center;gap:10px}
+      .hero{padding:24px 16px 14px}.hero h1{font-size:1.5rem;margin-bottom:6px}.hero-sub{font-size:0.88rem}
+      .voice-picker{padding:10px 16px 6px;gap:5px}.vp-btn{padding:5px 10px;font-size:0.75rem}
+      .input-source{padding:8px 16px}.input-source-label{margin-bottom:6px;font-size:0.7rem}
+      .source-tabs{gap:6px}.source-tab{min-width:0;max-width:none;padding:8px 12px;border-radius:10px;display:flex;align-items:center;gap:10px;flex:none;width:100%}
+      .source-tab .st-icon{font-size:1.1rem;margin-bottom:0;display:inline}
+      .source-tab .st-title{font-size:0.85rem;display:inline;margin-bottom:0}
+      .source-tab .st-desc{display:none}
+      .source-settings{padding:0 16px}
+      .setting-row-inline{padding:8px 12px;flex-wrap:wrap;gap:6px}.setting-row-inline .sri-label{font-size:0.8rem}.setting-row-inline .sri-hint{display:none}
+      .start-section{padding:14px}.start-btn{padding:14px 36px;font-size:1rem}.mic-hint{font-size:0.78rem;margin-top:6px}
+      .stream-info{font-size:0.72rem;padding:8px 12px}
+      .analyzer{grid-template-columns:1fr;padding:14px;gap:16px}
+      .body-panel{position:static;order:-1;padding:16px}
+      .pitch-panel{padding:16px}.pitch-note{font-size:2.2rem}.pitch-hz{font-size:1rem}
+      .vrn-panel{padding:16px}.vrn-notation{font-size:1.5rem}
+      .muscle-panel{padding:16px}.style-panel{padding:16px}
+      .analyzer{overflow:hidden;max-width:100vw}
+      .left-panel{overflow:hidden;min-width:0}
+      .pitch-panel,.waveform-panel,.vrn-panel,.history-panel,.muscle-panel,.style-panel,.body-panel{overflow:hidden;max-width:100%}
+      .pitch-row{flex-wrap:wrap;gap:8px}
+      .vrn-notation{font-size:1.3rem;word-break:break-all}
+      .spectrum-row{flex-wrap:wrap;gap:6px}.spectrum-stat{min-width:0}
+      .style-detected{flex-wrap:wrap}
+      .style-bars{overflow:hidden}.style-bar-label{min-width:70px;font-size:0.7rem}
+      .muscle-name{min-width:70px;font-size:0.72rem}
+      .history-strip{max-width:calc(100vw - 60px)}
     }
   </style>
 </head>
 <body>
+  <div class="aiunites-bar"><div class="aiunites-bar-content"><a href="https://aiunites.github.io/aiunites-site/" class="aiunites-bar-brand">◆ AIUNITES</a><span class="aiunites-bar-divider">|</span><a href="https://aiunites.github.io/aizines-app/">AIZines</a><a href="https://aiunites.github.io/aibyjob-demo/">AIByJob</a><a href="https://aiunites.github.io/redomy-demo/">Redomy</a><a href="https://aiunites.github.io/videobate-site/">VideoBate</a><a href="https://aiunites.github.io/voicestry-site/" class="aiunites-bar-active">🎤 VoiceStry</a><a href="https://aiunites.github.io/furnishthings-site/">FurnishThings</a><a href="https://aiunites.github.io/bizstry-site/">BizStry</a><a href="https://aiunites.github.io/aiyhwh-site/">AI YHWH</a><a href="https://aiunites.github.io/cloudsion-site/">Cloudsion</a><a href="https://aiunites.github.io/gameatica-site/">Gameatica</a><a href="https://aiunites.github.io/uptownit-site/">UptownIT</a><a href="https://aiunites.github.io/inthisworld-site/">InThisWorld</a><a href="https://aiunites.github.io/erpise-site/">ERPise</a><a href="https://aiunites.github.io/erpize-site/">ERPize</a><a href="https://aiunites.github.io/aitsql-site/">AITSQL</a><a href="https://aiunites.github.io/cosmostheopera-site/">🌌 COSMOS</a></div></div>
 
-  <!-- AIUNITES Webring -->
-  <style>.aiunites-bar{position:fixed;top:0;left:0;right:0;z-index:10000;background:linear-gradient(90deg,#0a0a0f,#1a1a2e);border-bottom:1px solid rgba(99,102,241,.3);padding:8px 0;font-size:12px}.aiunites-bar-content{max-width:1400px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:12px;overflow-x:auto;scrollbar-width:none}.aiunites-bar-content::-webkit-scrollbar{display:none}.aiunites-bar a{color:rgba(255,255,255,.7);text-decoration:none;white-space:nowrap;transition:color .2s}.aiunites-bar a:hover{color:#fff}.aiunites-bar-brand{color:#6366f1!important;font-weight:600}.aiunites-bar-brand:hover{color:#818cf8!important}.aiunites-bar-divider{color:rgba(255,255,255,.2)}.aiunites-bar-active{color:#fff!important;text-decoration:underline;text-underline-offset:3px}.aiunites-bar .current{color:#fff!important;font-weight:600;text-decoration:underline;text-underline-offset:3px;}body{padding-top:36px!important}.nav{top:36px!important}</style>
-  <style>.wb-arrow{display:none;position:fixed;top:0;width:36px;height:33px;align-items:center;justify-content:center;cursor:pointer;z-index:10001;border:none;padding:0;font-size:16px;line-height:1;color:rgba(255,255,255,.8);transition:color .2s,opacity .2s}.wb-arrow:hover{color:#fff}.wb-left{left:0;background:linear-gradient(90deg,#0d0d1a 55%,transparent)}.wb-right{right:0;background:linear-gradient(270deg,#0d0d1a 55%,transparent)}@media (hover:hover) and (pointer:fine){.wb-arrow{display:flex}}</style>
-  <button class="wb-arrow wb-left" id="wb-left" aria-label="Scroll webring left">&#8249;</button>
-  <div class="aiunites-bar"><div class="aiunites-bar-content" id="wb-content"><a href="https://aiunites.github.io/aiunites-site/" class="aiunites-bar-brand">&#9670; AIUNITES</a><span class="aiunites-bar-divider">|</span><a href="https://aiunites.github.io/aizines-app/">AIZines</a><a href="https://aiunites.github.io/aibyjob-demo/">AIByJob</a><a href="https://aiunites.github.io/redomy-demo/">Redomy</a><a href="https://aiunites.github.io/videobate-site/">VideoBate</a><a href="https://aiunites.github.io/voicestry-site/" class="aiunites-bar-active">&#127908; VoiceStry</a><a href="https://aiunites.github.io/furnishthings-site/">FurnishThings</a><a href="https://aiunites.github.io/bizstry-site/">BizStry</a><a href="https://aiunites.github.io/aiyhwh-site/">AI YHWH</a><a href="https://aiunites.github.io/cloudsion-site/">Cloudsion</a><a href="https://aiunites.github.io/gameatica-site/">Gameatica</a><a href="https://aiunites.github.io/uptownit-site/">UptownIT</a><a href="https://aiunites.github.io/inthisworld-site/">InThisWorld</a><a href="https://aiunites.github.io/erpise-site/">ERPise</a><a href="https://aiunites.github.io/erpize-site/">ERPize</a><a href="https://aiunites.github.io/aitsql-site/">AITSQL</a><a href="https://aiunites.github.io/cosmostheopera-site/">&#127756; COSMOS</a></div></div>
-  <button class="wb-arrow wb-right" id="wb-right" aria-label="Scroll webring right">&#8250;</button>
-  <script>(function(){if(location.protocol==='file:'||location.hostname==='localhost'||location.hostname==='127.0.0.1'){document.querySelectorAll('.aiunites-bar a').forEach(a=>{a.href=a.href.replace('https://aiunites.github.io/','../')+'index.html';});}document.querySelectorAll('.aiunites-bar a:not(.aiunites-bar-brand)').forEach(function(a){var h=a.getAttribute('href');if(h){var p=h.replace('https://aiunites.github.io','');if(p&&location.pathname.indexOf(p)!==-1)a.classList.add('current');}});var c=document.getElementById('wb-content'),l=document.getElementById('wb-left'),r=document.getElementById('wb-right');if(!c||!l||!r)return;function upd(){var atL=c.scrollLeft<8,atR=c.scrollLeft>=c.scrollWidth-c.clientWidth-8;l.style.opacity=atL?'0':'1';l.style.pointerEvents=atL?'none':'auto';r.style.opacity=atR?'0':'1';r.style.pointerEvents=atR?'none':'auto';}l.onclick=function(){c.scrollBy({left:-220,behavior:'smooth'});};r.onclick=function(){c.scrollBy({left:220,behavior:'smooth'});};c.addEventListener('scroll',upd,{passive:true});upd();})()</script>
+  <nav class="nav"><a href="index.html" class="nav-logo">🎤 VoiceStry</a><div class="nav-links"><a href="index.html">Home</a><a href="vrn-method.html">VRN Method</a><div class="nav-dropdown"><button class="nav-dropdown-btn">Learn ▾</button><div class="nav-dropdown-menu"><a href="learn.html">Learn VRN</a><a href="5-gears.html">5 Gears</a><a href="vocal-gym.html">Vocal Gym</a></div></div><div class="nav-dropdown"><button class="nav-dropdown-btn active">Tools ▾</button><div class="nav-dropdown-menu"><a href="pitch-trainer.html">Pitch Trainer</a><a href="sight-reading.html">Sight Reading</a><a href="voice-lab.html">Voice Lab</a><a href="voice-analyzer.html" class="active">Live Analyzer</a><a href="sonic-portrait.html">Sonic Portrait</a></div></div><a href="ai-vrn.html">AI + VRN</a><a href="ai-neuro.html">AI + Neuro</a><a href="press.html">Press</a></div></nav>
+  <script>document.querySelectorAll('.nav-dropdown-btn').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();var d=b.parentElement,o=d.classList.contains('open');document.querySelectorAll('.nav-dropdown.open').forEach(function(x){x.classList.remove('open')});if(!o)d.classList.add('open')})});document.addEventListener('click',function(){document.querySelectorAll('.nav-dropdown.open').forEach(function(d){d.classList.remove('open')})})</script>
 
-  <!-- Navigation -->
-  <nav class="nav">
-    <a href="index.html" class="nav-logo">&#127908; VoiceStry</a>
-    <div class="nav-links" id="vs-nav">
-      <a href="index.html" onclick="vsClose()">Home</a>
-      <a href="vrn-method.html" onclick="vsClose()">VRN Method</a>
-      <div class="nav-dropdown">
-        <button class="nav-dropdown-btn">Learn &#9662;</button>
-        <div class="nav-dropdown-menu">
-          <a href="learn.html">Learn VRN</a>
-          <a href="5-gears.html">5 Gears</a>
-          <a href="vocal-gym.html">Vocal Gym</a>
-        </div>
-      </div>
-      <div class="nav-dropdown">
-        <button class="nav-dropdown-btn">Tools &#9662;</button>
-        <div class="nav-dropdown-menu">
-          <a href="pitch-trainer.html">Pitch Trainer</a>
-          <a href="sight-reading.html">Sight Reading</a>
-          <a href="voice-lab.html">Voice Lab</a>
-          <a href="voice-analyzer.html" class="active">Live Analyzer</a>
-          <a href="sonic-portrait.html">Sonic Portrait</a>
-        </div>
-      </div>
-      <a href="ai-vrn.html" onclick="vsClose()">AI + VRN</a>
-      <a href="ai-neuro.html" onclick="vsClose()">AI + Neuro</a>
-      <a href="press.html" onclick="vsClose()">Press</a>
-    </div>
-    <button class="nav-hamburger" id="vs-hbg" aria-label="Menu" onclick="this.classList.toggle('open');document.getElementById('vs-nav').classList.toggle('open')"><span></span><span></span><span></span></button>
-  </nav>
-  <script>function vsClose(){document.getElementById('vs-nav').classList.remove('open');document.getElementById('vs-hbg').classList.remove('open');}document.querySelectorAll('.nav-dropdown-btn').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();var d=b.parentElement,o=d.classList.contains('open');document.querySelectorAll('.nav-dropdown.open').forEach(function(x){x.classList.remove('open')});if(!o)d.classList.add('open')})});document.addEventListener('click',function(){document.querySelectorAll('.nav-dropdown.open').forEach(function(d){d.classList.remove('open')})})</script>
-
-  <!-- Hero -->
-  <section class="va-hero">
-    <div class="va-hero-badge">&#127776; Real-time Vocal Analysis</div>
-    <h1>
-      <span class="text-gradient-nature">Hear Them.</span>
-      <span class="text-gradient-cosmic"> Match Them.</span>
-    </h1>
-    <p>Play any YouTube vocalist, capture their pitch profile, then sing live and see exactly how closely you match — note by note, in real time.</p>
-    <button class="va-how-badge" onclick="document.getElementById('va-explainer').classList.toggle('open')">
-      &#9432; How does this work?
-    </button>
-    <div id="va-explainer" class="va-explainer" style="margin-top:14px; text-align:left;">
-      <strong>How It Works</strong>
-      <div class="va-steps-row">
-        <div class="va-step">
-          <div class="va-step-num">1</div>
-          <h4>Load a YouTube Video</h4>
-          <p>Paste any YouTube URL and the video loads in the player below.</p>
-        </div>
-        <div class="va-step">
-          <div class="va-step-num">2</div>
-          <h4>Capture Reference</h4>
-          <p>Play the YouTube video through your speakers. Press <strong style="color:var(--ref-color)">Capture Vocalist</strong> — your mic listens to the room and builds the vocalist's pitch profile.</p>
-        </div>
-        <div class="va-step">
-          <div class="va-step-num">3</div>
-          <h4>Sing Live</h4>
-          <p>Press <strong style="color:var(--live-color)">Sing Live</strong>. Sing (or mute YouTube and sing). Your live pitch is analyzed in real time.</p>
-        </div>
-        <div class="va-step">
-          <div class="va-step-num">4</div>
-          <h4>See Your Match Score</h4>
-          <p>The match panel shows how close you are — pitch difference, match %, grade, and a VRN readout.</p>
-        </div>
-      </div>
-      <div class="va-tip">
-        &#128161; <strong>Best setup:</strong> Use a phone with YouTube playing through the speaker. Hold the phone 6-12 inches from your mouth for Capture mode. Switch to Sing mode and sing normally.
-        <br>&#128150; <strong>Earphones tip:</strong> If you use earphones, the reference capture step works less well. Better to use speakers for that step.
-      </div>
-    </div>
+  <section class="hero">
+    <h1>🎙️ VRN Live Analyzer</h1>
+    <p class="hero-sub">Sing into your microphone. We'll detect your pitch, estimate your register, and show the VRN notation for what your body is doing — in real time.</p>
   </section>
 
-  <div class="va-main">
+  <!-- Voice Type Picker -->
+  <div class="voice-picker" id="voicePicker">
+    <button class="vp-btn" data-voice="bass">Bass</button>
+    <button class="vp-btn" data-voice="baritone">Baritone</button>
+    <button class="vp-btn" data-voice="tenor">Tenor</button>
+    <button class="vp-btn" data-voice="countertenor">Countertenor</button>
+    <button class="vp-btn active" data-voice="auto">Auto-Detect</button>
+    <button class="vp-btn" data-voice="alto">Alto</button>
+    <button class="vp-btn" data-voice="mezzo">Mezzo</button>
+    <button class="vp-btn" data-voice="soprano">Soprano</button>
+  </div>
 
-    <!-- Permission Error -->
-    <div id="va-perm-error" class="va-permission-box">
-      <strong>&#128254; Microphone access denied.</strong> This tool needs your mic to analyze vocals.
-      Please allow microphone access in your browser and reload the page.
+  <!-- Input Source Selector -->
+  <div class="input-source">
+    <div class="input-source-label">Input Source</div>
+    <div class="source-tabs">
+      <button class="source-tab active" data-source="mic" id="srcMic">
+        <span class="st-icon">🎤</span>
+        <span class="st-title">Live Singing</span>
+        <span class="st-desc">Sing into your microphone. Real-time analysis of your own voice.</span>
+      </button>
+      <button class="source-tab" data-source="room" id="srcRoom">
+        <span class="st-icon">📻</span>
+        <span class="st-title">Room / External</span>
+        <span class="st-desc">Pick up singing from a radio, TV, speaker, or another person in the room.</span>
+      </button>
+      <button class="source-tab" data-source="stream" id="srcStream">
+        <span class="st-icon">🔊</span>
+        <span class="st-title">Browser Tab</span>
+        <span class="st-desc">Capture audio directly from a YouTube, Spotify, or other browser tab.</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Source-specific settings -->
+  <div class="source-settings" id="micSettings">
+    <div class="setting-row-inline">
+      <div>
+        <div class="sri-label">Noise Suppression</div>
+        <div class="sri-hint">Reduces background noise for cleaner detection</div>
+      </div>
+      <label class="toggle-sm"><input type="checkbox" id="optNoiseSuppression" checked><span class="slider"></span></label>
+    </div>
+    <div class="setting-row-inline">
+      <div>
+        <div class="sri-label">Echo Cancellation</div>
+        <div class="sri-hint">Prevents speaker feedback — turn off if using headphones</div>
+      </div>
+      <label class="toggle-sm"><input type="checkbox" id="optEchoCancellation" checked><span class="slider"></span></label>
+    </div>
+  </div>
+
+  <div class="source-settings" id="roomSettings" style="display:none">
+    <div class="setting-row-inline">
+      <div>
+        <div class="sri-label">Sensitivity</div>
+        <div class="sri-hint">Higher = detects quieter vocals through the mic</div>
+      </div>
+      <select id="optRoomSensitivity" style="padding:6px 10px;border-radius:8px;background:var(--bg-dark);border:1px solid rgba(255,255,255,0.1);color:var(--text-primary);font-size:0.85rem;font-family:inherit">
+        <option value="low">Low (close speaker)</option>
+        <option value="medium" selected>Medium (across room)</option>
+        <option value="high">High (quiet / distant)</option>
+      </select>
+    </div>
+    <div class="setting-row-inline">
+      <div>
+        <div class="sri-label">Voice Isolation</div>
+        <div class="sri-hint">Filter out bass/treble to focus on vocal frequencies</div>
+      </div>
+      <label class="toggle-sm"><input type="checkbox" id="optRoomIsolation" checked><span class="slider"></span></label>
+    </div>
+    <div class="setting-row-inline">
+      <div>
+        <div class="sri-label">Noise Suppression</div>
+        <div class="sri-hint">Off recommended — suppression can muffle external audio</div>
+      </div>
+      <label class="toggle-sm"><input type="checkbox" id="optRoomNoiseSuppression"><span class="slider"></span></label>
+    </div>
+  </div>
+
+  <div class="source-settings" id="streamSettings" style="display:none">
+    <div class="setting-row-inline">
+      <div>
+        <div class="sri-label">Sensitivity</div>
+        <div class="sri-hint">Higher = detects quieter vocals in the mix</div>
+      </div>
+      <select id="optStreamSensitivity" style="padding:6px 10px;border-radius:8px;background:var(--bg-dark);border:1px solid rgba(255,255,255,0.1);color:var(--text-primary);font-size:0.85rem;font-family:inherit">
+        <option value="low">Low (solo vocal)</option>
+        <option value="medium" selected>Medium (vocal + music)</option>
+        <option value="high">High (dense mix)</option>
+      </select>
+    </div>
+    <div class="setting-row-inline">
+      <div>
+        <div class="sri-label">Voice Isolation</div>
+        <div class="sri-hint">Try to isolate vocals from instruments (experimental)</div>
+      </div>
+      <label class="toggle-sm"><input type="checkbox" id="optVoiceIsolation" checked><span class="slider"></span></label>
+    </div>
+  </div>
+
+  <div class="stream-info" id="streamInfo">
+    📺 <strong>How it works:</strong> Click "Start Listening" and your browser will ask you to share a tab. Choose the tab playing YouTube, Spotify, etc. The audio from that tab will be analyzed in real time. <em>Your mic will not be used.</em>
+  </div>
+
+  <!-- Start -->
+  <div class="start-section">
+    <button class="start-btn" id="startBtn">🎤 Start Listening</button>
+    <div class="mic-hint" id="micHint">Requires microphone access. Works best with headphones to avoid feedback.</div>
+  </div>
+
+  <!-- Analyzer -->
+  <div class="analyzer" id="analyzerSection">
+    <!-- Left -->
+    <div class="left-panel">
+
+      <!-- Pitch -->
+      <div class="pitch-panel">
+        <div class="pitch-row">
+          <div class="pitch-note" id="pitchNote">—</div>
+          <div class="pitch-hz" id="pitchHz"></div>
+          <div class="pitch-cents intune" id="pitchCents"></div>
+        </div>
+        <div class="pitch-bar-wrap">
+          <div class="pitch-bar-center"></div>
+          <div class="pitch-bar-needle" id="pitchNeedle" style="left:50%"></div>
+        </div>
+        <div class="voice-conf">
+          <div class="voice-conf-label">Signal</div>
+          <div class="voice-conf-track"><div class="voice-conf-fill" id="voiceConfFill" style="width:0%;background:var(--accent-red)"></div></div>
+          <div class="voice-conf-status noise" id="voiceConfStatus">Silence</div>
+        </div>
+      </div>
+
+      <!-- Waveform -->
+      <div class="waveform-panel">
+        <div class="waveform-label">Live Waveform &amp; Spectrum</div>
+        <canvas class="waveform" id="waveformCanvas"></canvas>
+        <div class="spectrum-row">
+          <div class="spectrum-stat">
+            <div class="spectrum-stat-label">Spectral Centroid</div>
+            <div class="spectrum-stat-val" id="statCentroid" style="color:var(--accent-cyan)">—</div>
+          </div>
+          <div class="spectrum-stat">
+            <div class="spectrum-stat-label">Harmonic Richness</div>
+            <div class="spectrum-stat-val" id="statHarmonics" style="color:var(--accent-gold)">—</div>
+          </div>
+          <div class="spectrum-stat">
+            <div class="spectrum-stat-label">Volume</div>
+            <div class="spectrum-stat-val" id="statVolume" style="color:var(--accent-green)">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VRN -->
+      <div class="vrn-panel" id="vrnPanel">
+        <div id="vrnContent">
+          <div class="idle-state">
+            <div class="idle-icon">🎤</div>
+            <p>Start singing and your VRN will appear here...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Muscle Focus -->
+      <div class="muscle-panel" id="musclePanel">
+        <div class="muscle-panel-label">Muscle Focus Estimation</div>
+        <div id="muscleContent">
+          <div class="muscle-row">
+            <span class="muscle-name">CT (Stretch)</span>
+            <div class="muscle-bar-track"><div class="muscle-bar-fill" id="mCT" style="width:0%;background:var(--accent-cyan)"></div></div>
+            <span class="muscle-pct" id="mCTpct">—</span>
+          </div>
+          <div class="muscle-row">
+            <span class="muscle-name">TA (Thick)</span>
+            <div class="muscle-bar-track"><div class="muscle-bar-fill" id="mTA" style="width:0%;background:var(--accent-red)"></div></div>
+            <span class="muscle-pct" id="mTApct">—</span>
+          </div>
+          <div class="muscle-row">
+            <span class="muscle-name">Soft Palate</span>
+            <div class="muscle-bar-track"><div class="muscle-bar-fill" id="mPalate" style="width:0%;background:var(--accent-green)"></div></div>
+            <span class="muscle-pct" id="mPalatepct">—</span>
+          </div>
+          <div class="muscle-row">
+            <span class="muscle-name">Jaw Opening</span>
+            <div class="muscle-bar-track"><div class="muscle-bar-fill" id="mJaw" style="width:0%;background:var(--accent-orange)"></div></div>
+            <span class="muscle-pct" id="mJawpct">—</span>
+          </div>
+          <div class="muscle-row">
+            <span class="muscle-name">Diaphragm</span>
+            <div class="muscle-bar-track"><div class="muscle-bar-fill" id="mDiaph" style="width:0%;background:var(--accent-gold)"></div></div>
+            <span class="muscle-pct" id="mDiaphpct">—</span>
+          </div>
+          <div class="muscle-row">
+            <span class="muscle-name">Larynx Pos.</span>
+            <div class="muscle-bar-track"><div class="muscle-bar-fill" id="mLarynx" style="width:0%;background:var(--accent-purple)"></div></div>
+            <span class="muscle-pct" id="mLarynxpct">—</span>
+          </div>
+          <div class="muscle-hint" id="muscleHint">Sing a sustained note to see estimated muscle engagement…</div>
+        </div>
+      </div>
+
+      <!-- Style Detection -->
+      <div class="style-panel" id="stylePanel">
+        <div class="style-panel-label">Vocal Style Detection</div>
+        <div id="styleContent">
+          <div class="idle-state" style="padding:20px 10px">
+            <p style="font-size:0.85rem">Style analysis will appear as you sing...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- History -->
+      <div class="history-panel">
+        <div class="history-label">Recent Notes</div>
+        <div class="history-strip" id="historyStrip">
+          <div style="color:var(--text-secondary);font-size:0.85rem;padding:8px;">Notes will appear as you sing...</div>
+        </div>
+      </div>
     </div>
 
-    <!-- YouTube Panel -->
-    <div class="yt-panel">
-      <div class="yt-panel-title">YouTube Vocalist</div>
-      <div class="yt-url-row">
-        <input type="text" class="yt-url-input" id="yt-url" placeholder="Paste YouTube URL or video ID (e.g. dQw4w9WgXcQ)" autocomplete="off" autocorrect="off" spellcheck="false">
-        <button class="btn-load-yt" onclick="loadYouTube()">&#9654; Load Video</button>
+    <!-- Right - Body -->
+    <div class="body-panel">
+      <div class="body-title">Live Resonance Map</div>
+      <div class="body-img-wrap">
+      <img src="images/pexels-foto-art-events-332286070-17907373.jpg" alt="Male singer in tuxedo - resonance map overlay" loading="lazy">
+      <svg class="body-svg" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Resonance zones mapped to photo anatomy (% based) -->
+        <!-- H = Head/cranium (top of skull) -->
+        <circle class="body-zone" id="zone-H" cx="38" cy="14" r="12" fill="url(#gH)"/>
+        <!-- N = Nasal/sinus (nose/cheekbones) -->
+        <ellipse class="body-zone" id="zone-N" cx="38" cy="22" rx="8" ry="4" fill="url(#gN)"/>
+        <!-- O = Oral (mouth/jaw) -->
+        <ellipse class="body-zone" id="zone-O" cx="38" cy="27" rx="7" ry="3" fill="url(#gO)"/>
+        <!-- P = Pharynx (throat/neck) -->
+        <ellipse class="body-zone" id="zone-P" cx="38" cy="33" rx="6" ry="4" fill="url(#gP)"/>
+        <!-- C = Chest (upper torso) -->
+        <ellipse class="body-zone" id="zone-C" cx="38" cy="48" rx="18" ry="12" fill="url(#gC)"/>
+        <!-- L = Lower body (diaphragm/belly) -->
+        <ellipse class="body-zone" id="zone-L" cx="38" cy="72" rx="15" ry="12" fill="url(#gL)"/>
+
+        <!-- Zone labels (right edge) -->
+        <text x="80" y="14" fill="rgba(255,255,255,0.5)" font-size="5" font-weight="700" id="label-H">[H]</text>
+        <text x="80" y="23" fill="rgba(255,255,255,0.5)" font-size="5" font-weight="700" id="label-N">[N]</text>
+        <text x="80" y="30" fill="rgba(255,255,255,0.5)" font-size="5" font-weight="700" id="label-O">[O]</text>
+        <text x="80" y="37" fill="rgba(255,255,255,0.5)" font-size="5" font-weight="700" id="label-P">[P]</text>
+        <text x="80" y="54" fill="rgba(255,255,255,0.5)" font-size="5" font-weight="700" id="label-C">[C]</text>
+        <text x="80" y="80" fill="rgba(255,255,255,0.5)" font-size="5" font-weight="700" id="label-L">[L]</text>
+        <defs>
+          <radialGradient id="gC"><stop offset="0%" stop-color="#ef4444" stop-opacity="0.7"/><stop offset="100%" stop-color="#ef4444" stop-opacity="0"/></radialGradient>
+          <radialGradient id="gP"><stop offset="0%" stop-color="#f59e0b" stop-opacity="0.6"/><stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/></radialGradient>
+          <radialGradient id="gN"><stop offset="0%" stop-color="#00d4ff" stop-opacity="0.6"/><stop offset="100%" stop-color="#00d4ff" stop-opacity="0"/></radialGradient>
+          <radialGradient id="gH"><stop offset="0%" stop-color="#9d4edd" stop-opacity="0.6"/><stop offset="100%" stop-color="#9d4edd" stop-opacity="0"/></radialGradient>
+          <radialGradient id="gO"><stop offset="0%" stop-color="#4ade80" stop-opacity="0.5"/><stop offset="100%" stop-color="#4ade80" stop-opacity="0"/></radialGradient>
+          <radialGradient id="gL"><stop offset="0%" stop-color="#ff6b9d" stop-opacity="0.5"/><stop offset="100%" stop-color="#ff6b9d" stop-opacity="0"/></radialGradient>
+        </defs>
+      </svg>
+      </div><!-- /body-img-wrap -->
+      <div class="zone-legend">
+        <div class="zone-item" id="legend-H"><span class="zone-dot" style="background:#9d4edd"></span>Head <span class="zone-vrn">[H]</span></div>
+        <div class="zone-item" id="legend-N"><span class="zone-dot" style="background:#00d4ff"></span>Nasal / Mask <span class="zone-vrn">[N]</span></div>
+        <div class="zone-item" id="legend-O"><span class="zone-dot" style="background:#4ade80"></span>Oral <span class="zone-vrn">[O]</span></div>
+        <div class="zone-item" id="legend-P"><span class="zone-dot" style="background:#f59e0b"></span>Pharynx <span class="zone-vrn">[P]</span></div>
+        <div class="zone-item" id="legend-C"><span class="zone-dot" style="background:#ef4444"></span>Chest <span class="zone-vrn">[C]</span></div>
+        <div class="zone-item" id="legend-L"><span class="zone-dot" style="background:#ff6b9d"></span>Low Body <span class="zone-vrn">[L]</span></div>
       </div>
-      <div class="yt-embed-wrap">
-        <div class="yt-placeholder" id="yt-placeholder">
-          <span>&#127926;</span>
-          <p>Paste a YouTube URL above to load a video</p>
-        </div>
-        <div id="yt-iframe-container" style="display:none;position:absolute;top:0;left:0;width:100%;height:100%;"></div>
-      </div>
-    </div>
-
-    <!-- Status / Control Bar -->
-    <div class="va-status">
-      <div class="va-status-state">
-        <div class="va-dot" id="va-dot"></div>
-        <span id="va-status-text">Ready — click a button to start</span>
-      </div>
-      <div class="va-controls">
-        <button class="btn-ref" id="btn-ref" onclick="startRef()">&#127908; Capture Vocalist</button>
-        <button class="btn-live" id="btn-live" onclick="startLive()">&#127774; Sing Live</button>
-        <button class="btn-stop" id="btn-stop" onclick="stopMic()">&#9632; Stop</button>
-        <button class="btn-reset" onclick="resetAll()">&#8635; Reset</button>
-      </div>
-    </div>
-
-    <!-- Hint strip -->
-    <div class="va-hint" id="va-hint">
-      <strong>Step 1:</strong> Load a YouTube video above. Then play it and press <strong style="color:var(--ref-color)">Capture Vocalist</strong> to listen to the room.
-    </div>
-
-    <!-- Analysis Panels -->
-    <div class="va-panels">
-
-      <!-- Reference Panel (YouTube Vocalist) -->
-      <div class="va-panel va-panel--ref" id="panel-ref">
-        <div class="va-panel-header">
-          <div>
-            <div class="va-panel-label va-panel-label--ref">&#127926; YouTube Vocalist</div>
-            <div class="va-panel-name" id="ref-vocalist-name">Reference</div>
-          </div>
-          <span class="va-badge va-badge--idle" id="ref-badge">Idle</span>
-        </div>
-
-        <div class="note-display">
-          <div class="note-name note-name--idle" id="ref-note">--</div>
-          <div class="note-freq" id="ref-freq">-- Hz</div>
-          <div class="note-octave" id="ref-octave">Octave --</div>
-        </div>
-
-        <div class="va-canvas-wrap">
-          <canvas class="va-canvas" id="ref-wave-canvas"></canvas>
-        </div>
-
-        <div class="spectrum-wrap">
-          <canvas class="spectrum-canvas" id="ref-spectrum-canvas"></canvas>
-        </div>
-
-        <div class="va-stats">
-          <div class="va-stat">
-            <div class="va-stat-val va-stat-val--idle" id="ref-range">--</div>
-            <div class="va-stat-lbl">Range</div>
-          </div>
-          <div class="va-stat">
-            <div class="va-stat-val va-stat-val--idle" id="ref-cents">-- c</div>
-            <div class="va-stat-lbl">Cents</div>
-          </div>
-          <div class="va-stat">
-            <div class="va-stat-val va-stat-val--idle" id="ref-clarity">--%</div>
-            <div class="va-stat-lbl">Clarity</div>
-          </div>
-        </div>
-
-        <div style="margin-top:12px;">
-          <div class="vrn-readout-label">VRN Snapshot</div>
-          <div class="vrn-readout" id="ref-vrn">—</div>
-        </div>
-      </div>
-
-      <!-- Live Panel (User) -->
-      <div class="va-panel va-panel--live" id="panel-live">
-        <div class="va-panel-header">
-          <div>
-            <div class="va-panel-label va-panel-label--live">&#127774; Your Live Voice</div>
-            <div class="va-panel-name">Real-time Analysis</div>
-          </div>
-          <span class="va-badge va-badge--idle" id="live-badge">Idle</span>
-        </div>
-
-        <div class="note-display">
-          <div class="note-name note-name--idle" id="live-note">--</div>
-          <div class="note-freq" id="live-freq">-- Hz</div>
-          <div class="note-octave" id="live-octave">Octave --</div>
-        </div>
-
-        <div class="va-canvas-wrap">
-          <canvas class="va-canvas" id="live-wave-canvas"></canvas>
-        </div>
-
-        <div class="spectrum-wrap">
-          <canvas class="spectrum-canvas" id="live-spectrum-canvas"></canvas>
-        </div>
-
-        <div class="va-stats">
-          <div class="va-stat">
-            <div class="va-stat-val va-stat-val--idle" id="live-session">0:00</div>
-            <div class="va-stat-lbl">Session</div>
-          </div>
-          <div class="va-stat">
-            <div class="va-stat-val va-stat-val--idle" id="live-cents">-- c</div>
-            <div class="va-stat-lbl">Cents</div>
-          </div>
-          <div class="va-stat">
-            <div class="va-stat-val va-stat-val--idle" id="live-clarity">--%</div>
-            <div class="va-stat-lbl">Clarity</div>
-          </div>
-        </div>
-
-        <div style="margin-top:12px;">
-          <div class="vrn-readout-label">VRN Snapshot</div>
-          <div class="vrn-readout" id="live-vrn">—</div>
-        </div>
-      </div>
-
-    </div><!-- /va-panels -->
-
-    <!-- Match Score Panel -->
-    <div class="match-panel" id="match-panel">
-      <div class="match-panel-title">Match Score</div>
-      <div class="match-score-row">
-        <div>
-          <div class="match-score-big" id="match-pct" style="color:var(--text-dim);">--%</div>
-          <div class="match-score-label">Vocal Match</div>
-        </div>
-        <div class="match-grade" id="match-grade" style="color:var(--text-dim);">—</div>
-        <div class="match-phrase" id="match-phrase">Start singing to see your match score.</div>
-      </div>
-
-      <div class="match-bar-wrap">
-        <div class="match-bar" id="match-bar" style="width:0%"></div>
-      </div>
-
-      <div class="pitch-diff-row">
-        <div class="pitch-diff-label">Pitch Offset</div>
-        <div class="pitch-diff-val" id="pitch-diff-val">-- cents</div>
-        <div class="pitch-diff-bar-wrap">
-          <div class="pitch-diff-center"></div>
-          <div class="pitch-diff-needle" id="pitch-needle"></div>
-        </div>
-      </div>
-
-      <!-- Dual pitch graph -->
-      <div class="pitch-overlay-wrap">
-        <canvas class="pitch-overlay-canvas" id="pitch-overlay-canvas"></canvas>
-      </div>
-
-      <div style="display:flex;gap:16px;margin-top:10px;font-size:0.78rem;color:var(--text-dim);">
-        <span><span style="display:inline-block;width:14px;height:3px;background:var(--ref-color);vertical-align:middle;border-radius:2px;margin-right:4px;"></span>Vocalist</span>
-        <span><span style="display:inline-block;width:14px;height:3px;background:var(--live-color);vertical-align:middle;border-radius:2px;margin-right:4px;"></span>Your Voice</span>
+      <div class="passaggio-alert" id="passaggioAlert">
+        <div class="pa-label">Passaggio Zone</div>
+        <div class="pa-shift" id="passaggioShift"></div>
       </div>
     </div>
+  </div>
 
-    <!-- Health notice -->
-    <div style="max-width:100%;padding:12px 16px;background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.18);border-radius:var(--radius-md);font-size:0.78rem;line-height:1.5;color:rgba(255,255,255,0.6);margin-bottom:16px;">
-      <strong style="color:#f87171;">&#9888; Voice Health:</strong> Stop immediately if you feel strain, pain, or unusual hoarseness. This tool is for analysis and training — not a substitute for a vocal coach or ENT professional.
-    </div>
 
-  </div><!-- /va-main -->
 
-  <!-- Footer -->
-  <footer class="footer">
-    <p>
-      &#169; 2002-2026 VoiceStry. All Rights Reserved.<br>
-      <a href="index.html">Home</a> |
-      <a href="vrn-method.html">VRN Method</a> |
-      <a href="pitch-trainer.html">Pitch Trainer</a> |
-      <a href="voice-analyzer.html">Live Analyzer</a> |
-      <a href="voice-lab.html">Voice Lab</a>
-      <br><br>
-      Part of the <a href="https://aiunites.github.io/aiunites-site/">AIUNITES</a> network
-    </p>
-    <div style="margin-top:0.75rem;padding-top:0.75rem;border-top:1px solid rgba(255,255,255,0.1);font-size:0.75rem;color:rgba(255,255,255,0.4);text-align:center;">
-      <a href="https://aiunites.github.io/aiunites-site/legal.html#privacy" style="color:rgba(255,255,255,0.4);margin:0 8px;">Privacy</a> &middot;
-      <a href="https://aiunites.github.io/aiunites-site/legal.html#terms" style="color:rgba(255,255,255,0.4);margin:0 8px;">Terms</a>
-    </div>
-  </footer>
+<script>
+// ============================================================
+// VRN LIVE ANALYZER
+// ============================================================
 
-  <!-- ================================================================ -->
-  <!-- VOICE ANALYZER ENGINE                                             -->
-  <!-- ================================================================ -->
-  <script>
-  (function() {
-    'use strict';
+// --- Note Data ---
+const NOTE_NAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+function freqToMidi(f) { return 12 * Math.log2(f / 440) + 69; }
+function midiToFreq(m) { return 440 * Math.pow(2, (m - 69) / 12); }
+function midiToNote(m) { return NOTE_NAMES[Math.round(m) % 12] + (Math.floor(Math.round(m) / 12) - 1); }
+function freqToNote(f) { return midiToNote(freqToMidi(f)); }
 
-    // ---- Constants ----
-    var NOTE_NAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
-    var SAMPLE_RATE = 44100;
-    var BUF_SIZE = 4096;
-    var MIN_FREQ = 60;   // ~B1
-    var MAX_FREQ = 1400; // above high soprano
-    var HISTORY_LEN = 180; // ~3s of history for overlay graph
+// --- Voice type register boundaries (MIDI note numbers) ---
+const VOICE_REGISTERS = {
+  bass:         { g1:[40,47], g2:[48,55], g3:[56,64] },
+  baritone:     { g1:[45,51], g2:[52,59], g3:[60,69] },
+  tenor:        { g1:[48,53], g2:[54,60], g3:[61,71], g4:[72,76] },
+  countertenor: { g1:[55,59], g2:[60,67], g3:[69,74], g4:[75,76] },
+  alto:         { g1:[53,59], g2:[60,65], g3:[67,74], g4:[75,77] },
+  mezzo:        { g1:[57,60], g2:[62,67], g3:[69,76], g4:[77,81] },
+  soprano:      { g1:[60,64], g2:[65,71], g3:[72,79], g4:[80,83], g5:[84,88] }
+};
 
-    // ---- State ----
-    var audioCtx = null;
-    var analyser = null;
-    var micStream = null;
-    var animFrame = null;
-    var mode = 'idle'; // 'idle' | 'ref' | 'live'
+// --- VRN zone data per gear ---
+const GEAR_DATA = {
+  1: { name:'Chest / Low Body', zones:{C:3,L:2,P:1,O:0,N:0,H:0}, vrn:'[C+++, L++, P+]', color:'red',
+       desc:'Maximum chest wall vibration. Deep body resonance. You should feel a strong buzz in the sternum and ribs.' },
+  2: { name:'Upper Chest / Mix', zones:{C:2,L:0,P:2,O:1,N:0,H:1}, vrn:'[C++, P++, O+, H+]', color:'orange',
+       desc:'Chest still dominant but the pharynx opens wider. Head resonance begins entering. The blending zone.' },
+  3: { name:'Head Dominant', zones:{C:0,L:0,P:0,O:2,N:3,H:3}, vrn:'[H+++, N+++, O++]', color:'gold',
+       desc:'Full head voice. Maximum mask resonance \u2014 cheekbones, bridge of nose, sinuses buzzing. The operatic zone.' },
+  4: { name:'Light Head / Falsetto', zones:{C:0,L:0,P:0,O:1,N:1,H:3}, vrn:'[H+++, N+]', color:'cyan',
+       desc:'Thin-fold production. Ethereal, light. Only the edges of the vocal folds vibrate.' },
+  5: { name:'Whistle / Flageolet', zones:{C:0,L:0,P:0,O:0,N:0,H:3}, vrn:'[H+++]', color:'purple',
+       desc:'Pure whistle register. Vocal folds barely vibrate. Air whistles through a tiny opening.' }
+};
 
-    var refData = {
-      pitches: [],      // collected frequencies during capture
-      notes: [],        // note names collected
-      medianFreq: null,
-      medianNote: null,
-      clarity: 0
-    };
+// Countertenor overrides
+const CT_GEAR_DATA = {
+  1: { name:'Modal Chest', zones:{C:1,L:0,P:1,O:1,N:0,H:1}, vrn:'[C+, P+, H+]', color:'red',
+       desc:'Light modal chest with head resonance already blending in. Not the countertenor\'s home territory.' },
+  2: { name:'Reinforced Falsetto', zones:{C:0,L:0,P:1,O:2,N:2,H:2}, vrn:'[H++, N++, O++, P+]', color:'orange',
+       desc:'The countertenor\'s core voice. Falsetto reinforced with pharyngeal depth and nasal ring.' },
+  3: { name:'Full Head / Mask', zones:{C:0,L:0,P:0,O:2,N:3,H:3}, vrn:'[H+++, N+++, O++]', color:'gold',
+       desc:'Brilliant ringing head voice. Maximum mask resonance \u2014 the countertenor money zone.' },
+  4: { name:'Sopranist', zones:{C:0,L:0,P:0,O:1,N:1,H:3}, vrn:'[H+++, N+]', color:'cyan',
+       desc:'Ultra-light thin-fold production. Ethereal, crystalline, almost instrumental in purity.' }
+};
 
-    var liveData = {
-      freq: null,
-      note: null,
-      clarity: 0,
-      startTime: null,
-      pitchHistory: []  // [{freq, note, t}]
-    };
+// Spectral-adjusted VRN
+function getSpectralVRN(gear, centroid, harmonicRichness, voiceType) {
+  var base = (voiceType === 'countertenor') ? (CT_GEAR_DATA[gear] || GEAR_DATA[gear]) : GEAR_DATA[gear];
+  if (!base) base = GEAR_DATA[3];
+  var zones = {};
+  for (var k in base.zones) zones[k] = base.zones[k];
 
-    var refPitchHistory = []; // parallel ref history for overlay (uses median)
-    var sessionTimer = null;
+  if (centroid > 2500) {
+    zones.N = Math.min(3, zones.N + 1);
+    zones.H = Math.min(3, zones.H + 1);
+  } else if (centroid < 800) {
+    zones.C = Math.min(3, zones.C + 1);
+    zones.L = Math.min(3, zones.L + 1);
+  }
 
-    // Canvases
-    var refWaveCanvas = document.getElementById('ref-wave-canvas');
-    var refSpecCanvas = document.getElementById('ref-spectrum-canvas');
-    var liveWaveCanvas = document.getElementById('live-wave-canvas');
-    var liveSpecCanvas = document.getElementById('live-spectrum-canvas');
-    var overlayCanvas  = document.getElementById('pitch-overlay-canvas');
+  if (harmonicRichness > 0.6 && gear <= 2) {
+    zones.P = Math.min(3, zones.P + 1);
+  } else if (harmonicRichness < 0.25 && gear >= 3) {
+    zones.C = 0; zones.L = 0;
+  }
 
-    // Resize canvases to actual px
-    function resizeCanvas(c) {
-      var r = c.getBoundingClientRect();
-      c.width  = Math.round(r.width  * window.devicePixelRatio);
-      c.height = Math.round(r.height * window.devicePixelRatio);
+  var labels = {C:'C',L:'L',P:'P',O:'O',N:'N',H:'H'};
+  var plusMap = {0:'',1:'+',2:'++',3:'+++'};
+  var parts = [];
+  for (var key in zones) {
+    if (zones[key] > 0) parts.push(labels[key] + plusMap[zones[key]]);
+  }
+  var vrn = '[' + parts.join(', ') + ']';
+
+  return { name: base.name, desc: base.desc, color: base.color, zones: zones, vrn: vrn, gear: gear };
+}
+
+// --- Determine gear from MIDI note + voice type ---
+function getGear(midi, voiceType) {
+  var regs = VOICE_REGISTERS[voiceType];
+  if (!regs) return 2;
+  for (var g = 1; g <= 5; g++) {
+    var key = 'g' + g;
+    if (regs[key] && midi >= regs[key][0] && midi <= regs[key][1]) return g;
+  }
+  var gears = 0;
+  for (var gk in regs) gears++;
+  var lowest = regs.g1[0];
+  if (midi < lowest) return 1;
+  return gears;
+}
+
+// Auto-detect voice type from pitch
+function autoDetectVoice(midi) {
+  if (midi < 48) return 'bass';
+  if (midi < 55) return 'baritone';
+  if (midi < 62) return 'tenor';
+  if (midi < 68) return 'alto';
+  if (midi < 75) return 'mezzo';
+  return 'soprano';
+}
+
+// --- Audio Engine ---
+var audioCtx = null;
+var analyserNode = null;
+var micStream = null;
+var isListening = false;
+var rafId = null;
+var selectedVoice = 'auto';
+var lastNote = '';
+var noteHoldCount = 0;
+var historyNotes = [];
+
+// --- Input Source ---
+var inputSource = 'mic'; // 'mic' or 'stream'
+var streamFilters = []; // for cleanup
+
+// Source tab switching
+document.querySelectorAll('.source-tab').forEach(function(tab) {
+  tab.addEventListener('click', function() {
+    if (isListening) return; // can't switch while active
+    document.querySelectorAll('.source-tab').forEach(function(t) { t.classList.remove('active'); });
+    tab.classList.add('active');
+    inputSource = tab.dataset.source;
+
+    var micSettings = document.getElementById('micSettings');
+    var roomSettings = document.getElementById('roomSettings');
+    var streamSettings = document.getElementById('streamSettings');
+    var streamInfo = document.getElementById('streamInfo');
+    var micHint = document.getElementById('micHint');
+    var startBtn = document.getElementById('startBtn');
+
+    // Hide all settings first
+    micSettings.style.display = 'none';
+    roomSettings.style.display = 'none';
+    streamSettings.style.display = 'none';
+    streamInfo.classList.remove('show');
+
+    if (inputSource === 'stream') {
+      streamSettings.style.display = 'block';
+      streamInfo.classList.add('show');
+      micHint.textContent = 'Will capture audio from a browser tab. No microphone needed.';
+      startBtn.textContent = '\uD83D\uDD0A Start Listening';
+    } else if (inputSource === 'room') {
+      roomSettings.style.display = 'block';
+      micHint.textContent = 'Uses your microphone to pick up external audio. Point mic toward the sound source.';
+      startBtn.textContent = '\uD83D\uDCFB Start Listening';
+    } else {
+      micSettings.style.display = 'block';
+      micHint.textContent = 'Requires microphone access. Works best with headphones to avoid feedback.';
+      startBtn.textContent = '\uD83C\uDFA4 Start Listening';
     }
-    function resizeAll() {
-      [refWaveCanvas, refSpecCanvas, liveWaveCanvas, liveSpecCanvas, overlayCanvas].forEach(resizeCanvas);
-    }
-    window.addEventListener('resize', resizeAll);
-    setTimeout(resizeAll, 200);
+  });
+});
 
-    // ---- YouTube loader ----
-    window.loadYouTube = function() {
-      var raw = document.getElementById('yt-url').value.trim();
-      if (!raw) return;
-      var vid = extractYTid(raw);
-      if (!vid) { alert('Could not find a YouTube video ID in that URL. Try pasting the full URL.'); return; }
-      document.getElementById('yt-placeholder').style.display = 'none';
-      var container = document.getElementById('yt-iframe-container');
-      container.style.display = 'block';
-      container.innerHTML = '<iframe src="https://www.youtube.com/embed/' + vid + '?autoplay=0&rel=0&modestbranding=1" allowfullscreen allow="autoplay; encrypted-media"></iframe>';
-      updateHint('Video loaded! Play it through your speakers, then press <strong style="color:var(--ref-color)">Capture Vocalist</strong>.');
-    };
+// Vibrato & style detection state
+var pitchHistory = [];
+var styleSmoothing = {operatic:0,musical_theatre:0,pop_belt:0,jazz:0,folk:0,rnb:0,rock:0,classical_light:0};
+var styleFrameCount = 0;
 
-    function extractYTid(s) {
-      // Full URL patterns
-      var m = s.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([A-Za-z0-9_-]{11})/);
-      if (m) return m[1];
-      // bare 11-char ID
-      if (/^[A-Za-z0-9_-]{11}$/.test(s)) return s;
-      return null;
-    }
+var startBtn = document.getElementById('startBtn');
+var analyzerSection = document.getElementById('analyzerSection');
 
-    // Enter on url input
-    document.getElementById('yt-url').addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') window.loadYouTube();
-    });
+// Voice picker
+document.getElementById('voicePicker').addEventListener('click', function(e) {
+  var btn = e.target.closest('.vp-btn');
+  if (!btn) return;
+  document.querySelectorAll('.vp-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  selectedVoice = btn.dataset.voice;
+});
 
-    // ---- Mic setup ----
-    function initMic(cb) {
-      if (micStream) { cb(null); return; }
-      navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false }, video: false })
-        .then(function(stream) {
-          micStream = stream;
-          if (!audioCtx) {
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: SAMPLE_RATE });
-          }
-          analyser = audioCtx.createAnalyser();
-          analyser.fftSize = BUF_SIZE;
-          analyser.smoothingTimeConstant = 0.6;
-          var src = audioCtx.createMediaStreamSource(stream);
-          src.connect(analyser);
-          cb(null);
-        })
-        .catch(function(err) {
-          document.getElementById('va-perm-error').style.display = 'block';
-          cb(err);
+// Stream sensitivity thresholds
+var STREAM_SENSITIVITY = {
+  low:    { silenceFloor: 0.015, voiceGate: 0.02, confThreshold: 55 },
+  medium: { silenceFloor: 0.008, voiceGate: 0.012, confThreshold: 40 },
+  high:   { silenceFloor: 0.004, voiceGate: 0.006, confThreshold: 30 }
+};
+
+function getActiveThresholds() {
+  if (inputSource === 'mic') {
+    return { silenceFloor: 0.008, voiceGate: 0.015, confThreshold: 50 };
+  }
+  if (inputSource === 'room') {
+    var roomSens = document.getElementById('optRoomSensitivity').value;
+    return STREAM_SENSITIVITY[roomSens] || STREAM_SENSITIVITY.medium;
+  }
+  // stream (browser tab)
+  var sens = document.getElementById('optStreamSensitivity').value;
+  return STREAM_SENSITIVITY[sens] || STREAM_SENSITIVITY.medium;
+}
+
+// Build vocal isolation filter chain (bandpass 80Hz-5kHz + notch common instrument freqs)
+function buildVocalIsolation(ctx, sourceNode) {
+  var filters = [];
+
+  // High-pass at 80Hz to cut bass rumble / kick drums
+  var hp = ctx.createBiquadFilter();
+  hp.type = 'highpass';
+  hp.frequency.value = 80;
+  hp.Q.value = 0.7;
+  filters.push(hp);
+
+  // Low-pass at 5000Hz to cut cymbals / high hats
+  var lp = ctx.createBiquadFilter();
+  lp.type = 'lowpass';
+  lp.frequency.value = 5000;
+  lp.Q.value = 0.7;
+  filters.push(lp);
+
+  // Presence boost around 2-4kHz (vocal clarity)
+  var presence = ctx.createBiquadFilter();
+  presence.type = 'peaking';
+  presence.frequency.value = 3000;
+  presence.gain.value = 4;
+  presence.Q.value = 1.0;
+  filters.push(presence);
+
+  // Chain: source -> hp -> lp -> presence -> output
+  sourceNode.connect(hp);
+  hp.connect(lp);
+  lp.connect(presence);
+
+  streamFilters = filters;
+  return presence; // last node in chain
+}
+
+// Start/stop
+startBtn.addEventListener('click', async function() {
+  if (isListening) {
+    stopListening();
+    return;
+  }
+  try {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    if (inputSource === 'stream') {
+      // --- Stream/Playback mode: capture tab audio ---
+      try {
+        micStream = await navigator.mediaDevices.getDisplayMedia({
+          video: true,  // required by spec, we ignore it
+          audio: true
         });
-    }
-
-    // ---- Pitch detection (Autocorrelation / YIN-lite) ----
-    function detectPitch(buf) {
-      // Find fundamental frequency via autocorrelation
-      var sampleRate = audioCtx ? audioCtx.sampleRate : SAMPLE_RATE;
-      var minPeriod = Math.floor(sampleRate / MAX_FREQ);
-      var maxPeriod = Math.floor(sampleRate / MIN_FREQ);
-      var n = buf.length;
-
-      // Compute RMS for clarity
-      var rms = 0;
-      for (var i = 0; i < n; i++) rms += buf[i] * buf[i];
-      rms = Math.sqrt(rms / n);
-      if (rms < 0.005) return { freq: null, clarity: 0 };
-
-      // Autocorrelation
-      var ac = new Float32Array(maxPeriod + 1);
-      for (var tau = minPeriod; tau <= maxPeriod; tau++) {
-        var sum = 0;
-        for (var j = 0; j < n - maxPeriod; j++) {
-          sum += buf[j] * buf[j + tau];
-        }
-        ac[tau] = sum;
-      }
-
-      // Find first peak
-      var bestTau = -1, bestAC = -1;
-      var goingUp = false;
-      for (var tau2 = minPeriod + 1; tau2 <= maxPeriod; tau2++) {
-        if (ac[tau2] > ac[tau2 - 1]) { goingUp = true; }
-        else if (goingUp && ac[tau2] < ac[tau2 - 1]) {
-          if (ac[tau2 - 1] > bestAC) {
-            bestAC = ac[tau2 - 1];
-            bestTau = tau2 - 1;
-          }
-          goingUp = false;
-        }
-      }
-      if (bestTau < 0) return { freq: null, clarity: 0 };
-
-      // Parabolic interpolation for sub-sample accuracy
-      var a0 = ac[bestTau - 1] || 0;
-      var a1 = ac[bestTau];
-      var a2 = ac[bestTau + 1] || 0;
-      var d = (a0 - a2) / (2 * (a0 - 2*a1 + a2)) || 0;
-      var refinedTau = bestTau + d;
-
-      var freq = sampleRate / refinedTau;
-      var clarity = Math.min(100, Math.round((bestAC / (rms * rms * (n - maxPeriod))) * 100));
-      return { freq: freq, clarity: Math.max(0, clarity) };
-    }
-
-    // ---- Note name / octave from frequency ----
-    function freqToNote(freq) {
-      if (!freq || freq <= 0) return { name: '--', octave: -1, cents: 0, midi: -1 };
-      var midi = 12 * Math.log2(freq / 440) + 69;
-      var midiRounded = Math.round(midi);
-      var cents = Math.round((midi - midiRounded) * 100);
-      var note = NOTE_NAMES[((midiRounded % 12) + 12) % 12];
-      var octave = Math.floor(midiRounded / 12) - 1;
-      return { name: note, octave: octave, cents: cents, midi: midi };
-    }
-
-    // ---- VRN descriptor from pitch/clarity ----
-    function toVRN(noteInfo, clarity, extra) {
-      if (!noteInfo || noteInfo.name === '--') return '—';
-      var c = clarity || 0;
-      var gear = noteInfo.octave >= 5 ? 'H++' : noteInfo.octave === 4 ? 'M+' : 'C+';
-      var clar = c > 70 ? 'Cl++' : c > 40 ? 'Cl+' : 'Cl-';
-      var vrn = '[' + gear + ', ' + clar + '] ' + noteInfo.name + noteInfo.octave;
-      if (extra) vrn += ' ' + extra;
-      return vrn;
-    }
-
-    // ---- Percentile match score ----
-    function calcMatch(liveFreq, refMedian) {
-      if (!liveFreq || !refMedian) return null;
-      // Semitone distance
-      var semitones = Math.abs(12 * Math.log2(liveFreq / refMedian));
-      var centsDiff = semitones * 100;
-      // Score: 100 at 0 cents, 0 at 200+ cents (2 semitones)
-      var score = Math.max(0, Math.round(100 - (centsDiff / 2)));
-      return { score: score, centsDiff: Math.round(centsDiff * (liveFreq < refMedian ? -1 : 1)) };
-    }
-
-    function scoreGrade(s) {
-      if (s >= 95) return { grade: 'S+', phrase: 'Flawless. Studio-level match.', color: '#4ade80' };
-      if (s >= 85) return { grade: 'A', phrase: 'Excellent — nearly on point!', color: '#86efac' };
-      if (s >= 72) return { grade: 'B', phrase: 'Good match with minor drift.', color: '#ffd700' };
-      if (s >= 55) return { grade: 'C', phrase: 'Close — keep adjusting your pitch.', color: '#f59e0b' };
-      if (s >= 35) return { grade: 'D', phrase: 'Off — try moving up or down.', color: '#ef4444' };
-      return { grade: 'F', phrase: 'Far off — check you\'re in the right octave.', color: '#dc2626' };
-    }
-
-    // ---- Waveform drawing ----
-    function drawWave(canvas, timeData, color) {
-      var ctx = canvas.getContext('2d');
-      var w = canvas.width, h = canvas.height;
-      var dpr = window.devicePixelRatio || 1;
-      ctx.clearRect(0, 0, w, h);
-      ctx.strokeStyle = color;
-      ctx.lineWidth = 1.5 * dpr;
-      ctx.beginPath();
-      var sliceW = w / timeData.length;
-      var x = 0;
-      for (var i = 0; i < timeData.length; i++) {
-        var v = timeData[i] / 128.0;
-        var y = v * h / 2;
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-        x += sliceW;
-      }
-      ctx.stroke();
-    }
-
-    // ---- Spectrum drawing ----
-    function drawSpectrum(canvas, freqData, color) {
-      var ctx = canvas.getContext('2d');
-      var w = canvas.width, h = canvas.height;
-      var dpr = window.devicePixelRatio || 1;
-      ctx.clearRect(0, 0, w, h);
-      var barW = Math.max(1, Math.floor(w / (freqData.length / 4)));
-      var grad = ctx.createLinearGradient(0, h, 0, 0);
-      grad.addColorStop(0, color + '33');
-      grad.addColorStop(1, color + 'cc');
-      ctx.fillStyle = grad;
-      var numBars = Math.floor(w / barW);
-      for (var i = 0; i < numBars; i++) {
-        var val = freqData[i] || 0;
-        var bh = Math.max(1, ((val / 255) * h));
-        ctx.fillRect(i * barW, h - bh, barW - 1, bh);
-      }
-    }
-
-    // ---- Overlay canvas drawing ----
-    var refOverlayHistory = [];
-    var liveOverlayHistory = [];
-
-    function drawOverlay() {
-      var canvas = overlayCanvas;
-      var ctx = canvas.getContext('2d');
-      var w = canvas.width, h = canvas.height;
-      var dpr = window.devicePixelRatio || 1;
-      ctx.clearRect(0, 0, w, h);
-
-      // Grid
-      ctx.strokeStyle = 'rgba(255,255,255,0.05)';
-      ctx.lineWidth = 1;
-      for (var i = 1; i < 4; i++) {
-        ctx.beginPath(); ctx.moveTo(0, h * i/4); ctx.lineTo(w, h * i/4); ctx.stroke();
-      }
-
-      function drawLine(history, color) {
-        if (history.length < 2) return;
-        ctx.strokeStyle = color;
-        ctx.lineWidth = 2 * dpr;
-        ctx.lineJoin = 'round';
-        ctx.beginPath();
-        var minF = 80, maxF = 900;
-        for (var j = 0; j < history.length; j++) {
-          var f = history[j];
-          if (!f) continue;
-          var xp = (j / (HISTORY_LEN - 1)) * w;
-          var yp = h - ((Math.log2(f / minF) / Math.log2(maxF / minF)) * h);
-          yp = Math.max(2, Math.min(h - 2, yp));
-          if (j === 0 || !history[j-1]) ctx.moveTo(xp, yp); else ctx.lineTo(xp, yp);
-        }
-        ctx.stroke();
-      }
-
-      drawLine(refOverlayHistory, '#00d4ff');
-      drawLine(liveOverlayHistory, '#4ade80');
-    }
-
-    // ---- UI helpers ----
-    function setDot(state) {
-      var d = document.getElementById('va-dot');
-      d.className = 'va-dot' + (state === 'ref' ? ' active-ref' : state === 'live' ? ' active-live' : '');
-    }
-    function updateHint(txt) {
-      document.getElementById('va-hint').innerHTML = txt;
-    }
-    function setStatus(txt) {
-      document.getElementById('va-status-text').textContent = txt;
-    }
-
-    function showStopBtn(show) {
-      document.getElementById('btn-stop').style.display = show ? 'inline-block' : 'none';
-    }
-
-    // ---- Reference capture mode ----
-    var refCapture = { active: false, collected: [], startTime: null, duration: 12000 };
-    var refTimer = null;
-
-    window.startRef = function() {
-      initMic(function(err) {
-        if (err) return;
-        stopAnimation();
-        mode = 'ref';
-        setDot('ref');
-        showStopBtn(true);
-        document.getElementById('btn-ref').classList.add('active');
-        document.getElementById('btn-live').classList.remove('active');
-        document.getElementById('panel-ref').classList.add('recording');
-        document.getElementById('ref-badge').textContent = 'CAPTURING';
-        document.getElementById('ref-badge').className = 'va-badge va-badge--ref';
-        setStatus('Capturing vocalist... play YouTube through your speakers now');
-        updateHint('<strong>Capturing!</strong> Make sure YouTube is playing through your speakers. Capturing for 12 seconds...');
-
-        refCapture.active = true;
-        refCapture.collected = [];
-        refCapture.startTime = Date.now();
-        refOverlayHistory = [];
-
-        runRef();
-      });
-    };
-
-    function runRef() {
-      var timeBuf = new Uint8Array(analyser.fftSize);
-      var freqBuf = new Uint8Array(analyser.frequencyBinCount);
-
-      function loop() {
-        if (mode !== 'ref') return;
-
-        analyser.getByteTimeDomainData(timeBuf);
-        analyser.getByteFrequencyData(freqBuf);
-
-        // Convert to float
-        var floatBuf = new Float32Array(timeBuf.length);
-        for (var i = 0; i < timeBuf.length; i++) floatBuf[i] = (timeBuf[i] - 128) / 128;
-
-        var result = detectPitch(floatBuf);
-
-        if (result.freq && result.clarity > 20) {
-          refCapture.collected.push(result.freq);
-          document.getElementById('ref-note').textContent = freqToNote(result.freq).name + freqToNote(result.freq).octave;
-          document.getElementById('ref-note').className = 'note-name note-name--ref';
-          document.getElementById('ref-freq').textContent = result.freq.toFixed(1) + ' Hz';
-          var ni = freqToNote(result.freq);
-          document.getElementById('ref-octave').textContent = 'Octave ' + ni.octave;
-          document.getElementById('ref-cents').textContent = ni.cents + ' c';
-          document.getElementById('ref-cents').className = 'va-stat-val va-stat-val--ref';
-          document.getElementById('ref-clarity').textContent = result.clarity + '%';
-          document.getElementById('ref-clarity').className = 'va-stat-val va-stat-val--ref';
-          document.getElementById('ref-vrn').textContent = toVRN(ni, result.clarity);
-        }
-
-        // Overlay history (use rolling)
-        refOverlayHistory.push(result.freq || null);
-        if (refOverlayHistory.length > HISTORY_LEN) refOverlayHistory.shift();
-
-        // Draw waves
-        resizeCanvas(refWaveCanvas); resizeCanvas(refSpecCanvas);
-        drawWave(refWaveCanvas, timeBuf, '#00d4ff');
-        drawSpectrum(refSpecCanvas, freqBuf, '#00d4ff');
-        drawOverlay();
-
-        // Progress countdown
-        var elapsed = Date.now() - refCapture.startTime;
-        var remaining = Math.max(0, Math.ceil((refCapture.duration - elapsed) / 1000));
-        setStatus('Capturing... ' + remaining + 's remaining');
-
-        if (elapsed >= refCapture.duration) {
-          finalizeRef();
-          return;
-        }
-
-        animFrame = requestAnimationFrame(loop);
-      }
-      animFrame = requestAnimationFrame(loop);
-    }
-
-    function finalizeRef() {
-      var freqs = refCapture.collected;
-      if (freqs.length === 0) {
-        setStatus('No pitch detected. Try again with louder audio.');
-        mode = 'idle'; setDot('idle'); showStopBtn(false);
-        document.getElementById('panel-ref').classList.remove('recording');
-        document.getElementById('ref-badge').textContent = 'No Signal';
-        document.getElementById('ref-badge').className = 'va-badge va-badge--idle';
+      } catch (e) {
+        alert('Tab audio sharing was cancelled or denied. Please share a tab with audio playing (e.g. YouTube).');
+        if (audioCtx) audioCtx.close();
         return;
       }
 
-      // Median frequency
-      var sorted = freqs.slice().sort(function(a,b){return a-b;});
-      var median = sorted[Math.floor(sorted.length / 2)];
-      refData.medianFreq = median;
-      var ni = freqToNote(median);
-      refData.medianNote = ni.name + ni.octave;
-
-      // Range
-      var low = freqToNote(sorted[0]), high = freqToNote(sorted[sorted.length-1]);
-      document.getElementById('ref-range').textContent = low.name + low.octave + '-' + high.name + high.octave;
-      document.getElementById('ref-range').className = 'va-stat-val va-stat-val--ref';
-
-      document.getElementById('ref-note').textContent = ni.name + ni.octave;
-      document.getElementById('ref-freq').textContent = median.toFixed(1) + ' Hz';
-      document.getElementById('ref-vrn').textContent = toVRN(ni, 80, 'Ref');
-      document.getElementById('ref-vocalist-name').textContent = 'Captured (' + freqs.length + ' samples)';
-      document.getElementById('ref-badge').textContent = 'CAPTURED';
-      document.getElementById('ref-badge').className = 'va-badge va-badge--ref';
-
-      mode = 'idle'; setDot('idle'); showStopBtn(false);
-      document.getElementById('btn-ref').classList.remove('active');
-      document.getElementById('panel-ref').classList.remove('recording');
-      setStatus('Vocalist captured! Now press Sing Live.');
-      updateHint('&#10003; Reference captured! Now press <strong style="color:var(--live-color)">Sing Live</strong> and start singing.');
-    }
-
-    // ---- Live singing mode ----
-    var liveSessionStart = null;
-
-    window.startLive = function() {
-      initMic(function(err) {
-        if (err) return;
-        stopAnimation();
-        mode = 'live';
-        setDot('live');
-        showStopBtn(true);
-        document.getElementById('btn-live').classList.add('active');
-        document.getElementById('btn-ref').classList.remove('active');
-        document.getElementById('panel-live').classList.add('recording');
-        document.getElementById('live-badge').textContent = 'LIVE';
-        document.getElementById('live-badge').className = 'va-badge va-badge--live';
-        liveSessionStart = Date.now();
-        liveOverlayHistory = [];
-
-        if (!refData.medianFreq) {
-          updateHint('<strong>Tip:</strong> You haven\'t captured a reference yet. Capture one first for match scoring.');
-        } else {
-          updateHint('&#127909; Sing now! Watch your match score update in real time.');
-        }
-        setStatus('Singing live — match score updating...');
-        runLive();
-      });
-    };
-
-    function runLive() {
-      var timeBuf = new Uint8Array(analyser.fftSize);
-      var freqBuf = new Uint8Array(analyser.frequencyBinCount);
-
-      function loop() {
-        if (mode !== 'live') return;
-
-        analyser.getByteTimeDomainData(timeBuf);
-        analyser.getByteFrequencyData(freqBuf);
-
-        var floatBuf = new Float32Array(timeBuf.length);
-        for (var i = 0; i < timeBuf.length; i++) floatBuf[i] = (timeBuf[i] - 128) / 128;
-
-        var result = detectPitch(floatBuf);
-
-        if (result.freq && result.clarity > 18) {
-          var ni = freqToNote(result.freq);
-          document.getElementById('live-note').textContent = ni.name + ni.octave;
-          document.getElementById('live-note').className = 'note-name note-name--live';
-          document.getElementById('live-freq').textContent = result.freq.toFixed(1) + ' Hz';
-          document.getElementById('live-octave').textContent = 'Octave ' + ni.octave;
-          document.getElementById('live-cents').textContent = ni.cents + ' c';
-          document.getElementById('live-cents').className = 'va-stat-val va-stat-val--live';
-          document.getElementById('live-clarity').textContent = result.clarity + '%';
-          document.getElementById('live-clarity').className = 'va-stat-val va-stat-val--live';
-          document.getElementById('live-vrn').textContent = toVRN(ni, result.clarity);
-
-          liveOverlayHistory.push(result.freq);
-
-          // Match score
-          if (refData.medianFreq) {
-            var match = calcMatch(result.freq, refData.medianFreq);
-            if (match) updateMatchUI(match);
-          }
-        } else {
-          document.getElementById('live-note').textContent = '...';
-          document.getElementById('live-note').className = 'note-name note-name--idle';
-          liveOverlayHistory.push(null);
-        }
-
-        if (liveOverlayHistory.length > HISTORY_LEN) liveOverlayHistory.shift();
-
-        // Session timer
-        var elapsed = Math.floor((Date.now() - liveSessionStart) / 1000);
-        var m = Math.floor(elapsed / 60), s = elapsed % 60;
-        document.getElementById('live-session').textContent = m + ':' + (s < 10 ? '0' : '') + s;
-        document.getElementById('live-session').className = 'va-stat-val va-stat-val--live';
-
-        // Draw
-        resizeCanvas(liveWaveCanvas); resizeCanvas(liveSpecCanvas);
-        drawWave(liveWaveCanvas, timeBuf, '#4ade80');
-        drawSpectrum(liveSpecCanvas, freqBuf, '#4ade80');
-
-        // Also push ref median to ref overlay history for persistence
-        if (refData.medianFreq) {
-          refOverlayHistory.push(refData.medianFreq);
-          if (refOverlayHistory.length > HISTORY_LEN) refOverlayHistory.shift();
-        }
-        drawOverlay();
-
-        animFrame = requestAnimationFrame(loop);
+      // Check if audio track exists
+      var audioTracks = micStream.getAudioTracks();
+      if (audioTracks.length === 0) {
+        alert('No audio track detected. Make sure you selected a tab with audio playing and checked "Share tab audio".');
+        micStream.getTracks().forEach(function(t) { t.stop(); });
+        if (audioCtx) audioCtx.close();
+        return;
       }
-      animFrame = requestAnimationFrame(loop);
-    }
 
-    function updateMatchUI(match) {
-      var score = match.score;
-      var g = scoreGrade(score);
-      document.getElementById('match-pct').textContent = score + '%';
-      document.getElementById('match-pct').style.color = g.color;
-      document.getElementById('match-grade').textContent = g.grade;
-      document.getElementById('match-grade').style.color = g.color;
-      document.getElementById('match-phrase').textContent = g.phrase;
-      document.getElementById('match-bar').style.width = score + '%';
+      // Stop video track immediately (we only need audio)
+      micStream.getVideoTracks().forEach(function(t) { t.stop(); });
 
-      var cents = match.centsDiff;
-      document.getElementById('pitch-diff-val').textContent = (cents >= 0 ? '+' : '') + cents + ' cents';
-      // Needle: 0 at center, +/-200 at edges
-      var pct = 50 + Math.max(-48, Math.min(48, cents / 4));
-      document.getElementById('pitch-needle').style.left = pct + '%';
-      document.getElementById('pitch-needle').style.background = g.color;
-    }
+      var source = audioCtx.createMediaStreamSource(micStream);
+      analyserNode = audioCtx.createAnalyser();
+      analyserNode.fftSize = 8192;
+      analyserNode.smoothingTimeConstant = 0.75;
 
-    // ---- Stop / reset ----
-    function stopAnimation() {
-      if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
-    }
+      // Apply vocal isolation if enabled
+      var useIsolation = document.getElementById('optVoiceIsolation').checked;
+      if (useIsolation) {
+        var lastFilter = buildVocalIsolation(audioCtx, source);
+        lastFilter.connect(analyserNode);
+      } else {
+        source.connect(analyserNode);
+      }
 
-    window.stopMic = function() {
-      stopAnimation();
-      mode = 'idle'; setDot('idle'); showStopBtn(false);
-      document.getElementById('btn-ref').classList.remove('active');
-      document.getElementById('btn-live').classList.remove('active');
-      document.getElementById('panel-ref').classList.remove('recording');
-      document.getElementById('panel-live').classList.remove('recording');
-      document.getElementById('ref-badge').className = 'va-badge va-badge--idle';
-      document.getElementById('ref-badge').textContent = 'Idle';
-      document.getElementById('live-badge').className = 'va-badge va-badge--idle';
-      document.getElementById('live-badge').textContent = 'Idle';
-      setStatus('Stopped. Press a button to start.');
-      updateHint('Analysis stopped. Press <strong style="color:var(--ref-color)">Capture Vocalist</strong> or <strong style="color:var(--live-color)">Sing Live</strong> to continue.');
-      // Note: we keep micStream alive so restart is instant
-    };
-
-    window.resetAll = function() {
-      window.stopMic();
-      refData = { pitches:[], notes:[], medianFreq:null, medianNote:null, clarity:0 };
-      liveData = { freq:null, note:null, clarity:0, startTime:null, pitchHistory:[] };
-      refOverlayHistory = []; liveOverlayHistory = [];
-
-      // Reset ref panel
-      document.getElementById('ref-note').textContent = '--';
-      document.getElementById('ref-note').className = 'note-name note-name--idle';
-      document.getElementById('ref-freq').textContent = '-- Hz';
-      document.getElementById('ref-octave').textContent = 'Octave --';
-      document.getElementById('ref-range').textContent = '--';
-      document.getElementById('ref-range').className = 'va-stat-val va-stat-val--idle';
-      document.getElementById('ref-cents').textContent = '-- c';
-      document.getElementById('ref-cents').className = 'va-stat-val va-stat-val--idle';
-      document.getElementById('ref-clarity').textContent = '--%';
-      document.getElementById('ref-clarity').className = 'va-stat-val va-stat-val--idle';
-      document.getElementById('ref-vrn').textContent = '—';
-      document.getElementById('ref-vocalist-name').textContent = 'Reference';
-      document.getElementById('ref-badge').textContent = 'Idle';
-      document.getElementById('ref-badge').className = 'va-badge va-badge--idle';
-
-      // Reset live panel
-      document.getElementById('live-note').textContent = '--';
-      document.getElementById('live-note').className = 'note-name note-name--idle';
-      document.getElementById('live-freq').textContent = '-- Hz';
-      document.getElementById('live-octave').textContent = 'Octave --';
-      document.getElementById('live-session').textContent = '0:00';
-      document.getElementById('live-session').className = 'va-stat-val va-stat-val--idle';
-      document.getElementById('live-cents').textContent = '-- c';
-      document.getElementById('live-cents').className = 'va-stat-val va-stat-val--idle';
-      document.getElementById('live-clarity').textContent = '--%';
-      document.getElementById('live-clarity').className = 'va-stat-val va-stat-val--idle';
-      document.getElementById('live-vrn').textContent = '—';
-      document.getElementById('live-badge').textContent = 'Idle';
-      document.getElementById('live-badge').className = 'va-badge va-badge--idle';
-
-      // Reset match
-      document.getElementById('match-pct').textContent = '--%';
-      document.getElementById('match-pct').style.color = 'var(--text-dim)';
-      document.getElementById('match-grade').textContent = '—';
-      document.getElementById('match-grade').style.color = 'var(--text-dim)';
-      document.getElementById('match-phrase').textContent = 'Start singing to see your match score.';
-      document.getElementById('match-bar').style.width = '0%';
-      document.getElementById('pitch-diff-val').textContent = '-- cents';
-      document.getElementById('pitch-needle').style.left = '50%';
-      document.getElementById('pitch-needle').style.background = 'var(--accent-gold)';
-
-      updateHint('<strong>Step 1:</strong> Load a YouTube video above. Then play it and press <strong style="color:var(--ref-color)">Capture Vocalist</strong> to listen to the room.');
-      setStatus('Ready — click a button to start');
-
-      // Clear canvases
-      [refWaveCanvas, refSpecCanvas, liveWaveCanvas, liveSpecCanvas, overlayCanvas].forEach(function(c){
-        var ctx = c.getContext('2d'); ctx.clearRect(0, 0, c.width, c.height);
+      // Handle stream ending (user stops sharing)
+      micStream.getAudioTracks()[0].addEventListener('ended', function() {
+        stopListening();
       });
-    };
 
-    // ---- Webring scroll arrows ----
-    (function(){
-      var c=document.getElementById('wb-content'),l=document.getElementById('wb-left'),r=document.getElementById('wb-right');
-      if(!c||!l||!r)return;
-      function upd(){var atL=c.scrollLeft<8,atR=c.scrollLeft>=c.scrollWidth-c.clientWidth-8;l.style.opacity=atL?'0':'1';l.style.pointerEvents=atL?'none':'auto';r.style.opacity=atR?'0':'1';r.style.pointerEvents=atR?'none':'auto';}
-      l.onclick=function(){c.scrollBy({left:-220,behavior:'smooth'});};
-      r.onclick=function(){c.scrollBy({left:220,behavior:'smooth'});};
-      c.addEventListener('scroll',upd,{passive:true});upd();
-    })();
+    } else if (inputSource === 'room') {
+      // --- Room / External mode: mic tuned for picking up external audio ---
+      var roomNoiseSuppression = document.getElementById('optRoomNoiseSuppression').checked;
 
-  })();
-  </script>
+      micStream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: false,     // don't cancel room audio
+          noiseSuppression: roomNoiseSuppression,
+          autoGainControl: true        // helps with varying distances
+        }
+      });
+      var source = audioCtx.createMediaStreamSource(micStream);
+      analyserNode = audioCtx.createAnalyser();
+      analyserNode.fftSize = 8192;
+      analyserNode.smoothingTimeConstant = 0.75;
+
+      // Apply vocal isolation if enabled
+      var useRoomIsolation = document.getElementById('optRoomIsolation').checked;
+      if (useRoomIsolation) {
+        var lastFilter = buildVocalIsolation(audioCtx, source);
+        lastFilter.connect(analyserNode);
+      } else {
+        source.connect(analyserNode);
+      }
+
+    } else {
+      // --- Live Mic mode ---
+      var echoCancellation = document.getElementById('optEchoCancellation').checked;
+      var noiseSuppression = document.getElementById('optNoiseSuppression').checked;
+
+      micStream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: echoCancellation,
+          noiseSuppression: noiseSuppression,
+          autoGainControl: true
+        }
+      });
+      var source = audioCtx.createMediaStreamSource(micStream);
+      analyserNode = audioCtx.createAnalyser();
+      analyserNode.fftSize = 8192;
+      analyserNode.smoothingTimeConstant = 0.8;
+      source.connect(analyserNode);
+    }
+
+    isListening = true;
+    startBtn.textContent = '\u23F9 Stop Listening';
+    startBtn.classList.add('listening');
+    // Scroll to analyzer on mobile so user sees results immediately
+    if (window.innerWidth <= 768) {
+      setTimeout(function() { document.getElementById('analyzerSection').scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 300);
+    }
+
+    // Lock source tabs while listening
+    document.querySelectorAll('.source-tab').forEach(function(t) { t.style.opacity = '0.5'; t.style.pointerEvents = 'none'; });
+
+    var canvas = document.getElementById('waveformCanvas');
+    canvas.width = canvas.offsetWidth * 2;
+    canvas.height = 160;
+
+    processAudio();
+  } catch (e) {
+    if (inputSource === 'mic' || inputSource === 'room') {
+      alert('Could not access microphone. Please allow microphone access and try again.');
+    } else {
+      alert('Could not capture audio. Error: ' + e.message);
+    }
+    if (audioCtx) audioCtx.close();
+  }
+});
+
+function stopListening() {
+  isListening = false;
+  if (micStream) micStream.getTracks().forEach(function(t) { t.stop(); });
+  if (rafId) cancelAnimationFrame(rafId);
+  streamFilters = [];
+  if (audioCtx) audioCtx.close();
+  if (inputSource === 'mic') {
+    startBtn.textContent = '\uD83C\uDFA4 Start Listening';
+  } else if (inputSource === 'room') {
+    startBtn.textContent = '\uD83D\uDCFB Start Listening';
+  } else {
+    startBtn.textContent = '\uD83D\uDD0A Start Listening';
+  }
+  startBtn.classList.remove('listening');
+  // Unlock source tabs
+  document.querySelectorAll('.source-tab').forEach(function(t) { t.style.opacity = '1'; t.style.pointerEvents = 'auto'; });
+}
+
+// --- Pitch Detection (Autocorrelation) ---
+function detectPitch(buf, sampleRate) {
+  var maxVal = 0;
+  for (var i = 0; i < buf.length; i++) {
+    if (Math.abs(buf[i]) > maxVal) maxVal = Math.abs(buf[i]);
+  }
+  if (maxVal < 0.01) return -1;
+
+  var norm = new Float32Array(buf.length);
+  for (var i = 0; i < buf.length; i++) norm[i] = buf[i] / maxVal;
+
+  var minPeriod = Math.floor(sampleRate / 1200);
+  var maxPeriod = Math.floor(sampleRate / 40);
+  var bestCorr = 0, bestPeriod = 0;
+
+  for (var p = minPeriod; p < maxPeriod && p < norm.length / 2; p++) {
+    var corr = 0;
+    for (var i = 0; i < norm.length / 2; i++) {
+      corr += norm[i] * norm[i + p];
+    }
+    if (corr > bestCorr) {
+      bestCorr = corr;
+      bestPeriod = p;
+    }
+  }
+
+  if (bestCorr < norm.length * 0.004) return -1;
+  return sampleRate / bestPeriod;
+}
+
+// --- Spectral Analysis ---
+function getSpectralCentroid(freqData, sampleRate, fftSize) {
+  var weightedSum = 0, sum = 0;
+  var binHz = sampleRate / fftSize;
+  for (var i = 1; i < freqData.length; i++) {
+    var mag = freqData[i];
+    var freq = i * binHz;
+    weightedSum += freq * mag;
+    sum += mag;
+  }
+  return sum > 0 ? weightedSum / sum : 0;
+}
+
+function getHarmonicRichness(freqData, fundamental, sampleRate, fftSize) {
+  if (fundamental <= 0) return 0;
+  var binHz = sampleRate / fftSize;
+  var fundBin = Math.round(fundamental / binHz);
+  var fundEnergy = 0, harmonicEnergy = 0;
+
+  for (var i = Math.max(0, fundBin - 2); i <= Math.min(freqData.length - 1, fundBin + 2); i++) {
+    fundEnergy += freqData[i] * freqData[i];
+  }
+  for (var h = 2; h <= 8; h++) {
+    var hBin = Math.round((fundamental * h) / binHz);
+    for (var i = Math.max(0, hBin - 2); i <= Math.min(freqData.length - 1, hBin + 2); i++) {
+      harmonicEnergy += freqData[i] * freqData[i];
+    }
+  }
+  var total = fundEnergy + harmonicEnergy;
+  return total > 0 ? harmonicEnergy / total : 0;
+}
+
+function getVolume(timeDomainData) {
+  var sum = 0;
+  for (var i = 0; i < timeDomainData.length; i++) {
+    sum += timeDomainData[i] * timeDomainData[i];
+  }
+  return Math.sqrt(sum / timeDomainData.length);
+}
+
+// --- Voice Isolation Engine ---
+// Determines if the detected sound is actually a human voice vs background noise
+
+function getSpectralFlatness(freqData) {
+  // Spectral flatness: geometric mean / arithmetic mean of magnitudes
+  // Noise is flat (~1.0), voice/tonal sounds are peaky (~0.0)
+  var logSum = 0;
+  var linSum = 0;
+  var count = 0;
+  for (var i = 2; i < Math.min(freqData.length, 300); i++) {
+    var val = Math.max(freqData[i], 0.001);
+    logSum += Math.log(val);
+    linSum += val;
+    count++;
+  }
+  if (count === 0 || linSum === 0) return 1;
+  var geoMean = Math.exp(logSum / count);
+  var ariMean = linSum / count;
+  return geoMean / ariMean;
+}
+
+function getHarmonicToNoiseRatio(freqData, fundamental, sampleRate, fftSize) {
+  // Measures how much energy is in harmonic peaks vs the noise floor
+  if (fundamental <= 0) return 0;
+  var binHz = sampleRate / fftSize;
+  var harmonicEnergy = 0;
+  var totalEnergy = 0;
+
+  // Sum total energy in voice range (80Hz - 5000Hz)
+  var lowBin = Math.max(1, Math.floor(80 / binHz));
+  var highBin = Math.min(freqData.length - 1, Math.floor(5000 / binHz));
+  for (var i = lowBin; i <= highBin; i++) {
+    totalEnergy += freqData[i] * freqData[i];
+  }
+
+  // Sum energy near harmonic peaks (fundamental + overtones)
+  for (var h = 1; h <= 10; h++) {
+    var hBin = Math.round((fundamental * h) / binHz);
+    if (hBin >= freqData.length) break;
+    for (var j = Math.max(0, hBin - 2); j <= Math.min(freqData.length - 1, hBin + 2); j++) {
+      harmonicEnergy += freqData[j] * freqData[j];
+    }
+  }
+
+  if (totalEnergy === 0) return 0;
+  return harmonicEnergy / totalEnergy;
+}
+
+function getPitchStability(history, count) {
+  // How stable is the pitch over recent frames? Voice holds notes, noise jitters.
+  if (count < 4) return 0;
+  var recent = history.slice(-Math.min(count, 12));
+  if (recent.length < 3) return 0;
+  var mean = 0;
+  for (var i = 0; i < recent.length; i++) mean += recent[i];
+  mean /= recent.length;
+  if (mean === 0) return 0;
+  // Compute coefficient of variation in cents
+  var sumSq = 0;
+  for (var i = 0; i < recent.length; i++) {
+    var cents = 1200 * Math.log2(recent[i] / mean);
+    sumSq += cents * cents;
+  }
+  var rms = Math.sqrt(sumSq / recent.length);
+  // Low RMS = stable pitch = likely voice. <50 cents = very stable, >200 = noise
+  return Math.max(0, Math.min(1, 1 - (rms / 200)));
+}
+
+function isInVoiceRange(freq) {
+  // Human singing range ~40Hz (E1 low bass) to ~1400Hz (F6 whistle)
+  return freq >= 40 && freq <= 1400;
+}
+
+// Composite voice confidence score (0-100)
+function getVoiceConfidence(freq, freqData, timeBuf, sampleRate, fftSize, pitchHist, holdCount) {
+  var score = 0;
+  var checks = {};
+
+  // 1. Volume gate (is anything happening?)
+  var rms = 0;
+  for (var i = 0; i < timeBuf.length; i++) rms += timeBuf[i] * timeBuf[i];
+  rms = Math.sqrt(rms / timeBuf.length);
+  if (rms < 0.008) return { score: 0, label: 'Silence', checks: {} };
+
+  // 2. Pitch detected and in voice range?
+  if (freq > 0 && isInVoiceRange(freq)) {
+    score += 25;
+    checks.pitch = true;
+  } else {
+    checks.pitch = false;
+  }
+
+  // 3. Spectral flatness (voice = peaky, noise = flat)
+  var flatness = getSpectralFlatness(freqData);
+  checks.flatness = flatness;
+  if (flatness < 0.3) score += 25;       // very tonal
+  else if (flatness < 0.5) score += 15;  // somewhat tonal
+  else if (flatness < 0.7) score += 5;   // ambiguous
+  // >0.7 = likely noise, no points
+
+  // 4. Harmonic-to-noise ratio
+  var hnr = freq > 0 ? getHarmonicToNoiseRatio(freqData, freq, sampleRate, fftSize) : 0;
+  checks.hnr = hnr;
+  if (hnr > 0.5) score += 25;       // strong harmonics
+  else if (hnr > 0.3) score += 15;  // decent harmonics
+  else if (hnr > 0.15) score += 5;  // weak harmonics
+
+  // 5. Pitch stability
+  var stability = getPitchStability(pitchHist, holdCount);
+  checks.stability = stability;
+  if (stability > 0.7) score += 25;      // rock-solid pitch
+  else if (stability > 0.4) score += 15; // reasonably stable
+  else if (stability > 0.2) score += 5;  // wobbly
+
+  // Classify
+  var label;
+  if (score >= 75) label = 'Singing';
+  else if (score >= 50) label = 'Voice';
+  else if (score >= 25) label = 'Maybe';
+  else label = 'Noise';
+
+  return { score: score, label: label, checks: checks };
+}
+
+function updateVoiceConfUI(conf) {
+  var fill = document.getElementById('voiceConfFill');
+  var status = document.getElementById('voiceConfStatus');
+  var pct = Math.min(100, conf.score);
+
+  fill.style.width = pct + '%';
+
+  if (conf.label === 'Singing') {
+    fill.style.background = 'var(--accent-cyan)';
+    status.className = 'voice-conf-status singing';
+    status.textContent = '\u266B Singing';
+  } else if (conf.label === 'Voice') {
+    fill.style.background = 'var(--accent-green)';
+    status.className = 'voice-conf-status voice';
+    status.textContent = '\u2713 Voice';
+  } else if (conf.label === 'Maybe') {
+    fill.style.background = 'var(--accent-orange)';
+    status.className = 'voice-conf-status maybe';
+    status.textContent = '? Uncertain';
+  } else if (conf.label === 'Noise') {
+    fill.style.background = 'var(--accent-red)';
+    status.className = 'voice-conf-status noise';
+    status.textContent = '\u2718 Noise';
+  } else {
+    fill.style.width = '0%';
+    status.className = 'voice-conf-status noise';
+    status.textContent = 'Silence';
+  }
+}
+
+// Track recent raw frequencies for stability check (separate from pitchHistory)
+var rawFreqHistory = [];
+var rawFreqCount = 0;
+
+// --- Muscle Focus Estimation ---
+// Smoothed muscle values
+var muscleSmooth = { ct:0, ta:0, palate:0, jaw:0, diaph:0, larynx:0 };
+var volHistory = []; // for diaphragm stability
+
+function estimateMuscleFocus(midi, freq, vol, centroid, harmonics, gear, freqData, sampleRate, fftSize) {
+  // --- CT (Cricothyroid) = pitch-stretching muscle ---
+  // Higher pitch within voice type = more CT activation
+  // Normalize MIDI 40-85 to 0-100
+  var ctRaw = Math.max(0, Math.min(100, ((midi - 40) / 45) * 100));
+
+  // --- TA (Thyroarytenoid) = fold-thickening muscle ---
+  // Inverse of CT, boosted by chest resonance / lower harmonics
+  var taRaw = Math.max(0, 100 - ctRaw + harmonics * 20);
+  taRaw = Math.min(100, taRaw);
+
+  // --- Soft Palate (velum) position ---
+  // Raised palate = less nasal = higher value
+  // Estimate: check energy ratio in nasal formant band (~250-450Hz) vs total
+  var binHz = sampleRate / fftSize;
+  var nasalEnergy = 0, totalVoice = 0;
+  var nasalLo = Math.floor(200 / binHz), nasalHi = Math.ceil(500 / binHz);
+  var voiceLo = Math.floor(80 / binHz), voiceHi = Math.ceil(5000 / binHz);
+  for (var i = voiceLo; i <= Math.min(voiceHi, freqData.length - 1); i++) {
+    totalVoice += freqData[i];
+    if (i >= nasalLo && i <= nasalHi) nasalEnergy += freqData[i];
+  }
+  var nasalRatio = totalVoice > 0 ? nasalEnergy / totalVoice : 0;
+  // High nasal ratio = lowered palate (nasal), so invert for "palate raised" indicator
+  var palateRaw = Math.max(0, Math.min(100, (1 - nasalRatio * 4) * 100));
+
+  // --- Jaw Opening ---
+  // Correlated with volume and first formant energy (lower formants stronger = wider jaw)
+  var jawRaw = Math.min(100, vol * 300 + (gear <= 2 ? 20 : 0));
+
+  // --- Diaphragm Support ---
+  // Steady volume + steady pitch = good breath support
+  volHistory.push(vol);
+  if (volHistory.length > 30) volHistory.shift();
+  var volStability = 0;
+  if (volHistory.length >= 8) {
+    var vMean = 0;
+    for (var i = 0; i < volHistory.length; i++) vMean += volHistory[i];
+    vMean /= volHistory.length;
+    if (vMean > 0.01) {
+      var vVar = 0;
+      for (var i = 0; i < volHistory.length; i++) {
+        var d = volHistory[i] - vMean;
+        vVar += d * d;
+      }
+      vVar = Math.sqrt(vVar / volHistory.length) / vMean; // coefficient of variation
+      volStability = Math.max(0, 1 - vVar * 5); // lower CV = better support
+    }
+  }
+  var pitchStab = getPitchStability(rawFreqHistory, rawFreqCount);
+  var diaphRaw = Math.min(100, (volStability * 60 + pitchStab * 40));
+
+  // --- Larynx Position ---
+  // Low centroid = lowered larynx (dark/warm), high centroid = raised (bright)
+  // Normalize centroid: 500Hz=very low, 3000Hz=very high
+  var larynxRaw = Math.max(0, Math.min(100, ((centroid - 500) / 2500) * 100));
+
+  // Smooth values
+  var lerpM = 0.15;
+  muscleSmooth.ct += (ctRaw - muscleSmooth.ct) * lerpM;
+  muscleSmooth.ta += (taRaw - muscleSmooth.ta) * lerpM;
+  muscleSmooth.palate += (palateRaw - muscleSmooth.palate) * lerpM;
+  muscleSmooth.jaw += (jawRaw - muscleSmooth.jaw) * lerpM;
+  muscleSmooth.diaph += (diaphRaw - muscleSmooth.diaph) * lerpM;
+  muscleSmooth.larynx += (larynxRaw - muscleSmooth.larynx) * lerpM;
+
+  // Update UI
+  updateMuscleUI();
+}
+
+function updateMuscleUI() {
+  var m = muscleSmooth;
+  var pairs = [
+    ['mCT', 'mCTpct', m.ct, 'var(--accent-cyan)'],
+    ['mTA', 'mTApct', m.ta, 'var(--accent-red)'],
+    ['mPalate', 'mPalatepct', m.palate, 'var(--accent-green)'],
+    ['mJaw', 'mJawpct', m.jaw, 'var(--accent-orange)'],
+    ['mDiaph', 'mDiaphpct', m.diaph, 'var(--accent-gold)'],
+    ['mLarynx', 'mLarynxpct', m.larynx, 'var(--accent-purple)']
+  ];
+  for (var i = 0; i < pairs.length; i++) {
+    var bar = document.getElementById(pairs[i][0]);
+    var pct = document.getElementById(pairs[i][1]);
+    var val = Math.round(pairs[i][2]);
+    bar.style.width = val + '%';
+    pct.textContent = val + '%';
+  }
+  document.getElementById('musclePanel').classList.add('active');
+
+  // Contextual hint
+  var hint = document.getElementById('muscleHint');
+  if (m.ct > 70) hint.textContent = 'High CT stretch — vocal folds are thin and elongated. Typical of head voice and upper range.';
+  else if (m.ta > 70) hint.textContent = 'Strong TA engagement — thick fold vibration. Rich chest resonance, powerful lower register.';
+  else if (m.diaph > 75) hint.textContent = 'Excellent breath support — steady airflow from the diaphragm. This stability enables clean tone.';
+  else if (m.palate < 30) hint.textContent = 'Lowered soft palate detected — nasal resonance is prominent. Raise the palate for a more open sound.';
+  else if (m.larynx > 75) hint.textContent = 'Raised larynx — brighter, thinner tone. Try yawning gently to lower the larynx for warmth.';
+  else if (m.larynx < 25) hint.textContent = 'Lowered larynx — dark, warm tone quality. Common in classical technique and deep chest voice.';
+  else hint.textContent = 'Balanced muscle engagement — CT and TA are sharing the workload in a mixed-voice coordination.';
+}
+
+// --- Main Loop ---
+function processAudio() {
+  if (!isListening) return;
+  rafId = requestAnimationFrame(processAudio);
+
+  var bufLen = analyserNode.fftSize;
+  var timeBuf = new Float32Array(bufLen);
+  var freqBuf = new Uint8Array(analyserNode.frequencyBinCount);
+  analyserNode.getFloatTimeDomainData(timeBuf);
+  analyserNode.getByteFrequencyData(freqBuf);
+
+  var sampleRate = audioCtx.sampleRate;
+  var freq = detectPitch(timeBuf, sampleRate);
+  var volume = getVolume(timeBuf);
+  var centroid = getSpectralCentroid(freqBuf, sampleRate, bufLen);
+  var harmonics = freq > 0 ? getHarmonicRichness(freqBuf, freq, sampleRate, bufLen) : 0;
+
+  drawWaveform(freqBuf);
+
+  document.getElementById('statCentroid').textContent = centroid > 0 ? Math.round(centroid) + ' Hz' : '\u2014';
+  document.getElementById('statHarmonics').textContent = harmonics > 0 ? (harmonics * 100).toFixed(0) + '%' : '\u2014';
+  var volDb = volume > 0 ? Math.max(-60, 20 * Math.log10(volume)) : -60;
+  document.getElementById('statVolume').textContent = volume > 0.01 ? volDb.toFixed(0) + ' dB' : '\u2014';
+
+  // Track raw freq for stability measurement
+  if (freq > 0) {
+    rawFreqHistory.push(freq);
+    rawFreqCount++;
+    if (rawFreqHistory.length > 20) rawFreqHistory.shift();
+  } else {
+    rawFreqCount = 0;
+    rawFreqHistory = [];
+  }
+
+  // Voice confidence check — gates all analysis
+  var voiceConf = getVoiceConfidence(freq, freqBuf, timeBuf, sampleRate, bufLen, rawFreqHistory, rawFreqCount);
+  updateVoiceConfUI(voiceConf);
+
+  // Dynamic thresholds based on input source
+  var thresholds = getActiveThresholds();
+  var isVoice = voiceConf.score >= thresholds.confThreshold;
+
+  if (freq > 0 && volume > thresholds.voiceGate && isVoice) {
+    var midi = freqToMidi(freq);
+    var note = freqToNote(freq);
+    var nearestMidi = Math.round(midi);
+    var cents = Math.round((midi - nearestMidi) * 100);
+
+    document.getElementById('pitchNote').textContent = note;
+    document.getElementById('pitchHz').textContent = Math.round(freq) + ' Hz';
+
+    var centsEl = document.getElementById('pitchCents');
+    if (Math.abs(cents) <= 10) {
+      centsEl.textContent = 'In Tune';
+      centsEl.className = 'pitch-cents intune';
+    } else if (cents > 0) {
+      centsEl.textContent = '+' + cents + '\u00A2';
+      centsEl.className = 'pitch-cents sharp';
+    } else {
+      centsEl.textContent = cents + '\u00A2';
+      centsEl.className = 'pitch-cents flat';
+    }
+
+    var pct = 50 + (Math.max(-50, Math.min(50, cents)) / 50) * 45;
+    document.getElementById('pitchNeedle').style.left = pct + '%';
+
+    var voiceType = selectedVoice === 'auto' ? autoDetectVoice(midi) : selectedVoice;
+    var gear = getGear(nearestMidi, voiceType);
+    var vrnData = getSpectralVRN(gear, centroid, harmonics, voiceType);
+
+    updateVRNDisplay(vrnData, note, voiceType);
+    updateBody(vrnData.zones);
+
+    if (note !== lastNote) {
+      noteHoldCount = 0;
+      lastNote = note;
+    }
+    noteHoldCount++;
+    if (noteHoldCount === 8) {
+      addHistory(note, gear);
+    }
+
+    checkPassaggio(nearestMidi, voiceType);
+
+    // Style detection
+    pitchHistory.push(freq);
+    if (pitchHistory.length > 120) pitchHistory.shift();
+    if (pitchHistory.length >= 30) {
+      detectAndDisplayStyle(centroid, harmonics, volume, gear, voiceType);
+    }
+
+    // Muscle focus estimation
+    estimateMuscleFocus(midi, freq, volume, centroid, harmonics, gear, freqBuf, sampleRate, bufLen);
+  } else {
+    if (volume < thresholds.silenceFloor) {
+      document.getElementById('pitchNote').textContent = '\u2014';
+      document.getElementById('pitchHz').textContent = '';
+      document.getElementById('pitchCents').textContent = '';
+      document.getElementById('pitchNeedle').style.left = '50%';
+      dimBody();
+      updateVoiceConfUI({ score: 0, label: 'Silence', checks: {} });
+    } else if (!isVoice && freq > 0) {
+      // Sound detected but not voice — show note dimmed but don't process
+      document.getElementById('pitchNote').textContent = freqToNote(freq);
+      document.getElementById('pitchNote').style.opacity = '0.3';
+      document.getElementById('pitchHz').textContent = Math.round(freq) + ' Hz';
+    }
+  }
+
+  // Restore pitch opacity when voice is confirmed
+  if (isVoice && freq > 0) {
+    document.getElementById('pitchNote').style.opacity = '1';
+  }
+}
+
+// --- Drawing ---
+function drawWaveform(freqData) {
+  var canvas = document.getElementById('waveformCanvas');
+  var ctx = canvas.getContext('2d');
+  var w = canvas.width;
+  var h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  var barCount = 100;
+  var barW = w / barCount;
+  var step = Math.floor(freqData.length * 0.4 / barCount);
+
+  for (var i = 0; i < barCount; i++) {
+    var val = freqData[i * step] / 255;
+    var barH = val * h * 0.85;
+    var hue = (i / barCount) * 200;
+
+    ctx.fillStyle = 'hsla(' + hue + ', 75%, ' + (35 + val * 30) + '%, ' + (0.5 + val * 0.5) + ')';
+    ctx.fillRect(i * barW, h - barH, barW - 1, barH);
+
+    ctx.fillStyle = 'hsla(' + hue + ', 75%, ' + (35 + val * 30) + '%, ' + (0.15 + val * 0.15) + ')';
+    ctx.fillRect(i * barW, 0, barW - 1, barH * 0.3);
+  }
+}
+
+// --- VRN Display ---
+function updateVRNDisplay(data, note, voiceType) {
+  var voiceLabels = {bass:'Bass',baritone:'Baritone',tenor:'Tenor',countertenor:'Countertenor',alto:'Alto',mezzo:'Mezzo-Soprano',soprano:'Soprano'};
+
+  document.getElementById('vrnPanel').classList.add('active');
+  document.getElementById('vrnContent').innerHTML =
+    '<div class="vrn-row">' +
+      '<div class="gear-badge gear-' + data.gear + '-bg">' + data.gear + '</div>' +
+      '<div class="gear-info">' +
+        '<div class="gear-name">' + data.name + '</div>' +
+        '<div class="gear-range">Gear ' + data.gear + ' \u2014 ' + (voiceLabels[voiceType] || voiceType) + '</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="vrn-notation">' + data.vrn + '</div>' +
+    '<div class="vrn-desc">' + data.desc + '</div>';
+}
+
+// --- Body Diagram ---
+function updateBody(zones) {
+  var zoneKeys = ['H','N','O','P','C','L'];
+  zoneKeys.forEach(function(z) {
+    var el = document.getElementById('zone-' + z);
+    var label = document.getElementById('label-' + z);
+    var legend = document.getElementById('legend-' + z);
+    var level = zones[z] || 0;
+
+    if (level > 0) {
+      el.classList.add('active');
+      el.style.opacity = 0.2 + (level * 0.25);
+      label.setAttribute('fill', 'rgba(255,255,255,0.9)');
+      legend.classList.add('active');
+      legend.querySelector('.zone-dot').classList.add('active');
+    } else {
+      el.classList.remove('active');
+      el.style.opacity = 0.04;
+      label.setAttribute('fill', 'rgba(255,255,255,0.15)');
+      legend.classList.remove('active');
+      legend.querySelector('.zone-dot').classList.remove('active');
+    }
+  });
+}
+
+function dimBody() {
+  ['H','N','O','P','C','L'].forEach(function(z) {
+    var el = document.getElementById('zone-' + z);
+    el.classList.remove('active');
+    el.style.opacity = 0.06;
+    document.getElementById('label-' + z).setAttribute('fill', 'rgba(255,255,255,0.2)');
+    document.getElementById('legend-' + z).classList.remove('active');
+    document.getElementById('legend-' + z).querySelector('.zone-dot').classList.remove('active');
+  });
+}
+
+// --- History ---
+function addHistory(note, gear) {
+  if (historyNotes.length > 0 && historyNotes[historyNotes.length - 1].note === note) return;
+
+  historyNotes.push({ note: note, gear: gear });
+  if (historyNotes.length > 30) historyNotes.shift();
+
+  var strip = document.getElementById('historyStrip');
+  strip.innerHTML = historyNotes.map(function(h) {
+    return '<div class="history-item gear-' + h.gear + '">' +
+      '<div class="hi-note">' + h.note + '</div>' +
+      '<div class="hi-gear">G' + h.gear + '</div>' +
+    '</div>';
+  }).join('');
+  strip.scrollLeft = strip.scrollWidth;
+}
+
+// --- Passaggio Detection ---
+var PASSAGGIO_ZONES = {
+  bass:         [{midi:48,shift:'1\u21922',vrn:'[C+++]\u2192[C++, H+]'},{midi:57,shift:'2\u21923',vrn:'[C++, P++]\u2192[H++, O++]'}],
+  baritone:     [{midi:52,shift:'1\u21922',vrn:'[C+++]\u2192[C++, H+]'},{midi:60,shift:'2\u21923',vrn:'[C++, P++]\u2192[H+++, N++]'}],
+  tenor:        [{midi:55,shift:'1\u21922',vrn:'[C+++]\u2192[C++, H+]'},{midi:64,shift:'2\u21923',vrn:'[C++, O++]\u2192[H+++, N+++]'},{midi:72,shift:'3\u21924',vrn:'[H+++]\u2192[H+++, N+]'}],
+  countertenor: [{midi:60,shift:'1\u21922',vrn:'[C+, H+]\u2192[H++, N++]'},{midi:69,shift:'2\u21923',vrn:'[H++, N++]\u2192[H+++, N+++]'},{midi:76,shift:'3\u21924',vrn:'[H+++]\u2192[H+++, N+]'}],
+  alto:         [{midi:60,shift:'1\u21922',vrn:'[C+++]\u2192[C++, H++]'},{midi:67,shift:'2\u21923',vrn:'[C++, H++]\u2192[H+++, N++]'}],
+  mezzo:        [{midi:62,shift:'1\u21922',vrn:'[C++]\u2192[C+, H++]'},{midi:69,shift:'2\u21923',vrn:'[C+, H++]\u2192[H+++, N+++]'}],
+  soprano:      [{midi:65,shift:'1\u21922',vrn:'[C++]\u2192[C+, H++]'},{midi:72,shift:'2\u21923',vrn:'[C+, H++]\u2192[H+++, N+++]'},{midi:81,shift:'3\u21924',vrn:'[H+++, N+++]\u2192[H+++, N++]'}]
+};
+
+var passaggioTimeout = null;
+function checkPassaggio(midi, voiceType) {
+  var zones = PASSAGGIO_ZONES[voiceType] || [];
+  var hit = null;
+  for (var i = 0; i < zones.length; i++) {
+    if (Math.abs(midi - zones[i].midi) <= 1) { hit = zones[i]; break; }
+  }
+  var alertEl = document.getElementById('passaggioAlert');
+
+  if (hit) {
+    alertEl.classList.add('show');
+    document.getElementById('passaggioShift').textContent = 'Shift ' + hit.shift + ': ' + hit.vrn;
+    clearTimeout(passaggioTimeout);
+    passaggioTimeout = setTimeout(function() { alertEl.classList.remove('show'); }, 2000);
+  }
+}
+
+// ============================================================
+// VOCAL STYLE DETECTION ENGINE
+// ============================================================
+
+var VOCAL_STYLES = {
+  operatic: {
+    name: 'Operatic', icon: '🎭', color: '#ffd700',
+    desc: 'Classical operatic production. Rich vibrato, full resonance engagement, strong formant tuning. The voice is projected acoustically with maximum head and mask resonance.',
+    traits: ['Wide vibrato', 'High harmonics', 'Head-dominant', 'Full resonance', 'Projected tone']
+  },
+  musical_theatre: {
+    name: 'Musical Theatre', icon: '🎬', color: '#ff6b9d',
+    desc: 'Broadway-style belt and mix. Forward placement with bright, speech-like clarity. Moderate vibrato, strong chest-mix coordination. Designed to carry over a pit orchestra.',
+    traits: ['Forward mix', 'Bright tone', 'Belt quality', 'Speech-like', 'Moderate vibrato']
+  },
+  pop_belt: {
+    name: 'Pop / Belt', icon: '🌟', color: '#00d4ff',
+    desc: 'Contemporary pop production. Chest-dominant mix with controlled, minimal vibrato. Bright and direct with speech-quality vowels. Designed for microphone amplification.',
+    traits: ['Chest-heavy', 'Minimal vibrato', 'Direct tone', 'Bright mix', 'Mic-optimized']
+  },
+  jazz: {
+    name: 'Jazz', icon: '🎷', color: '#9d4edd',
+    desc: 'Warm, intimate jazz phrasing. Relaxed pharyngeal resonance with breathy flexibility. Smooth dynamic control, subtle pitch bending, and gentle delayed vibrato.',
+    traits: ['Warm tone', 'Breathy quality', 'Subtle vibrato', 'Relaxed throat', 'Dynamic control']
+  },
+  folk: {
+    name: 'Folk / Country', icon: '🎶', color: '#4ade80',
+    desc: 'Natural, speech-based singing. Straight tone with chest-dominant production. Minimal resonance manipulation \u2014 the voice sounds close to how you speak, just sustained and pitched.',
+    traits: ['Straight tone', 'Speech-like', 'Chest voice', 'Natural placement', 'Minimal vibrato']
+  },
+  rnb: {
+    name: 'R&B / Soul', icon: '💜', color: '#f59e0b',
+    desc: 'Rich chest-mix with melismatic agility. Warm pharyngeal depth combined with forward brightness. Characteristic runs, ad-libs, and dynamic swells. Gospel-influenced resonance.',
+    traits: ['Rich chest-mix', 'Melismatic', 'Warm depth', 'Dynamic swells', 'Pharyngeal warmth']
+  },
+  rock: {
+    name: 'Rock', icon: '🤘', color: '#ef4444',
+    desc: 'Pushed chest-dominant production with compressed dynamics. High-energy vocal fold engagement, bright and edgy overtones. Designed for maximum impact and raw emotional power.',
+    traits: ['Pushed chest', 'Compressed', 'Edgy tone', 'High energy', 'Raw power']
+  },
+  classical_light: {
+    name: 'Art Song / Lieder', icon: '🌹', color: '#e879f9',
+    desc: 'Refined classical singing with balanced resonance. Moderate vibrato, elegant phrasing, even registration. Less dramatic than opera but still uses trained resonance placement.',
+    traits: ['Balanced resonance', 'Elegant phrasing', 'Moderate vibrato', 'Even registers', 'Refined tone']
+  }
+};
+
+// Analyze vibrato from pitch history
+function analyzeVibrato(history) {
+  if (history.length < 20) return { rate: 0, depth: 0, regularity: 0 };
+
+  // Use last 60 samples (~1 second at 60fps)
+  var recent = history.slice(-60);
+  var mean = 0;
+  for (var i = 0; i < recent.length; i++) mean += recent[i];
+  mean /= recent.length;
+
+  // Convert to cents deviation from mean
+  var cents = [];
+  for (var i = 0; i < recent.length; i++) {
+    cents.push(1200 * Math.log2(recent[i] / mean));
+  }
+
+  // Find zero crossings to estimate rate
+  var crossings = 0;
+  for (var i = 1; i < cents.length; i++) {
+    if ((cents[i] >= 0 && cents[i-1] < 0) || (cents[i] < 0 && cents[i-1] >= 0)) crossings++;
+  }
+  var durationSec = recent.length / 60; // ~60fps
+  var rate = (crossings / 2) / durationSec; // full cycles per second
+
+  // Depth: RMS of cents deviation
+  var sumSq = 0;
+  for (var i = 0; i < cents.length; i++) sumSq += cents[i] * cents[i];
+  var depth = Math.sqrt(sumSq / cents.length);
+
+  // Regularity: how consistent the oscillation is (low variance in peak spacing)
+  var peaks = [];
+  for (var i = 1; i < cents.length - 1; i++) {
+    if (cents[i] > cents[i-1] && cents[i] > cents[i+1] && cents[i] > 5) peaks.push(i);
+  }
+  var regularity = 0;
+  if (peaks.length >= 3) {
+    var spacings = [];
+    for (var i = 1; i < peaks.length; i++) spacings.push(peaks[i] - peaks[i-1]);
+    var avgSpacing = 0;
+    for (var i = 0; i < spacings.length; i++) avgSpacing += spacings[i];
+    avgSpacing /= spacings.length;
+    var variance = 0;
+    for (var i = 0; i < spacings.length; i++) variance += Math.pow(spacings[i] - avgSpacing, 2);
+    variance /= spacings.length;
+    regularity = Math.max(0, 1 - (Math.sqrt(variance) / avgSpacing));
+  }
+
+  return { rate: rate, depth: depth, regularity: regularity };
+}
+
+// Score each style based on spectral features
+function scoreStyles(centroid, harmonics, volume, gear, vibrato) {
+  var scores = {};
+  var vRate = vibrato.rate;
+  var vDepth = vibrato.depth;
+  var vReg = vibrato.regularity;
+
+  // Operatic: wide regular vibrato (5-7Hz), high harmonics, head-dominant (gear 3+), high centroid
+  scores.operatic = 0;
+  if (vRate >= 4.5 && vRate <= 7.5) scores.operatic += 30;
+  else if (vRate >= 3 && vRate <= 9) scores.operatic += 15;
+  if (vDepth > 30) scores.operatic += 25;
+  else if (vDepth > 15) scores.operatic += 12;
+  if (vReg > 0.6) scores.operatic += 15;
+  if (harmonics > 0.5) scores.operatic += 15;
+  if (gear >= 3) scores.operatic += 10;
+  if (centroid > 2000) scores.operatic += 5;
+
+  // Musical Theatre: moderate vibrato, bright centroid, gear 2-3 (belt/mix), moderate harmonics
+  scores.musical_theatre = 0;
+  if (vRate >= 4 && vRate <= 6.5) scores.musical_theatre += 20;
+  if (vDepth >= 10 && vDepth <= 35) scores.musical_theatre += 20;
+  if (centroid > 1800) scores.musical_theatre += 15;
+  if (gear === 2 || gear === 3) scores.musical_theatre += 20;
+  if (harmonics >= 0.3 && harmonics <= 0.6) scores.musical_theatre += 15;
+  if (vReg > 0.4) scores.musical_theatre += 10;
+
+  // Pop/Belt: minimal vibrato, chest-dominant (gear 1-2), bright, moderate harmonics
+  scores.pop_belt = 0;
+  if (vDepth < 15) scores.pop_belt += 25;
+  if (vRate < 3 || vDepth < 8) scores.pop_belt += 20;
+  if (gear <= 2) scores.pop_belt += 20;
+  if (centroid > 1500 && centroid < 3000) scores.pop_belt += 15;
+  if (harmonics >= 0.25 && harmonics <= 0.55) scores.pop_belt += 10;
+  if (vReg < 0.3) scores.pop_belt += 10;
+
+  // Jazz: gentle delayed vibrato, warm (lower centroid), relaxed, moderate harmonics
+  scores.jazz = 0;
+  if (vRate >= 3 && vRate <= 5.5) scores.jazz += 15;
+  if (vDepth >= 8 && vDepth <= 25) scores.jazz += 20;
+  if (centroid < 2000) scores.jazz += 20;
+  if (centroid >= 800 && centroid <= 1800) scores.jazz += 10;
+  if (harmonics >= 0.2 && harmonics <= 0.5) scores.jazz += 15;
+  if (gear >= 2 && gear <= 3) scores.jazz += 10;
+  if (vReg >= 0.3 && vReg <= 0.7) scores.jazz += 10;
+
+  // Folk: straight tone (no vibrato), chest voice, low centroid, speech-like
+  scores.folk = 0;
+  if (vDepth < 10) scores.folk += 30;
+  if (vRate < 2.5) scores.folk += 20;
+  if (gear <= 2) scores.folk += 20;
+  if (centroid < 1800) scores.folk += 15;
+  if (harmonics < 0.35) scores.folk += 15;
+
+  // R&B: warm, chest-mix, moderate-rich harmonics, some vibrato, pharyngeal
+  scores.rnb = 0;
+  if (vRate >= 3.5 && vRate <= 6) scores.rnb += 15;
+  if (vDepth >= 10 && vDepth <= 30) scores.rnb += 15;
+  if (harmonics >= 0.35 && harmonics <= 0.65) scores.rnb += 20;
+  if (centroid >= 1200 && centroid <= 2200) scores.rnb += 15;
+  if (gear >= 1 && gear <= 3) scores.rnb += 15;
+  if (vReg >= 0.3 && vReg <= 0.65) scores.rnb += 10;
+  // Bonus for warmth + richness combo
+  if (centroid < 2000 && harmonics > 0.4) scores.rnb += 10;
+
+  // Rock: pushed chest, high volume, compressed harmonics, minimal vibrato, edgy
+  scores.rock = 0;
+  if (vDepth < 12) scores.rock += 20;
+  if (gear <= 2) scores.rock += 20;
+  if (harmonics > 0.45) scores.rock += 15;
+  if (centroid > 2200) scores.rock += 15;
+  var volDb = volume > 0 ? 20 * Math.log10(volume) : -60;
+  if (volDb > -15) scores.rock += 15;
+  if (vRate < 3) scores.rock += 15;
+
+  // Art Song: balanced vibrato, moderate everything, even registration
+  scores.classical_light = 0;
+  if (vRate >= 4 && vRate <= 6.5) scores.classical_light += 20;
+  if (vDepth >= 12 && vDepth <= 30) scores.classical_light += 20;
+  if (vReg > 0.5) scores.classical_light += 15;
+  if (harmonics >= 0.3 && harmonics <= 0.55) scores.classical_light += 15;
+  if (centroid >= 1200 && centroid <= 2500) scores.classical_light += 15;
+  if (gear >= 2 && gear <= 3) scores.classical_light += 15;
+
+  // Normalize to percentages
+  var maxScore = 0;
+  for (var k in scores) { if (scores[k] > maxScore) maxScore = scores[k]; }
+  if (maxScore > 0) {
+    for (var k in scores) scores[k] = Math.round((scores[k] / maxScore) * 100);
+  }
+
+  return scores;
+}
+
+function detectAndDisplayStyle(centroid, harmonics, volume, gear, voiceType) {
+  styleFrameCount++;
+  if (styleFrameCount % 6 !== 0) return; // Update ~10x/sec
+
+  var vibrato = analyzeVibrato(pitchHistory);
+  var raw = scoreStyles(centroid, harmonics, volume, gear, vibrato);
+
+  // Smooth with exponential moving average
+  var alpha = 0.15;
+  for (var k in raw) {
+    if (styleSmoothing[k] !== undefined) {
+      styleSmoothing[k] = styleSmoothing[k] * (1 - alpha) + raw[k] * alpha;
+    }
+  }
+
+  // Sort by smoothed score
+  var sorted = [];
+  for (var k in styleSmoothing) sorted.push({ key: k, score: styleSmoothing[k] });
+  sorted.sort(function(a, b) { return b.score - a.score; });
+
+  var top = sorted[0];
+  var style = VOCAL_STYLES[top.key];
+  if (!style) return;
+
+  document.getElementById('stylePanel').classList.add('active');
+
+  // Build bars HTML (top 5)
+  var barsHtml = '';
+  var showCount = Math.min(5, sorted.length);
+  for (var i = 0; i < showCount; i++) {
+    var s = sorted[i];
+    var st = VOCAL_STYLES[s.key];
+    if (!st) continue;
+    var pct = Math.round(s.score);
+    var isTop = (i === 0);
+    barsHtml += '<div class="style-bar-row">' +
+      '<div class="style-bar-label"' + (isTop ? ' style="color:' + st.color + ';font-weight:700"' : '') + '>' + st.name + '</div>' +
+      '<div class="style-bar-track"><div class="style-bar-fill" style="width:' + pct + '%;background:' + st.color + (isTop ? '' : ';opacity:0.5') + '"></div></div>' +
+      '<div class="style-bar-pct"' + (isTop ? ' style="color:' + st.color + '"' : '') + '>' + pct + '%</div>' +
+    '</div>';
+  }
+
+  // Traits
+  var traitsHtml = '';
+  for (var i = 0; i < style.traits.length; i++) {
+    traitsHtml += '<span class="style-trait" style="background:' + style.color + '18;color:' + style.color + ';border-color:' + style.color + '30">' + style.traits[i] + '</span>';
+  }
+
+  // Vibrato indicator
+  var vibDesc = '';
+  if (vibrato.depth < 8) vibDesc = 'Straight tone';
+  else if (vibrato.depth < 20) vibDesc = 'Light vibrato ~' + vibrato.rate.toFixed(1) + 'Hz';
+  else if (vibrato.depth < 35) vibDesc = 'Moderate vibrato ~' + vibrato.rate.toFixed(1) + 'Hz';
+  else vibDesc = 'Wide vibrato ~' + vibrato.rate.toFixed(1) + 'Hz';
+
+  document.getElementById('styleContent').innerHTML =
+    '<div class="style-detected">' +
+      '<div class="style-icon" style="background:' + style.color + '18">' + style.icon + '</div>' +
+      '<div>' +
+        '<div class="style-name" style="color:' + style.color + '">' + style.name + '</div>' +
+        '<div class="style-confidence">' + vibDesc + ' \u2022 Brightness: ' + Math.round(centroid) + 'Hz</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="style-bars">' + barsHtml + '</div>' +
+    '<div class="style-traits">' + traitsHtml + '</div>' +
+    '<div class="style-desc">' + style.desc + '</div>';
+}
+
+// Init
+dimBody();
+
+// Size canvas on load so it renders properly before mic starts
+var initCanvas = document.getElementById('waveformCanvas');
+if (initCanvas) {
+  initCanvas.width = initCanvas.offsetWidth * 2;
+  initCanvas.height = 160;
+}
+</script>
 
 </body>
 </html>
