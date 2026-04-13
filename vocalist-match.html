@@ -13,280 +13,143 @@
   <link rel="stylesheet" href="css/style.css">
   <style>
     :root {
-      --ref-color: #00d4ff;
-      --ref-glow: rgba(0,212,255,0.35);
-      --ref-bg: rgba(0,212,255,0.06);
-      --live-color: #4ade80;
-      --live-glow: rgba(74,222,128,0.35);
-      --live-bg: rgba(74,222,128,0.06);
+      --ref-color: #00d4ff;  --ref-glow: rgba(0,212,255,0.35); --ref-bg: rgba(0,212,255,0.06);
+      --live-color: #4ade80; --live-glow: rgba(74,222,128,0.35);--live-bg: rgba(74,222,128,0.06);
     }
     body { overflow-x: hidden; }
 
-    /* ---- Hero ---- */
+    /* Return banner */
+    .return-banner {
+      display: none; position: sticky; top: 36px; z-index: 9500;
+      background: linear-gradient(90deg,#4ade80,#00d4ff); color:#000;
+      font-weight:800; font-size:0.95rem; padding:13px 20px;
+      text-align:center; cursor:pointer;
+      animation: rpulse 1.4s infinite;
+    }
+    .return-banner.show { display:block; }
+    @keyframes rpulse { 0%,100%{opacity:1} 50%{opacity:0.82} }
+
+    /* Hero */
     .vm-hero {
-      padding: 60px 20px 28px; text-align: center;
-      background:
-        radial-gradient(ellipse at 20% 30%, rgba(0,212,255,0.09) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 60%, rgba(74,222,128,0.07) 0%, transparent 50%),
-        var(--bg-dark);
+      padding:56px 20px 26px; text-align:center;
+      background: radial-gradient(ellipse at 20% 30%,rgba(0,212,255,.09) 0%,transparent 50%),
+                  radial-gradient(ellipse at 80% 60%,rgba(74,222,128,.07) 0%,transparent 50%),
+                  var(--bg-dark);
     }
-    .vm-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 6px 18px; border-radius: 24px; font-size: 0.82rem; font-weight: 700;
-      background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.22);
-      color: var(--accent-cyan); margin-bottom: 16px; letter-spacing: 0.04em; text-transform: uppercase;
-    }
-    .vm-hero h1 { font-size: clamp(1.9rem,5vw,3rem); font-weight: 900; line-height: 1.15; margin-bottom: 12px; }
-    .vm-hero p  { color: var(--text-secondary); max-width: 560px; margin: 0 auto 16px; font-size: 1.05rem; line-height: 1.7; }
+    .vm-badge { display:inline-flex; align-items:center; gap:8px; padding:6px 18px; border-radius:24px; font-size:0.82rem; font-weight:700; background:rgba(0,212,255,.08); border:1px solid rgba(0,212,255,.22); color:var(--accent-cyan); margin-bottom:16px; letter-spacing:.04em; text-transform:uppercase; }
+    .vm-hero h1 { font-size:clamp(1.9rem,5vw,3rem); font-weight:900; line-height:1.15; margin-bottom:12px; }
+    .vm-hero p  { color:var(--text-secondary); max-width:560px; margin:0 auto 16px; font-size:1.05rem; line-height:1.7; }
 
-    /* ---- Main ---- */
-    .vm-main { max-width: 1200px; margin: 0 auto; padding: 20px 16px 60px; }
+    /* Main */
+    .vm-main { max-width:1200px; margin:0 auto; padding:20px 16px 60px; }
 
-    /* ---- Setup Card ---- */
-    .setup-card {
-      background: var(--bg-card); border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-xl); padding: 24px; margin-bottom: 18px;
-    }
-    .setup-title {
-      font-size: 0.82rem; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.08em; color: var(--text-secondary); margin-bottom: 18px;
-      display: flex; align-items: center; gap: 8px;
-    }
-    .setup-title span { font-size: 1rem; }
-
-    /* Two-column setup on desktop */
-    .setup-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    @media (max-width: 640px) { .setup-cols { grid-template-columns: 1fr; } }
-
-    .setup-col {
-      border-radius: var(--radius-lg); padding: 18px;
-      border: 1.5px solid var(--border-subtle); transition: border-color 0.3s;
-    }
-    .setup-col--yt  { border-color: rgba(239,68,68,0.25); background: rgba(239,68,68,0.04); }
-    .setup-col--mic { border-color: rgba(74,222,128,0.2); background: rgba(74,222,128,0.04); }
-    .setup-col--yt.connected  { border-color: rgba(239,68,68,0.55); }
-    .setup-col--mic.connected { border-color: rgba(74,222,128,0.5); }
-
-    .setup-col-label {
-      font-size: 0.75rem; font-weight: 800; text-transform: uppercase;
-      letter-spacing: 0.1em; margin-bottom: 10px;
-    }
-    .sc-yt  { color: #ef4444; }
-    .sc-mic { color: var(--live-color); }
-
-    .yt-url-row { display: flex; gap: 8px; margin-bottom: 12px; }
-    .yt-url-input {
-      flex: 1; background: rgba(0,0,0,0.3); border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-sm); padding: 9px 12px; color: var(--text-primary);
-      font-size: 0.88rem; outline: none; transition: border-color 0.2s;
-    }
-    .yt-url-input:focus { border-color: rgba(239,68,68,0.5); }
-    .yt-url-input::placeholder { color: var(--text-dim); }
-
-    .btn-sm {
-      border: none; border-radius: var(--radius-sm); padding: 9px 14px;
-      font-weight: 700; font-size: 0.82rem; cursor: pointer; white-space: nowrap;
-      transition: all 0.2s;
-    }
-    .btn-yt  { background: #ef4444; color: #fff; }
-    .btn-yt:hover  { background: #dc2626; }
-    .btn-share { background: rgba(0,212,255,0.12); color: var(--ref-color); border: 1.5px solid var(--ref-color); }
-    .btn-share:hover { background: rgba(0,212,255,0.22); }
-    .btn-share.connected { background: rgba(0,212,255,0.18); box-shadow: 0 0 12px var(--ref-glow); }
-    .btn-mic   { background: var(--live-bg); color: var(--live-color); border: 1.5px solid var(--live-color); }
-    .btn-mic:hover  { background: rgba(74,222,128,0.18); }
-    .btn-mic.connected { background: rgba(74,222,128,0.18); box-shadow: 0 0 12px var(--live-glow); }
-
-    .setup-step-desc { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 10px; }
-
-    .conn-status {
-      display: flex; align-items: center; gap: 6px;
-      font-size: 0.76rem; font-weight: 600; margin-top: 8px;
-    }
-    .conn-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--text-dim); flex-shrink: 0; }
-    .conn-dot.on-yt  { background: #ef4444; box-shadow: 0 0 6px rgba(239,68,68,0.6); animation: pdot 1.2s infinite; }
-    .conn-dot.on-mic { background: var(--live-color); box-shadow: 0 0 6px var(--live-glow); animation: pdot 1s infinite; }
+    /* Steps card */
+    .steps-card { background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-xl); padding:22px; margin-bottom:18px; }
+    .steps-title { font-size:.8rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--text-secondary); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+    .step-row { display:flex; align-items:flex-start; gap:14px; padding:14px 0; border-bottom:1px solid var(--border-subtle); }
+    .step-row:last-child { border-bottom:none; }
+    .step-num { width:28px; height:28px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:.8rem; font-weight:800; background:var(--gradient-cosmic); color:#fff; transition:all .3s; }
+    .step-num.done { background:var(--live-color); color:#000; }
+    .step-body { flex:1; }
+    .step-label { font-size:.9rem; font-weight:700; margin-bottom:4px; }
+    .step-desc  { font-size:.8rem; color:var(--text-secondary); line-height:1.6; }
+    .step-warn  { margin-top:6px; font-size:.78rem; color:var(--accent-gold); line-height:1.5; }
+    .step-action { margin-top:10px; }
+    .conn-status { display:flex; align-items:center; gap:6px; font-size:.76rem; font-weight:600; margin-top:8px; }
+    .conn-dot { width:7px; height:7px; border-radius:50%; background:var(--text-dim); flex-shrink:0; }
+    .conn-dot.on-yt  { background:#ef4444; box-shadow:0 0 6px rgba(239,68,68,.6); animation:pdot 1.2s infinite; }
+    .conn-dot.on-mic { background:var(--live-color); box-shadow:0 0 6px var(--live-glow); animation:pdot 1s infinite; }
     @keyframes pdot { 0%,100%{opacity:1}50%{opacity:.5} }
 
-    /* YouTube embed */
-    .yt-embed-wrap {
-      position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
-      border-radius: var(--radius-md); background: #000; margin-top: 12px;
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-    .yt-embed-wrap iframe { position: absolute; top:0; left:0; width:100%; height:100%; border:none; }
-    .yt-ph {
-      position: absolute; top:0; left:0; width:100%; height:100%;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      color: var(--text-dim); gap: 8px;
-    }
-    .yt-ph span { font-size: 2rem; }
-    .yt-ph p { font-size: 0.82rem; }
+    /* Buttons */
+    .btn-yt    { display:inline-block; background:#ef4444; color:#fff; border:none; border-radius:var(--radius-sm); padding:10px 20px; font-weight:700; font-size:.88rem; cursor:pointer; text-decoration:none; transition:all .2s; }
+    .btn-yt:hover { background:#dc2626; transform:translateY(-1px); }
+    .btn-share { background:rgba(0,212,255,.1); color:var(--ref-color); border:1.5px solid var(--ref-color); border-radius:var(--radius-sm); padding:10px 20px; font-weight:700; font-size:.88rem; cursor:pointer; transition:all .2s; }
+    .btn-share:hover,.btn-share.connected { background:rgba(0,212,255,.2); box-shadow:0 0 12px var(--ref-glow); }
+    .btn-mic   { background:var(--live-bg); color:var(--live-color); border:1.5px solid var(--live-color); border-radius:var(--radius-sm); padding:10px 20px; font-weight:700; font-size:.88rem; cursor:pointer; transition:all .2s; }
+    .btn-mic:hover,.btn-mic.connected { background:rgba(74,222,128,.2); box-shadow:0 0 12px var(--live-glow); }
 
-    /* Desktop tab-share tip */
-    .share-tip {
-      font-size: 0.75rem; color: var(--text-dim); background: rgba(0,212,255,0.05);
-      border: 1px solid rgba(0,212,255,0.15); border-radius: var(--radius-sm);
-      padding: 8px 12px; line-height: 1.5; margin-top: 10px;
-    }
-    .share-tip strong { color: var(--ref-color); }
+    /* Mobile notice */
+    .mobile-notice { padding:12px 16px; background:rgba(255,215,0,.06); border:1px solid rgba(255,215,0,.2); border-radius:var(--radius-md); font-size:.82rem; color:var(--accent-gold); line-height:1.6; display:none; }
 
-    /* Mobile fallback notice */
-    .mobile-notice {
-      font-size: 0.75rem; background: rgba(255,215,0,0.06);
-      border: 1px solid rgba(255,215,0,0.2); border-radius: var(--radius-sm);
-      padding: 8px 12px; color: var(--accent-gold); line-height: 1.5; margin-top: 10px;
-      display: none;
-    }
+    /* Control bar */
+    .ctrl-bar { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-lg); padding:12px 18px; margin-bottom:14px; }
+    .ctrl-state { display:flex; align-items:center; gap:8px; font-size:.86rem; font-weight:600; }
+    .ctrl-dot { width:10px; height:10px; border-radius:50%; background:var(--text-dim); transition:all .3s; }
+    .ctrl-dot.live { background:var(--live-color); box-shadow:0 0 10px var(--live-glow); animation:pdot 1s infinite; }
+    .ctrl-btns { display:flex; gap:8px; flex-wrap:wrap; }
+    .btn-go { background:linear-gradient(135deg,var(--ref-color),var(--live-color)); color:#000; border:none; border-radius:var(--radius-sm); padding:9px 20px; font-weight:800; font-size:.88rem; cursor:pointer; transition:all .2s; }
+    .btn-go:hover { opacity:.9; transform:translateY(-1px); }
+    .btn-go:disabled { opacity:.35; cursor:not-allowed; transform:none; }
+    .btn-stop-vm { background:rgba(239,68,68,.08); border:1.5px solid var(--accent-red); color:var(--accent-red); border-radius:var(--radius-sm); padding:9px 14px; font-weight:700; font-size:.85rem; cursor:pointer; transition:all .2s; display:none; }
+    .btn-reset-vm { background:transparent; border:1px solid var(--border-hover); color:var(--text-secondary); border-radius:var(--radius-sm); padding:9px 12px; font-size:.82rem; cursor:pointer; transition:all .2s; }
+    .btn-reset-vm:hover { color:var(--text-primary); }
 
-    /* ---- Control bar ---- */
-    .ctrl-bar {
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 10px; background: var(--bg-card);
-      border: 1px solid var(--border-subtle); border-radius: var(--radius-lg);
-      padding: 12px 18px; margin-bottom: 14px;
-    }
-    .ctrl-state { display: flex; align-items: center; gap: 8px; font-size: 0.86rem; font-weight: 600; }
-    .ctrl-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--text-dim); transition: all 0.3s; }
-    .ctrl-dot.live { background: var(--live-color); box-shadow: 0 0 10px var(--live-glow); animation: pdot 1s infinite; }
-    .ctrl-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+    /* Hint */
+    .vm-hint { font-size:.82rem; color:var(--text-secondary); text-align:center; background:rgba(157,78,221,.07); border:1px solid rgba(157,78,221,.15); border-radius:var(--radius-md); padding:10px 18px; margin-bottom:14px; }
 
-    .btn-go {
-      background: linear-gradient(135deg, var(--ref-color), var(--live-color));
-      color: #000; border: none; border-radius: var(--radius-sm);
-      padding: 9px 20px; font-weight: 800; font-size: 0.88rem; cursor: pointer; transition: all 0.2s;
-    }
-    .btn-go:hover { opacity: 0.9; transform: translateY(-1px); }
-    .btn-go:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-    .btn-stop-vm {
-      background: rgba(239,68,68,0.08); border: 1.5px solid var(--accent-red); color: var(--accent-red);
-      border-radius: var(--radius-sm); padding: 9px 14px; font-weight: 700; font-size: 0.85rem;
-      cursor: pointer; transition: all 0.2s; display: none;
-    }
-    .btn-reset-vm {
-      background: transparent; border: 1px solid var(--border-hover); color: var(--text-secondary);
-      border-radius: var(--radius-sm); padding: 9px 12px; font-size: 0.82rem; cursor: pointer; transition: all 0.2s;
-    }
-    .btn-reset-vm:hover { color: var(--text-primary); }
+    /* Analysis panels */
+    .vm-panels { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
+    @media(max-width:640px){ .vm-panels { grid-template-columns:1fr; } }
+    .vm-panel { background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-xl); padding:18px; transition:border-color .3s,box-shadow .3s; }
+    .vm-panel--ref  { border-color:rgba(0,212,255,.15); }
+    .vm-panel--live { border-color:rgba(74,222,128,.15); }
+    .vm-panel--ref.on  { border-color:rgba(0,212,255,.5);  box-shadow:0 0 28px rgba(0,212,255,.06); }
+    .vm-panel--live.on { border-color:rgba(74,222,128,.5); box-shadow:0 0 28px rgba(74,222,128,.06); }
+    .panel-hdr { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; }
+    .panel-lbl { font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.1em; margin-bottom:2px; }
+    .panel-lbl--ref  { color:var(--ref-color); }
+    .panel-lbl--live { color:var(--live-color); }
+    .panel-name { font-size:.95rem; font-weight:700; }
+    .pill { font-size:.68rem; font-weight:700; padding:3px 9px; border-radius:11px; text-transform:uppercase; letter-spacing:.05em; }
+    .pill-idle { background:rgba(255,255,255,.04); color:var(--text-dim); border:1px solid var(--border-subtle); }
+    .pill-ref  { background:var(--ref-bg);  color:var(--ref-color);  border:1px solid rgba(0,212,255,.25); }
+    .pill-live { background:var(--live-bg); color:var(--live-color); border:1px solid rgba(74,222,128,.25); }
+    .note-disp { text-align:center; padding:10px 0 6px; }
+    .note-big { font-size:3.5rem; font-weight:900; line-height:1; font-family:'Courier New',monospace; transition:all .1s; }
+    .note-big.idle { color:var(--text-dim); }
+    .note-big.ref  { color:var(--ref-color);  text-shadow:0 0 24px var(--ref-glow); }
+    .note-big.live { color:var(--live-color); text-shadow:0 0 24px var(--live-glow); }
+    .note-hz  { font-size:.78rem; color:var(--text-dim); margin-top:2px; font-family:'Courier New',monospace; }
+    .note-oct { display:inline-block; margin-top:3px; font-size:.7rem; font-weight:600; padding:2px 7px; border-radius:7px; background:rgba(255,255,255,.05); color:var(--text-secondary); }
+    .cv-wrap { background:rgba(0,0,0,.3); border-radius:var(--radius-sm); overflow:hidden; margin:6px 0; }
+    .cv-wave { display:block; width:100%; height:60px; }
+    .cv-spec { display:block; width:100%; height:44px; }
+    .panel-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-top:10px; }
+    .pstat { background:rgba(255,255,255,.03); border-radius:var(--radius-sm); padding:8px 6px; text-align:center; border:1px solid var(--border-subtle); }
+    .pstat-v { font-size:1rem; font-weight:800; font-family:'Courier New',monospace; }
+    .sv-idle { color:var(--text-dim); } .sv-ref { color:var(--ref-color); } .sv-live { color:var(--live-color); }
+    .pstat-l { font-size:.62rem; color:var(--text-dim); margin-top:2px; text-transform:uppercase; letter-spacing:.04em; }
+    .vrn-lbl { font-size:.62rem; text-transform:uppercase; letter-spacing:.06em; color:var(--text-dim); margin-top:10px; margin-bottom:3px; }
+    .vrn-box { font-family:'Courier New',monospace; font-size:.78rem; padding:7px 10px; background:rgba(0,0,0,.3); border-radius:var(--radius-sm); color:var(--accent-gold); border:1px solid rgba(255,215,0,.1); min-height:28px; }
 
-    /* ---- Hint ---- */
-    .vm-hint {
-      font-size: 0.82rem; color: var(--text-secondary); text-align: center;
-      background: rgba(157,78,221,0.07); border: 1px solid rgba(157,78,221,0.15);
-      border-radius: var(--radius-md); padding: 10px 18px; margin-bottom: 14px;
-    }
-
-    /* ---- Analysis panels ---- */
-    .vm-panels { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
-    @media (max-width: 640px) { .vm-panels { grid-template-columns: 1fr; } }
-
-    .vm-panel {
-      background: var(--bg-card); border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-xl); padding: 18px; transition: border-color 0.3s, box-shadow 0.3s;
-    }
-    .vm-panel--ref  { border-color: rgba(0,212,255,0.15); }
-    .vm-panel--live { border-color: rgba(74,222,128,0.15); }
-    .vm-panel--ref.on  { border-color: rgba(0,212,255,0.5);  box-shadow: 0 0 28px rgba(0,212,255,0.06); }
-    .vm-panel--live.on { border-color: rgba(74,222,128,0.5); box-shadow: 0 0 28px rgba(74,222,128,0.06); }
-
-    .panel-hdr { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
-    .panel-lbl { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 2px; }
-    .panel-lbl--ref  { color: var(--ref-color); }
-    .panel-lbl--live { color: var(--live-color); }
-    .panel-name { font-size: 0.95rem; font-weight: 700; }
-
-    .pill {
-      font-size: 0.68rem; font-weight: 700; padding: 3px 9px;
-      border-radius: 11px; text-transform: uppercase; letter-spacing: 0.05em;
-    }
-    .pill-idle { background: rgba(255,255,255,0.04); color: var(--text-dim); border: 1px solid var(--border-subtle); }
-    .pill-ref  { background: var(--ref-bg);  color: var(--ref-color);  border: 1px solid rgba(0,212,255,0.25); }
-    .pill-live { background: var(--live-bg); color: var(--live-color); border: 1px solid rgba(74,222,128,0.25); }
-
-    /* Note */
-    .note-disp { text-align: center; padding: 10px 0 6px; }
-    .note-big { font-size: 3.6rem; font-weight: 900; line-height: 1; font-family: 'Courier New', monospace; transition: all 0.1s; }
-    .note-big.idle { color: var(--text-dim); }
-    .note-big.ref  { color: var(--ref-color);  text-shadow: 0 0 24px var(--ref-glow); }
-    .note-big.live { color: var(--live-color); text-shadow: 0 0 24px var(--live-glow); }
-    .note-hz  { font-size: 0.78rem; color: var(--text-dim); margin-top: 2px; font-family: 'Courier New', monospace; }
-    .note-oct { display: inline-block; margin-top: 3px; font-size: 0.7rem; font-weight: 600; padding: 2px 7px; border-radius: 7px; background: rgba(255,255,255,0.05); color: var(--text-secondary); }
-
-    /* Waveform / spectrum */
-    .cv-wrap { background: rgba(0,0,0,0.3); border-radius: var(--radius-sm); overflow: hidden; margin: 6px 0; }
-    .cv-wave { display: block; width: 100%; height: 60px; }
-    .cv-spec { display: block; width: 100%; height: 44px; }
-
-    /* Stats */
-    .panel-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; margin-top: 10px; }
-    .pstat { background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: 8px 6px; text-align: center; border: 1px solid var(--border-subtle); }
-    .pstat-v { font-size: 1rem; font-weight: 800; font-family: 'Courier New', monospace; }
-    .sv-idle { color: var(--text-dim); }
-    .sv-ref  { color: var(--ref-color); }
-    .sv-live { color: var(--live-color); }
-    .pstat-l { font-size: 0.62rem; color: var(--text-dim); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.04em; }
-
-    /* VRN */
-    .vrn-lbl { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); margin-top: 10px; margin-bottom: 3px; }
-    .vrn-box {
-      font-family: 'Courier New', monospace; font-size: 0.78rem; padding: 7px 10px;
-      background: rgba(0,0,0,0.3); border-radius: var(--radius-sm);
-      color: var(--accent-gold); border: 1px solid rgba(255,215,0,0.1); min-height: 28px;
-    }
-
-    /* ---- Match panel ---- */
-    .match-panel {
-      background: var(--bg-card); border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-xl); padding: 20px; margin-bottom: 14px;
-    }
-    .match-title {
-      font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
-      color: var(--text-secondary); margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
-    }
+    /* Match panel */
+    .match-panel { background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-xl); padding:20px; margin-bottom:14px; }
+    .match-title { font-size:.8rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--text-secondary); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
     .match-title::before { content:''; width:8px; height:8px; border-radius:50%; background:var(--accent-gold); display:inline-block; }
-
-    .match-row { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
-    .match-pct { font-size: 4rem; font-weight: 900; line-height: 1; font-family: 'Courier New', monospace; transition: color 0.2s; color: var(--text-dim); }
-    .match-pct-lbl { font-size: 0.75rem; color: var(--text-dim); margin-top: 2px; }
-    .match-grade  { font-size: 1.3rem; font-weight: 800; padding: 5px 14px; border-radius: 11px; background: rgba(255,255,255,0.04); color: var(--text-dim); }
-    .match-phrase { font-size: 0.9rem; color: var(--text-secondary); flex: 1; min-width: 140px; }
-
-    .match-bar-bg   { margin-top: 14px; background: rgba(0,0,0,0.4); border-radius: 8px; height: 9px; overflow: hidden; border: 1px solid var(--border-subtle); }
-    .match-bar-fill { height: 100%; border-radius: 8px; background: linear-gradient(90deg,#ef4444,#ffd700,#4ade80); width: 0%; transition: width 0.12s ease-out; }
-
-    /* Needle */
-    .needle-row { display: flex; align-items: center; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
-    .needle-lbl { font-size: 0.72rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; }
-    .needle-val { font-family: 'Courier New', monospace; font-size: 0.9rem; font-weight: 700; color: var(--text-secondary); min-width: 80px; }
-    .needle-track { flex:1; min-width:90px; height:5px; position:relative; background:rgba(255,255,255,0.05); border-radius:5px; }
-    .needle-ctr   { position:absolute; left:50%; top:50%; width:2px; height:13px; transform:translate(-50%,-50%); background:rgba(255,255,255,0.25); border-radius:1px; }
-    .needle-thumb { position:absolute; top:50%; width:11px; height:11px; border-radius:50%; transform:translate(-50%,-50%); background:var(--accent-gold); box-shadow:0 0 7px rgba(255,215,0,0.5); transition:left 0.1s ease-out; left:50%; }
-
-    /* Dual overlay graph */
-    .overlay-wrap { border-radius:var(--radius-md); overflow:hidden; margin-top:14px; background:rgba(0,0,0,0.3); border:1px solid var(--border-subtle); }
+    .match-row { display:flex; align-items:center; gap:20px; flex-wrap:wrap; }
+    .match-pct { font-size:4rem; font-weight:900; line-height:1; font-family:'Courier New',monospace; transition:color .2s; color:var(--text-dim); }
+    .match-pct-lbl { font-size:.75rem; color:var(--text-dim); margin-top:2px; }
+    .match-grade  { font-size:1.3rem; font-weight:800; padding:5px 14px; border-radius:11px; background:rgba(255,255,255,.04); color:var(--text-dim); }
+    .match-phrase { font-size:.9rem; color:var(--text-secondary); flex:1; min-width:140px; }
+    .match-bar-bg   { margin-top:14px; background:rgba(0,0,0,.4); border-radius:8px; height:9px; overflow:hidden; border:1px solid var(--border-subtle); }
+    .match-bar-fill { height:100%; border-radius:8px; background:linear-gradient(90deg,#ef4444,#ffd700,#4ade80); width:0%; transition:width .12s ease-out; }
+    .needle-row { display:flex; align-items:center; gap:10px; margin-top:14px; flex-wrap:wrap; }
+    .needle-lbl { font-size:.72rem; color:var(--text-dim); text-transform:uppercase; letter-spacing:.06em; }
+    .needle-val { font-family:'Courier New',monospace; font-size:.9rem; font-weight:700; color:var(--text-secondary); min-width:80px; }
+    .needle-track { flex:1; min-width:90px; height:5px; position:relative; background:rgba(255,255,255,.05); border-radius:5px; }
+    .needle-ctr   { position:absolute; left:50%; top:50%; width:2px; height:13px; transform:translate(-50%,-50%); background:rgba(255,255,255,.25); border-radius:1px; }
+    .needle-thumb { position:absolute; top:50%; width:11px; height:11px; border-radius:50%; transform:translate(-50%,-50%); background:var(--accent-gold); box-shadow:0 0 7px rgba(255,215,0,.5); transition:left .1s ease-out; left:50%; }
+    .overlay-wrap { border-radius:var(--radius-md); overflow:hidden; margin-top:14px; background:rgba(0,0,0,.3); border:1px solid var(--border-subtle); }
     .overlay-cv   { display:block; width:100%; height:110px; }
-    .overlay-legend { display:flex; gap:14px; margin-top:7px; font-size:0.74rem; color:var(--text-dim); }
+    .overlay-legend { display:flex; gap:14px; margin-top:7px; font-size:.74rem; color:var(--text-dim); }
     .ldot { display:inline-block; width:13px; height:3px; vertical-align:middle; border-radius:2px; margin-right:4px; }
 
-    /* Perm error */
-    .perm-err {
-      padding:16px; border-radius:var(--radius-lg); background:rgba(239,68,68,0.07);
-      border:1px solid rgba(239,68,68,0.25); color:var(--accent-red); font-size:0.88rem;
-      text-align:center; display:none; margin-bottom:14px;
-    }
+    .perm-err { padding:16px; border-radius:var(--radius-lg); background:rgba(239,68,68,.07); border:1px solid rgba(239,68,68,.25); color:var(--accent-red); font-size:.88rem; text-align:center; display:none; margin-bottom:14px; }
+    .health-note { padding:10px 14px; background:rgba(239,68,68,.05); border:1px solid rgba(239,68,68,.16); border-radius:var(--radius-md); font-size:.75rem; line-height:1.5; color:rgba(255,255,255,.55); margin-bottom:14px; }
 
-    /* Health */
-    .health-note {
-      padding:10px 14px; background:rgba(239,68,68,0.05); border:1px solid rgba(239,68,68,0.16);
-      border-radius:var(--radius-md); font-size:0.75rem; line-height:1.5;
-      color:rgba(255,255,255,0.55); margin-bottom:14px;
-    }
-
-    @media (max-width:480px) {
-      .vm-hero h1 { font-size:1.7rem; }
-      .note-big { font-size:2.8rem; }
-      .match-pct { font-size:3rem; }
-      .yt-url-row { flex-direction:column; }
+    @media(max-width:480px){
+      .vm-hero h1 { font-size:1.7rem; } .note-big { font-size:2.8rem; } .match-pct { font-size:3rem; }
     }
   </style>
 </head>
@@ -315,7 +178,7 @@
         </div>
       </div>
       <div class="nav-dropdown">
-        <button class="nav-dropdown-btn">Tools &#9662;</button>
+        <button class="nav-dropdown-btn active">Tools &#9662;</button>
         <div class="nav-dropdown-menu">
           <a href="pitch-trainer.html">Pitch Trainer</a>
           <a href="sight-reading.html">Sight Reading</a>
@@ -333,11 +196,16 @@
   </nav>
   <script>function vsClose(){document.getElementById('vs-nav').classList.remove('open');document.getElementById('vs-hbg').classList.remove('open');}document.querySelectorAll('.nav-dropdown-btn').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();var d=b.parentElement,o=d.classList.contains('open');document.querySelectorAll('.nav-dropdown.open').forEach(function(x){x.classList.remove('open')});if(!o)d.classList.add('open')})});document.addEventListener('click',function(){document.querySelectorAll('.nav-dropdown.open').forEach(function(d){d.classList.remove('open')})})</script>
 
+  <!-- Pulsing return banner — shows when Edge switches away after sharing -->
+  <div class="return-banner" id="return-banner">
+    &#127909; YouTube audio is capturing! Click this bar or press <strong>Ctrl+Tab</strong> to come back here &#8594;
+  </div>
+
   <!-- Hero -->
   <section class="vm-hero">
     <div class="vm-badge">&#127776; Real-time Simultaneous Analysis</div>
     <h1><span class="text-gradient-nature">Hear Them.</span> <span class="text-gradient-cosmic">Match Them. Live.</span></h1>
-    <p>Both the YouTube vocalist and your live voice are analyzed <strong>at the same time</strong> — pitch, waveform, and match score all updating together in real time.</p>
+    <p>YouTube vocalist and your live voice analyzed <strong>simultaneously</strong> — pitch, waveform, and match score all updating at the same time.</p>
   </section>
 
   <div class="vm-main">
@@ -346,62 +214,74 @@
       <strong>&#128254; Microphone access denied.</strong> Allow mic access in your browser settings and reload.
     </div>
 
-    <!-- Setup Card -->
-    <div class="setup-card">
-      <div class="setup-title"><span>&#9881;</span> Connect Your Sources</div>
-      <div class="setup-cols">
+    <!-- Mobile notice -->
+    <div class="mobile-notice" id="mobile-notice">
+      &#128241; <strong>Mobile detected.</strong> Tab audio sharing requires desktop Chrome or Edge. On mobile, connect your mic and sing — the vocalist panel won't have a reference source, but you'll still get live pitch analysis of your voice.
+    </div>
 
-        <!-- YouTube column -->
-        <div class="setup-col setup-col--yt" id="col-yt">
-          <div class="setup-col-label sc-yt">&#9654; YouTube Vocalist</div>
-          <div class="setup-step-desc">Paste a YouTube URL to load the video, then share this tab's audio so we can analyze the vocalist live.</div>
-          <div class="yt-url-row">
-            <input type="text" id="yt-url" class="yt-url-input" placeholder="YouTube URL or video ID" autocomplete="off" autocorrect="off" spellcheck="false">
-            <button class="btn-sm btn-yt" onclick="loadYT()">&#9654; Load</button>
+    <!-- 3-step setup -->
+    <div class="steps-card">
+      <div class="steps-title">&#9881; Setup — 3 Steps</div>
+
+      <div class="step-row">
+        <div class="step-num" id="s1">1</div>
+        <div class="step-body">
+          <div class="step-label">Open YouTube in a new tab and start playing a video</div>
+          <div class="step-desc">Find the vocalist you want to match. Start the video. Then come back to this tab.</div>
+          <div class="step-action">
+            <a href="https://youtube.com" target="_blank" class="btn-yt" onclick="markDone('s1')">
+              &#9654; Open YouTube in New Tab
+            </a>
           </div>
-          <div class="yt-embed-wrap" id="yt-embed-wrap">
-            <div class="yt-ph" id="yt-ph"><span>&#127926;</span><p>Load a YouTube video above</p></div>
-            <div id="yt-frame" style="display:none;position:absolute;top:0;left:0;width:100%;height:100%;"></div>
+        </div>
+      </div>
+
+      <div class="step-row">
+        <div class="step-num" id="s2">2</div>
+        <div class="step-body">
+          <div class="step-label">Share the YouTube tab's audio to this analyzer</div>
+          <div class="step-desc">
+            Click below &rarr; select the <strong>YouTube tab</strong> from the list &rarr; make sure <strong>"Also share tab audio"</strong> is ON &rarr; click Share.
           </div>
-          <button class="btn-sm btn-share" id="btn-share" onclick="connectYTAudio()" style="margin-top:12px;width:100%;">
-            &#128250; Share This Tab's Audio
-          </button>
-          <div class="share-tip" id="share-tip">
-            <strong>Desktop:</strong> Click Share Tab Audio above &#8594; select this tab in the dialog &#8594; check <strong>"Share tab audio"</strong> &#8594; click Share. YouTube then plays and we analyze it live.
+          <div class="step-warn">
+            &#9888; After clicking Share, Edge will switch to the YouTube tab — that's normal. The audio capture keeps running in the background. <strong>Press Ctrl+Tab or click the Vocalist Match tab to come back here.</strong> A green banner will guide you back.
           </div>
-          <div class="mobile-notice" id="mobile-notice">
-            &#128241; <strong>On mobile?</strong> Tab audio sharing isn't supported. Play YouTube through your speaker and use the mic to capture both sounds together.
+          <div class="step-action">
+            <button class="btn-share" id="btn-share" onclick="connectYTAudio()">
+              &#128250; Share YouTube Tab Audio
+            </button>
           </div>
           <div class="conn-status">
             <div class="conn-dot" id="yt-dot"></div>
             <span id="yt-conn-txt">Not connected</span>
           </div>
         </div>
+      </div>
 
-        <!-- Mic column -->
-        <div class="setup-col setup-col--mic" id="col-mic">
-          <div class="setup-col-label sc-mic">&#127774; Your Live Voice</div>
-          <div class="setup-step-desc">Connect your microphone so we can analyze your voice in real time while the YouTube vocalist plays.</div>
-          <button class="btn-sm btn-mic" id="btn-mic" onclick="connectMic()" style="width:100%;padding:14px;">
-            &#127908; Connect Microphone
-          </button>
-          <div class="share-tip" style="margin-top:10px;">
-            <strong>Tip:</strong> Use headphones so your mic only picks up your voice, not the YouTube audio playing through speakers.
+      <div class="step-row">
+        <div class="step-num" id="s3">3</div>
+        <div class="step-body">
+          <div class="step-label">Connect your microphone</div>
+          <div class="step-desc">Use headphones so your mic only picks up your voice, not the YouTube audio from speakers. Then press Analyze.</div>
+          <div class="step-action">
+            <button class="btn-mic" id="btn-mic" onclick="connectMic()">
+              &#127908; Connect Microphone
+            </button>
           </div>
-          <div class="conn-status" style="margin-top:10px;">
+          <div class="conn-status">
             <div class="conn-dot" id="mic-dot"></div>
             <span id="mic-conn-txt">Not connected</span>
           </div>
         </div>
-
       </div>
+
     </div>
 
     <!-- Control bar -->
     <div class="ctrl-bar">
       <div class="ctrl-state">
         <div class="ctrl-dot" id="ctrl-dot"></div>
-        <span id="ctrl-txt">Connect both sources above, then press Analyze</span>
+        <span id="ctrl-txt">Complete steps above, then press Analyze</span>
       </div>
       <div class="ctrl-btns">
         <button class="btn-go" id="btn-go" onclick="startAnalysis()" disabled>&#9654; Analyze Both Live</button>
@@ -410,27 +290,21 @@
       </div>
     </div>
 
-    <!-- Hint -->
     <div class="vm-hint" id="vm-hint">
-      <strong>Step 1:</strong> Load a YouTube video and share this tab's audio. <strong>Step 2:</strong> Connect your mic. <strong>Step 3:</strong> Press Analyze — both sides update live simultaneously.
+      Complete all 3 steps above, then press <strong>Analyze Both Live</strong>.
     </div>
 
-    <!-- Analysis Panels -->
+    <!-- Dual analysis panels -->
     <div class="vm-panels">
-
-      <!-- Reference panel -->
       <div class="vm-panel vm-panel--ref" id="panel-ref">
         <div class="panel-hdr">
-          <div>
-            <div class="panel-lbl panel-lbl--ref">&#127926; YouTube Vocalist</div>
-            <div class="panel-name">Tab Audio</div>
-          </div>
+          <div><div class="panel-lbl panel-lbl--ref">&#127926; YouTube Vocalist</div><div class="panel-name">Tab Audio</div></div>
           <span class="pill pill-idle" id="ref-badge">Idle</span>
         </div>
         <div class="note-disp">
           <div class="note-big idle" id="ref-note">--</div>
-          <div class="note-hz"       id="ref-freq">-- Hz</div>
-          <div class="note-oct"      id="ref-oct">Octave --</div>
+          <div class="note-hz" id="ref-freq">-- Hz</div>
+          <div class="note-oct" id="ref-oct">Octave --</div>
         </div>
         <div class="cv-wrap"><canvas class="cv-wave" id="ref-wave"></canvas></div>
         <div class="cv-wrap"><canvas class="cv-spec" id="ref-spec"></canvas></div>
@@ -443,19 +317,15 @@
         <div class="vrn-box" id="ref-vrn">—</div>
       </div>
 
-      <!-- Live panel -->
       <div class="vm-panel vm-panel--live" id="panel-live">
         <div class="panel-hdr">
-          <div>
-            <div class="panel-lbl panel-lbl--live">&#127774; Your Live Voice</div>
-            <div class="panel-name">Microphone</div>
-          </div>
+          <div><div class="panel-lbl panel-lbl--live">&#127774; Your Live Voice</div><div class="panel-name">Microphone</div></div>
           <span class="pill pill-idle" id="live-badge">Idle</span>
         </div>
         <div class="note-disp">
           <div class="note-big idle" id="live-note">--</div>
-          <div class="note-hz"       id="live-freq">-- Hz</div>
-          <div class="note-oct"      id="live-oct">Octave --</div>
+          <div class="note-hz" id="live-freq">-- Hz</div>
+          <div class="note-oct" id="live-oct">Octave --</div>
         </div>
         <div class="cv-wrap"><canvas class="cv-wave" id="live-wave"></canvas></div>
         <div class="cv-wrap"><canvas class="cv-spec" id="live-spec"></canvas></div>
@@ -467,32 +337,26 @@
         <div class="vrn-lbl">VRN Snapshot</div>
         <div class="vrn-box" id="live-vrn">—</div>
       </div>
-
     </div>
 
     <!-- Match panel -->
     <div class="match-panel">
       <div class="match-title">Live Match Score</div>
       <div class="match-row">
-        <div>
-          <div class="match-pct" id="match-pct">--%</div>
-          <div class="match-pct-lbl">Vocal Match</div>
-        </div>
+        <div><div class="match-pct" id="match-pct">--%</div><div class="match-pct-lbl">Vocal Match</div></div>
         <div class="match-grade"  id="match-grade">—</div>
-        <div class="match-phrase" id="match-phrase">Connect both sources and press Analyze to start.</div>
+        <div class="match-phrase" id="match-phrase">Connect both sources and press Analyze to begin.</div>
       </div>
       <div class="match-bar-bg"><div class="match-bar-fill" id="match-bar"></div></div>
       <div class="needle-row">
         <div class="needle-lbl">Pitch Offset</div>
-        <div class="needle-val"  id="needle-val">-- cents</div>
+        <div class="needle-val" id="needle-val">-- cents</div>
         <div class="needle-track">
           <div class="needle-ctr"></div>
           <div class="needle-thumb" id="needle"></div>
         </div>
       </div>
-      <div class="overlay-wrap">
-        <canvas class="overlay-cv" id="overlay-cv"></canvas>
-      </div>
+      <div class="overlay-wrap"><canvas class="overlay-cv" id="overlay-cv"></canvas></div>
       <div class="overlay-legend">
         <span><span class="ldot" style="background:var(--ref-color)"></span>Vocalist</span>
         <span><span class="ldot" style="background:var(--live-color)"></span>Your Voice</span>
@@ -500,12 +364,11 @@
     </div>
 
     <div class="health-note">
-      <strong style="color:#f87171;">&#9888; Voice Health:</strong> Stop immediately if you feel strain, pain, or hoarseness. This tool is educational — not a substitute for a vocal coach or ENT professional.
+      <strong style="color:#f87171;">&#9888; Voice Health:</strong> Stop immediately if you feel strain or hoarseness. Educational tool only — not a substitute for a vocal coach or ENT professional.
     </div>
 
-  </div>
+  </div><!-- /vm-main -->
 
-  <!-- Footer -->
   <footer class="footer">
     <p>
       &#169; 2002-2026 VoiceStry. All Rights Reserved.<br>
@@ -513,468 +376,226 @@
       <a href="voice-analyzer.html">Live Analyzer</a> | <a href="vocalist-match.html">Vocalist Match</a><br><br>
       Part of the <a href="https://aiunites.github.io/aiunites-site/">AIUNITES</a> network
     </p>
-    <div style="margin-top:0.75rem;padding-top:0.75rem;border-top:1px solid rgba(255,255,255,0.1);font-size:0.75rem;color:rgba(255,255,255,0.4);text-align:center;">
-      <a href="https://aiunites.github.io/aiunites-site/legal.html#privacy" style="color:rgba(255,255,255,0.4);margin:0 8px;">Privacy</a> &middot;
-      <a href="https://aiunites.github.io/aiunites-site/legal.html#terms" style="color:rgba(255,255,255,0.4);margin:0 8px;">Terms</a>
+    <div style="margin-top:.75rem;padding-top:.75rem;border-top:1px solid rgba(255,255,255,.1);font-size:.75rem;color:rgba(255,255,255,.4);text-align:center;">
+      <a href="https://aiunites.github.io/aiunites-site/legal.html#privacy" style="color:rgba(255,255,255,.4);margin:0 8px;">Privacy</a> &middot;
+      <a href="https://aiunites.github.io/aiunites-site/legal.html#terms" style="color:rgba(255,255,255,.4);margin:0 8px;">Terms</a>
     </div>
   </footer>
 
-  <!-- ============================================================ -->
-  <!-- ENGINE — both streams analyzed simultaneously in one RAF loop -->
-  <!-- ============================================================ -->
   <script>
   (function(){
     'use strict';
+    var NOTES=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+    var HIST=220, MIN_F=60, MAX_F=1400;
+    var audioCtx=null, ytAn=null, micAn=null, ytStream=null, micStream=null;
+    var ytOk=false, micOk=false, running=false, raf=null, t0=null;
+    var refH=[], liveH=[];
+    var CV={ rw:g('ref-wave'),rs:g('ref-spec'),lw:g('live-wave'),ls:g('live-spec'),ov:g('overlay-cv') };
 
-    var NOTES    = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
-    var HIST_LEN = 220;
-    var MIN_F    = 60;
-    var MAX_F    = 1400;
+    function g(i){ return document.getElementById(i); }
+    function rcv(c){ var r=c.getBoundingClientRect(),d=window.devicePixelRatio||1; c.width=Math.round(r.width*d); c.height=Math.round(r.height*d); }
+    function rAll(){ Object.values(CV).forEach(rcv); }
+    window.addEventListener('resize',rAll); setTimeout(rAll,300);
 
-    // Audio state
-    var audioCtx     = null;
-    var ytAnalyser   = null;  // tab audio (YouTube)
-    var micAnalyser  = null;  // microphone
-    var ytStream     = null;
-    var micStream    = null;
-    var ytConnected  = false;
-    var micConnected = false;
+    var isMob=/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)||!navigator.mediaDevices||!navigator.mediaDevices.getDisplayMedia;
+    if(isMob) g('mobile-notice').style.display='block';
 
-    // Animation
-    var raf       = null;
-    var running   = false;
-    var startTime = null;
+    function ctx(){ if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)(); if(audioCtx.state==='suspended') audioCtx.resume(); }
 
-    // History for overlay graph
-    var refHist  = [];
-    var liveHist = [];
+    // Step done marker
+    window.markDone = function(id){ var el=g(id); if(!el)return; el.className='step-num done'; el.textContent='\u2713'; };
 
-    // Canvases
-    var CV = {
-      rw: id('ref-wave'), rs: id('ref-spec'),
-      lw: id('live-wave'),ls: id('live-spec'),
-      ov: id('overlay-cv')
-    };
-
-    function id(i){ return document.getElementById(i); }
-
-    function resizeCv(c){
-      var r=c.getBoundingClientRect(), dpr=window.devicePixelRatio||1;
-      c.width=Math.round(r.width*dpr); c.height=Math.round(r.height*dpr);
-    }
-    function resizeAll(){ Object.values(CV).forEach(resizeCv); }
-    window.addEventListener('resize', resizeAll);
-    setTimeout(resizeAll, 300);
-
-    // Detect mobile — show mobile notice, hide desktop tip
-    var isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) || !navigator.mediaDevices.getDisplayMedia;
-    if(isMobile){
-      id('mobile-notice').style.display='block';
-      id('share-tip').style.display='none';
-    }
-
-    // ---- AudioContext lazy init ----
-    function ensureCtx(){
-      if(!audioCtx){
-        audioCtx = new (window.AudioContext||window.webkitAudioContext)();
-      }
-      if(audioCtx.state==='suspended') audioCtx.resume();
-    }
-
-    // ---- YouTube audio via getDisplayMedia ----
+    // ---- YouTube tab audio ----
     window.connectYTAudio = async function(){
-      if(isMobile){ alert('Tab audio sharing is not supported on mobile. Use a desktop browser for simultaneous analysis.'); return; }
-      if(!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia){
-        alert('Your browser does not support tab audio sharing. Use Chrome or Edge on desktop.'); return;
-      }
+      if(isMob){ alert('Tab audio sharing needs desktop Chrome or Edge.'); return; }
       try {
-        ensureCtx();
-        // Request screen/tab capture with audio
+        ctx();
         var stream = await navigator.mediaDevices.getDisplayMedia({
-          video: { width:1, height:1, frameRate:1 }, // minimal video required to get audio
-          audio: { echoCancellation:false, noiseSuppression:false, autoGainControl:false }
+          video:{width:1,height:1,frameRate:1},
+          audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}
         });
-        // Check we actually got audio
-        var audioTracks = stream.getAudioTracks();
-        if(!audioTracks.length){
-          alert('No audio track captured. When sharing, make sure to check "Share tab audio" in the dialog.');
-          stream.getTracks().forEach(function(t){t.stop();});
-          return;
+        var atracks = stream.getAudioTracks();
+        if(!atracks.length){
+          alert('No audio captured. Make sure "Also share tab audio" is checked in the dialog.');
+          stream.getTracks().forEach(function(t){t.stop()}); return;
         }
-        // Stop any video tracks we don't need
-        stream.getVideoTracks().forEach(function(t){t.stop();});
-        ytStream = stream;
-        ytAnalyser = audioCtx.createAnalyser();
-        ytAnalyser.fftSize = 4096;
-        ytAnalyser.smoothingTimeConstant = 0.65;
-        audioCtx.createMediaStreamSource(stream).connect(ytAnalyser);
-        ytConnected = true;
-        id('col-yt').classList.add('connected');
-        id('btn-share').classList.add('connected');
-        id('btn-share').textContent = '&#10003; Tab Audio Connected';
-        id('yt-dot').className = 'conn-dot on-yt';
-        id('yt-conn-txt').textContent = 'Tab audio connected';
+        stream.getVideoTracks().forEach(function(t){t.stop()});
+        ytStream=stream;
+        ytAn=audioCtx.createAnalyser(); ytAn.fftSize=4096; ytAn.smoothingTimeConstant=0.65;
+        audioCtx.createMediaStreamSource(stream).connect(ytAn);
+        ytOk=true;
+        g('btn-share').classList.add('connected'); g('btn-share').textContent='\u2713 YouTube Audio Connected';
+        g('yt-dot').className='conn-dot on-yt'; g('yt-conn-txt').textContent='YouTube tab audio connected';
+        markDone('s2');
+        // Show return banner; hide once user comes back
+        g('return-banner').classList.add('show');
+        function onVis(){ if(document.visibilityState==='visible'){ g('return-banner').classList.remove('show'); document.removeEventListener('visibilitychange',onVis); } }
+        document.addEventListener('visibilitychange',onVis);
         checkReady();
-        // Handle user stopping the share from browser UI
-        audioTracks[0].addEventListener('ended', function(){
-          ytConnected=false; ytAnalyser=null;
-          id('col-yt').classList.remove('connected');
-          id('btn-share').classList.remove('connected');
-          id('btn-share').textContent = '&#128250; Share This Tab\'s Audio';
-          id('yt-dot').className='conn-dot';
-          id('yt-conn-txt').textContent='Disconnected — reshare to reconnect';
-          checkReady();
-          if(running) stopAnalysis();
+        atracks[0].addEventListener('ended',function(){
+          ytOk=false; ytAn=null;
+          g('btn-share').classList.remove('connected'); g('btn-share').textContent='\u21ba Reshare YouTube Tab';
+          g('yt-dot').className='conn-dot'; g('yt-conn-txt').textContent='Disconnected \u2014 click to reshare';
+          checkReady(); if(running) stopAnalysis();
         });
-      } catch(e){
-        if(e.name !== 'AbortError' && e.name !== 'NotAllowedError'){
-          alert('Could not capture tab audio: ' + e.message);
-        }
-      }
+      } catch(e){ if(e.name!=='AbortError'&&e.name!=='NotAllowedError') alert('Could not capture tab audio: '+e.message); }
     };
 
     // ---- Microphone ----
     window.connectMic = async function(){
       try {
-        ensureCtx();
-        var stream = await navigator.mediaDevices.getUserMedia({
-          audio:{ echoCancellation:false, noiseSuppression:false, autoGainControl:false },
-          video:false
-        });
-        micStream = stream;
-        micAnalyser = audioCtx.createAnalyser();
-        micAnalyser.fftSize = 4096;
-        micAnalyser.smoothingTimeConstant = 0.6;
-        audioCtx.createMediaStreamSource(stream).connect(micAnalyser);
-        micConnected = true;
-        id('col-mic').classList.add('connected');
-        id('btn-mic').classList.add('connected');
-        id('btn-mic').textContent = '&#10003; Microphone Connected';
-        id('mic-dot').className = 'conn-dot on-mic';
-        id('mic-conn-txt').textContent = 'Microphone connected';
-        checkReady();
-      } catch(e){
-        id('perm-err').style.display = 'block';
-      }
+        ctx();
+        var stream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false},video:false});
+        micStream=stream;
+        micAn=audioCtx.createAnalyser(); micAn.fftSize=4096; micAn.smoothingTimeConstant=0.6;
+        audioCtx.createMediaStreamSource(stream).connect(micAn);
+        micOk=true;
+        g('btn-mic').classList.add('connected'); g('btn-mic').textContent='\u2713 Microphone Connected';
+        g('mic-dot').className='conn-dot on-mic'; g('mic-conn-txt').textContent='Microphone connected';
+        markDone('s3'); checkReady();
+      } catch(e){ g('perm-err').style.display='block'; }
     };
 
-    // ---- YouTube loader ----
-    window.loadYT = function(){
-      var raw = id('yt-url').value.trim();
-      if(!raw) return;
-      var vid = extractId(raw);
-      if(!vid){ alert('Could not find a YouTube video ID. Try pasting the full URL.'); return; }
-      id('yt-ph').style.display = 'none';
-      var f = id('yt-frame');
-      f.style.display = 'block';
-      f.innerHTML = '<iframe src="https://www.youtube.com/embed/'+vid+'?autoplay=1&rel=0&modestbranding=1" allowfullscreen allow="autoplay; encrypted-media"></iframe>';
-      hint('Video loaded! Now click <strong style="color:var(--ref-color)">Share This Tab\'s Audio</strong> to connect the vocalist analysis.');
-    };
-    id('yt-url').addEventListener('keydown', function(e){ if(e.key==='Enter') window.loadYT(); });
-
-    function extractId(s){
-      var m = s.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([A-Za-z0-9_-]{11})/);
-      if(m) return m[1];
-      if(/^[A-Za-z0-9_-]{11}$/.test(s)) return s;
-      return null;
-    }
-
-    // ---- Ready check ----
     function checkReady(){
-      var go = id('btn-go');
-      // On mobile, only mic is needed
-      var ready = isMobile ? micConnected : (ytConnected && micConnected);
-      go.disabled = !ready;
-      if(ready){
-        hint('Both sources connected! Press <strong style="color:#4ade80">&#9654; Analyze Both Live</strong> to start.');
-        id('ctrl-txt').textContent = 'Ready — press Analyze to start';
-      } else if(ytConnected && !micConnected){
-        hint('YouTube audio connected! Now connect your <strong style="color:var(--live-color)">microphone</strong>.');
-        id('ctrl-txt').textContent = 'Connect your microphone to continue';
-      } else if(!ytConnected && micConnected){
-        hint('Microphone connected! Now <strong style="color:var(--ref-color)">Share This Tab\'s Audio</strong> for the vocalist.');
-        id('ctrl-txt').textContent = 'Share tab audio to continue';
-      }
+      var ready=isMob?micOk:(ytOk&&micOk);
+      g('btn-go').disabled=!ready;
+      if(ready) hint('&#10003; Ready! Press <strong style="color:#4ade80">&#9654; Analyze Both Live</strong>');
+      else if(ytOk&&!micOk) hint('YouTube connected. Now connect your <strong style="color:var(--live-color)">microphone</strong>.');
+      else if(!ytOk&&micOk) hint('Mic connected. Now share the <strong style="color:var(--ref-color)">YouTube tab audio</strong>.');
     }
 
-    // ---- Pitch detection (autocorrelation) ----
-    function detectPitch(buf, sampleRate){
-      var mn = Math.floor(sampleRate/MAX_F);
-      var mx = Math.floor(sampleRate/MIN_F);
-      var n  = buf.length;
-      var rms = 0;
-      for(var i=0;i<n;i++) rms+=buf[i]*buf[i];
-      rms = Math.sqrt(rms/n);
-      if(rms < 0.003) return { freq:null, clarity:0, rms:rms };
-
-      var ac = new Float32Array(mx+1);
-      for(var tau=mn;tau<=mx;tau++){
-        var s=0; for(var j=0;j<n-mx;j++) s+=buf[j]*buf[j+tau]; ac[tau]=s;
-      }
-      var best=-1, bestV=-1, up=false;
+    // ---- Pitch detection ----
+    function pitch(buf,sr){
+      var mn=Math.floor(sr/MAX_F),mx=Math.floor(sr/MIN_F),n=buf.length,rms=0;
+      for(var i=0;i<n;i++) rms+=buf[i]*buf[i]; rms=Math.sqrt(rms/n);
+      if(rms<0.003) return {f:null,cl:0};
+      var ac=new Float32Array(mx+1);
+      for(var tau=mn;tau<=mx;tau++){ var s=0; for(var j=0;j<n-mx;j++) s+=buf[j]*buf[j+tau]; ac[tau]=s; }
+      var best=-1,bv=-1,up=false;
       for(var t=mn+1;t<=mx;t++){
-        if(ac[t]>ac[t-1]){ up=true; }
-        else if(up&&ac[t]<ac[t-1]){ if(ac[t-1]>bestV){ bestV=ac[t-1]; best=t-1; } up=false; }
+        if(ac[t]>ac[t-1]){up=true;}
+        else if(up&&ac[t]<ac[t-1]){if(ac[t-1]>bv){bv=ac[t-1];best=t-1;}up=false;}
       }
-      if(best<0) return { freq:null, clarity:0, rms:rms };
-      var a0=ac[best-1]||0,a1=ac[best],a2=ac[best+1]||0;
-      var d=(a0-a2)/(2*(a0-2*a1+a2))||0;
-      var freq=sampleRate/(best+d);
-      var clarity=Math.max(0,Math.min(100,Math.round((bestV/(rms*rms*(n-mx)))*100)));
-      return { freq:freq, clarity:clarity, rms:rms };
+      if(best<0) return {f:null,cl:0};
+      var a0=ac[best-1]||0,a1=ac[best],a2=ac[best+1]||0,d=(a0-a2)/(2*(a0-2*a1+a2))||0;
+      return {f:sr/(best+d), cl:Math.max(0,Math.min(100,Math.round((bv/(rms*rms*(n-mx)))*100)))};
     }
+    function fToNote(f){ if(!f||f<=0)return{n:'--',oct:-1,c:0}; var m=12*Math.log2(f/440)+69,mr=Math.round(m); return{n:NOTES[((mr%12)+12)%12],oct:Math.floor(mr/12)-1,c:Math.round((m-mr)*100)}; }
+    function vrn(ni,cl){ if(!ni||ni.n==='--')return'—'; var g=ni.oct>=5?'H++':ni.oct===4?'M+':'C+'; return'['+g+', '+(cl>70?'Cl++':cl>40?'Cl+':'Cl-')+'] '+ni.n+ni.oct; }
+    function rmsDb(buf){ var s=0; for(var i=0;i<buf.length;i++)s+=buf[i]*buf[i]; return Math.max(-60,Math.round(20*Math.log10(Math.sqrt(s/buf.length)||0.0001)))+'dB'; }
+    function fl(tb){ var f=new Float32Array(tb.length); for(var i=0;i<tb.length;i++)f[i]=(tb[i]-128)/128; return f; }
 
-    function freqToNote(f){
-      if(!f||f<=0) return {name:'--',oct:-1,cents:0};
-      var midi=12*Math.log2(f/440)+69, mr=Math.round(midi);
-      return {name:NOTES[((mr%12)+12)%12], oct:Math.floor(mr/12)-1, cents:Math.round((midi-mr)*100)};
-    }
+    // ---- Draw ----
+    function dWave(c,tb,col){ rcv(c); var ctx2=c.getContext('2d'),w=c.width,h=c.height,d=window.devicePixelRatio||1; ctx2.clearRect(0,0,w,h); ctx2.strokeStyle=col; ctx2.lineWidth=1.5*d; ctx2.beginPath(); var sw=w/tb.length,x=0; for(var i=0;i<tb.length;i++){var y=(tb[i]/128)*h/2;i===0?ctx2.moveTo(x,y):ctx2.lineTo(x,y);x+=sw;} ctx2.stroke(); }
+    function dSpec(c,fb,col){ rcv(c); var ctx2=c.getContext('2d'),w=c.width,h=c.height,bw=Math.max(1,Math.floor(w/(fb.length/4))),nb=Math.floor(w/bw),gg=ctx2.createLinearGradient(0,h,0,0); gg.addColorStop(0,col+'33'); gg.addColorStop(1,col+'cc'); ctx2.fillStyle=gg; ctx2.clearRect(0,0,w,h); for(var i=0;i<nb;i++){var bh=Math.max(1,((fb[i]||0)/255)*h);ctx2.fillRect(i*bw,h-bh,bw-1,bh);} }
+    function dOv(){ var c=CV.ov; rcv(c); var ctx2=c.getContext('2d'),w=c.width,h=c.height,d=window.devicePixelRatio||1; ctx2.clearRect(0,0,w,h); ctx2.strokeStyle='rgba(255,255,255,.04)'; ctx2.lineWidth=1; for(var i=1;i<4;i++){ctx2.beginPath();ctx2.moveTo(0,h*i/4);ctx2.lineTo(w,h*i/4);ctx2.stroke();} function line(hist,col){if(hist.length<2)return;ctx2.strokeStyle=col;ctx2.lineWidth=2*d;ctx2.lineJoin='round';ctx2.beginPath();var mn=80,mx2=900;for(var j=0;j<hist.length;j++){var f=hist[j];if(!f)continue;var xp=(j/(HIST-1))*w,yp=h-((Math.log2(f/mn)/Math.log2(mx2/mn))*h);yp=Math.max(2,Math.min(h-2,yp));(!j||!hist[j-1])?ctx2.moveTo(xp,yp):ctx2.lineTo(xp,yp);}ctx2.stroke();} line(refH,'#00d4ff'); line(liveH,'#4ade80'); }
 
-    function toVRN(ni,clarity){
-      if(!ni||ni.name==='--') return '—';
-      var gear=ni.oct>=5?'H++':ni.oct===4?'M+':'C+';
-      var cl=clarity>70?'Cl++':clarity>40?'Cl+':'Cl-';
-      return '['+gear+', '+cl+'] '+ni.name+ni.oct;
-    }
-
-    function rmsToDb(rms){
-      if(rms<=0) return -Infinity;
-      return Math.round(20*Math.log10(rms));
-    }
-
-    // ---- Drawing ----
-    function drawWave(c,tb,col){
-      resizeCv(c);
-      var ctx=c.getContext('2d'),w=c.width,h=c.height,dpr=window.devicePixelRatio||1;
-      ctx.clearRect(0,0,w,h);
-      ctx.strokeStyle=col; ctx.lineWidth=1.5*dpr; ctx.beginPath();
-      var sw=w/tb.length,x=0;
-      for(var i=0;i<tb.length;i++){
-        var y=(tb[i]/128)*h/2;
-        i===0?ctx.moveTo(x,y):ctx.lineTo(x,y); x+=sw;
-      }
-      ctx.stroke();
-    }
-    function drawSpec(c,fb,col){
-      resizeCv(c);
-      var ctx=c.getContext('2d'),w=c.width,h=c.height;
-      ctx.clearRect(0,0,w,h);
-      var bw=Math.max(1,Math.floor(w/(fb.length/4)));
-      var g=ctx.createLinearGradient(0,h,0,0);
-      g.addColorStop(0,col+'33'); g.addColorStop(1,col+'cc');
-      ctx.fillStyle=g;
-      var nb=Math.floor(w/bw);
-      for(var i=0;i<nb;i++){ var bh=Math.max(1,((fb[i]||0)/255)*h); ctx.fillRect(i*bw,h-bh,bw-1,bh); }
-    }
-    function drawOverlay(){
-      var c=CV.ov; resizeCv(c);
-      var ctx=c.getContext('2d'),w=c.width,h=c.height,dpr=window.devicePixelRatio||1;
-      ctx.clearRect(0,0,w,h);
-      ctx.strokeStyle='rgba(255,255,255,0.04)'; ctx.lineWidth=1;
-      for(var i=1;i<4;i++){ ctx.beginPath(); ctx.moveTo(0,h*i/4); ctx.lineTo(w,h*i/4); ctx.stroke(); }
-      function line(hist,col){
-        if(hist.length<2) return;
-        ctx.strokeStyle=col; ctx.lineWidth=2*dpr; ctx.lineJoin='round'; ctx.beginPath();
-        var mnf=80,mxf=900;
-        for(var j=0;j<hist.length;j++){
-          var f=hist[j]; if(!f) continue;
-          var xp=(j/(HIST_LEN-1))*w;
-          var yp=h-((Math.log2(f/mnf)/Math.log2(mxf/mnf))*h);
-          yp=Math.max(2,Math.min(h-2,yp));
-          (!j||!hist[j-1])?ctx.moveTo(xp,yp):ctx.lineTo(xp,yp);
-        }
-        ctx.stroke();
-      }
-      line(refHist,'#00d4ff');
-      line(liveHist,'#4ade80');
-    }
-
-    // ---- Main analysis loop — both streams simultaneously ----
+    // ---- Main loop ----
     window.startAnalysis = function(){
       if(running) return;
-      running=true; startTime=Date.now();
-      id('ctrl-dot').className='ctrl-dot live';
-      id('ctrl-txt').textContent='Analyzing live — sing along!';
-      id('btn-go').style.display='none';
-      id('btn-stop').style.display='inline-block';
-      id('panel-ref').classList.add('on');
-      id('panel-live').classList.add('on');
-      setPill('ref','LIVE','pill-ref');
-      setPill('live','LIVE','pill-live');
-      hint('&#127909; Both sources are live! Watch both panels update simultaneously as the vocalist sings and you sing along.');
-
-      var sr = audioCtx.sampleRate;
-      var ytTB  = ytAnalyser  ? new Uint8Array(ytAnalyser.fftSize)  : null;
-      var ytFB  = ytAnalyser  ? new Uint8Array(ytAnalyser.frequencyBinCount) : null;
-      var micTB = new Uint8Array(micAnalyser.fftSize);
-      var micFB = new Uint8Array(micAnalyser.frequencyBinCount);
-
+      running=true; t0=Date.now();
+      g('ctrl-dot').className='ctrl-dot live'; g('ctrl-txt').textContent='Analyzing live — sing along!';
+      g('btn-go').style.display='none'; g('btn-stop').style.display='inline-block';
+      g('panel-ref').classList.add('on'); g('panel-live').classList.add('on');
+      setPill('ref','LIVE','pill-ref'); setPill('live','LIVE','pill-live');
+      hint('&#127909; Both live! Vocalist panel = YouTube, right panel = your voice. Match score updates every frame.');
+      var sr=audioCtx.sampleRate;
+      var ytTB=ytAn?new Uint8Array(ytAn.fftSize):null, ytFB=ytAn?new Uint8Array(ytAn.frequencyBinCount):null;
+      var mTB=new Uint8Array(micAn.fftSize), mFB=new Uint8Array(micAn.frequencyBinCount);
       function loop(){
-        if(!running) return;
-
-        // --- YouTube / tab audio ---
-        if(ytAnalyser && ytTB){
-          ytAnalyser.getByteTimeDomainData(ytTB);
-          ytAnalyser.getByteFrequencyData(ytFB);
-          var ytFL = toFloat(ytTB);
-          var ytR  = detectPitch(ytFL, sr);
-          if(ytR.freq && ytR.clarity>18){
-            var ni=freqToNote(ytR.freq);
-            setText('ref-note', ni.name+ni.oct, 'note-big ref');
-            setText('ref-freq', ytR.freq.toFixed(1)+' Hz');
-            setText('ref-oct',  'Octave '+ni.oct);
-            setStatV('ref-cents',   ni.cents+' c',    'sv-ref');
-            setStatV('ref-clarity', ytR.clarity+'%',  'sv-ref');
-            setStatV('ref-level',   rmsToDb(ytR.rms)+'dB','sv-ref');
-            id('ref-vrn').textContent=toVRN(ni,ytR.clarity);
-            refHist.push(ytR.freq);
-          } else {
-            setText('ref-note','...','note-big idle');
-            refHist.push(null);
-          }
-          if(refHist.length>HIST_LEN) refHist.shift();
-          drawWave(CV.rw, ytTB, '#00d4ff');
-          drawSpec(CV.rs, ytFB, '#00d4ff');
-        } else {
-          // Mobile: no tab audio — ref panel stays idle
-          refHist.push(null);
-          if(refHist.length>HIST_LEN) refHist.shift();
-        }
-
-        // --- Microphone ---
-        micAnalyser.getByteTimeDomainData(micTB);
-        micAnalyser.getByteFrequencyData(micFB);
-        var micFL = toFloat(micTB);
-        var micR  = detectPitch(micFL, sr);
-        if(micR.freq && micR.clarity>16){
-          var mn=freqToNote(micR.freq);
-          setText('live-note', mn.name+mn.oct, 'note-big live');
-          setText('live-freq', micR.freq.toFixed(1)+' Hz');
-          setText('live-oct',  'Octave '+mn.oct);
-          setStatV('live-cents',   mn.cents+' c',   'sv-live');
-          setStatV('live-clarity', micR.clarity+'%','sv-live');
-          id('live-vrn').textContent=toVRN(mn,micR.clarity);
-          liveHist.push(micR.freq);
-          // Match against current ref freq
-          var lastRef = lastKnown(refHist);
-          if(lastRef){ updateMatch(micR.freq, lastRef); }
-        } else {
-          setText('live-note','...','note-big idle');
-          liveHist.push(null);
-        }
-        if(liveHist.length>HIST_LEN) liveHist.shift();
-        drawWave(CV.lw, micTB, '#4ade80');
-        drawSpec(CV.ls, micFB, '#4ade80');
-
-        // Session timer
-        var sec=Math.floor((Date.now()-startTime)/1000);
-        setStatV('live-timer', fmt(sec), 'sv-live');
-
-        drawOverlay();
+        if(!running)return;
+        var lastRef=null;
+        // YouTube panel
+        if(ytAn&&ytTB){
+          ytAn.getByteTimeDomainData(ytTB); ytAn.getByteFrequencyData(ytFB);
+          var yr=pitch(fl(ytTB),sr);
+          if(yr.f&&yr.cl>18){
+            var yni=fToNote(yr.f);
+            setSt('ref-note',yni.n+yni.oct,'note-big ref'); setSt('ref-freq',yr.f.toFixed(1)+' Hz'); setSt('ref-oct','Octave '+yni.oct);
+            setSv('ref-cents',yni.c+' c','sv-ref'); setSv('ref-clarity',yr.cl+'%','sv-ref'); setSv('ref-level',rmsDb(fl(ytTB)),'sv-ref');
+            g('ref-vrn').textContent=vrn(yni,yr.cl); refH.push(yr.f); lastRef=yr.f;
+          } else { setSt('ref-note','...','note-big idle'); refH.push(null); }
+          if(refH.length>HIST)refH.shift();
+          dWave(CV.rw,ytTB,'#00d4ff'); dSpec(CV.rs,ytFB,'#00d4ff');
+        } else { refH.push(null); if(refH.length>HIST)refH.shift(); }
+        // Mic panel
+        micAn.getByteTimeDomainData(mTB); micAn.getByteFrequencyData(mFB);
+        var mr=pitch(fl(mTB),sr);
+        if(mr.f&&mr.cl>16){
+          var mni=fToNote(mr.f);
+          setSt('live-note',mni.n+mni.oct,'note-big live'); setSt('live-freq',mr.f.toFixed(1)+' Hz'); setSt('live-oct','Octave '+mni.oct);
+          setSv('live-cents',mni.c+' c','sv-live'); setSv('live-clarity',mr.cl+'%','sv-live');
+          g('live-vrn').textContent=vrn(mni,mr.cl); liveH.push(mr.f);
+          if(!lastRef){ for(var k=refH.length-1;k>=0;k--){if(refH[k]){lastRef=refH[k];break;}} }
+          if(lastRef) updateMatch(mr.f,lastRef);
+        } else { setSt('live-note','...','note-big idle'); liveH.push(null); }
+        if(liveH.length>HIST)liveH.shift();
+        dWave(CV.lw,mTB,'#4ade80'); dSpec(CV.ls,mFB,'#4ade80');
+        var sec=Math.floor((Date.now()-t0)/1000); setSv('live-timer',Math.floor(sec/60)+':'+(sec%60<10?'0':'')+(sec%60),'sv-live');
+        dOv();
         raf=requestAnimationFrame(loop);
       }
       raf=requestAnimationFrame(loop);
     };
 
-    function lastKnown(hist){
-      for(var i=hist.length-1;i>=0;i--){ if(hist[i]) return hist[i]; }
-      return null;
-    }
-
-    function toFloat(tb){
-      var f=new Float32Array(tb.length);
-      for(var i=0;i<tb.length;i++) f[i]=(tb[i]-128)/128;
-      return f;
-    }
-
-    function fmt(sec){ var m=Math.floor(sec/60),s=sec%60; return m+':'+(s<10?'0':'')+s; }
-
-    // ---- Match score ----
-    function updateMatch(liveF,refF){
-      var semis=Math.abs(12*Math.log2(liveF/refF));
-      var cents=semis*100;
-      var score=Math.max(0,Math.round(100-(cents/2)));
-      var diff =Math.round(cents*(liveF<refF?-1:1));
-      var g=grade(score);
-      id('match-pct').textContent=score+'%';
-      id('match-pct').style.color=g.color;
-      id('match-grade').textContent=g.letter;
-      id('match-grade').style.color=g.color;
-      id('match-phrase').textContent=g.phrase;
-      id('match-bar').style.width=score+'%';
-      id('needle-val').textContent=(diff>=0?'+':'')+diff+' cents';
+    function updateMatch(lf,rf){
+      var c=Math.abs(12*Math.log2(lf/rf))*100, score=Math.max(0,Math.round(100-c/2)), diff=Math.round(c*(lf<rf?-1:1));
+      var gg=grade(score);
+      g('match-pct').textContent=score+'%'; g('match-pct').style.color=gg.color;
+      g('match-grade').textContent=gg.ltr; g('match-grade').style.color=gg.color;
+      g('match-phrase').textContent=gg.msg; g('match-bar').style.width=score+'%';
+      g('needle-val').textContent=(diff>=0?'+':'')+diff+' cents';
       var pct=50+Math.max(-48,Math.min(48,diff/4));
-      id('needle').style.left=pct+'%';
-      id('needle').style.background=g.color;
+      g('needle').style.left=pct+'%'; g('needle').style.background=gg.color;
     }
-
     function grade(s){
-      if(s>=95) return {letter:'S+',phrase:'Flawless — studio-level match.',     color:'#4ade80'};
-      if(s>=85) return {letter:'A', phrase:'Excellent — nearly on pitch!',        color:'#86efac'};
-      if(s>=72) return {letter:'B', phrase:'Good match with minor drift.',         color:'#ffd700'};
-      if(s>=55) return {letter:'C', phrase:'Close — keep adjusting your pitch.',   color:'#f59e0b'};
-      if(s>=35) return {letter:'D', phrase:'Off — try moving up or down.',         color:'#ef4444'};
-      return           {letter:'F', phrase:'Far off — check your octave.',         color:'#dc2626'};
+      if(s>=95)return{ltr:'S+',msg:'Flawless — studio-level match.',color:'#4ade80'};
+      if(s>=85)return{ltr:'A', msg:'Excellent — nearly on pitch!', color:'#86efac'};
+      if(s>=72)return{ltr:'B', msg:'Good match with minor drift.',  color:'#ffd700'};
+      if(s>=55)return{ltr:'C', msg:'Close — keep adjusting.',       color:'#f59e0b'};
+      if(s>=35)return{ltr:'D', msg:'Off — try moving up or down.',  color:'#ef4444'};
+      return       {ltr:'F', msg:"Far off — check your octave.",   color:'#dc2626'};
     }
 
-    // ---- Stop / Reset ----
     window.stopAnalysis = function(){
-      running=false;
-      if(raf){ cancelAnimationFrame(raf); raf=null; }
-      id('ctrl-dot').className='ctrl-dot';
-      id('ctrl-txt').textContent='Stopped. Press Analyze to restart.';
-      id('btn-go').style.display='';
-      id('btn-stop').style.display='none';
-      id('panel-ref').classList.remove('on');
-      id('panel-live').classList.remove('on');
-      setPill('ref','Idle','pill-idle');
-      setPill('live','Idle','pill-idle');
-      hint('Analysis paused. Press <strong style="color:#4ade80">&#9654; Analyze Both Live</strong> to resume.');
+      running=false; if(raf){cancelAnimationFrame(raf);raf=null;}
+      g('ctrl-dot').className='ctrl-dot'; g('ctrl-txt').textContent='Stopped.';
+      g('btn-go').style.display=''; g('btn-stop').style.display='none';
+      g('panel-ref').classList.remove('on'); g('panel-live').classList.remove('on');
+      setPill('ref','Idle','pill-idle'); setPill('live','Idle','pill-idle');
+      hint('Paused. Press <strong style="color:#4ade80">&#9654; Analyze Both Live</strong> to resume.');
     };
-
     window.resetAll = function(){
       window.stopAnalysis();
-      // Stop streams
-      if(ytStream){ ytStream.getTracks().forEach(function(t){t.stop();}); ytStream=null; }
-      if(micStream){ micStream.getTracks().forEach(function(t){t.stop();}); micStream=null; }
-      ytAnalyser=null; micAnalyser=null; ytConnected=false; micConnected=false;
-      refHist=[]; liveHist=[];
-
-      id('col-yt').classList.remove('connected');
-      id('col-mic').classList.remove('connected');
-      id('btn-share').classList.remove('connected');
-      id('btn-share').textContent='&#128250; Share This Tab\'s Audio';
-      id('btn-mic').classList.remove('connected');
-      id('btn-mic').textContent='&#127908; Connect Microphone';
-      id('yt-dot').className='conn-dot'; id('yt-conn-txt').textContent='Not connected';
-      id('mic-dot').className='conn-dot'; id('mic-conn-txt').textContent='Not connected';
-      id('btn-go').disabled=true;
-      id('ctrl-txt').textContent='Connect both sources above, then press Analyze';
-
-      ['ref-note','live-note'].forEach(function(i){ setText(i,'--','note-big idle'); });
-      ['ref-freq','live-freq'].forEach(function(i){ id(i).textContent='-- Hz'; });
-      ['ref-oct','live-oct'].forEach(function(i){ id(i).textContent='Octave --'; });
-      ['ref-cents','ref-clarity','ref-level'].forEach(function(i){ setStatV(i,'--','sv-idle'); });
-      ['live-cents','live-clarity'].forEach(function(i){ setStatV(i,'--','sv-idle'); });
-      setStatV('live-timer','0:00','sv-idle');
-      id('ref-vrn').textContent='—'; id('live-vrn').textContent='—';
-      id('match-pct').textContent='--%'; id('match-pct').style.color='var(--text-dim)';
-      id('match-grade').textContent='—'; id('match-grade').style.color='var(--text-dim)';
-      id('match-phrase').textContent='Connect both sources and press Analyze to start.';
-      id('match-bar').style.width='0%';
-      id('needle-val').textContent='-- cents';
-      id('needle').style.left='50%'; id('needle').style.background='var(--accent-gold)';
-
-      Object.values(CV).forEach(function(c){ var ctx=c.getContext('2d'); ctx.clearRect(0,0,c.width,c.height); });
-      hint('<strong>Step 1:</strong> Load a YouTube video and share this tab\'s audio. <strong>Step 2:</strong> Connect your mic. <strong>Step 3:</strong> Press Analyze.');
+      if(ytStream){ytStream.getTracks().forEach(function(t){t.stop()});ytStream=null;}
+      if(micStream){micStream.getTracks().forEach(function(t){t.stop()});micStream=null;}
+      ytAn=null;micAn=null;ytOk=false;micOk=false;refH=[];liveH=[];
+      g('btn-share').classList.remove('connected');g('btn-share').textContent='\u21ba Reshare YouTube Tab Audio';
+      g('yt-dot').className='conn-dot';g('yt-conn-txt').textContent='Not connected';
+      g('btn-mic').classList.remove('connected');g('btn-mic').textContent='&#127908; Connect Microphone';
+      g('mic-dot').className='conn-dot';g('mic-conn-txt').textContent='Not connected';
+      ['s1','s2','s3'].forEach(function(id){var el=g(id);if(el){el.className='step-num';el.textContent=id[1];}});
+      g('btn-go').disabled=true; g('ctrl-txt').textContent='Complete steps above, then press Analyze';
+      ['ref-note','live-note'].forEach(function(i){setSt(i,'--','note-big idle');});
+      ['ref-freq','live-freq'].forEach(function(i){g(i).textContent='-- Hz';});
+      ['ref-oct','live-oct'].forEach(function(i){g(i).textContent='Octave --';});
+      ['ref-cents','ref-clarity','ref-level','live-cents','live-clarity'].forEach(function(i){setSv(i,'--','sv-idle');});
+      setSv('live-timer','0:00','sv-idle');
+      g('ref-vrn').textContent='—';g('live-vrn').textContent='—';
+      g('match-pct').textContent='--%';g('match-pct').style.color='var(--text-dim)';
+      g('match-grade').textContent='—';g('match-grade').style.color='var(--text-dim)';
+      g('match-phrase').textContent='Connect both sources and press Analyze to begin.';
+      g('match-bar').style.width='0%';g('needle-val').textContent='-- cents';
+      g('needle').style.left='50%';g('needle').style.background='var(--accent-gold)';
+      g('return-banner').classList.remove('show');
+      Object.values(CV).forEach(function(c){var ct=c.getContext('2d');ct.clearRect(0,0,c.width,c.height);});
+      hint('Complete all 3 steps above, then press <strong>Analyze Both Live</strong>.');
     };
 
-    // ---- UI helpers ----
-    function setText(i,txt,cls){ var el=id(i); el.textContent=txt; if(cls) el.className=cls; }
-    function setStatV(i,txt,cls){ var el=id(i); el.textContent=txt; el.className='pstat-v '+(cls||'sv-idle'); }
-    function setPill(who,txt,cls){ var el=id(who+'-badge'); el.textContent=txt; el.className='pill '+cls; }
-    function hint(h){ id('vm-hint').innerHTML=h; }
-
+    function setSt(id,txt,cls){var el=g(id);el.textContent=txt;if(cls)el.className=cls;}
+    function setSv(id,txt,cls){var el=g(id);el.textContent=txt;el.className='pstat-v '+(cls||'sv-idle');}
+    function setPill(who,txt,cls){var el=g(who+'-badge');el.textContent=txt;el.className='pill '+cls;}
+    function hint(h){g('vm-hint').innerHTML=h;}
   })();
   </script>
 
