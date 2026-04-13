@@ -7,45 +7,62 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4573596965267859" crossorigin="anonymous"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vocalist Match — Sing Along Any YouTube Video | VoiceStry</title>
-  <meta name="description" content="Match your voice to any YouTube vocalist in real time. Both the vocalist and your live voice are analyzed simultaneously — see pitch, tone, and match score side by side.">
+  <meta name="description" content="Match your voice to any YouTube vocalist in real time. Desktop mode analyzes both simultaneously. Phone mode captures the vocalist then compares your live singing.">
   <link rel="canonical" href="https://voicestry.com/vocalist-match.html">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎤</text></svg>">
   <link rel="stylesheet" href="css/style.css">
   <style>
     :root {
-      --ref-color: #00d4ff;  --ref-glow: rgba(0,212,255,0.35); --ref-bg: rgba(0,212,255,0.06);
-      --live-color: #4ade80; --live-glow: rgba(74,222,128,0.35);--live-bg: rgba(74,222,128,0.06);
+      --ref-color:#00d4ff; --ref-glow:rgba(0,212,255,0.35); --ref-bg:rgba(0,212,255,0.06);
+      --live-color:#4ade80; --live-glow:rgba(74,222,128,0.35); --live-bg:rgba(74,222,128,0.06);
     }
-    body { overflow-x: hidden; }
+    body { overflow-x:hidden; }
 
-    /* Return banner */
+    /* ---- Return banner (desktop) ---- */
     .return-banner {
-      display: none; position: sticky; top: 36px; z-index: 9500;
-      background: linear-gradient(90deg,#4ade80,#00d4ff); color:#000;
-      font-weight:800; font-size:0.95rem; padding:13px 20px;
-      text-align:center; cursor:pointer;
-      animation: rpulse 1.4s infinite;
+      display:none; position:sticky; top:36px; z-index:9500;
+      background:linear-gradient(90deg,#4ade80,#00d4ff); color:#000;
+      font-weight:800; font-size:.95rem; padding:13px 20px;
+      text-align:center; cursor:pointer; animation:rpulse 1.4s infinite;
     }
     .return-banner.show { display:block; }
-    @keyframes rpulse { 0%,100%{opacity:1} 50%{opacity:0.82} }
+    @keyframes rpulse { 0%,100%{opacity:1}50%{opacity:.82} }
 
-    /* Hero */
+    /* ---- Hero ---- */
     .vm-hero {
       padding:56px 20px 26px; text-align:center;
       background: radial-gradient(ellipse at 20% 30%,rgba(0,212,255,.09) 0%,transparent 50%),
                   radial-gradient(ellipse at 80% 60%,rgba(74,222,128,.07) 0%,transparent 50%),
                   var(--bg-dark);
     }
-    .vm-badge { display:inline-flex; align-items:center; gap:8px; padding:6px 18px; border-radius:24px; font-size:0.82rem; font-weight:700; background:rgba(0,212,255,.08); border:1px solid rgba(0,212,255,.22); color:var(--accent-cyan); margin-bottom:16px; letter-spacing:.04em; text-transform:uppercase; }
+    .vm-badge { display:inline-flex; align-items:center; gap:8px; padding:6px 18px; border-radius:24px; font-size:.82rem; font-weight:700; background:rgba(0,212,255,.08); border:1px solid rgba(0,212,255,.22); color:var(--accent-cyan); margin-bottom:16px; letter-spacing:.04em; text-transform:uppercase; }
     .vm-hero h1 { font-size:clamp(1.9rem,5vw,3rem); font-weight:900; line-height:1.15; margin-bottom:12px; }
-    .vm-hero p  { color:var(--text-secondary); max-width:560px; margin:0 auto 16px; font-size:1.05rem; line-height:1.7; }
+    .vm-hero p  { color:var(--text-secondary); max-width:600px; margin:0 auto 20px; font-size:1.05rem; line-height:1.7; }
 
-    /* Main */
+    /* ---- Mode Toggle ---- */
+    .mode-toggle {
+      display:flex; align-items:center; justify-content:center; gap:0;
+      background:var(--bg-card); border:1px solid var(--border-subtle);
+      border-radius:14px; overflow:hidden; max-width:380px; margin:0 auto;
+    }
+    .mode-btn {
+      flex:1; padding:12px 20px; font-size:.88rem; font-weight:700;
+      border:none; cursor:pointer; transition:all .2s; font-family:inherit;
+      background:transparent; color:var(--text-secondary);
+    }
+    .mode-btn.active-desktop { background:rgba(0,212,255,.15); color:var(--ref-color); }
+    .mode-btn.active-phone   { background:rgba(74,222,128,.15); color:var(--live-color); }
+    .mode-divider { width:1px; background:var(--border-subtle); height:44px; flex-shrink:0; }
+
+    /* ---- Main ---- */
     .vm-main { max-width:1200px; margin:0 auto; padding:20px 16px 60px; }
 
-    /* Steps card */
-    .steps-card { background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-xl); padding:22px; margin-bottom:18px; }
-    .steps-title { font-size:.8rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--text-secondary); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+    /* ---- Setup cards ---- */
+    .setup-card {
+      background:var(--bg-card); border:1px solid var(--border-subtle);
+      border-radius:var(--radius-xl); padding:22px; margin-bottom:18px;
+    }
+    .setup-title { font-size:.8rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--text-secondary); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
     .step-row { display:flex; align-items:flex-start; gap:14px; padding:14px 0; border-bottom:1px solid var(--border-subtle); }
     .step-row:last-child { border-bottom:none; }
     .step-num { width:28px; height:28px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:.8rem; font-weight:800; background:var(--gradient-cosmic); color:#fff; transition:all .3s; }
@@ -59,24 +76,64 @@
     .conn-dot { width:7px; height:7px; border-radius:50%; background:var(--text-dim); flex-shrink:0; }
     .conn-dot.on-yt  { background:#ef4444; box-shadow:0 0 6px rgba(239,68,68,.6); animation:pdot 1.2s infinite; }
     .conn-dot.on-mic { background:var(--live-color); box-shadow:0 0 6px var(--live-glow); animation:pdot 1s infinite; }
+    .conn-dot.on-cap { background:var(--ref-color); box-shadow:0 0 6px var(--ref-glow); animation:pdot .8s infinite; }
     @keyframes pdot { 0%,100%{opacity:1}50%{opacity:.5} }
 
-    /* Buttons */
+    /* ---- Phone mode: capture button ---- */
+    .phone-setup {
+      display:none; background:var(--bg-card); border:1px solid var(--border-subtle);
+      border-radius:var(--radius-xl); padding:22px; margin-bottom:18px;
+    }
+    .phone-setup.show { display:block; }
+    .phone-tip {
+      font-size:.82rem; color:var(--text-secondary); background:rgba(255,215,0,.06);
+      border:1px solid rgba(255,215,0,.2); border-radius:var(--radius-md);
+      padding:12px 16px; margin-bottom:16px; line-height:1.6;
+    }
+    .phone-tip strong { color:var(--accent-gold); }
+
+    /* Capture progress ring */
+    .cap-ring-wrap { text-align:center; margin:16px 0; }
+    .cap-ring { position:relative; display:inline-flex; align-items:center; justify-content:center; }
+    .cap-ring svg { transform:rotate(-90deg); }
+    .cap-ring-track { fill:none; stroke:rgba(255,255,255,.06); }
+    .cap-ring-fill  { fill:none; stroke:var(--ref-color); stroke-linecap:round; transition:stroke-dashoffset .3s; }
+    .cap-ring-label { position:absolute; text-align:center; }
+    .cap-ring-num   { font-size:2rem; font-weight:900; font-family:'Courier New',monospace; color:var(--ref-color); line-height:1; }
+    .cap-ring-sub   { font-size:.7rem; color:var(--text-dim); }
+
+    .phone-stages { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:16px; }
+
+    /* ---- Shared buttons ---- */
     .btn-yt    { display:inline-block; background:#ef4444; color:#fff; border:none; border-radius:var(--radius-sm); padding:10px 20px; font-weight:700; font-size:.88rem; cursor:pointer; text-decoration:none; transition:all .2s; }
     .btn-yt:hover { background:#dc2626; transform:translateY(-1px); }
     .btn-share { background:rgba(0,212,255,.1); color:var(--ref-color); border:1.5px solid var(--ref-color); border-radius:var(--radius-sm); padding:10px 20px; font-weight:700; font-size:.88rem; cursor:pointer; transition:all .2s; }
     .btn-share:hover,.btn-share.connected { background:rgba(0,212,255,.2); box-shadow:0 0 12px var(--ref-glow); }
     .btn-mic   { background:var(--live-bg); color:var(--live-color); border:1.5px solid var(--live-color); border-radius:var(--radius-sm); padding:10px 20px; font-weight:700; font-size:.88rem; cursor:pointer; transition:all .2s; }
     .btn-mic:hover,.btn-mic.connected { background:rgba(74,222,128,.2); box-shadow:0 0 12px var(--live-glow); }
+    .btn-capture-big {
+      background:linear-gradient(135deg,var(--ref-color),var(--accent-purple));
+      color:#000; border:none; border-radius:var(--radius-lg);
+      padding:16px 32px; font-weight:800; font-size:1.05rem;
+      cursor:pointer; transition:all .2s; width:100%; max-width:320px;
+    }
+    .btn-capture-big:hover { transform:translateY(-2px); box-shadow:0 6px 24px var(--ref-glow); }
+    .btn-capture-big:disabled { opacity:.35; cursor:not-allowed; transform:none; box-shadow:none; }
+    .btn-sing-big {
+      background:linear-gradient(135deg,var(--live-color),var(--accent-cyan));
+      color:#000; border:none; border-radius:var(--radius-lg);
+      padding:16px 32px; font-weight:800; font-size:1.05rem;
+      cursor:pointer; transition:all .2s; width:100%; max-width:320px;
+    }
+    .btn-sing-big:hover { transform:translateY(-2px); box-shadow:0 6px 24px var(--live-glow); }
+    .btn-sing-big:disabled { opacity:.35; cursor:not-allowed; transform:none; box-shadow:none; }
 
-    /* Mobile notice */
-    .mobile-notice { padding:12px 16px; background:rgba(255,215,0,.06); border:1px solid rgba(255,215,0,.2); border-radius:var(--radius-md); font-size:.82rem; color:var(--accent-gold); line-height:1.6; display:none; }
-
-    /* Control bar */
+    /* ---- Control bar ---- */
     .ctrl-bar { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-lg); padding:12px 18px; margin-bottom:14px; }
     .ctrl-state { display:flex; align-items:center; gap:8px; font-size:.86rem; font-weight:600; }
     .ctrl-dot { width:10px; height:10px; border-radius:50%; background:var(--text-dim); transition:all .3s; }
     .ctrl-dot.live { background:var(--live-color); box-shadow:0 0 10px var(--live-glow); animation:pdot 1s infinite; }
+    .ctrl-dot.capturing { background:var(--ref-color); box-shadow:0 0 10px var(--ref-glow); animation:pdot .8s infinite; }
     .ctrl-btns { display:flex; gap:8px; flex-wrap:wrap; }
     .btn-go { background:linear-gradient(135deg,var(--ref-color),var(--live-color)); color:#000; border:none; border-radius:var(--radius-sm); padding:9px 20px; font-weight:800; font-size:.88rem; cursor:pointer; transition:all .2s; }
     .btn-go:hover { opacity:.9; transform:translateY(-1px); }
@@ -85,10 +142,10 @@
     .btn-reset-vm { background:transparent; border:1px solid var(--border-hover); color:var(--text-secondary); border-radius:var(--radius-sm); padding:9px 12px; font-size:.82rem; cursor:pointer; transition:all .2s; }
     .btn-reset-vm:hover { color:var(--text-primary); }
 
-    /* Hint */
+    /* ---- Hint ---- */
     .vm-hint { font-size:.82rem; color:var(--text-secondary); text-align:center; background:rgba(157,78,221,.07); border:1px solid rgba(157,78,221,.15); border-radius:var(--radius-md); padding:10px 18px; margin-bottom:14px; }
 
-    /* Analysis panels */
+    /* ---- Analysis panels ---- */
     .vm-panels { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
     @media(max-width:640px){ .vm-panels { grid-template-columns:1fr; } }
     .vm-panel { background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-xl); padding:18px; transition:border-color .3s,box-shadow .3s; }
@@ -118,12 +175,12 @@
     .panel-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-top:10px; }
     .pstat { background:rgba(255,255,255,.03); border-radius:var(--radius-sm); padding:8px 6px; text-align:center; border:1px solid var(--border-subtle); }
     .pstat-v { font-size:1rem; font-weight:800; font-family:'Courier New',monospace; }
-    .sv-idle { color:var(--text-dim); } .sv-ref { color:var(--ref-color); } .sv-live { color:var(--live-color); }
+    .sv-idle{color:var(--text-dim);} .sv-ref{color:var(--ref-color);} .sv-live{color:var(--live-color);}
     .pstat-l { font-size:.62rem; color:var(--text-dim); margin-top:2px; text-transform:uppercase; letter-spacing:.04em; }
     .vrn-lbl { font-size:.62rem; text-transform:uppercase; letter-spacing:.06em; color:var(--text-dim); margin-top:10px; margin-bottom:3px; }
     .vrn-box { font-family:'Courier New',monospace; font-size:.78rem; padding:7px 10px; background:rgba(0,0,0,.3); border-radius:var(--radius-sm); color:var(--accent-gold); border:1px solid rgba(255,215,0,.1); min-height:28px; }
 
-    /* Match panel */
+    /* ---- Match panel ---- */
     .match-panel { background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-xl); padding:20px; margin-bottom:14px; }
     .match-title { font-size:.8rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--text-secondary); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
     .match-title::before { content:''; width:8px; height:8px; border-radius:50%; background:var(--accent-gold); display:inline-block; }
@@ -149,7 +206,9 @@
     .health-note { padding:10px 14px; background:rgba(239,68,68,.05); border:1px solid rgba(239,68,68,.16); border-radius:var(--radius-md); font-size:.75rem; line-height:1.5; color:rgba(255,255,255,.55); margin-bottom:14px; }
 
     @media(max-width:480px){
-      .vm-hero h1 { font-size:1.7rem; } .note-big { font-size:2.8rem; } .match-pct { font-size:3rem; }
+      .vm-hero h1 { font-size:1.7rem; }
+      .note-big { font-size:2.8rem; }
+      .match-pct { font-size:3rem; }
     }
   </style>
 </head>
@@ -163,7 +222,6 @@
   <button class="wb-arrow wb-right" id="wb-right" aria-label="Scroll webring right">&#8250;</button>
   <script>(function(){var c=document.getElementById('wb-content'),l=document.getElementById('wb-left'),r=document.getElementById('wb-right');if(!c||!l||!r)return;function upd(){var atL=c.scrollLeft<8,atR=c.scrollLeft>=c.scrollWidth-c.clientWidth-8;l.style.opacity=atL?'0':'1';l.style.pointerEvents=atL?'none':'auto';r.style.opacity=atR?'0':'1';r.style.pointerEvents=atR?'none':'auto';}l.onclick=function(){c.scrollBy({left:-220,behavior:'smooth'});};r.onclick=function(){c.scrollBy({left:220,behavior:'smooth'});};c.addEventListener('scroll',upd,{passive:true});upd();})()</script>
 
-  <!-- Navigation -->
   <nav class="nav">
     <a href="index.html" class="nav-logo">&#127908; VoiceStry</a>
     <div class="nav-links" id="vs-nav">
@@ -196,16 +254,27 @@
   </nav>
   <script>function vsClose(){document.getElementById('vs-nav').classList.remove('open');document.getElementById('vs-hbg').classList.remove('open');}document.querySelectorAll('.nav-dropdown-btn').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();var d=b.parentElement,o=d.classList.contains('open');document.querySelectorAll('.nav-dropdown.open').forEach(function(x){x.classList.remove('open')});if(!o)d.classList.add('open')})});document.addEventListener('click',function(){document.querySelectorAll('.nav-dropdown.open').forEach(function(d){d.classList.remove('open')})})</script>
 
-  <!-- Pulsing return banner — shows when Edge switches away after sharing -->
+  <!-- Desktop return banner -->
   <div class="return-banner" id="return-banner">
-    &#127909; YouTube audio is capturing! Click this bar or press <strong>Ctrl+Tab</strong> to come back here &#8594;
+    &#127909; YouTube audio is capturing! Press <strong>Ctrl+Tab</strong> to return here &#8594;
   </div>
 
   <!-- Hero -->
   <section class="vm-hero">
-    <div class="vm-badge">&#127776; Real-time Simultaneous Analysis</div>
-    <h1><span class="text-gradient-nature">Hear Them.</span> <span class="text-gradient-cosmic">Match Them. Live.</span></h1>
-    <p>YouTube vocalist and your live voice analyzed <strong>simultaneously</strong> — pitch, waveform, and match score all updating at the same time.</p>
+    <div class="vm-badge">&#127776; Real-time Vocal Match</div>
+    <h1><span class="text-gradient-nature">Hear Them.</span> <span class="text-gradient-cosmic">Match Them.</span></h1>
+    <p>Analyze any YouTube vocalist and compare your live voice against theirs — pitch, tone, and match score side by side.</p>
+
+    <!-- Mode Toggle -->
+    <div class="mode-toggle" id="mode-toggle">
+      <button class="mode-btn" id="btn-mode-desktop" onclick="setMode('desktop')">
+        &#128250; Desktop Mode<br><span style="font-size:.72rem;font-weight:400;opacity:.7;">Simultaneous live analysis</span>
+      </button>
+      <div class="mode-divider"></div>
+      <button class="mode-btn" id="btn-mode-phone" onclick="setMode('phone')">
+        &#128241; Phone Mode<br><span style="font-size:.72rem;font-weight:400;opacity:.7;">Capture then sing</span>
+      </button>
+    </div>
   </section>
 
   <div class="vm-main">
@@ -214,24 +283,17 @@
       <strong>&#128254; Microphone access denied.</strong> Allow mic access in your browser settings and reload.
     </div>
 
-    <!-- Mobile notice -->
-    <div class="mobile-notice" id="mobile-notice">
-      &#128241; <strong>Mobile detected.</strong> Tab audio sharing requires desktop Chrome or Edge. On mobile, connect your mic and sing — the vocalist panel won't have a reference source, but you'll still get live pitch analysis of your voice.
-    </div>
-
-    <!-- 3-step setup -->
-    <div class="steps-card">
-      <div class="steps-title">&#9881; Setup — 3 Steps</div>
+    <!-- ===== DESKTOP MODE SETUP ===== -->
+    <div id="desktop-setup" class="setup-card" style="display:none;">
+      <div class="setup-title">&#9881; Desktop Setup — 3 Steps</div>
 
       <div class="step-row">
         <div class="step-num" id="s1">1</div>
         <div class="step-body">
-          <div class="step-label">Open YouTube in a new tab and start playing a video</div>
-          <div class="step-desc">Find the vocalist you want to match. Start the video. Then come back to this tab.</div>
+          <div class="step-label">Open YouTube in a new tab and start a video</div>
+          <div class="step-desc">Find the vocalist you want to match. Start playing. Come back to this tab.</div>
           <div class="step-action">
-            <a href="https://youtube.com" target="_blank" class="btn-yt" onclick="markDone('s1')">
-              &#9654; Open YouTube in New Tab
-            </a>
+            <a href="https://youtube.com" target="_blank" class="btn-yt" onclick="markDone('s1')">&#9654; Open YouTube in New Tab</a>
           </div>
         </div>
       </div>
@@ -240,16 +302,10 @@
         <div class="step-num" id="s2">2</div>
         <div class="step-body">
           <div class="step-label">Share the YouTube tab's audio to this analyzer</div>
-          <div class="step-desc">
-            Click below &rarr; select the <strong>YouTube tab</strong> from the list &rarr; make sure <strong>"Also share tab audio"</strong> is ON &rarr; click Share.
-          </div>
-          <div class="step-warn">
-            &#9888; After clicking Share, Edge will switch to the YouTube tab — that's normal. The audio capture keeps running in the background. <strong>Press Ctrl+Tab or click the Vocalist Match tab to come back here.</strong> A green banner will guide you back.
-          </div>
+          <div class="step-desc">Click below → select the <strong>YouTube tab</strong> → make sure <strong>"Also share tab audio"</strong> is ON → click Share.</div>
+          <div class="step-warn">&#9888; After sharing, Edge/Chrome switches to YouTube. That's normal — the capture keeps running. Press <strong>Ctrl+Tab</strong> to come back. A green banner will guide you.</div>
           <div class="step-action">
-            <button class="btn-share" id="btn-share" onclick="connectYTAudio()">
-              &#128250; Share YouTube Tab Audio
-            </button>
+            <button class="btn-share" id="btn-share" onclick="connectYTAudio()">&#128250; Share YouTube Tab Audio</button>
           </div>
           <div class="conn-status">
             <div class="conn-dot" id="yt-dot"></div>
@@ -262,43 +318,93 @@
         <div class="step-num" id="s3">3</div>
         <div class="step-body">
           <div class="step-label">Connect your microphone</div>
-          <div class="step-desc">Use headphones so your mic only picks up your voice, not the YouTube audio from speakers. Then press Analyze.</div>
+          <div class="step-desc">Use headphones so your mic only picks up your voice, not the YouTube audio from speakers.</div>
           <div class="step-action">
-            <button class="btn-mic" id="btn-mic" onclick="connectMic()">
-              &#127908; Connect Microphone
-            </button>
+            <button class="btn-mic" id="btn-mic-d" onclick="connectMic()">&#127908; Connect Microphone</button>
           </div>
           <div class="conn-status">
-            <div class="conn-dot" id="mic-dot"></div>
-            <span id="mic-conn-txt">Not connected</span>
+            <div class="conn-dot" id="mic-dot-d"></div>
+            <span id="mic-conn-txt-d">Not connected</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PHONE MODE SETUP ===== -->
+    <div id="phone-setup" class="phone-setup">
+      <div class="setup-title">&#128241; Phone Mode — How It Works</div>
+      <div class="phone-tip">
+        <strong>&#127926; Step 1 — Capture the Vocalist:</strong> Play YouTube through your phone speaker. Hold the phone close and press Capture. The mic listens to the room for 12 seconds and builds the vocalist's pitch profile.<br><br>
+        <strong>&#127774; Step 2 — Sing Live:</strong> Press Sing. Your voice is analyzed in real time and compared against the captured reference.
+      </div>
+
+      <!-- Capture ring -->
+      <div class="cap-ring-wrap" id="cap-ring-wrap" style="display:none;">
+        <div class="cap-ring">
+          <svg width="120" height="120" viewBox="0 0 120 120">
+            <circle class="cap-ring-track" cx="60" cy="60" r="52" stroke-width="8"/>
+            <circle class="cap-ring-fill" id="cap-ring-fill" cx="60" cy="60" r="52" stroke-width="8"
+              stroke-dasharray="326.7" stroke-dashoffset="326.7"/>
+          </svg>
+          <div class="cap-ring-label">
+            <div class="cap-ring-num" id="cap-countdown">12</div>
+            <div class="cap-ring-sub">seconds</div>
           </div>
         </div>
       </div>
 
+      <div class="phone-stages">
+        <button class="btn-capture-big" id="btn-capture-phone" onclick="phoneCapture()" disabled>
+          &#127908; Connect Mic First
+        </button>
+        <button class="btn-sing-big" id="btn-sing-phone" onclick="phoneSing()" disabled>
+          &#127774; Sing Live
+        </button>
+      </div>
+
+      <div style="margin-top:16px;">
+        <button class="btn-mic" id="btn-mic-p" onclick="connectMicPhone()" style="width:100%;">
+          &#127908; Connect Microphone
+        </button>
+        <div class="conn-status" style="margin-top:8px;">
+          <div class="conn-dot" id="mic-dot-p"></div>
+          <span id="mic-conn-txt-p">Connect mic to enable capture</span>
+        </div>
+      </div>
     </div>
 
-    <!-- Control bar -->
-    <div class="ctrl-bar">
+    <!-- Control bar (desktop only) -->
+    <div class="ctrl-bar" id="desktop-ctrl" style="display:none;">
       <div class="ctrl-state">
         <div class="ctrl-dot" id="ctrl-dot"></div>
         <span id="ctrl-txt">Complete steps above, then press Analyze</span>
       </div>
       <div class="ctrl-btns">
-        <button class="btn-go" id="btn-go" onclick="startAnalysis()" disabled>&#9654; Analyze Both Live</button>
-        <button class="btn-stop-vm" id="btn-stop" onclick="stopAnalysis()">&#9632; Stop</button>
+        <button class="btn-go" id="btn-go" onclick="startDesktopAnalysis()" disabled>&#9654; Analyze Both Live</button>
+        <button class="btn-stop-vm" id="btn-stop" onclick="stopDesktop()">&#9632; Stop</button>
         <button class="btn-reset-vm" onclick="resetAll()">&#8635; Reset</button>
       </div>
     </div>
 
-    <div class="vm-hint" id="vm-hint">
-      Complete all 3 steps above, then press <strong>Analyze Both Live</strong>.
+    <!-- Phone control bar -->
+    <div class="ctrl-bar" id="phone-ctrl" style="display:none;">
+      <div class="ctrl-state">
+        <div class="ctrl-dot" id="phone-dot"></div>
+        <span id="phone-txt">Connect mic, then capture the vocalist</span>
+      </div>
+      <div class="ctrl-btns">
+        <button class="btn-stop-vm" id="btn-stop-phone" onclick="stopPhone()" style="display:none;">&#9632; Stop</button>
+        <button class="btn-reset-vm" onclick="resetAll()">&#8635; Reset</button>
+      </div>
     </div>
 
-    <!-- Dual analysis panels -->
+    <div class="vm-hint" id="vm-hint">Select a mode above to get started.</div>
+
+    <!-- Analysis panels (shared by both modes) -->
     <div class="vm-panels">
       <div class="vm-panel vm-panel--ref" id="panel-ref">
         <div class="panel-hdr">
-          <div><div class="panel-lbl panel-lbl--ref">&#127926; YouTube Vocalist</div><div class="panel-name">Tab Audio</div></div>
+          <div><div class="panel-lbl panel-lbl--ref" id="ref-panel-lbl">&#127926; YouTube Vocalist</div><div class="panel-name" id="ref-panel-name">Reference</div></div>
           <span class="pill pill-idle" id="ref-badge">Idle</span>
         </div>
         <div class="note-disp">
@@ -311,7 +417,7 @@
         <div class="panel-stats">
           <div class="pstat"><div class="pstat-v sv-idle" id="ref-cents">-- c</div><div class="pstat-l">Cents</div></div>
           <div class="pstat"><div class="pstat-v sv-idle" id="ref-clarity">--%</div><div class="pstat-l">Clarity</div></div>
-          <div class="pstat"><div class="pstat-v sv-idle" id="ref-level">--</div><div class="pstat-l">Level</div></div>
+          <div class="pstat"><div class="pstat-v sv-idle" id="ref-extra">--</div><div class="pstat-l" id="ref-extra-lbl">Level</div></div>
         </div>
         <div class="vrn-lbl">VRN Snapshot</div>
         <div class="vrn-box" id="ref-vrn">—</div>
@@ -341,11 +447,11 @@
 
     <!-- Match panel -->
     <div class="match-panel">
-      <div class="match-title">Live Match Score</div>
+      <div class="match-title">Match Score</div>
       <div class="match-row">
         <div><div class="match-pct" id="match-pct">--%</div><div class="match-pct-lbl">Vocal Match</div></div>
         <div class="match-grade"  id="match-grade">—</div>
-        <div class="match-phrase" id="match-phrase">Connect both sources and press Analyze to begin.</div>
+        <div class="match-phrase" id="match-phrase">Select a mode above to begin.</div>
       </div>
       <div class="match-bar-bg"><div class="match-bar-fill" id="match-bar"></div></div>
       <div class="needle-row">
@@ -386,10 +492,21 @@
   (function(){
     'use strict';
     var NOTES=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
-    var HIST=220, MIN_F=60, MAX_F=1400;
+    var HIST=220, MIN_F=60, MAX_F=1400, CAP_SEC=12;
+
+    // Audio nodes
     var audioCtx=null, ytAn=null, micAn=null, ytStream=null, micStream=null;
-    var ytOk=false, micOk=false, running=false, raf=null, t0=null;
+    var ytOk=false, micOkD=false, micOkP=false;
+
+    // State
+    var currentMode=null; // 'desktop' | 'phone'
+    var running=false, raf=null, t0=null;
     var refH=[], liveH=[];
+
+    // Phone mode state
+    var phoneState='idle'; // 'idle'|'capturing'|'captured'|'singing'
+    var capCollected=[], capMedian=null, capTimer=null;
+
     var CV={ rw:g('ref-wave'),rs:g('ref-spec'),lw:g('live-wave'),ls:g('live-spec'),ov:g('overlay-cv') };
 
     function g(i){ return document.getElementById(i); }
@@ -397,128 +514,112 @@
     function rAll(){ Object.values(CV).forEach(rcv); }
     window.addEventListener('resize',rAll); setTimeout(rAll,300);
 
+    // Detect mobile
     var isMob=/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)||!navigator.mediaDevices||!navigator.mediaDevices.getDisplayMedia;
-    if(isMob) g('mobile-notice').style.display='block';
 
+    // Auto-select mode
+    setTimeout(function(){ setMode(isMob?'phone':'desktop'); }, 100);
+
+    // ---- Mode switching ----
+    window.setMode = function(m){
+      currentMode=m;
+      g('btn-mode-desktop').className='mode-btn'+(m==='desktop'?' active-desktop':'');
+      g('btn-mode-phone').className='mode-btn'+(m==='phone'?' active-phone':'');
+      g('desktop-setup').style.display=m==='desktop'?'block':'none';
+      g('phone-setup').style.display=m==='phone'?'block':'none';
+      g('desktop-ctrl').style.display=m==='desktop'?'flex':'none';
+      g('phone-ctrl').style.display=m==='phone'?'flex':'none';
+      g('ref-panel-lbl').textContent=m==='phone'?'&#127926; Captured Vocalist':'&#127926; YouTube Vocalist';
+      g('ref-panel-name').textContent=m==='phone'?'From room capture':'Tab Audio';
+      g('ref-extra-lbl').textContent=m==='phone'?'Samples':'Level';
+      hint(m==='desktop'
+        ? 'Desktop: Open YouTube in a new tab, share its audio, connect your mic, then press Analyze.'
+        : 'Phone: Play YouTube through your speaker, press <strong>&#127908; Capture Vocalist</strong> for 12 seconds, then press <strong>&#127774; Sing Live</strong>.');
+    };
+
+    // ---- AudioContext ----
     function ctx(){ if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)(); if(audioCtx.state==='suspended') audioCtx.resume(); }
 
-    // Step done marker
-    window.markDone = function(id){ var el=g(id); if(!el)return; el.className='step-num done'; el.textContent='\u2713'; };
+    // ---- Step done marker ----
+    window.markDone = function(id){ var el=g(id); if(el){el.className='step-num done';el.textContent='\u2713';} };
 
-    // ---- YouTube tab audio ----
+    // ========================================
+    // DESKTOP MODE
+    // ========================================
     window.connectYTAudio = async function(){
-      if(isMob){ alert('Tab audio sharing needs desktop Chrome or Edge.'); return; }
       try {
         ctx();
-        var stream = await navigator.mediaDevices.getDisplayMedia({
+        var stream=await navigator.mediaDevices.getDisplayMedia({
           video:{width:1,height:1,frameRate:1},
           audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}
         });
-        var atracks = stream.getAudioTracks();
-        if(!atracks.length){
-          alert('No audio captured. Make sure "Also share tab audio" is checked in the dialog.');
-          stream.getTracks().forEach(function(t){t.stop()}); return;
-        }
+        var at=stream.getAudioTracks();
+        if(!at.length){ alert('No audio captured. Check "Also share tab audio".'); stream.getTracks().forEach(function(t){t.stop()}); return; }
         stream.getVideoTracks().forEach(function(t){t.stop()});
-        ytStream=stream;
-        ytAn=audioCtx.createAnalyser(); ytAn.fftSize=4096; ytAn.smoothingTimeConstant=0.65;
+        ytStream=stream; ytAn=audioCtx.createAnalyser(); ytAn.fftSize=4096; ytAn.smoothingTimeConstant=0.65;
         audioCtx.createMediaStreamSource(stream).connect(ytAn);
         ytOk=true;
-        g('btn-share').classList.add('connected'); g('btn-share').textContent='\u2713 YouTube Audio Connected';
+        g('btn-share').classList.add('connected'); g('btn-share').textContent='\u2713 YouTube Connected';
         g('yt-dot').className='conn-dot on-yt'; g('yt-conn-txt').textContent='YouTube tab audio connected';
         markDone('s2');
-        // Show return banner; hide once user comes back
         g('return-banner').classList.add('show');
         function onVis(){ if(document.visibilityState==='visible'){ g('return-banner').classList.remove('show'); document.removeEventListener('visibilitychange',onVis); } }
         document.addEventListener('visibilitychange',onVis);
-        checkReady();
-        atracks[0].addEventListener('ended',function(){
+        checkDesktopReady();
+        at[0].addEventListener('ended',function(){
           ytOk=false; ytAn=null;
           g('btn-share').classList.remove('connected'); g('btn-share').textContent='\u21ba Reshare YouTube Tab';
           g('yt-dot').className='conn-dot'; g('yt-conn-txt').textContent='Disconnected \u2014 click to reshare';
-          checkReady(); if(running) stopAnalysis();
+          checkDesktopReady(); if(running) stopDesktop();
         });
       } catch(e){ if(e.name!=='AbortError'&&e.name!=='NotAllowedError') alert('Could not capture tab audio: '+e.message); }
     };
 
-    // ---- Microphone ----
     window.connectMic = async function(){
       try {
         ctx();
-        var stream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false},video:false});
-        micStream=stream;
-        micAn=audioCtx.createAnalyser(); micAn.fftSize=4096; micAn.smoothingTimeConstant=0.6;
+        var stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false},video:false});
+        micStream=stream; micAn=audioCtx.createAnalyser(); micAn.fftSize=4096; micAn.smoothingTimeConstant=0.6;
         audioCtx.createMediaStreamSource(stream).connect(micAn);
-        micOk=true;
-        g('btn-mic').classList.add('connected'); g('btn-mic').textContent='\u2713 Microphone Connected';
-        g('mic-dot').className='conn-dot on-mic'; g('mic-conn-txt').textContent='Microphone connected';
-        markDone('s3'); checkReady();
+        micOkD=true;
+        g('btn-mic-d').classList.add('connected'); g('btn-mic-d').textContent='\u2713 Microphone Connected';
+        g('mic-dot-d').className='conn-dot on-mic'; g('mic-conn-txt-d').textContent='Microphone connected';
+        markDone('s3'); checkDesktopReady();
       } catch(e){ g('perm-err').style.display='block'; }
     };
 
-    function checkReady(){
-      var ready=isMob?micOk:(ytOk&&micOk);
-      g('btn-go').disabled=!ready;
-      if(ready) hint('&#10003; Ready! Press <strong style="color:#4ade80">&#9654; Analyze Both Live</strong>');
-      else if(ytOk&&!micOk) hint('YouTube connected. Now connect your <strong style="color:var(--live-color)">microphone</strong>.');
-      else if(!ytOk&&micOk) hint('Mic connected. Now share the <strong style="color:var(--ref-color)">YouTube tab audio</strong>.');
+    function checkDesktopReady(){
+      var ok=ytOk&&micOkD; g('btn-go').disabled=!ok;
+      if(ok) hint('&#10003; Ready! Press <strong style="color:#4ade80">&#9654; Analyze Both Live</strong>.');
+      else if(ytOk) hint('YouTube connected. Now connect your microphone.');
+      else if(micOkD) hint('Mic connected. Now share the YouTube tab audio.');
     }
 
-    // ---- Pitch detection ----
-    function pitch(buf,sr){
-      var mn=Math.floor(sr/MAX_F),mx=Math.floor(sr/MIN_F),n=buf.length,rms=0;
-      for(var i=0;i<n;i++) rms+=buf[i]*buf[i]; rms=Math.sqrt(rms/n);
-      if(rms<0.003) return {f:null,cl:0};
-      var ac=new Float32Array(mx+1);
-      for(var tau=mn;tau<=mx;tau++){ var s=0; for(var j=0;j<n-mx;j++) s+=buf[j]*buf[j+tau]; ac[tau]=s; }
-      var best=-1,bv=-1,up=false;
-      for(var t=mn+1;t<=mx;t++){
-        if(ac[t]>ac[t-1]){up=true;}
-        else if(up&&ac[t]<ac[t-1]){if(ac[t-1]>bv){bv=ac[t-1];best=t-1;}up=false;}
-      }
-      if(best<0) return {f:null,cl:0};
-      var a0=ac[best-1]||0,a1=ac[best],a2=ac[best+1]||0,d=(a0-a2)/(2*(a0-2*a1+a2))||0;
-      return {f:sr/(best+d), cl:Math.max(0,Math.min(100,Math.round((bv/(rms*rms*(n-mx)))*100)))};
-    }
-    function fToNote(f){ if(!f||f<=0)return{n:'--',oct:-1,c:0}; var m=12*Math.log2(f/440)+69,mr=Math.round(m); return{n:NOTES[((mr%12)+12)%12],oct:Math.floor(mr/12)-1,c:Math.round((m-mr)*100)}; }
-    function vrn(ni,cl){ if(!ni||ni.n==='--')return'—'; var g=ni.oct>=5?'H++':ni.oct===4?'M+':'C+'; return'['+g+', '+(cl>70?'Cl++':cl>40?'Cl+':'Cl-')+'] '+ni.n+ni.oct; }
-    function rmsDb(buf){ var s=0; for(var i=0;i<buf.length;i++)s+=buf[i]*buf[i]; return Math.max(-60,Math.round(20*Math.log10(Math.sqrt(s/buf.length)||0.0001)))+'dB'; }
-    function fl(tb){ var f=new Float32Array(tb.length); for(var i=0;i<tb.length;i++)f[i]=(tb[i]-128)/128; return f; }
-
-    // ---- Draw ----
-    function dWave(c,tb,col){ rcv(c); var ctx2=c.getContext('2d'),w=c.width,h=c.height,d=window.devicePixelRatio||1; ctx2.clearRect(0,0,w,h); ctx2.strokeStyle=col; ctx2.lineWidth=1.5*d; ctx2.beginPath(); var sw=w/tb.length,x=0; for(var i=0;i<tb.length;i++){var y=(tb[i]/128)*h/2;i===0?ctx2.moveTo(x,y):ctx2.lineTo(x,y);x+=sw;} ctx2.stroke(); }
-    function dSpec(c,fb,col){ rcv(c); var ctx2=c.getContext('2d'),w=c.width,h=c.height,bw=Math.max(1,Math.floor(w/(fb.length/4))),nb=Math.floor(w/bw),gg=ctx2.createLinearGradient(0,h,0,0); gg.addColorStop(0,col+'33'); gg.addColorStop(1,col+'cc'); ctx2.fillStyle=gg; ctx2.clearRect(0,0,w,h); for(var i=0;i<nb;i++){var bh=Math.max(1,((fb[i]||0)/255)*h);ctx2.fillRect(i*bw,h-bh,bw-1,bh);} }
-    function dOv(){ var c=CV.ov; rcv(c); var ctx2=c.getContext('2d'),w=c.width,h=c.height,d=window.devicePixelRatio||1; ctx2.clearRect(0,0,w,h); ctx2.strokeStyle='rgba(255,255,255,.04)'; ctx2.lineWidth=1; for(var i=1;i<4;i++){ctx2.beginPath();ctx2.moveTo(0,h*i/4);ctx2.lineTo(w,h*i/4);ctx2.stroke();} function line(hist,col){if(hist.length<2)return;ctx2.strokeStyle=col;ctx2.lineWidth=2*d;ctx2.lineJoin='round';ctx2.beginPath();var mn=80,mx2=900;for(var j=0;j<hist.length;j++){var f=hist[j];if(!f)continue;var xp=(j/(HIST-1))*w,yp=h-((Math.log2(f/mn)/Math.log2(mx2/mn))*h);yp=Math.max(2,Math.min(h-2,yp));(!j||!hist[j-1])?ctx2.moveTo(xp,yp):ctx2.lineTo(xp,yp);}ctx2.stroke();} line(refH,'#00d4ff'); line(liveH,'#4ade80'); }
-
-    // ---- Main loop ----
-    window.startAnalysis = function(){
-      if(running) return;
+    window.startDesktopAnalysis = function(){
+      if(running)return;
       running=true; t0=Date.now();
-      g('ctrl-dot').className='ctrl-dot live'; g('ctrl-txt').textContent='Analyzing live — sing along!';
+      g('ctrl-dot').className='ctrl-dot live'; g('ctrl-txt').textContent='Analyzing live \u2014 sing along!';
       g('btn-go').style.display='none'; g('btn-stop').style.display='inline-block';
       g('panel-ref').classList.add('on'); g('panel-live').classList.add('on');
       setPill('ref','LIVE','pill-ref'); setPill('live','LIVE','pill-live');
-      hint('&#127909; Both live! Vocalist panel = YouTube, right panel = your voice. Match score updates every frame.');
+      hint('&#127909; Both live! Vocalist panel = YouTube, right panel = your voice.');
       var sr=audioCtx.sampleRate;
-      var ytTB=ytAn?new Uint8Array(ytAn.fftSize):null, ytFB=ytAn?new Uint8Array(ytAn.frequencyBinCount):null;
+      var ytTB=new Uint8Array(ytAn.fftSize), ytFB=new Uint8Array(ytAn.frequencyBinCount);
       var mTB=new Uint8Array(micAn.fftSize), mFB=new Uint8Array(micAn.frequencyBinCount);
       function loop(){
         if(!running)return;
         var lastRef=null;
-        // YouTube panel
-        if(ytAn&&ytTB){
-          ytAn.getByteTimeDomainData(ytTB); ytAn.getByteFrequencyData(ytFB);
-          var yr=pitch(fl(ytTB),sr);
-          if(yr.f&&yr.cl>18){
-            var yni=fToNote(yr.f);
-            setSt('ref-note',yni.n+yni.oct,'note-big ref'); setSt('ref-freq',yr.f.toFixed(1)+' Hz'); setSt('ref-oct','Octave '+yni.oct);
-            setSv('ref-cents',yni.c+' c','sv-ref'); setSv('ref-clarity',yr.cl+'%','sv-ref'); setSv('ref-level',rmsDb(fl(ytTB)),'sv-ref');
-            g('ref-vrn').textContent=vrn(yni,yr.cl); refH.push(yr.f); lastRef=yr.f;
-          } else { setSt('ref-note','...','note-big idle'); refH.push(null); }
-          if(refH.length>HIST)refH.shift();
-          dWave(CV.rw,ytTB,'#00d4ff'); dSpec(CV.rs,ytFB,'#00d4ff');
-        } else { refH.push(null); if(refH.length>HIST)refH.shift(); }
-        // Mic panel
+        ytAn.getByteTimeDomainData(ytTB); ytAn.getByteFrequencyData(ytFB);
+        var yr=pitch(fl(ytTB),sr);
+        if(yr.f&&yr.cl>18){
+          var yni=fToNote(yr.f);
+          setSt('ref-note',yni.n+yni.oct,'note-big ref'); setSt('ref-freq',yr.f.toFixed(1)+' Hz'); setSt('ref-oct','Octave '+yni.oct);
+          setSv('ref-cents',yni.c+' c','sv-ref'); setSv('ref-clarity',yr.cl+'%','sv-ref'); setSv('ref-extra',rmsDb(fl(ytTB)),'sv-ref');
+          g('ref-vrn').textContent=vrn(yni,yr.cl); refH.push(yr.f); lastRef=yr.f;
+        } else { setSt('ref-note','...','note-big idle'); refH.push(null); }
+        if(refH.length>HIST)refH.shift();
+        dWave(CV.rw,ytTB,'#00d4ff'); dSpec(CV.rs,ytFB,'#00d4ff');
+
         micAn.getByteTimeDomainData(mTB); micAn.getByteFrequencyData(mFB);
         var mr=pitch(fl(mTB),sr);
         if(mr.f&&mr.cl>16){
@@ -526,20 +627,204 @@
           setSt('live-note',mni.n+mni.oct,'note-big live'); setSt('live-freq',mr.f.toFixed(1)+' Hz'); setSt('live-oct','Octave '+mni.oct);
           setSv('live-cents',mni.c+' c','sv-live'); setSv('live-clarity',mr.cl+'%','sv-live');
           g('live-vrn').textContent=vrn(mni,mr.cl); liveH.push(mr.f);
-          if(!lastRef){ for(var k=refH.length-1;k>=0;k--){if(refH[k]){lastRef=refH[k];break;}} }
+          if(!lastRef){for(var k=refH.length-1;k>=0;k--){if(refH[k]){lastRef=refH[k];break;}}}
           if(lastRef) updateMatch(mr.f,lastRef);
         } else { setSt('live-note','...','note-big idle'); liveH.push(null); }
         if(liveH.length>HIST)liveH.shift();
         dWave(CV.lw,mTB,'#4ade80'); dSpec(CV.ls,mFB,'#4ade80');
         var sec=Math.floor((Date.now()-t0)/1000); setSv('live-timer',Math.floor(sec/60)+':'+(sec%60<10?'0':'')+(sec%60),'sv-live');
-        dOv();
-        raf=requestAnimationFrame(loop);
+        dOv(); raf=requestAnimationFrame(loop);
       }
       raf=requestAnimationFrame(loop);
     };
 
+    window.stopDesktop = function(){
+      running=false; if(raf){cancelAnimationFrame(raf);raf=null;}
+      g('ctrl-dot').className='ctrl-dot'; g('ctrl-txt').textContent='Stopped.';
+      g('btn-go').style.display=''; g('btn-stop').style.display='none';
+      g('panel-ref').classList.remove('on'); g('panel-live').classList.remove('on');
+      setPill('ref','Idle','pill-idle'); setPill('live','Idle','pill-idle');
+      hint('Paused. Press <strong style="color:#4ade80">&#9654; Analyze Both Live</strong> to resume.');
+    };
+
+    // ========================================
+    // PHONE MODE
+    // ========================================
+    window.connectMicPhone = async function(){
+      try {
+        ctx();
+        if(!micStream){
+          var stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false},video:false});
+          micStream=stream; micAn=audioCtx.createAnalyser(); micAn.fftSize=4096; micAn.smoothingTimeConstant=0.65;
+          audioCtx.createMediaStreamSource(stream).connect(micAn);
+        }
+        micOkP=true;
+        g('btn-mic-p').classList.add('connected'); g('btn-mic-p').textContent='\u2713 Microphone Connected';
+        g('mic-dot-p').className='conn-dot on-mic'; g('mic-conn-txt-p').textContent='Mic connected \u2014 ready to capture';
+        g('btn-capture-phone').disabled=false; g('btn-capture-phone').textContent='\u21ba Capture Vocalist (12s)';
+        g('phone-dot').className='ctrl-dot on-mic';
+        hint('Mic connected! Play YouTube through your speaker, then press <strong style="color:var(--ref-color)">Capture Vocalist</strong>.');
+      } catch(e){ g('perm-err').style.display='block'; }
+    };
+
+    window.phoneCapture = function(){
+      if(!micOkP||phoneState==='capturing')return;
+      phoneState='capturing';
+      capCollected=[]; capMedian=null;
+      g('btn-capture-phone').disabled=true; g('btn-capture-phone').textContent='Capturing...';
+      g('btn-sing-phone').disabled=true;
+      g('cap-ring-wrap').style.display='block';
+      g('btn-stop-phone').style.display='inline-block';
+      g('phone-dot').className='ctrl-dot capturing';
+      g('phone-txt').textContent='Capturing vocalist \u2014 play YouTube through speaker now';
+      hint('&#127908; Listening to room for '+CAP_SEC+' seconds. Hold phone near speaker.');
+      g('panel-ref').classList.add('on');
+      setPill('ref','CAPTURING','pill-ref');
+
+      var sr=audioCtx.sampleRate;
+      var total=326.7; // 2*pi*r for r=52
+      var elapsed=0;
+      var tb=new Uint8Array(micAn.fftSize), fb=new Uint8Array(micAn.frequencyBinCount);
+
+      function capLoop(){
+        if(phoneState!=='capturing')return;
+        micAn.getByteTimeDomainData(tb); micAn.getByteFrequencyData(fb);
+        var r=pitch(fl(tb),sr);
+        if(r.f&&r.cl>20){
+          capCollected.push(r.f);
+          var ni=fToNote(r.f);
+          setSt('ref-note',ni.n+ni.oct,'note-big ref'); setSt('ref-freq',r.f.toFixed(1)+' Hz'); setSt('ref-oct','Octave '+ni.oct);
+          setSv('ref-cents',ni.c+' c','sv-ref'); setSv('ref-clarity',r.cl+'%','sv-ref'); setSv('ref-extra',capCollected.length,'sv-ref');
+          g('ref-vrn').textContent=vrn(ni,r.cl);
+        }
+        dWave(CV.rw,tb,'#00d4ff'); dSpec(CV.rs,fb,'#00d4ff');
+        raf=requestAnimationFrame(capLoop);
+      }
+      raf=requestAnimationFrame(capLoop);
+
+      // Countdown timer
+      var startMs=Date.now();
+      capTimer=setInterval(function(){
+        elapsed=Date.now()-startMs;
+        var rem=Math.max(0,Math.ceil((CAP_SEC*1000-elapsed)/1000));
+        var pct=elapsed/(CAP_SEC*1000);
+        g('cap-countdown').textContent=rem;
+        g('cap-ring-fill').style.strokeDashoffset=(total*(1-Math.min(1,pct))).toFixed(1);
+        if(elapsed>=CAP_SEC*1000){ clearInterval(capTimer); finalizeCapture(); }
+      },100);
+    };
+
+    function finalizeCapture(){
+      cancelRaf();
+      phoneState='captured';
+      clearInterval(capTimer);
+      if(!capCollected.length){
+        hint('No pitch detected. Try again with louder audio or hold the phone closer to the speaker.');
+        g('btn-capture-phone').disabled=false; g('btn-capture-phone').textContent='\u21ba Try Again';
+        g('phone-dot').className='ctrl-dot'; setPill('ref','No Signal','pill-idle');
+        g('cap-ring-wrap').style.display='none'; return;
+      }
+      var sorted=capCollected.slice().sort(function(a,b){return a-b;});
+      capMedian=sorted[Math.floor(sorted.length/2)];
+      var ni=fToNote(capMedian);
+      var lo=fToNote(sorted[0]), hi=fToNote(sorted[sorted.length-1]);
+      setSt('ref-note',ni.n+ni.oct,'note-big ref'); setSt('ref-freq',capMedian.toFixed(1)+' Hz');
+      setSv('ref-cents',ni.c+' c','sv-ref'); setSv('ref-clarity','~'+Math.round(capCollected.length/CAP_SEC)+'/s','sv-ref');
+      setSv('ref-extra',capCollected.length,'sv-ref');
+      g('ref-vrn').textContent=vrn(ni,80)+' [captured]';
+      // Push ref history so overlay shows flat reference line
+      for(var i=0;i<HIST;i++) refH.push(capMedian);
+      g('cap-ring-wrap').style.display='none';
+      g('btn-capture-phone').disabled=false; g('btn-capture-phone').textContent='\u21ba Re-capture';
+      g('btn-sing-phone').disabled=false;
+      g('btn-stop-phone').style.display='none';
+      setPill('ref','CAPTURED','pill-ref');
+      g('phone-dot').className='ctrl-dot on-mic';
+      g('phone-txt').textContent='Vocalist captured! Now press Sing Live.';
+      hint('&#10003; Captured '+capCollected.length+' samples ('+lo.n+lo.oct+' \u2013 '+hi.n+hi.oct+'). Press <strong style="color:var(--live-color)">&#127774; Sing Live</strong> now!');
+    }
+
+    window.phoneSing = function(){
+      if(!micOkP||!capMedian||phoneState==='singing')return;
+      phoneState='singing';
+      running=true; t0=Date.now();
+      g('btn-sing-phone').textContent='&#127774; Singing...'; g('btn-sing-phone').disabled=true;
+      g('btn-capture-phone').disabled=true;
+      g('btn-stop-phone').style.display='inline-block';
+      g('phone-dot').className='ctrl-dot live';
+      g('phone-txt').textContent='Singing live \u2014 watch the match score!';
+      g('panel-live').classList.add('on');
+      setPill('live','LIVE','pill-live');
+      hint('&#127774; Sing now! The match score updates in real time.');
+      var sr=audioCtx.sampleRate;
+      var tb=new Uint8Array(micAn.fftSize), fb=new Uint8Array(micAn.frequencyBinCount);
+      function singLoop(){
+        if(!running)return;
+        micAn.getByteTimeDomainData(tb); micAn.getByteFrequencyData(fb);
+        var r=pitch(fl(tb),sr);
+        if(r.f&&r.cl>16){
+          var ni=fToNote(r.f);
+          setSt('live-note',ni.n+ni.oct,'note-big live'); setSt('live-freq',r.f.toFixed(1)+' Hz'); setSt('live-oct','Octave '+ni.oct);
+          setSv('live-cents',ni.c+' c','sv-live'); setSv('live-clarity',r.cl+'%','sv-live');
+          g('live-vrn').textContent=vrn(ni,r.cl); liveH.push(r.f);
+          updateMatch(r.f,capMedian);
+          // Keep ref line alive on overlay
+          refH.push(capMedian); if(refH.length>HIST)refH.shift();
+        } else { setSt('live-note','...','note-big idle'); liveH.push(null); }
+        if(liveH.length>HIST)liveH.shift();
+        dWave(CV.lw,tb,'#4ade80'); dSpec(CV.ls,fb,'#4ade80');
+        var sec=Math.floor((Date.now()-t0)/1000); setSv('live-timer',Math.floor(sec/60)+':'+(sec%60<10?'0':'')+(sec%60),'sv-live');
+        dOv(); raf=requestAnimationFrame(singLoop);
+      }
+      raf=requestAnimationFrame(singLoop);
+    };
+
+    window.stopPhone = function(){
+      running=false; cancelRaf(); clearInterval(capTimer);
+      if(phoneState==='capturing') finalizeCapture();
+      else {
+        phoneState='captured';
+        g('btn-sing-phone').disabled=false; g('btn-sing-phone').textContent='&#127774; Sing Live';
+        g('btn-capture-phone').disabled=false;
+        g('btn-stop-phone').style.display='none';
+        g('phone-dot').className='ctrl-dot on-mic';
+        g('phone-txt').textContent='Stopped. Press Capture or Sing again.';
+        g('panel-live').classList.remove('on'); setPill('live','Idle','pill-idle');
+        hint('Stopped. Press <strong style="color:var(--live-color)">&#127774; Sing Live</strong> to continue or re-capture.');
+      }
+    };
+
+    // ========================================
+    // SHARED AUDIO + DRAW
+    // ========================================
+    function cancelRaf(){ if(raf){cancelAnimationFrame(raf);raf=null;} }
+
+    function pitch(buf,sr){
+      var mn=Math.floor(sr/MAX_F),mx=Math.floor(sr/MIN_F),n=buf.length,rms=0;
+      for(var i=0;i<n;i++) rms+=buf[i]*buf[i]; rms=Math.sqrt(rms/n);
+      if(rms<0.003) return{f:null,cl:0};
+      var ac=new Float32Array(mx+1);
+      for(var tau=mn;tau<=mx;tau++){var s=0;for(var j=0;j<n-mx;j++)s+=buf[j]*buf[j+tau];ac[tau]=s;}
+      var best=-1,bv=-1,up=false;
+      for(var t=mn+1;t<=mx;t++){
+        if(ac[t]>ac[t-1]){up=true;}
+        else if(up&&ac[t]<ac[t-1]){if(ac[t-1]>bv){bv=ac[t-1];best=t-1;}up=false;}
+      }
+      if(best<0) return{f:null,cl:0};
+      var a0=ac[best-1]||0,a1=ac[best],a2=ac[best+1]||0,d=(a0-a2)/(2*(a0-2*a1+a2))||0;
+      return{f:sr/(best+d),cl:Math.max(0,Math.min(100,Math.round((bv/(rms*rms*(n-mx)))*100)))};
+    }
+    function fl(tb){ var f=new Float32Array(tb.length); for(var i=0;i<tb.length;i++)f[i]=(tb[i]-128)/128; return f; }
+    function fToNote(f){ if(!f||f<=0)return{n:'--',oct:-1,c:0}; var m=12*Math.log2(f/440)+69,mr=Math.round(m); return{n:NOTES[((mr%12)+12)%12],oct:Math.floor(mr/12)-1,c:Math.round((m-mr)*100)}; }
+    function vrn(ni,cl){ if(!ni||ni.n==='--')return'—'; return'['+(ni.oct>=5?'H++':ni.oct===4?'M+':'C+')+', '+(cl>70?'Cl++':cl>40?'Cl+':'Cl-')+'] '+ni.n+ni.oct; }
+    function rmsDb(buf){ var s=0; for(var i=0;i<buf.length;i++)s+=buf[i]*buf[i]; return Math.max(-60,Math.round(20*Math.log10(Math.sqrt(s/buf.length)||0.0001)))+'dB'; }
+
+    function dWave(c,tb,col){ rcv(c); var ctx2=c.getContext('2d'),w=c.width,h=c.height,d=window.devicePixelRatio||1; ctx2.clearRect(0,0,w,h); ctx2.strokeStyle=col; ctx2.lineWidth=1.5*d; ctx2.beginPath(); var sw=w/tb.length,x=0; for(var i=0;i<tb.length;i++){var y=(tb[i]/128)*h/2;i===0?ctx2.moveTo(x,y):ctx2.lineTo(x,y);x+=sw;} ctx2.stroke(); }
+    function dSpec(c,fb,col){ rcv(c); var ctx2=c.getContext('2d'),w=c.width,h=c.height,bw=Math.max(1,Math.floor(w/(fb.length/4))),nb=Math.floor(w/bw); var gg=ctx2.createLinearGradient(0,h,0,0); gg.addColorStop(0,col+'33'); gg.addColorStop(1,col+'cc'); ctx2.fillStyle=gg; ctx2.clearRect(0,0,w,h); for(var i=0;i<nb;i++){var bh=Math.max(1,((fb[i]||0)/255)*h);ctx2.fillRect(i*bw,h-bh,bw-1,bh);} }
+    function dOv(){ var c=CV.ov; rcv(c); var ctx2=c.getContext('2d'),w=c.width,h=c.height,d=window.devicePixelRatio||1; ctx2.clearRect(0,0,w,h); ctx2.strokeStyle='rgba(255,255,255,.04)'; ctx2.lineWidth=1; for(var i=1;i<4;i++){ctx2.beginPath();ctx2.moveTo(0,h*i/4);ctx2.lineTo(w,h*i/4);ctx2.stroke();} function line(hist,col){if(hist.length<2)return;ctx2.strokeStyle=col;ctx2.lineWidth=2*d;ctx2.lineJoin='round';ctx2.beginPath();var mn=80,mx2=900;for(var j=0;j<hist.length;j++){var f=hist[j];if(!f)continue;var xp=(j/(HIST-1))*w,yp=h-((Math.log2(f/mn)/Math.log2(mx2/mn))*h);yp=Math.max(2,Math.min(h-2,yp));(!j||!hist[j-1])?ctx2.moveTo(xp,yp):ctx2.lineTo(xp,yp);}ctx2.stroke();} line(refH,'#00d4ff'); line(liveH,'#4ade80'); }
+
     function updateMatch(lf,rf){
-      var c=Math.abs(12*Math.log2(lf/rf))*100, score=Math.max(0,Math.round(100-c/2)), diff=Math.round(c*(lf<rf?-1:1));
+      var c=Math.abs(12*Math.log2(lf/rf))*100,score=Math.max(0,Math.round(100-c/2)),diff=Math.round(c*(lf<rf?-1:1));
       var gg=grade(score);
       g('match-pct').textContent=score+'%'; g('match-pct').style.color=gg.color;
       g('match-grade').textContent=gg.ltr; g('match-grade').style.color=gg.color;
@@ -549,47 +834,55 @@
       g('needle').style.left=pct+'%'; g('needle').style.background=gg.color;
     }
     function grade(s){
-      if(s>=95)return{ltr:'S+',msg:'Flawless — studio-level match.',color:'#4ade80'};
-      if(s>=85)return{ltr:'A', msg:'Excellent — nearly on pitch!', color:'#86efac'};
-      if(s>=72)return{ltr:'B', msg:'Good match with minor drift.',  color:'#ffd700'};
-      if(s>=55)return{ltr:'C', msg:'Close — keep adjusting.',       color:'#f59e0b'};
-      if(s>=35)return{ltr:'D', msg:'Off — try moving up or down.',  color:'#ef4444'};
-      return       {ltr:'F', msg:"Far off — check your octave.",   color:'#dc2626'};
+      if(s>=95)return{ltr:'S+',msg:'Flawless \u2014 studio-level match.',color:'#4ade80'};
+      if(s>=85)return{ltr:'A', msg:'Excellent \u2014 nearly on pitch!',  color:'#86efac'};
+      if(s>=72)return{ltr:'B', msg:'Good match with minor drift.',         color:'#ffd700'};
+      if(s>=55)return{ltr:'C', msg:'Close \u2014 keep adjusting.',         color:'#f59e0b'};
+      if(s>=35)return{ltr:'D', msg:'Off \u2014 try moving up or down.',    color:'#ef4444'};
+      return       {ltr:'F', msg:'Far off \u2014 check your octave.',    color:'#dc2626'};
     }
 
-    window.stopAnalysis = function(){
-      running=false; if(raf){cancelAnimationFrame(raf);raf=null;}
-      g('ctrl-dot').className='ctrl-dot'; g('ctrl-txt').textContent='Stopped.';
-      g('btn-go').style.display=''; g('btn-stop').style.display='none';
-      g('panel-ref').classList.remove('on'); g('panel-live').classList.remove('on');
-      setPill('ref','Idle','pill-idle'); setPill('live','Idle','pill-idle');
-      hint('Paused. Press <strong style="color:#4ade80">&#9654; Analyze Both Live</strong> to resume.');
-    };
+    // ---- Reset ----
     window.resetAll = function(){
-      window.stopAnalysis();
+      running=false; cancelRaf(); clearInterval(capTimer);
+      phoneState='idle'; capCollected=[]; capMedian=null;
       if(ytStream){ytStream.getTracks().forEach(function(t){t.stop()});ytStream=null;}
       if(micStream){micStream.getTracks().forEach(function(t){t.stop()});micStream=null;}
-      ytAn=null;micAn=null;ytOk=false;micOk=false;refH=[];liveH=[];
-      g('btn-share').classList.remove('connected');g('btn-share').textContent='\u21ba Reshare YouTube Tab Audio';
-      g('yt-dot').className='conn-dot';g('yt-conn-txt').textContent='Not connected';
-      g('btn-mic').classList.remove('connected');g('btn-mic').textContent='&#127908; Connect Microphone';
-      g('mic-dot').className='conn-dot';g('mic-conn-txt').textContent='Not connected';
+      ytAn=null; micAn=null; ytOk=false; micOkD=false; micOkP=false;
+      refH=[]; liveH=[];
+      // Reset buttons
+      g('btn-share').classList.remove('connected'); g('btn-share').textContent='\u21ba Share YouTube Tab Audio';
+      g('yt-dot').className='conn-dot'; g('yt-conn-txt').textContent='Not connected';
+      g('btn-mic-d').classList.remove('connected'); g('btn-mic-d').textContent='&#127908; Connect Microphone';
+      g('mic-dot-d').className='conn-dot'; g('mic-conn-txt-d').textContent='Not connected';
+      g('btn-mic-p').classList.remove('connected'); g('btn-mic-p').textContent='&#127908; Connect Microphone';
+      g('mic-dot-p').className='conn-dot'; g('mic-conn-txt-p').textContent='Connect mic to enable capture';
+      g('btn-capture-phone').disabled=true; g('btn-capture-phone').textContent='&#127908; Connect Mic First';
+      g('btn-sing-phone').disabled=true; g('btn-sing-phone').textContent='&#127774; Sing Live';
+      g('btn-stop-phone').style.display='none';
+      g('btn-go').disabled=true; g('btn-go').style.display='';
+      g('btn-stop').style.display='none';
+      g('ctrl-dot').className='ctrl-dot'; g('ctrl-txt').textContent='Complete steps above, then press Analyze';
+      g('phone-dot').className='ctrl-dot'; g('phone-txt').textContent='Connect mic, then capture the vocalist';
       ['s1','s2','s3'].forEach(function(id){var el=g(id);if(el){el.className='step-num';el.textContent=id[1];}});
-      g('btn-go').disabled=true; g('ctrl-txt').textContent='Complete steps above, then press Analyze';
+      // Reset panels
       ['ref-note','live-note'].forEach(function(i){setSt(i,'--','note-big idle');});
       ['ref-freq','live-freq'].forEach(function(i){g(i).textContent='-- Hz';});
       ['ref-oct','live-oct'].forEach(function(i){g(i).textContent='Octave --';});
-      ['ref-cents','ref-clarity','ref-level','live-cents','live-clarity'].forEach(function(i){setSv(i,'--','sv-idle');});
+      ['ref-cents','ref-clarity','ref-extra','live-cents','live-clarity'].forEach(function(i){setSv(i,'--','sv-idle');});
       setSv('live-timer','0:00','sv-idle');
-      g('ref-vrn').textContent='—';g('live-vrn').textContent='—';
-      g('match-pct').textContent='--%';g('match-pct').style.color='var(--text-dim)';
-      g('match-grade').textContent='—';g('match-grade').style.color='var(--text-dim)';
-      g('match-phrase').textContent='Connect both sources and press Analyze to begin.';
-      g('match-bar').style.width='0%';g('needle-val').textContent='-- cents';
-      g('needle').style.left='50%';g('needle').style.background='var(--accent-gold)';
+      g('ref-vrn').textContent='—'; g('live-vrn').textContent='—';
+      g('match-pct').textContent='--%'; g('match-pct').style.color='var(--text-dim)';
+      g('match-grade').textContent='—'; g('match-grade').style.color='var(--text-dim)';
+      g('match-phrase').textContent='Select a mode above to begin.';
+      g('match-bar').style.width='0%'; g('needle-val').textContent='-- cents';
+      g('needle').style.left='50%'; g('needle').style.background='var(--accent-gold)';
       g('return-banner').classList.remove('show');
+      g('cap-ring-wrap').style.display='none';
+      g('panel-ref').classList.remove('on'); g('panel-live').classList.remove('on');
+      setPill('ref','Idle','pill-idle'); setPill('live','Idle','pill-idle');
       Object.values(CV).forEach(function(c){var ct=c.getContext('2d');ct.clearRect(0,0,c.width,c.height);});
-      hint('Complete all 3 steps above, then press <strong>Analyze Both Live</strong>.');
+      setMode(currentMode||'desktop');
     };
 
     function setSt(id,txt,cls){var el=g(id);el.textContent=txt;if(cls)el.className=cls;}
