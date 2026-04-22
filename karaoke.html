@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VP15KRLV6P"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-VP15KRLV6P');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4573596965267859" crossorigin="anonymous"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Karaoke Studio — Sing Along &amp; Train Your Voice | VoiceStry</title>
+  <meta name="description" content="Karaoke practice with synchronized lyrics, live pitch meter, and VRN vocal warm-ups. Search any song, watch the karaoke video, and train your voice in real time.">
+  <meta name="keywords" content="karaoke practice, vocal training karaoke, pitch meter karaoke, sing along lyrics, karaoke pitch trainer">
+  <link rel="canonical" href="https://voicestry.com/karaoke.html">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎤</text></svg>">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    :root {
+      --bg-dark:#0a0a0f; --bg-card:#12121a; --bg-card2:#1a1a28;
+      --text-primary:#fff; --text-secondary:#a0a0b0;
+      --accent-purple:#9d4edd; --accent-cyan:#00d4ff;
+      --accent-gold:#ffd700; --accent-pink:#ff6b9d;
+      --accent-green:#4ade80; --accent-orange:#f59e0b;
+      --accent-red:#ef4444; --border-subtle:rgba(255,255,255,.07);
+    }
+    * { box-sizing:border-box; }
+    body { font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:var(--bg-dark); color:var(--text-primary); line-height:1.6; overflow-x:hidden; }
+
+    /* Webring */
+    .aiunites-bar{background:linear-gradient(90deg,#0a0a0f,#1a1a2e);border-bottom:1px solid rgba(99,102,241,.3);padding:8px 0;font-size:12px}
+    .aiunites-bar-content{max-width:1400px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:12px;overflow-x:auto;scrollbar-width:none}
+    .aiunites-bar-content::-webkit-scrollbar{display:none}
+    .aiunites-bar a{color:rgba(255,255,255,.7);text-decoration:none;white-space:nowrap;transition:color .2s}
+    .aiunites-bar a:hover{color:#fff}
+    .aiunites-bar-brand{color:#6366f1!important;font-weight:600}
+    .aiunites-bar-active{color:#fff!important;text-decoration:underline;text-underline-offset:3px}
+    .aiunites-bar-divider{color:rgba(255,255,255,.2)}
+
+    /* Nav */
+    .nav{background:var(--bg-card);padding:15px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.1);position:sticky;top:0;z-index:100}
+    .nav-logo{font-size:1.5rem;font-weight:800;text-decoration:none;background:linear-gradient(135deg,var(--accent-green),var(--accent-cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .nav-links{display:flex;gap:25px;flex-wrap:wrap;align-items:center}
+    .nav-links a{color:var(--text-secondary);text-decoration:none;font-size:.95rem;transition:color .3s}
+    .nav-links a:hover,.nav-links a.active{color:var(--accent-cyan)}
+    .nav-dropdown{position:relative}
+    .nav-dropdown-btn{background:none;border:none;color:var(--text-secondary);font-size:.95rem;cursor:pointer;font-family:inherit;padding:0;transition:color .2s}
+    .nav-dropdown-btn:hover,.nav-dropdown-btn.active{color:var(--accent-cyan)}
+    .nav-dropdown-menu{display:none;position:absolute;top:calc(100% + 8px);left:0;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:10px;min-width:160px;overflow:hidden;z-index:200}
+    .nav-dropdown.open .nav-dropdown-menu{display:block}
+    .nav-dropdown-menu a{display:block;padding:9px 16px;color:var(--text-secondary);text-decoration:none;font-size:.88rem;transition:background .15s,color .15s}
+    .nav-dropdown-menu a:hover,.nav-dropdown-menu a.active{background:rgba(0,212,255,.08);color:var(--accent-cyan)}
+
+    /* Hero */
+    .hero{padding:52px 20px 30px;text-align:center;background:radial-gradient(ellipse at 30% 30%,rgba(157,78,221,.1) 0%,transparent 55%),radial-gradient(ellipse at 70% 60%,rgba(0,212,255,.08) 0%,transparent 55%),var(--bg-dark)}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 18px;border-radius:24px;font-size:.8rem;font-weight:700;background:rgba(157,78,221,.1);border:1px solid rgba(157,78,221,.25);color:var(--accent-purple);margin-bottom:16px;letter-spacing:.05em;text-transform:uppercase}
+    .hero h1{font-size:clamp(2rem,5vw,3rem);font-weight:900;line-height:1.15;margin-bottom:12px}
+    .hero p{color:var(--text-secondary);max-width:600px;margin:0 auto 24px;font-size:1.05rem;line-height:1.7}
+
+    /* Search */
+    .search-wrap{max-width:680px;margin:0 auto 10px}
+    .search-row{display:flex;gap:10px}
+    .search-input{flex:1;background:var(--bg-card);border:1px solid rgba(255,255,255,.12);border-radius:12px;color:var(--text-primary);font-family:inherit;font-size:1rem;padding:13px 18px;outline:none;transition:border-color .2s}
+    .search-input:focus{border-color:rgba(157,78,221,.5)}
+    .search-input::placeholder{color:rgba(255,255,255,.3)}
+    .search-btn{background:linear-gradient(135deg,var(--accent-purple),var(--accent-cyan));border:none;border-radius:12px;color:#fff;font-weight:800;font-size:1rem;padding:13px 24px;cursor:pointer;font-family:inherit;transition:opacity .2s;white-space:nowrap}
+    .search-btn:hover{opacity:.85}
+    .search-hint{font-size:.78rem;color:rgba(255,255,255,.3);text-align:center;margin-top:8px}
+    .search-results{display:none;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:12px;overflow:hidden;margin-top:8px;max-height:280px;overflow-y:auto}
+    .search-result-item{display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.04);transition:background .15s}
+    .search-result-item:last-child{border-bottom:none}
+    .search-result-item:hover{background:rgba(255,255,255,.04)}
+    .sri-thumb{width:60px;height:40px;object-fit:cover;border-radius:5px;flex-shrink:0;background:var(--bg-card2)}
+    .sri-info .sri-title{font-size:.88rem;font-weight:600;line-height:1.3}
+    .sri-info .sri-channel{font-size:.75rem;color:var(--text-secondary)}
+
+    /* Studio layout */
+    .studio{max-width:1280px;margin:0 auto;padding:20px 16px 80px}
+    .studio-empty{text-align:center;padding:60px 20px;color:var(--text-secondary)}
+    .studio-empty .em-icon{font-size:3.5rem;margin-bottom:12px}
+    .studio-empty h3{font-size:1.2rem;font-weight:700;margin-bottom:8px;color:var(--text-primary)}
+    .studio-empty p{max-width:420px;margin:0 auto;font-size:.9rem;line-height:1.6}
+
+    /* Panel container */
+    .panels-grid{display:grid;grid-template-columns:1fr 340px;gap:16px;margin-top:16px}
+    @media(max-width:900px){.panels-grid{grid-template-columns:1fr}}
+
+    /* Panel card */
+    .panel-card{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:16px;overflow:hidden}
+    .panel-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border-subtle);background:rgba(255,255,255,.02);cursor:pointer;user-select:none}
+    .panel-title{font-size:.88rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.6);display:flex;align-items:center;gap:8px}
+    .panel-toggle{font-size:.8rem;color:rgba(255,255,255,.3);background:rgba(255,255,255,.06);border:none;border-radius:5px;padding:3px 9px;cursor:pointer;font-family:inherit;transition:all .15s}
+    .panel-toggle:hover{background:rgba(255,255,255,.12);color:#fff}
+    .panel-body{transition:max-height .3s ease,opacity .2s}
+    .panel-body.collapsed{max-height:0;overflow:hidden;opacity:0}
+    .panel-body.expanded{max-height:2000px;opacity:1}
+
+    /* Video panel */
+    .video-wrap{position:relative;padding-bottom:56.25%;height:0;overflow:hidden}
+    .video-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none}
+    .video-placeholder{aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.3);color:rgba(255,255,255,.2);font-size:.9rem}
+
+    /* Lyrics panel */
+    .lyrics-body{padding:12px 16px;min-height:200px;max-height:340px;overflow-y:auto;scroll-behavior:smooth}
+    .lyric-line{padding:7px 10px;border-radius:8px;font-size:.95rem;line-height:1.6;color:rgba(255,255,255,.35);transition:all .25s;cursor:default}
+    .lyric-line.active{color:#fff;font-weight:700;font-size:1.08rem;background:rgba(157,78,221,.15);border-left:3px solid var(--accent-purple);padding-left:14px}
+    .lyric-line.past{color:rgba(255,255,255,.2)}
+    .lyrics-status{padding:20px;text-align:center;color:var(--text-secondary);font-size:.85rem}
+    .lyrics-status a{color:var(--accent-cyan);text-decoration:none}
+
+    /* Pitch meter panel */
+    .pitch-body{padding:16px}
+    .pitch-big{text-align:center;padding:20px 0 10px}
+    .pitch-note-big{font-size:3.5rem;font-weight:900;font-family:'Courier New',monospace;color:var(--accent-gold);line-height:1}
+    .pitch-freq-sm{font-size:.85rem;color:var(--text-secondary);margin-top:4px}
+    .pitch-cents-sm{font-size:1rem;font-weight:700;margin-top:6px;transition:color .15s}
+    .pitch-cents-sm.sharp{color:var(--accent-red)}
+    .pitch-cents-sm.flat{color:var(--accent-orange)}
+    .pitch-cents-sm.intune{color:var(--accent-green)}
+    .meter-wrap{position:relative;height:24px;margin:12px 16px 4px;border-radius:12px;background:rgba(255,255,255,.04);overflow:visible}
+    .meter-center{position:absolute;left:50%;top:-3px;bottom:-3px;width:3px;background:var(--accent-green);border-radius:2px;transform:translateX(-50%);z-index:2}
+    .meter-needle{position:absolute;top:2px;bottom:2px;width:10px;border-radius:5px;background:var(--accent-cyan);transition:left .08s ease-out;z-index:3;box-shadow:0 0 10px rgba(0,212,255,.6)}
+    .meter-labels{display:flex;justify-content:space-between;margin:4px 16px 12px;font-size:.7rem;color:rgba(255,255,255,.3)}
+    .conf-row{display:flex;align-items:center;gap:10px;margin:0 16px 12px;padding:8px 12px;background:rgba(255,255,255,.02);border-radius:8px}
+    .conf-label{font-size:.65rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;min-width:44px}
+    .conf-track{flex:1;height:4px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden}
+    .conf-fill{height:100%;border-radius:4px;transition:width .15s,background .3s}
+    .conf-status{font-size:.7rem;font-weight:700;font-family:'Courier New',monospace;min-width:60px;text-align:right;transition:color .3s}
+    .conf-status.noise{color:var(--accent-red)}
+    .conf-status.maybe{color:var(--accent-orange)}
+    .conf-status.voice{color:var(--accent-green)}
+    .conf-status.singing{color:var(--accent-cyan)}
+    .pitch-start-btn{display:block;margin:0 16px 16px;width:calc(100% - 32px);padding:12px;background:linear-gradient(135deg,var(--accent-purple),var(--accent-cyan));border:none;border-radius:10px;color:#fff;font-weight:800;font-size:.95rem;cursor:pointer;font-family:inherit;transition:opacity .2s}
+    .pitch-start-btn:hover{opacity:.85}
+    .pitch-start-btn.recording{background:linear-gradient(135deg,var(--accent-red),var(--accent-orange));animation:kpulse 1.5s infinite}
+    @keyframes kpulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.4)}50%{box-shadow:0 0 0 12px rgba(239,68,68,0)}}
+
+    /* VRN panel */
+    .vrn-body{padding:14px 16px}
+    .vrn-key-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+    .vrn-key-label{font-size:.8rem;color:var(--text-secondary);white-space:nowrap}
+    .vrn-key-select{flex:1;background:var(--bg-card2);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:var(--text-primary);padding:7px 10px;font-family:inherit;font-size:.85rem}
+    .vrn-exercise{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 14px;margin-bottom:10px}
+    .vrn-ex-title{font-size:.75rem;font-weight:700;color:var(--accent-cyan);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+    .vrn-notation{font-family:'Courier New',monospace;font-size:.82rem;color:#a5b4fc;line-height:1.8;white-space:pre}
+    .vrn-desc{font-size:.72rem;color:rgba(255,255,255,.35);margin-top:4px;line-height:1.5}
+    .vrn-link{display:block;text-align:center;color:var(--accent-purple);font-size:.78rem;text-decoration:none;margin-top:6px;opacity:.7;transition:opacity .2s}
+    .vrn-link:hover{opacity:1}
+
+    /* Song info bar */
+    .song-bar{display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--border-subtle)}
+    .song-bar-thumb{width:48px;height:32px;object-fit:cover;border-radius:5px;flex-shrink:0}
+    .song-bar-info{flex:1;min-width:0}
+    .song-bar-title{font-size:.88rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .song-bar-channel{font-size:.72rem;color:var(--text-secondary)}
+    .song-bar-clear{background:none;border:1px solid rgba(239,68,68,.3);color:#f87171;border-radius:7px;padding:5px 12px;font-size:.75rem;cursor:pointer;font-family:inherit;transition:all .2s;white-space:nowrap;flex-shrink:0}
+    .song-bar-clear:hover{background:rgba(239,68,68,.12)}
+
+    /* Lyrics search results */
+    .lyrics-pick{padding:12px 16px;border-bottom:1px solid var(--border-subtle)}
+    .lyrics-pick-label{font-size:.75rem;color:var(--text-secondary);margin-bottom:8px}
+    .lyrics-pick-item{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:8px;cursor:pointer;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);margin-bottom:6px;transition:background .15s}
+    .lyrics-pick-item:hover{background:rgba(157,78,221,.1);border-color:rgba(157,78,221,.3)}
+    .lpi-name{font-size:.82rem;font-weight:600}
+    .lpi-meta{font-size:.7rem;color:var(--text-secondary)}
+    .lpi-use{font-size:.7rem;color:var(--accent-cyan)}
+
+    /* Responsive left panel */
+    .left-panels{display:flex;flex-direction:column;gap:16px}
+    .right-panels{display:flex;flex-direction:column;gap:16px}
+
+    /* Footer */
+    .footer{background:var(--bg-card);padding:40px 20px;text-align:center;border-top:1px solid rgba(255,255,255,.05)}
+    .footer p{color:var(--text-secondary);font-size:.9rem}
+    .footer a{color:var(--accent-purple);text-decoration:none}
+
+    @media(max-width:680px){
+      .search-row{flex-direction:column}
+      .panels-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+<!-- Webring -->
+<div class="aiunites-bar"><div class="aiunites-bar-content"><a href="https://aiunites.github.io/aiunites-site/" class="aiunites-bar-brand">◆ AIUNITES</a><span class="aiunites-bar-divider">|</span><a href="https://aiunites.github.io/aizines-app/">AIZines</a><a href="https://aiunites.github.io/aibyjob-demo/">AIByJob</a><a href="https://aiunites.github.io/redomy-demo/">Redomy</a><a href="https://aiunites.github.io/videobate-site/">VideoBate</a><a href="https://aiunites.github.io/voicestry-site/" class="aiunites-bar-active">🎤 VoiceStry</a><a href="https://aiunites.github.io/furnishthings-site/">FurnishThings</a><a href="https://aiunites.github.io/bizstry-site/">BizStry</a><a href="https://aiunites.github.io/aiyhwh-site/">AI YHWH</a><a href="https://aiunites.github.io/cloudsion-site/">Cloudsion</a><a href="https://aiunites.github.io/gameatica-site/">Gameatica</a><a href="https://aiunites.github.io/uptownit-site/">UptownIT</a><a href="https://aiunites.github.io/inthisworld-site/">InThisWorld</a><a href="https://aiunites.github.io/erpise-site/">ERPise</a><a href="https://aiunites.github.io/erpize-site/">ERPize</a><a href="https://aiunites.github.io/aitsql-site/">AITSQL</a><a href="https://aiunites.github.io/cosmostheopera-site/">🌌 COSMOS</a></div></div>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">🎤 VoiceStry</a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="vrn-method.html">VRN Method</a>
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-btn">Learn ▾</button>
+      <div class="nav-dropdown-menu">
+        <a href="learn.html">Learn VRN</a>
+        <a href="5-gears.html">5 Gears</a>
+        <a href="vocal-gym.html">Vocal Gym</a>
+      </div>
+    </div>
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-btn active">Tools ▾</button>
+      <div class="nav-dropdown-menu">
+        <a href="karaoke.html" class="active">🎵 Karaoke</a>
+        <a href="pitch-trainer.html">Pitch Trainer</a>
+        <a href="sight-reading.html">Sight Reading</a>
+        <a href="voice-lab.html">Voice Lab</a>
+        <a href="voice-analyzer.html">Live Analyzer</a>
+        <a href="vocalist-match.html">Vocalist Match</a>
+        <a href="sonic-portrait.html">Sonic Portrait</a>
+      </div>
+    </div>
+    <a href="ai-vrn.html">AI + VRN</a>
+    <a href="ai-neuro.html">AI + Neuro</a>
+    <a href="press.html">Press</a>
+  </div>
+</nav>
+<script>document.querySelectorAll('.nav-dropdown-btn').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();var d=b.parentElement,o=d.classList.contains('open');document.querySelectorAll('.nav-dropdown.open').forEach(function(x){x.classList.remove('open')});if(!o)d.classList.add('open')})});document.addEventListener('click',function(){document.querySelectorAll('.nav-dropdown.open').forEach(function(d){d.classList.remove('open')})})</script>
+
+<!-- Hero & Search -->
+<section class="hero">
+  <a href="vrn-method.html" style="display:inline-block;margin-bottom:18px;color:var(--accent-cyan);text-decoration:none;font-size:.9rem;opacity:.7;">← Back to VRN Method</a>
+  <div class="hero-badge">🎵 Karaoke Studio</div>
+  <h1>Sing Along &amp; Train</h1>
+  <p>Search any song — watch the karaoke video, follow synchronized lyrics, check your pitch live, and warm up with VRN vocal exercises in the song's key.</p>
+
+  <div class="search-wrap">
+    <div class="search-row">
+      <input type="text" class="search-input" id="searchInput" placeholder="Song title + artist   e.g.  Bohemian Rhapsody Queen" autocomplete="off" onkeydown="if(event.key==='Enter')doSearch()">
+      <button class="search-btn" onclick="doSearch()">Search</button>
+    </div>
+    <div class="search-hint">Searches YouTube for karaoke videos &amp; loads synchronized lyrics automatically</div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</section>
+
+<!-- Studio -->
+<div class="studio">
+  <!-- Empty state -->
+  <div class="studio-empty" id="studioEmpty">
+    <div class="em-icon">🎤</div>
+    <h3>Search for a song to begin</h3>
+    <p>Type a song title and artist above. We'll find the karaoke video and load the synchronized lyrics for you.</p>
+    <div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="search-btn" style="font-size:.82rem;padding:8px 16px;border-radius:8px" onclick="quickSearch('Bohemian Rhapsody Queen')">Bohemian Rhapsody</button>
+      <button class="search-btn" style="font-size:.82rem;padding:8px 16px;border-radius:8px;background:linear-gradient(135deg,#ff6b9d,#9d4edd)" onclick="quickSearch('Someone Like You Adele')">Someone Like You</button>
+      <button class="search-btn" style="font-size:.82rem;padding:8px 16px;border-radius:8px;background:linear-gradient(135deg,#00d4ff,#4ade80)" onclick="quickSearch('Don\'t Stop Believin Journey')">Don't Stop Believin'</button>
+    </div>
+  </div>
+
+  <!-- Active studio (hidden until song loaded) -->
+  <div id="studioActive" style="display:none">
+
+    <!-- Song info bar -->
+    <div class="panel-card" style="margin-bottom:16px">
+      <div class="song-bar" id="songBar">
+        <img id="songThumb" class="song-bar-thumb" src="" alt="">
+        <div class="song-bar-info">
+          <div class="song-bar-title" id="songTitle">Loading...</div>
+          <div class="song-bar-channel" id="songChannel"></div>
+        </div>
+        <button class="song-bar-clear" onclick="clearSong()">✕ New Song</button>
+      </div>
+    </div>
+
+    <div class="panels-grid">
+
+      <!-- LEFT: Video + Lyrics -->
+      <div class="left-panels">
+
+        <!-- Video Panel -->
+        <div class="panel-card" id="panelVideo">
+          <div class="panel-header" onclick="togglePanel('video')">
+            <span class="panel-title">▶ Video</span>
+            <button class="panel-toggle" id="toggleVideo">Hide</button>
+          </div>
+          <div class="panel-body expanded" id="bodyVideo">
+            <div class="video-wrap">
+              <div id="ytPlayer"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lyrics Panel -->
+        <div class="panel-card" id="panelLyrics">
+          <div class="panel-header" onclick="togglePanel('lyrics')">
+            <span class="panel-title">🎵 Synchronized Lyrics</span>
+            <button class="panel-toggle" id="toggleLyrics">Hide</button>
+          </div>
+          <div class="panel-body expanded" id="bodyLyrics">
+            <div id="lyricsPickArea"></div>
+            <div class="lyrics-body" id="lyricsBody">
+              <div class="lyrics-status" id="lyricsStatus">Loading lyrics...</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Pitch + VRN -->
+      <div class="right-panels">
+
+        <!-- Pitch Meter Panel -->
+        <div class="panel-card" id="panelPitch">
+          <div class="panel-header" onclick="togglePanel('pitch')">
+            <span class="panel-title">🎙 Live Pitch Meter</span>
+            <button class="panel-toggle" id="togglePitch">Hide</button>
+          </div>
+          <div class="panel-body expanded" id="bodyPitch">
+            <div class="pitch-body">
+              <div class="pitch-big">
+                <div class="pitch-note-big" id="kNote">—</div>
+                <div class="pitch-freq-sm" id="kFreq">Microphone off</div>
+                <div class="pitch-cents-sm" id="kCents">&nbsp;</div>
+              </div>
+              <div class="meter-wrap">
+                <div class="meter-center"></div>
+                <div class="meter-needle" id="kNeedle" style="left:calc(50% - 5px)"></div>
+              </div>
+              <div class="meter-labels"><span>♭ Flat</span><span>✓ In Tune</span><span>♯ Sharp</span></div>
+              <div class="conf-row">
+                <div class="conf-label">Signal</div>
+                <div class="conf-track"><div class="conf-fill" id="kConfFill" style="width:0%;background:var(--accent-red)"></div></div>
+                <div class="conf-status noise" id="kConfStatus">Off</div>
+              </div>
+              <button class="pitch-start-btn" id="kMicBtn" onclick="toggleKMic()">🎤 Start Pitch Meter</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- VRN Warm-Up Panel -->
+        <div class="panel-card" id="panelVrn">
+          <div class="panel-header" onclick="togglePanel('vrn')">
+            <span class="panel-title">◆ VRN Warm-Up</span>
+            <button class="panel-toggle" id="toggleVrn">Hide</button>
+          </div>
+          <div class="panel-body expanded" id="bodyVrn">
+            <div class="vrn-body">
+              <div class="vrn-key-row">
+                <span class="vrn-key-label">Song key:</span>
+                <select class="vrn-key-select" id="vrnKey" onchange="renderVrn()">
+                  <option value="C">C Major</option>
+                  <option value="D">D Major</option>
+                  <option value="E">E Major</option>
+                  <option value="F">F Major</option>
+                  <option value="G">G Major</option>
+                  <option value="A">A Major</option>
+                  <option value="B">B Major</option>
+                  <option value="Am">A Minor</option>
+                  <option value="Dm">D Minor</option>
+                  <option value="Em">E Minor</option>
+                </select>
+              </div>
+              <div id="vrnExercises"></div>
+              <a href="vrn-method.html" class="vrn-link">Learn the full VRN Method →</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <p>
+    © 2002-2026 VoiceStry. All Rights Reserved.<br>
+    Home of the <a href="vrn-method.html">VRN Method</a> — Vocal Resonance Notation<br><br>
+    <a href="index.html">Home</a> |
+    <a href="karaoke.html">Karaoke</a> |
+    <a href="pitch-trainer.html">Pitch Trainer</a> |
+    <a href="vocalist-match.html">Vocalist Match</a> |
+    <a href="vrn-method.html">VRN Method</a> |
+    <a href="ai-vrn.html">AI + VRN</a>
+  </p>
+  <div style="max-width:680px;margin:1.5rem auto 0;padding:1rem 1.5rem;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:8px;font-size:.8rem;line-height:1.5;color:rgba(255,255,255,.7)">
+    <strong style="color:#f87171">⚠️ Voice Health Disclaimer:</strong> Stop immediately if you experience pain or strain. Consult a vocal coach before intensive training. VoiceStry is not responsible for vocal injury from misuse.
+  </div>
+</footer>
+
+<!-- YouTube IFrame API -->
+<script src="https://www.youtube.com/iframe_api"></script>
+
+<script>
+// ============================================================
+//  STATE
+// ============================================================
+var ytPlayer = null, ytReady = false;
+var lyricsData = [];        // [{time, text}]
+var lyricsTimer = null;
+var kMicStream = null, kAnalyser = null, kRaf = null;
+var kFreqHist = [];
+var audioCtx = null;
+var currentVideoId = null;
+var currentSongMeta = {};
+
+// ============================================================
+//  YOUTUBE API
+// ============================================================
+function onYouTubeIframeAPIReady() {
+  ytReady = true;
+}
+
+function createPlayer(videoId) {
+  currentVideoId = videoId;
+  if (ytPlayer) { ytPlayer.loadVideoById(videoId); return; }
+  ytPlayer = new YT.Player('ytPlayer', {
+    videoId: videoId,
+    playerVars: { autoplay: 1, rel: 0, modestbranding: 1 },
+    events: {
+      onStateChange: function(e) {
+        if (e.data === YT.PlayerState.PLAYING) startLyricsSync();
+        if (e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED) stopLyricsSync();
+      }
+    }
+  });
+}
+
+// ============================================================
+//  SEARCH (YouTube Data-free approach using YouTube search embed)
+// ============================================================
+function quickSearch(q) {
+  document.getElementById('searchInput').value = q;
+  doSearch();
+}
+
+function doSearch() {
+  var q = document.getElementById('searchInput').value.trim();
+  if (!q) return;
+  // Append "karaoke" to lean results toward karaoke versions
+  var karaQ = q + ' karaoke';
+  var resultsEl = document.getElementById('searchResults');
+  resultsEl.style.display = 'block';
+  resultsEl.innerHTML = '<div style="padding:14px 16px;color:var(--text-secondary);font-size:.85rem">🔍 Searching...</div>';
+
+  // Use YouTube oEmbed + opensearch via noembed to avoid API key requirement.
+  // Fallback: construct YouTube search URL and show a "open in YouTube" option
+  // Since we can't hit YT Data API without a key client-side, we use invidious public search API (no key needed)
+  var encoded = encodeURIComponent(karaQ);
+  fetch('https://inv.tux.pizza/api/v1/search?q=' + encoded + '&type=video&fields=videoId,title,author,videoThumbnails')
+    .then(function(r) { if (!r.ok) throw new Error('Search failed'); return r.json(); })
+    .then(function(data) { renderSearchResults(data.slice(0, 6), q); })
+    .catch(function() {
+      // Fallback: try another invidious instance
+      fetch('https://invidious.privacydev.net/api/v1/search?q=' + encoded + '&type=video&fields=videoId,title,author,videoThumbnails')
+        .then(function(r) { return r.json(); })
+        .then(function(data) { renderSearchResults(data.slice(0, 6), q); })
+        .catch(function() { showSearchFallback(q); });
+    });
+}
+
+function renderSearchResults(videos, query) {
+  var resultsEl = document.getElementById('searchResults');
+  if (!videos || !videos.length) { showSearchFallback(query); return; }
+  resultsEl.innerHTML = '';
+  videos.forEach(function(v) {
+    var thumb = (v.videoThumbnails && v.videoThumbnails[0]) ? v.videoThumbnails[0].url : '';
+    var div = document.createElement('div');
+    div.className = 'search-result-item';
+    div.innerHTML = '<img class="sri-thumb" src="' + thumb + '" alt="" onerror="this.style.display=\'none\'">' +
+      '<div class="sri-info"><div class="sri-title">' + escHtml(v.title || '') + '</div>' +
+      '<div class="sri-channel">' + escHtml(v.author || '') + '</div></div>';
+    div.addEventListener('click', function() {
+      loadSong(v.videoId, v.title, v.author, thumb, query);
+    });
+    resultsEl.appendChild(div);
+  });
+}
+
+function showSearchFallback(query) {
+  var el = document.getElementById('searchResults');
+  var enc = encodeURIComponent(query + ' karaoke');
+  el.innerHTML = '<div style="padding:14px 16px;font-size:.85rem;color:var(--text-secondary)">' +
+    'Auto-search unavailable. ' +
+    '<a href="https://www.youtube.com/results?search_query=' + enc + '" target="_blank" style="color:var(--accent-cyan)">Find on YouTube ↗</a>' +
+    ' then paste the video URL below:</div>' +
+    '<div style="padding:0 16px 14px;display:flex;gap:8px">' +
+    '<input id="urlInput" placeholder="https://www.youtube.com/watch?v=..." style="flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#fff;padding:8px 12px;font-family:inherit;font-size:.85rem;outline:none">' +
+    '<button onclick="loadFromUrl()" style="background:var(--accent-purple);border:none;border-radius:8px;color:#fff;padding:8px 16px;font-weight:700;cursor:pointer;font-family:inherit;font-size:.85rem">Load</button>' +
+    '</div>';
+}
+
+function loadFromUrl() {
+  var url = document.getElementById('urlInput').value.trim();
+  var vid = extractVideoId(url);
+  if (!vid) { alert('Could not find a YouTube video ID in that URL.'); return; }
+  loadSong(vid, 'Custom Video', '', 'https://img.youtube.com/vi/' + vid + '/default.jpg', document.getElementById('searchInput').value);
+}
+
+function extractVideoId(url) {
+  var m = url.match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([A-Za-z0-9_-]{11})/);
+  return m ? m[1] : null;
+}
+
+// ============================================================
+//  LOAD SONG
+// ============================================================
+function loadSong(videoId, title, channel, thumb, query) {
+  document.getElementById('searchResults').style.display = 'none';
+  document.getElementById('studioEmpty').style.display = 'none';
+  document.getElementById('studioActive').style.display = 'block';
+
+  currentSongMeta = { videoId: videoId, title: title, channel: channel, thumb: thumb };
+
+  document.getElementById('songTitle').textContent = title || 'Unknown Title';
+  document.getElementById('songChannel').textContent = channel || '';
+  document.getElementById('songThumb').src = thumb || ('https://img.youtube.com/vi/' + videoId + '/default.jpg');
+
+  // Create or load YouTube player
+  if (ytReady) {
+    createPlayer(videoId);
+  } else {
+    var wait = setInterval(function() { if (ytReady) { clearInterval(wait); createPlayer(videoId); } }, 200);
+  }
+
+  // Fetch lyrics from lrclib.net
+  fetchLyrics(query, title);
+
+  // Scroll to studio
+  document.getElementById('studioActive').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function clearSong() {
+  if (ytPlayer) ytPlayer.stopVideo();
+  stopLyricsSync();
+  stopKMic();
+  document.getElementById('studioEmpty').style.display = 'block';
+  document.getElementById('studioActive').style.display = 'none';
+  lyricsData = [];
+}
+
+// ============================================================
+//  LYRICS — lrclib.net
+// ============================================================
+function fetchLyrics(query, title) {
+  document.getElementById('lyricsPickArea').innerHTML = '';
+  document.getElementById('lyricsStatus').style.display = 'block';
+  document.getElementById('lyricsStatus').textContent = '🎵 Searching for synchronized lyrics...';
+  document.getElementById('lyricsBody').innerHTML = '<div class="lyrics-status" id="lyricsStatus">🎵 Searching for synchronized lyrics...</div>';
+
+  // Clean query for lrclib search
+  var cleanQ = (query || title || '').replace(/karaoke/gi, '').replace(/\s+/g, ' ').trim();
+  var encoded = encodeURIComponent(cleanQ);
+
+  fetch('https://lrclib.net/api/search?q=' + encoded)
+    .then(function(r) { return r.json(); })
+    .then(function(results) {
+      var synced = (results || []).filter(function(r) { return r.syncedLyrics; });
+      if (!synced.length) {
+        // Try plain lyrics as fallback
+        var plain = (results || []).filter(function(r) { return r.plainLyrics; });
+        if (plain.length) {
+          showPlainLyrics(plain[0].plainLyrics);
+        } else {
+          showLyricsNotFound(cleanQ);
+        }
+        return;
+      }
+      if (synced.length === 1) {
+        parseLrc(synced[0].syncedLyrics);
+      } else {
+        showLyricsPicker(synced);
+      }
+    })
+    .catch(function() { showLyricsNotFound(cleanQ); });
+}
+
+function showLyricsPicker(options) {
+  var area = document.getElementById('lyricsPickArea');
+  area.innerHTML = '<div class="lyrics-pick"><div class="lyrics-pick-label">Multiple versions found — choose one:</div>' +
+    options.slice(0, 4).map(function(r, i) {
+      return '<div class="lyrics-pick-item" onclick="useLyricsResult(' + i + ')">' +
+        '<div><div class="lpi-name">' + escHtml(r.trackName || '') + '</div>' +
+        '<div class="lpi-meta">' + escHtml(r.artistName || '') + '</div></div>' +
+        '<span class="lpi-use">Use this ›</span></div>';
+    }).join('') +
+    '</div>';
+
+  window._lyricsCandidates = options;
+  document.getElementById('lyricsBody').innerHTML = '<div class="lyrics-status">Select a version above to load lyrics.</div>';
+}
+
+window._lyricsCandidates = [];
+function useLyricsResult(i) {
+  var r = window._lyricsCandidates[i];
+  if (!r) return;
+  document.getElementById('lyricsPickArea').innerHTML = '';
+  if (r.syncedLyrics) {
+    parseLrc(r.syncedLyrics);
+  } else {
+    showPlainLyrics(r.plainLyrics);
+  }
+}
+
+function parseLrc(lrc) {
+  var lines = lrc.split('\n');
+  lyricsData = [];
+  lines.forEach(function(line) {
+    var m = line.match(/^\[(\d+):(\d+\.\d+)\]\s*(.*)/);
+    if (m) {
+      var t = parseInt(m[1]) * 60 + parseFloat(m[2]);
+      lyricsData.push({ time: t, text: m[3].trim() });
+    }
+  });
+  lyricsData = lyricsData.filter(function(l) { return l.text; });
+  renderLyricsLines();
+}
+
+function showPlainLyrics(plain) {
+  lyricsData = [];
+  var body = document.getElementById('lyricsBody');
+  body.innerHTML = '<div style="padding:14px;font-size:.85rem;color:rgba(255,255,255,.5);font-style:italic;border-bottom:1px solid rgba(255,255,255,.05)">No timed version found — showing plain lyrics (won\'t auto-scroll)</div>';
+  var lines = plain.split('\n');
+  lines.forEach(function(line) {
+    var div = document.createElement('div');
+    div.className = 'lyric-line';
+    div.textContent = line || '\u00a0';
+    body.appendChild(div);
+  });
+}
+
+function showLyricsNotFound(query) {
+  var encoded = encodeURIComponent(query);
+  document.getElementById('lyricsBody').innerHTML =
+    '<div class="lyrics-status">No lyrics found for this song. ' +
+    '<a href="https://lrclib.net/search?q=' + encoded + '" target="_blank">Try lrclib.net ↗</a></div>';
+}
+
+function renderLyricsLines() {
+  var body = document.getElementById('lyricsBody');
+  body.innerHTML = '';
+  lyricsData.forEach(function(l, i) {
+    var div = document.createElement('div');
+    div.className = 'lyric-line';
+    div.id = 'lyric-' + i;
+    div.textContent = l.text;
+    body.appendChild(div);
+  });
+  if (!lyricsData.length) {
+    body.innerHTML = '<div class="lyrics-status">No lyrics data.</div>';
+  }
+}
+
+// ============================================================
+//  LYRICS SYNC
+// ============================================================
+var lastLyricIdx = -1;
+
+function startLyricsSync() {
+  stopLyricsSync();
+  if (!lyricsData.length) return;
+  lyricsTimer = setInterval(syncLyrics, 150);
+}
+
+function stopLyricsSync() {
+  if (lyricsTimer) clearInterval(lyricsTimer);
+  lyricsTimer = null;
+}
+
+function syncLyrics() {
+  if (!ytPlayer || !ytPlayer.getCurrentTime) return;
+  var t = ytPlayer.getCurrentTime();
+  var idx = -1;
+  for (var i = lyricsData.length - 1; i >= 0; i--) {
+    if (t >= lyricsData[i].time) { idx = i; break; }
+  }
+  if (idx === lastLyricIdx) return;
+  lastLyricIdx = idx;
+
+  document.querySelectorAll('.lyric-line').forEach(function(el, i) {
+    el.classList.remove('active', 'past');
+    if (i < idx) el.classList.add('past');
+    else if (i === idx) el.classList.add('active');
+  });
+
+  // Auto-scroll to active line
+  var activeLine = document.getElementById('lyric-' + idx);
+  if (activeLine) {
+    var body = document.getElementById('lyricsBody');
+    var offset = activeLine.offsetTop - body.offsetTop - body.clientHeight / 3;
+    body.scrollTop = offset;
+  }
+}
+
+// ============================================================
+//  PITCH DETECTION (reused from pitch-trainer.html)
+// ============================================================
+var NOTE_NAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+function freqToMidi(f) { return 12 * Math.log2(f / 440) + 69; }
+function midiToName(m) { return NOTE_NAMES[Math.round(m) % 12] + (Math.floor(Math.round(m) / 12) - 1); }
+
+function getCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+
+function detectPitch(buf, sr) {
+  var maxVal = 0;
+  for (var i = 0; i < buf.length; i++) if (Math.abs(buf[i]) > maxVal) maxVal = Math.abs(buf[i]);
+  if (maxVal < 0.01) return -1;
+  var norm = new Float32Array(buf.length);
+  for (var i = 0; i < buf.length; i++) norm[i] = buf[i] / maxVal;
+  var minP = Math.floor(sr / 1100), maxP = Math.floor(sr / 40);
+  var bestCorr = 0, bestP = 0;
+  for (var p = minP; p < maxP && p < norm.length / 2; p++) {
+    var c = 0;
+    for (var i = 0; i < norm.length / 2; i++) c += norm[i] * norm[i + p];
+    if (c > bestCorr) { bestCorr = c; bestP = p; }
+  }
+  if (bestCorr < norm.length * 0.004 || !bestP) return -1;
+  return sr / bestP;
+}
+
+function getVoiceConf(freq, freqData, timeBuf, sr, fftSize, hist) {
+  var rms = 0;
+  for (var i = 0; i < timeBuf.length; i++) rms += timeBuf[i] * timeBuf[i];
+  rms = Math.sqrt(rms / timeBuf.length);
+  if (rms < 0.008) return { score: 0, label: 'Silence' };
+  var score = 0;
+  if (freq > 0 && freq >= 40 && freq <= 1400) score += 25;
+  // Spectral flatness
+  var logS = 0, linS = 0, cnt = 0;
+  for (var i = 2; i < Math.min(freqData.length, 300); i++) {
+    var v = Math.max(freqData[i], 0.001); logS += Math.log(v); linS += v; cnt++;
+  }
+  var flat = cnt > 0 && linS > 0 ? Math.exp(logS / cnt) / (linS / cnt) : 1;
+  if (flat < 0.3) score += 25; else if (flat < 0.5) score += 15; else if (flat < 0.7) score += 5;
+  // Stability
+  if (hist.length >= 4) {
+    var recent = hist.slice(-12), mean = 0;
+    for (var i = 0; i < recent.length; i++) mean += recent[i];
+    mean /= recent.length;
+    if (mean > 0) {
+      var sq = 0;
+      for (var i = 0; i < recent.length; i++) { var c = 1200 * Math.log2(recent[i] / mean); sq += c * c; }
+      var stab = Math.max(0, Math.min(1, 1 - (Math.sqrt(sq / recent.length) / 200)));
+      if (stab > 0.7) score += 25; else if (stab > 0.4) score += 15; else if (stab > 0.2) score += 5;
+    }
+  }
+  var label = score >= 75 ? 'Singing' : score >= 50 ? 'Voice' : score >= 25 ? 'Maybe' : 'Noise';
+  return { score: score, label: label };
+}
+
+function toggleKMic() {
+  kMicStream ? stopKMic() : startKMic();
+}
+
+function startKMic() {
+  navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
+    var ctx = getCtx();
+    var src = ctx.createMediaStreamSource(stream);
+    kAnalyser = ctx.createAnalyser();
+    kAnalyser.fftSize = 8192;
+    src.connect(kAnalyser);
+    kMicStream = stream;
+    var btn = document.getElementById('kMicBtn');
+    btn.classList.add('recording');
+    btn.textContent = '⏹ Stop Pitch Meter';
+    drawKPitch();
+  }).catch(function() { alert('Microphone access needed for pitch detection.'); });
+}
+
+function stopKMic() {
+  if (kMicStream) kMicStream.getTracks().forEach(function(t) { t.stop(); });
+  kMicStream = null;
+  if (kRaf) cancelAnimationFrame(kRaf);
+  var btn = document.getElementById('kMicBtn');
+  btn.classList.remove('recording');
+  btn.textContent = '🎤 Start Pitch Meter';
+  document.getElementById('kNote').textContent = '—';
+  document.getElementById('kFreq').textContent = 'Microphone off';
+  document.getElementById('kCents').innerHTML = '&nbsp;';
+  document.getElementById('kNeedle').style.left = 'calc(50% - 5px)';
+  kFreqHist = [];
+}
+
+function drawKPitch() {
+  kRaf = requestAnimationFrame(drawKPitch);
+  if (!kAnalyser) return;
+  var buf = new Float32Array(kAnalyser.fftSize);
+  var fBuf = new Uint8Array(kAnalyser.frequencyBinCount);
+  kAnalyser.getFloatTimeDomainData(buf);
+  kAnalyser.getByteFrequencyData(fBuf);
+  var sr = getCtx().sampleRate;
+  var freq = detectPitch(buf, sr);
+  if (freq > 0) { kFreqHist.push(freq); if (kFreqHist.length > 20) kFreqHist.shift(); }
+  else kFreqHist = [];
+  var conf = getVoiceConf(freq, fBuf, buf, sr, kAnalyser.fftSize, kFreqHist);
+
+  // Update confidence bar
+  var fill = document.getElementById('kConfFill');
+  var status = document.getElementById('kConfStatus');
+  fill.style.width = Math.min(100, conf.score) + '%';
+  var colors = { Singing: ['var(--accent-cyan)', 'singing', '♪ Singing'], Voice: ['var(--accent-green)', 'voice', '✓ Voice'], Maybe: ['var(--accent-orange)', 'maybe', '? Maybe'], Noise: ['var(--accent-red)', 'noise', '✗ Noise'], Silence: ['var(--accent-red)', 'noise', 'Silence'] };
+  var c = colors[conf.label] || colors.Silence;
+  fill.style.background = c[0]; status.className = 'conf-status ' + c[1]; status.textContent = c[2];
+
+  if (freq <= 0 || conf.score < 50) {
+    document.getElementById('kNote').style.opacity = '0.3';
+    return;
+  }
+  document.getElementById('kNote').style.opacity = '1';
+  var midi = freqToMidi(freq);
+  var nearest = Math.round(midi);
+  var cents = Math.round((midi - nearest) * 100);
+  document.getElementById('kNote').textContent = midiToName(nearest);
+  document.getElementById('kFreq').textContent = freq.toFixed(1) + ' Hz';
+  var cEl = document.getElementById('kCents');
+  if (Math.abs(cents) <= 5) { cEl.textContent = '✓ In tune!'; cEl.className = 'pitch-cents-sm intune'; }
+  else { cEl.textContent = (cents > 0 ? '+' : '') + cents + ' cents ' + (cents > 0 ? '♯' : '♭'); cEl.className = 'pitch-cents-sm ' + (cents > 0 ? 'sharp' : 'flat'); }
+  var pct = 50 + (cents / 50) * 45;
+  document.getElementById('kNeedle').style.left = 'calc(' + Math.max(2, Math.min(98, pct)) + '% - 5px)';
+}
+
+// ============================================================
+//  VRN WARM-UPS
+// ============================================================
+var VRN_EXERCISES = {
+  C:  { scale: 'C4 D4 E4 F4 G4 F4 E4 D4 C4', arp: 'C4 E4 G4 C5 G4 E4 C4', intervals: 'C4 – G4 (P5)\nC4 – E4 (M3)\nC4 – C5 (Oct)' },
+  D:  { scale: 'D4 E4 F#4 G4 A4 G4 F#4 E4 D4', arp: 'D4 F#4 A4 D5 A4 F#4 D4', intervals: 'D4 – A4 (P5)\nD4 – F#4 (M3)\nD4 – D5 (Oct)' },
+  E:  { scale: 'E4 F#4 G#4 A4 B4 A4 G#4 F#4 E4', arp: 'E4 G#4 B4 E5 B4 G#4 E4', intervals: 'E4 – B4 (P5)\nE4 – G#4 (M3)\nE4 – E5 (Oct)' },
+  F:  { scale: 'F4 G4 A4 Bb4 C5 Bb4 A4 G4 F4', arp: 'F4 A4 C5 F5 C5 A4 F4', intervals: 'F4 – C5 (P5)\nF4 – A4 (M3)\nF4 – F5 (Oct)' },
+  G:  { scale: 'G4 A4 B4 C5 D5 C5 B4 A4 G4', arp: 'G4 B4 D5 G5 D5 B4 G4', intervals: 'G4 – D5 (P5)\nG4 – B4 (M3)\nG4 – G5 (Oct)' },
+  A:  { scale: 'A3 B3 C#4 D4 E4 D4 C#4 B3 A3', arp: 'A3 C#4 E4 A4 E4 C#4 A3', intervals: 'A3 – E4 (P5)\nA3 – C#4 (M3)\nA3 – A4 (Oct)' },
+  B:  { scale: 'B3 C#4 D#4 E4 F#4 E4 D#4 C#4 B3', arp: 'B3 D#4 F#4 B4 F#4 D#4 B3', intervals: 'B3 – F#4 (P5)\nB3 – D#4 (M3)\nB3 – B4 (Oct)' },
+  Am: { scale: 'A4 B4 C5 D5 E5 D5 C5 B4 A4', arp: 'A4 C5 E5 A5 E5 C5 A4', intervals: 'A4 – E5 (P5)\nA4 – C5 (m3)\nA4 – A5 (Oct)' },
+  Dm: { scale: 'D4 E4 F4 G4 A4 G4 F4 E4 D4', arp: 'D4 F4 A4 D5 A4 F4 D4', intervals: 'D4 – A4 (P5)\nD4 – F4 (m3)\nD4 – D5 (Oct)' },
+  Em: { scale: 'E4 F#4 G4 A4 B4 A4 G4 F#4 E4', arp: 'E4 G4 B4 E5 B4 G4 E4', intervals: 'E4 – B4 (P5)\nE4 – G4 (m3)\nE4 – E5 (Oct)' }
+};
+
+function renderVrn() {
+  var key = document.getElementById('vrnKey').value;
+  var ex = VRN_EXERCISES[key] || VRN_EXERCISES['C'];
+  var container = document.getElementById('vrnExercises');
+  container.innerHTML =
+    '<div class="vrn-exercise">' +
+      '<div class="vrn-ex-title">🎵 5-Note Scale Warm-Up</div>' +
+      '<div class="vrn-notation">' + ex.scale + '</div>' +
+      '<div class="vrn-desc">Sing each note slowly, one per breath. Feel the resonance shift as you ascend. Apply [Gear 1→2] transitions on the upper notes.</div>' +
+    '</div>' +
+    '<div class="vrn-exercise">' +
+      '<div class="vrn-ex-title">🔺 Arpeggio (1–3–5–8)</div>' +
+      '<div class="vrn-notation">' + ex.arp + '</div>' +
+      '<div class="vrn-desc">Jump between chord tones. Keep your soft palate raised [↑Pal] throughout. Great for opening up vowels before singing.</div>' +
+    '</div>' +
+    '<div class="vrn-exercise">' +
+      '<div class="vrn-ex-title">↔ Interval Leaps</div>' +
+      '<div class="vrn-notation">' + ex.intervals + '</div>' +
+      '<div class="vrn-desc">Practice each leap on "ah" then on the first vowel of your song. Focus on consistent [Res] placement across the leap.</div>' +
+    '</div>';
+}
+
+// ============================================================
+//  PANEL TOGGLE
+// ============================================================
+function togglePanel(name) {
+  var body = document.getElementById('body' + name.charAt(0).toUpperCase() + name.slice(1));
+  var btn  = document.getElementById('toggle' + name.charAt(0).toUpperCase() + name.slice(1));
+  if (!body || !btn) return;
+  var collapsed = body.classList.contains('collapsed');
+  if (collapsed) {
+    body.classList.remove('collapsed'); body.classList.add('expanded');
+    btn.textContent = 'Hide';
+  } else {
+    body.classList.remove('expanded'); body.classList.add('collapsed');
+    btn.textContent = 'Show';
+  }
+}
+
+// ============================================================
+//  UTILS
+// ============================================================
+function escHtml(s) {
+  return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// Init VRN
+renderVrn();
+</script>
+
+</body>
+</html>
