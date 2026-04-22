@@ -281,6 +281,15 @@
             <div class="video-wrap">
               <div id="ytPlayer"></div>
             </div>
+            <div id="videoErrorMsg" style="display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px;padding:28px 20px;background:rgba(239,68,68,.06);border-top:1px solid rgba(239,68,68,.15);text-align:center;">
+              <div style="font-size:2rem;">&#128683;</div>
+              <div style="font-weight:700;font-size:.95rem;">This video can't be embedded</div>
+              <div style="font-size:.82rem;color:var(--text-secondary);max-width:340px;line-height:1.6;">The video owner disabled playback on external sites. Open it on YouTube, then paste a URL or try a different result.</div>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+                <a id="videoYtLink" href="#" target="_blank" style="background:#ef4444;color:#fff;border:none;border-radius:8px;padding:9px 18px;font-weight:700;font-size:.85rem;cursor:pointer;text-decoration:none;display:inline-block;">&#9654; Watch on YouTube</a>
+                <button onclick="document.getElementById('searchResults').style.display='block';" style="background:rgba(255,255,255,.08);color:var(--text-secondary);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:9px 18px;font-weight:700;font-size:.85rem;cursor:pointer;font-family:inherit;">&#8592; Try Another Result</button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -406,17 +415,39 @@ function onYouTubeIframeAPIReady() {
 
 function createPlayer(videoId) {
   currentVideoId = videoId;
-  if (ytPlayer) { ytPlayer.loadVideoById(videoId); return; }
+  if (ytPlayer) { ytPlayer.loadVideoById(videoId); hideVideoError(); return; }
   ytPlayer = new YT.Player('ytPlayer', {
     videoId: videoId,
     playerVars: { autoplay: 1, rel: 0, modestbranding: 1 },
     events: {
       onStateChange: function(e) {
-        if (e.data === YT.PlayerState.PLAYING) startLyricsSync();
+        if (e.data === YT.PlayerState.PLAYING) { hideVideoError(); startLyricsSync(); }
         if (e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED) stopLyricsSync();
+      },
+      onError: function(e) {
+        // 150/151 = embedding disabled by owner; 100 = video removed
+        showVideoError(currentVideoId);
       }
     }
   });
+}
+
+function showVideoError(videoId) {
+  var wrap = document.getElementById('videoErrorMsg');
+  var vwrap = document.querySelector('.video-wrap');
+  if (vwrap) vwrap.style.display = 'none';
+  if (wrap) {
+    wrap.style.display = 'flex';
+    var link = document.getElementById('videoYtLink');
+    if (link) link.href = 'https://www.youtube.com/watch?v=' + videoId;
+  }
+}
+
+function hideVideoError() {
+  var wrap = document.getElementById('videoErrorMsg');
+  var vwrap = document.querySelector('.video-wrap');
+  if (vwrap) vwrap.style.display = '';
+  if (wrap) wrap.style.display = 'none';
 }
 
 // ============================================================
@@ -606,6 +637,7 @@ function clearSong() {
   if (ytPlayer) ytPlayer.stopVideo();
   stopLyricsSync();
   stopKMic();
+  hideVideoError();
   document.getElementById('studioEmpty').style.display = 'block';
   document.getElementById('studioActive').style.display = 'none';
   lyricsData = [];
