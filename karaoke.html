@@ -340,6 +340,21 @@
           </div>
         </div>
 
+        <!-- Live Score Panel -->
+        <div class="panel-card" id="panelScore">
+          <div class="panel-header" onclick="togglePanel('score')">
+            <span class="panel-title">🎼 Live Score</span>
+            <button class="panel-toggle" id="toggleScore">Hide</button>
+          </div>
+          <div class="panel-body expanded" id="bodyScore">
+            <canvas id="kScoreCanvas" width="560" height="300"
+              style="display:block;width:100%;height:150px;background:rgba(0,0,0,.25);"></canvas>
+            <div style="padding:4px 16px 10px;font-size:.7rem;color:rgba(255,255,255,.18);text-align:center;">
+              Start pitch meter ↑ — notes appear live on the staff
+            </div>
+          </div>
+        </div>
+
         <!-- VRN Warm-Up Panel -->
         <div class="panel-card" id="panelVrn">
           <div class="panel-header" onclick="togglePanel('vrn')">
@@ -365,21 +380,6 @@
               </div>
               <div id="vrnExercises"></div>
               <a href="vrn-method.html" class="vrn-link">Learn the full VRN Method →</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Live Score Panel -->
-        <div class="panel-card" id="panelScore">
-          <div class="panel-header" onclick="togglePanel('score')">
-            <span class="panel-title">🎼 Live Score</span>
-            <button class="panel-toggle" id="toggleScore">Hide</button>
-          </div>
-          <div class="panel-body expanded" id="bodyScore">
-            <canvas id="kScoreCanvas" width="560" height="300"
-              style="display:block;width:100%;height:150px;background:rgba(0,0,0,.25);"></canvas>
-            <div style="padding:4px 16px 10px;font-size:.7rem;color:rgba(255,255,255,.18);text-align:center;">
-              Start pitch meter ↑ — notes appear live on the staff
             </div>
           </div>
         </div>
