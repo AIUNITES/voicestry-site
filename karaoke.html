@@ -427,29 +427,108 @@ function quickSearch(q) {
   doSearch();
 }
 
+// Search instances to race — mix of Invidious + Piped, first to respond wins
+var INVIDIOUS_INSTANCES = [
+  'https://iv.datura.network',
+  'https://invidious.nerdvpn.de',
+  'https://yt.artemislena.eu',
+  'https://invidious.fdn.fr',
+  'https://inv.nadeko.net',
+  'https://inv.tux.pizza',
+  'https://invidious.privacydev.net',
+  'https://yewtu.be',
+  'https://vid.puffyan.us'
+];
+
+// Piped uses different API format
+var PIPED_INSTANCES = [
+  'https://pipedapi.kavin.rocks',
+  'https://pipedapi.adminforge.de',
+  'https://api.piped.projectsegfau.lt'
+];
+
+function fetchWithTimeout(url, ms) {
+  return new Promise(function(resolve, reject) {
+    var timer = setTimeout(function() { reject(new Error('timeout')); }, ms);
+    fetch(url)
+      .then(function(r) { clearTimeout(timer); if (!r.ok) throw new Error('bad status'); return r.json(); })
+      .then(resolve)
+      .catch(function(e) { clearTimeout(timer); reject(e); });
+  });
+}
+
+// Normalize Invidious result to common format
+function normalizeInvidious(item) {
+  var thumb = '';
+  if (item.videoThumbnails && item.videoThumbnails.length) {
+    // prefer medium quality
+    var med = item.videoThumbnails.find(function(t){ return t.quality === 'medium'; });
+    thumb = (med || item.videoThumbnails[0]).url || '';
+  }
+  // Fallback to YouTube's own thumbnail CDN
+  if (!thumb && item.videoId) thumb = 'https://img.youtube.com/vi/' + item.videoId + '/mqdefault.jpg';
+  return { videoId: item.videoId, title: item.title, author: item.author, thumb: thumb };
+}
+
+// Normalize Piped result to common format
+function normalizePiped(item) {
+  var vid = (item.url || '').replace('/watch?v=', '');
+  var thumb = item.thumbnail || (vid ? 'https://img.youtube.com/vi/' + vid + '/mqdefault.jpg' : '');
+  return { videoId: vid, title: item.title, author: item.uploaderName || '', thumb: thumb };
+}
+
 function doSearch() {
   var q = document.getElementById('searchInput').value.trim();
   if (!q) return;
-  // Append "karaoke" to lean results toward karaoke versions
   var karaQ = q + ' karaoke';
   var resultsEl = document.getElementById('searchResults');
   resultsEl.style.display = 'block';
   resultsEl.innerHTML = '<div style="padding:14px 16px;color:var(--text-secondary);font-size:.85rem">🔍 Searching...</div>';
 
-  // Use YouTube oEmbed + opensearch via noembed to avoid API key requirement.
-  // Fallback: construct YouTube search URL and show a "open in YouTube" option
-  // Since we can't hit YT Data API without a key client-side, we use invidious public search API (no key needed)
   var encoded = encodeURIComponent(karaQ);
-  fetch('https://inv.tux.pizza/api/v1/search?q=' + encoded + '&type=video&fields=videoId,title,author,videoThumbnails')
-    .then(function(r) { if (!r.ok) throw new Error('Search failed'); return r.json(); })
-    .then(function(data) { renderSearchResults(data.slice(0, 6), q); })
-    .catch(function() {
-      // Fallback: try another invidious instance
-      fetch('https://invidious.privacydev.net/api/v1/search?q=' + encoded + '&type=video&fields=videoId,title,author,videoThumbnails')
-        .then(function(r) { return r.json(); })
-        .then(function(data) { renderSearchResults(data.slice(0, 6), q); })
-        .catch(function() { showSearchFallback(q); });
-    });
+
+  // Build all promises: Invidious + Piped
+  var allPromises = [];
+
+  INVIDIOUS_INSTANCES.forEach(function(host) {
+    var url = host + '/api/v1/search?q=' + encoded + '&type=video&fields=videoId,title,author,videoThumbnails';
+    allPromises.push(
+      fetchWithTimeout(url, 5000)
+        .then(function(data) {
+          if (!Array.isArray(data) || !data.length) throw new Error('empty');
+          return data.slice(0, 6).map(normalizeInvidious);
+        })
+    );
+  });
+
+  PIPED_INSTANCES.forEach(function(host) {
+    var url = host + '/search?q=' + encoded + '&filter=videos';
+    allPromises.push(
+      fetchWithTimeout(url, 5000)
+        .then(function(data) {
+          var items = (data && data.items) ? data.items : [];
+          if (!items.length) throw new Error('empty');
+          return items.slice(0, 6).map(normalizePiped).filter(function(v){ return v.videoId; });
+        })
+    );
+  });
+
+  // Race: first valid result wins
+  var racePromise = typeof Promise.any === 'function'
+    ? Promise.any(allPromises)
+    : new Promise(function(resolve, reject) {
+        var errors = 0;
+        allPromises.forEach(function(p) {
+          p.then(resolve).catch(function() {
+            errors++;
+            if (errors === allPromises.length) reject(new Error('all failed'));
+          });
+        });
+      });
+
+  racePromise
+    .then(function(items) { renderSearchResults(items, q); })
+    .catch(function() { showSearchFallback(q); });
 }
 
 function renderSearchResults(videos, query) {
@@ -457,7 +536,7 @@ function renderSearchResults(videos, query) {
   if (!videos || !videos.length) { showSearchFallback(query); return; }
   resultsEl.innerHTML = '';
   videos.forEach(function(v) {
-    var thumb = (v.videoThumbnails && v.videoThumbnails[0]) ? v.videoThumbnails[0].url : '';
+    var thumb = v.thumb || (v.videoId ? 'https://img.youtube.com/vi/' + v.videoId + '/mqdefault.jpg' : '');
     var div = document.createElement('div');
     div.className = 'search-result-item';
     div.innerHTML = '<img class="sri-thumb" src="' + thumb + '" alt="" onerror="this.style.display=\'none\'">' +
