@@ -369,6 +369,21 @@
           </div>
         </div>
 
+        <!-- Live Score Panel -->
+        <div class="panel-card" id="panelScore">
+          <div class="panel-header" onclick="togglePanel('score')">
+            <span class="panel-title">🎼 Live Score</span>
+            <button class="panel-toggle" id="toggleScore">Hide</button>
+          </div>
+          <div class="panel-body expanded" id="bodyScore">
+            <canvas id="kScoreCanvas" width="560" height="300"
+              style="display:block;width:100%;height:150px;background:rgba(0,0,0,.25);"></canvas>
+            <div style="padding:4px 16px 10px;font-size:.7rem;color:rgba(255,255,255,.18);text-align:center;">
+              Start pitch meter ↑ — notes appear live on the staff
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -886,6 +901,7 @@ function stopKMic() {
   document.getElementById('kCents').innerHTML = '&nbsp;';
   document.getElementById('kNeedle').style.left = 'calc(50% - 5px)';
   kFreqHist = [];
+  drawScore(null);
 }
 
 function drawKPitch() {
@@ -911,6 +927,7 @@ function drawKPitch() {
 
   if (freq <= 0 || conf.score < 50) {
     document.getElementById('kNote').style.opacity = '0.3';
+    drawScore(null);
     return;
   }
   document.getElementById('kNote').style.opacity = '1';
@@ -924,6 +941,139 @@ function drawKPitch() {
   else { cEl.textContent = (cents > 0 ? '+' : '') + cents + ' cents ' + (cents > 0 ? '♯' : '♭'); cEl.className = 'pitch-cents-sm ' + (cents > 0 ? 'sharp' : 'flat'); }
   var pct = 50 + (cents / 50) * 45;
   document.getElementById('kNeedle').style.left = 'calc(' + Math.max(2, Math.min(98, pct)) + '% - 5px)';
+  drawScore(freq);
+}
+
+// ============================================================
+//  LIVE SCORE — STAFF NOTATION
+// ============================================================
+var STAFF_DIATONIC = [0,0,1,1,2,3,3,4,4,5,5,6]; // chromatic 0-11 -> diatonic step 0-6
+
+function midiToStaffPos(midi, clef) {
+  var ni = ((midi % 12) + 12) % 12;
+  var oct = Math.floor(midi / 12) - 1;
+  var abs = oct * 7 + STAFF_DIATONIC[ni]; // diatonic position from C0
+  // Treble: E4(MIDI64) = abs 30 = pos 0 (bottom line)
+  // Bass:   G2(MIDI43) = abs 18 = pos 0 (bottom line)
+  return clef === 'treble' ? (abs - 30) * 0.5 : (abs - 18) * 0.5;
+}
+
+function drawScore(freq) {
+  var cv = document.getElementById('kScoreCanvas');
+  if (!cv) return;
+  var ctx = cv.getContext('2d');
+  var CW = cv.width, CH = cv.height; // 560 x 300 internal (2x)
+  ctx.clearRect(0, 0, CW, CH);
+
+  var LS = 24;           // line spacing in internal px
+  var staffLeft = 72;
+  var staffRight = CW - 20;
+  var staffTop = 56;     // y of top line (pos 4)
+  var noteX = CW * 0.54;
+
+  var midi = freq ? Math.round(12 * Math.log2(freq / 440) + 69) : null;
+  var clef = (!midi || midi >= 60) ? 'treble' : 'bass';
+
+  // ── Staff lines ──
+  ctx.strokeStyle = 'rgba(255,255,255,0.28)';
+  ctx.lineWidth = 1.5;
+  for (var i = 0; i < 5; i++) {
+    var ly = staffTop + i * LS;
+    ctx.beginPath(); ctx.moveTo(staffLeft, ly); ctx.lineTo(staffRight, ly); ctx.stroke();
+  }
+
+  // ── Clef symbol ──
+  ctx.fillStyle = 'rgba(255,255,255,0.55)';
+  if (clef === 'treble') {
+    ctx.font = '88px Georgia, serif';
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillText('\uD834\uDD1E', 4, staffTop + LS * 4 + 4); // 𝄞 treble clef
+  } else {
+    ctx.font = '58px Georgia, serif';
+    ctx.textBaseline = 'top';
+    ctx.fillText('\uD834\uDD22', 8, staffTop); // 𝄢 bass clef
+  }
+
+  // ── Clef label ──
+  ctx.fillStyle = 'rgba(255,255,255,0.16)';
+  ctx.font = '18px system-ui, sans-serif';
+  ctx.textBaseline = 'top';
+  ctx.textAlign = 'center';
+  ctx.fillText(clef === 'treble' ? 'TREBLE' : 'BASS', CW / 2, staffTop + LS * 4 + 14);
+
+  if (!midi) {
+    ctx.fillStyle = 'rgba(255,255,255,0.1)';
+    ctx.font = '18px system-ui, sans-serif';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('start pitch meter to see live notes', CW / 2, staffTop + LS * 6);
+    return;
+  }
+
+  var staffPos = midiToStaffPos(midi, clef);
+  var noteY = staffTop + (4 - staffPos) * LS;
+  var ni = ((midi % 12) + 12) % 12;
+  var noteName = NOTE_NAMES[ni]; // e.g. 'C', 'C#'
+  var isSharp = noteName.length > 1;
+  var oct = Math.floor(midi / 12) - 1;
+
+  // ── Ledger lines ──
+  ctx.strokeStyle = 'rgba(255,255,255,0.32)';
+  ctx.lineWidth = 1.5;
+  var lw = LS;
+  if (staffPos < 0) {
+    for (var lp = -1; lp >= Math.floor(staffPos); lp--) {
+      var lly = staffTop + (4 - lp) * LS;
+      ctx.beginPath(); ctx.moveTo(noteX - lw, lly); ctx.lineTo(noteX + lw, lly); ctx.stroke();
+    }
+  } else if (staffPos > 4) {
+    for (var lp = 5; lp <= Math.ceil(staffPos); lp++) {
+      var lly = staffTop + (4 - lp) * LS;
+      ctx.beginPath(); ctx.moveTo(noteX - lw, lly); ctx.lineTo(noteX + lw, lly); ctx.stroke();
+    }
+  }
+
+  // ── Accidental ──
+  if (isSharp) {
+    ctx.fillStyle = 'rgba(255,215,0,0.9)';
+    ctx.font = 'bold ' + Math.round(LS * 1.35) + 'px Georgia, serif';
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'center';
+    ctx.fillText('\u266F', noteX - LS * 1.8, noteY + 1);
+  }
+
+  // ── Note head ──
+  var stemUp = staffPos <= 2;
+  ctx.save();
+  ctx.shadowColor = 'rgba(0,212,255,0.65)';
+  ctx.shadowBlur = 12;
+  ctx.fillStyle = '#00d4ff';
+  ctx.beginPath();
+  ctx.ellipse(noteX, noteY, LS * 0.58, LS * 0.42, -0.22, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+
+  // ── Stem ──
+  ctx.strokeStyle = 'rgba(0,212,255,0.82)';
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  if (stemUp) {
+    ctx.moveTo(noteX + LS * 0.55, noteY - LS * 0.2);
+    ctx.lineTo(noteX + LS * 0.55, noteY - LS * 3.6);
+  } else {
+    ctx.moveTo(noteX - LS * 0.55, noteY + LS * 0.2);
+    ctx.lineTo(noteX - LS * 0.55, noteY + LS * 3.6);
+  }
+  ctx.stroke();
+
+  // ── Note name ──
+  ctx.fillStyle = 'rgba(0,212,255,0.9)';
+  ctx.font = 'bold ' + Math.round(LS * 0.95) + 'px "Courier New", monospace';
+  ctx.textBaseline = 'middle';
+  ctx.textAlign = 'left';
+  ctx.fillText(noteName + oct, noteX + LS * 1.1, noteY);
+  ctx.fillStyle = 'rgba(255,255,255,0.28)';
+  ctx.font = Math.round(LS * 0.7) + 'px "Courier New", monospace';
+  ctx.fillText(clef + ' clef', noteX + LS * 1.1, noteY + LS * 0.9);
 }
 
 // ============================================================
