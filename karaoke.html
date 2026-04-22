@@ -229,10 +229,10 @@
 
   <div class="search-wrap">
     <div class="search-row">
-      <input type="text" class="search-input" id="searchInput" placeholder="Song title + artist   e.g.  Bohemian Rhapsody Queen" autocomplete="off" onkeydown="if(event.key==='Enter')doSearch()">
+      <input type="text" class="search-input" id="searchInput" placeholder="Song title + artist, or paste a YouTube URL" autocomplete="off" onkeydown="if(event.key==='Enter')doSearch()">
       <button class="search-btn" onclick="doSearch()">Search</button>
     </div>
-    <div class="search-hint">Searches YouTube for karaoke videos &amp; loads synchronized lyrics automatically</div>
+    <div class="search-hint">Auto-searches YouTube &bull; or paste any YouTube URL directly into the box above</div>
     <div class="search-results" id="searchResults"></div>
   </div>
 </section>
@@ -480,6 +480,15 @@ function normalizePiped(item) {
 function doSearch() {
   var q = document.getElementById('searchInput').value.trim();
   if (!q) return;
+
+  // If it looks like a YouTube URL, load it directly
+  var vid = extractVideoId(q);
+  if (vid) {
+    document.getElementById('searchResults').style.display = 'none';
+    loadSong(vid, 'YouTube Video', '', 'https://img.youtube.com/vi/' + vid + '/mqdefault.jpg', q);
+    return;
+  }
+
   var karaQ = q + ' karaoke';
   var resultsEl = document.getElementById('searchResults');
   resultsEl.style.display = 'block';
@@ -552,21 +561,12 @@ function renderSearchResults(videos, query) {
 function showSearchFallback(query) {
   var el = document.getElementById('searchResults');
   var enc = encodeURIComponent(query + ' karaoke');
-  el.innerHTML = '<div style="padding:14px 16px;font-size:.85rem;color:var(--text-secondary)">' +
-    'Auto-search unavailable. ' +
-    '<a href="https://www.youtube.com/results?search_query=' + enc + '" target="_blank" style="color:var(--accent-cyan)">Find on YouTube ↗</a>' +
-    ' then paste the video URL below:</div>' +
+  el.innerHTML = '<div style="padding:14px 16px;font-size:.85rem;">' +
+    '<div style="color:var(--text-secondary);margin-bottom:10px;">Auto-search unavailable.</div>' +
+    '<a href="https://www.youtube.com/results?search_query=' + enc + '" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#ef4444;color:#fff;padding:9px 16px;border-radius:9px;text-decoration:none;font-weight:700;font-size:.88rem;margin-bottom:10px;">▶ Search YouTube ↗</a>' +
     '<div style="padding:0 16px 14px;display:flex;gap:8px">' +
-    '<input id="urlInput" placeholder="https://www.youtube.com/watch?v=..." style="flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#fff;padding:8px 12px;font-family:inherit;font-size:.85rem;outline:none">' +
-    '<button onclick="loadFromUrl()" style="background:var(--accent-purple);border:none;border-radius:8px;color:#fff;padding:8px 16px;font-weight:700;cursor:pointer;font-family:inherit;font-size:.85rem">Load</button>' +
-    '</div>';
-}
-
-function loadFromUrl() {
-  var url = document.getElementById('urlInput').value.trim();
-  var vid = extractVideoId(url);
-  if (!vid) { alert('Could not find a YouTube video ID in that URL.'); return; }
-  loadSong(vid, 'Custom Video', '', 'https://img.youtube.com/vi/' + vid + '/default.jpg', document.getElementById('searchInput').value);
+    '<div style="font-size:.76rem;color:rgba(255,255,255,.35);margin-top:8px;">Find the karaoke video on YouTube, copy the URL, then paste it in the search box above.</div>' +
+  '</div>';
 }
 
 function extractVideoId(url) {
