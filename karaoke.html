@@ -901,6 +901,7 @@ function stopKMic() {
   document.getElementById('kCents').innerHTML = '&nbsp;';
   document.getElementById('kNeedle').style.left = 'calc(50% - 5px)';
   kFreqHist = [];
+  scoreStagedMidi = null; scoreLastMidi = null;
   drawScore(null);
 }
 
@@ -927,7 +928,7 @@ function drawKPitch() {
 
   if (freq <= 0 || conf.score < 50) {
     document.getElementById('kNote').style.opacity = '0.3';
-    drawScore(null);
+    updateScore(null);
     return;
   }
   document.getElementById('kNote').style.opacity = '1';
@@ -941,13 +942,52 @@ function drawKPitch() {
   else { cEl.textContent = (cents > 0 ? '+' : '') + cents + ' cents ' + (cents > 0 ? '♯' : '♭'); cEl.className = 'pitch-cents-sm ' + (cents > 0 ? 'sharp' : 'flat'); }
   var pct = 50 + (cents / 50) * 45;
   document.getElementById('kNeedle').style.left = 'calc(' + Math.max(2, Math.min(98, pct)) + '% - 5px)';
-  drawScore(freq);
+  updateScore(freq);
+}
+
+// Gate + throttle before drawing
+function updateScore(freq) {
+  var now = Date.now();
+  var midi = (freq && freq > 0) ? Math.round(12 * Math.log2(freq / 440) + 69) : null;
+
+  if (midi !== null) {
+    // Is this the same note (within 1 semitone) as the staged candidate?
+    if (scoreStagedMidi !== null && Math.abs(midi - scoreStagedMidi) <= 1) {
+      // Still holding the same note — check if held long enough
+      if ((now - scoreStagedSince) >= SCORE_HOLD_MS) {
+        var stableMidi = Math.round((midi + scoreStagedMidi) / 2);
+        if (stableMidi !== scoreLastMidi && (now - scoreLastDraw) >= SCORE_THROTTLE_MS) {
+          scoreLastMidi = stableMidi;
+          scoreLastDraw = now;
+          drawScore(freq);
+        }
+      }
+    } else {
+      // New candidate — reset hold timer
+      scoreStagedMidi = midi;
+      scoreStagedSince = now;
+    }
+  } else {
+    // No pitch — clear after a short grace period
+    scoreStagedMidi = null;
+    if (scoreLastMidi !== null && (now - scoreLastDraw) >= SCORE_THROTTLE_MS) {
+      scoreLastMidi = null;
+      scoreLastDraw = now;
+      drawScore(null);
+    }
+  }
 }
 
 // ============================================================
 //  LIVE SCORE — STAFF NOTATION
 // ============================================================
-var STAFF_DIATONIC = [0,0,1,1,2,3,3,4,4,5,5,6]; // chromatic 0-11 -> diatonic step 0-6
+var STAFF_DIATONIC = [0,0,1,1,2,3,3,4,4,5,5,6];
+var scoreLastMidi = null;       // last MIDI note drawn
+var scoreStagedMidi = null;     // candidate note being held
+var scoreStagedSince = 0;       // timestamp when candidate started
+var scoreLastDraw = 0;          // timestamp of last canvas redraw
+var SCORE_HOLD_MS = 180;        // ms a note must be held before showing
+var SCORE_THROTTLE_MS = 80;     // ms between canvas redraws
 
 function midiToStaffPos(midi, clef) {
   var ni = ((midi % 12) + 12) % 12;
