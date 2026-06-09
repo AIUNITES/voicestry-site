@@ -1734,5 +1734,22 @@ if (initCanvas) {
 }
 </script>
 
+<section style="max-width:880px;margin:0 auto;padding:50px 20px 70px;border-top:1px solid rgba(255,255,255,0.06);">
+  <h2 style="font-size:1.7rem;color:#ffd700;margin-bottom:18px;">How the Live Analyzer Works</h2>
+  <p style="color:#a0a0b0;line-height:1.8;margin-bottom:16px;">The Live Analyzer turns your microphone into a vocal mirror. As you sing, it samples the incoming audio many times per second, estimates the fundamental frequency of your voice using autocorrelation, and converts that frequency into a musical note and an estimated register. At the same time it examines the <em>shape</em> of your sound &mdash; where the energy sits across the frequency spectrum &mdash; and maps that onto Vocal Resonance Notation, so you can see which resonance zones are carrying your tone right now: chest [C], head [H], nasal/mask [N], oral [O], pharyngeal [P], or low body [L].</p>
+  <h3 style="font-size:1.2rem;color:#00d4ff;margin:26px 0 12px;">Choosing Your Input Source</h3>
+  <p style="color:#a0a0b0;line-height:1.8;margin-bottom:12px;">Three input modes let you analyze almost any voice, not just your own:</p>
+  <ul style="color:#a0a0b0;line-height:1.8;padding-left:22px;margin-bottom:16px;">
+    <li><strong style="color:#fff;">Live Singing</strong> &mdash; your microphone analyzes your own voice in real time. This is the mode to use for practice.</li>
+    <li><strong style="color:#fff;">Room / External</strong> &mdash; picks up singing from a radio, TV, speaker, or another person in the room. Useful for analyzing a recording playing nearby or coaching someone else.</li>
+    <li><strong style="color:#fff;">Browser Tab</strong> &mdash; captures audio directly from a YouTube, Spotify, or other browser tab, so you can study how a professional vocalist distributes their resonance.</li>
+  </ul>
+  <p style="color:#a0a0b0;line-height:1.8;margin-bottom:16px;">Set your voice type (Bass through Soprano, or Auto-Detect) so the register estimate is calibrated to your range. If detection looks jumpy, raise the <strong style="color:#fff;">Sensitivity</strong> for quiet or distant sources, turn on <strong style="color:#fff;">Noise Suppression</strong> in a noisy room, and enable <strong style="color:#fff;">Echo Cancellation</strong> unless you are wearing headphones.</p>
+  <h3 style="font-size:1.2rem;color:#00d4ff;margin:26px 0 12px;">Reading the Notation</h3>
+  <p style="color:#a0a0b0;line-height:1.8;margin-bottom:16px;">Watch the VRN readout shift as you move through your range. On low, grounded notes you should see chest [C] dominate; as you ascend through the passaggio the balance tips toward head [H] and mask [N]. If the notation freezes or reads &ldquo;silence,&rdquo; you are either too quiet for the current sensitivity setting or singing breathily enough that the analyzer cannot lock onto a clear pitch &mdash; press more firmly into a flow phonation and it will catch.</p>
+  <h3 style="font-size:1.2rem;color:#00d4ff;margin:26px 0 12px;">Getting the Most From It</h3>
+  <p style="color:#a0a0b0;line-height:1.8;margin-bottom:16px;">Sing a slow five-note scale and watch the resonance map redistribute on each step. That single exercise teaches you, visually, where your own gear shifts happen &mdash; the exact information a voice teacher spends weeks pointing at. Pair this tool with the <a href="learn.html" style="color:#00d4ff;">Learn VRN lessons</a> to connect what you <em>see</em> here with what you should <em>feel</em>.</p>
+</section>
+
 </body>
 </html>

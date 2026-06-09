@@ -999,5 +999,25 @@ document.getElementById('snapshotBtn').addEventListener('click',function(){
   drawPortrait();
 })();
 </script>
+
+<section style="max-width:880px;margin:0 auto;padding:50px 20px 70px;border-top:1px solid rgba(255,255,255,0.06);">
+  <h2 style="font-size:1.7rem;color:#ffd700;margin-bottom:18px;">Your Voice, Drawn as a Face</h2>
+  <p style="color:#a0a0b0;line-height:1.8;margin-bottom:16px;">Sonic Portrait is the playful, experimental corner of VoiceStry: it listens to sound and draws a face from it in real time. Every voice produces a unique portrait, because the drawing is built directly from the acoustic properties of what you sing. It is part toy, part teaching tool &mdash; a way to <em>see</em> the qualities VRN describes, rendered as something immediately recognizable.</p>
+  <h3 style="font-size:1.2rem;color:#00d4ff;margin:26px 0 12px;">What Shapes the Face</h3>
+  <p style="color:#a0a0b0;line-height:1.8;margin-bottom:12px;">Each visual feature is driven by a real property of the sound:</p>
+  <ul style="color:#a0a0b0;line-height:1.8;padding-left:22px;margin-bottom:16px;">
+    <li><strong style="color:#fff;">Pitch &rarr; face shape.</strong> Higher pitches reshape the skull; lower pitches broaden it.</li>
+    <li><strong style="color:#fff;">Volume &rarr; mouth opening.</strong> Sing louder and the mouth opens wider.</li>
+    <li><strong style="color:#fff;">Brightness (spectral centroid) &rarr; eye size.</strong> Brighter, more forward tones &mdash; more mask and squillo &mdash; open the eyes.</li>
+    <li><strong style="color:#fff;">Harmonics &rarr; feature detail.</strong> A richer harmonic spectrum adds definition to the features.</li>
+    <li><strong style="color:#fff;">Register &rarr; color and glow.</strong> The portrait's palette shifts as you move between gears.</li>
+    <li><strong style="color:#fff;">Vibrato</strong> animates the whole portrait with a gentle oscillation.</li>
+  </ul>
+  <h3 style="font-size:1.2rem;color:#00d4ff;margin:26px 0 12px;">Choosing What Draws the Portrait</h3>
+  <p style="color:#a0a0b0;line-height:1.8;margin-bottom:16px;">Like the Live Analyzer, Sonic Portrait can take three input sources: your own <strong style="color:#fff;">Live Singing</strong>, <strong style="color:#fff;">Room / External</strong> audio from a nearby speaker or person, or a <strong style="color:#fff;">Browser Tab</strong> playing YouTube or Spotify. Adjust <strong style="color:#fff;">Sensitivity</strong> up for quiet or distant sources and turn on <strong style="color:#fff;">Noise Suppression</strong> in a busy room.</p>
+  <h3 style="font-size:1.2rem;color:#00d4ff;margin:26px 0 12px;">Why It's More Than a Toy</h3>
+  <p style="color:#a0a0b0;line-height:1.8;margin-bottom:16px;">Because the face is built from spectral centroid, harmonic content, and register &mdash; the same measurements that underlie Vocal Resonance Notation &mdash; the portrait gives you an intuitive, instant read on your tone. A bright, ringing <code style="color:#ffd700;font-family:'Courier New',monospace;">[H+++, Sq+]</code> note draws a wide-eyed, luminous face; a dark, breathy <code style="color:#ffd700;font-family:'Courier New',monospace;">[P++, Br]</code> note draws something softer and dimmer. Sing the same pitch two ways and watch the portrait change, and you are seeing the difference between resonance strategies that the numbers alone might not make vivid. It is the most fun way on the site to learn what &ldquo;brightness&rdquo; and &ldquo;harmonics&rdquo; actually mean.</p>
+</section>
+
 </body>
 </html>
