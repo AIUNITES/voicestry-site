@@ -78,7 +78,7 @@
     .pill{display:inline-block;background:var(--bg-input);border:1px solid var(--border-subtle);border-radius:999px;padding:2px 10px;font-size:.78rem;color:var(--text-secondary);margin:2px 4px 2px 0}
     .card + .card{margin-top:22px}
   </style>
-</head>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"VoiceStry","description":"VoiceStry helps singers and speakers train their voice like athletes train their body. Expert vocal training methods, exercises, and coaching tools.","url":"https://voicestry.com/"}</script></head>
 <body>
 
   <!-- AIUNITES Webring -->
@@ -175,6 +175,41 @@
         <h2 style="margin:0 0 4px;font-size:1.15rem">Where your voice sits</h2>
         <p class="note" style="margin:0 0 14px;color:var(--text-dim);font-size:.85rem">Grey = reference vowels for your selected voice type. Cyan = you, live. F2 → left/right, F1 → top/bottom.</p>
         <svg id="plot" viewBox="0 0 720 470" role="img" aria-label="Live vowel formant space"></svg>
+      </div>
+
+      <!-- Projection: formant tuning -->
+      <div class="card">
+        <h2 style="margin:0 0 4px;font-size:1.15rem">Projection — formant tuning</h2>
+        <p class="note" style="margin:0 0 14px;color:var(--text-dim);font-size:.85rem">When a vocal-tract resonance (a formant) lines up with a harmonic of the note you're singing, that harmonic <em>rings</em> — a loud, carrying tone for very little breath. Pick a pitch (or follow your own), sustain a vowel, and watch your formant bars snap onto the gold harmonic lines.</p>
+        <div class="mic-row" style="margin-bottom:14px">
+          <label class="vt">Target pitch
+            <select id="pitch">
+              <option value="0" selected>Follow my pitch</option>
+              <option value="130.81">C3</option>
+              <option value="164.81">E3</option>
+              <option value="196.00">G3</option>
+              <option value="220.00">A3</option>
+              <option value="261.63">C4</option>
+              <option value="329.63">E4</option>
+              <option value="392.00">G4</option>
+              <option value="440.00">A4</option>
+              <option value="523.25">C5</option>
+              <option value="659.25">E5</option>
+              <option value="783.99">G5</option>
+              <option value="1046.50">C6</option>
+            </select>
+          </label>
+          <span class="status" id="tuneStatus">Sustain a vowel to see formant–harmonic alignment.</span>
+        </div>
+        <svg id="harm" viewBox="0 0 720 220" style="width:100%;height:auto;display:block" role="img" aria-label="Formant to harmonic alignment"></svg>
+        <div class="meters" style="margin-top:12px">
+          <div class="meter"><div class="k">Target F0</div><div class="v" id="pF0">–<small> Hz</small></div></div>
+          <div class="meter"><div class="k">F1 → harmonic</div><div class="v" id="pF1h">–</div></div>
+          <div class="meter"><div class="k">F2 → harmonic</div><div class="v" id="pF2h">–</div></div>
+          <div class="meter"><div class="k">Output</div><div class="v" id="pOut">–</div></div>
+        </div>
+        <div class="vrn-live" id="pVrn" style="margin-top:12px"><span class="dim">[ projection reading appears here ]</span></div>
+        <p class="note flag" style="margin-top:14px"><b>Resonance, not force.</b> You noticed it yourself — in a hard room (a nave, a glass-walled lobby) a sound can ring for almost no airflow. That's the room reflecting strongly while a tuned formant amplifies the tone: the resonance does the work, so you don't push air. An <span class="text-gold" style="font-family:'Courier New',monospace">F1·H2</span>-style tag below means a formant locked onto that harmonic.</p>
       </div>
 
       <!-- VRN mapping -->
@@ -328,7 +363,7 @@ function frame(){
   if(!a){setIdle();raf=requestAnimationFrame(frame);return;}
   let{F1,F2,F3}=pickFormants(lpcPeaks(a,fs));const F0=f0From(r,fs);const sq=squilloRatio(a,fs);
   if(F1)sm.F1=sm.F1?sm.F1+A*(F1-sm.F1):F1;if(F2)sm.F2=sm.F2?sm.F2+A*(F2-sm.F2):F2;if(F3)sm.F3=sm.F3?sm.F3+A*(F3-sm.F3):F3;
-  render(sm.F1,sm.F2,sm.F3,F0,sq);raf=requestAnimationFrame(frame);
+  render(sm.F1,sm.F2,sm.F3,F0,sq);renderProjection(sm.F1,sm.F2,sm.F3,F0,sq,rms);raf=requestAnimationFrame(frame);
 }
 /* ================= reading -> VRN ================= */
 function nearestVowel(F1,F2){const rv=refVowels();let best=null,bd=1e9;
@@ -356,7 +391,52 @@ function render(F1,F2,F3,F0,sq){
   plotLive(F1,F2);
 }
 function setIdle(){const bv=$("bigvowel");bv.textContent="–";bv.classList.add("idle");
-  $("vrnlive").innerHTML='<span class="dim">[ listening… sustain a vowel ]</span>';plotLive(null);}
+  $("vrnlive").innerHTML='<span class="dim">[ listening… sustain a vowel ]</span>';plotLive(null);renderProjection(null,null,null,null,0,0);}
+/* ================= projection: formant <-> harmonic tuning ================= */
+const hsvg=document.getElementById("harm");
+const HP={l:44,r:20,t:22,b:30},hW=720-HP.l-HP.r,hH=220-HP.t-HP.b;
+const xf=f=>HP.l+Math.max(0,Math.min(1,f/3600))*hW;
+function harmBase(){
+  hsvg.innerHTML="";
+  hsvg.appendChild(el("rect",{x:xf(2800),y:HP.t,width:xf(3200)-xf(2800),height:hH,fill:"rgba(255,215,0,0.10)"}));
+  const sq=el("text",{x:(xf(2800)+xf(3200))/2,y:HP.t+11,"text-anchor":"middle",fill:"#ffd700","font-size":9,opacity:0.8});sq.textContent="squillo 2.8–3.2k";hsvg.appendChild(sq);
+  [0,1000,2000,3000].forEach(f=>{hsvg.appendChild(el("line",{x1:xf(f),y1:HP.t,x2:xf(f),y2:HP.t+hH,stroke:"rgba(255,255,255,0.05)","stroke-width":1}));
+    const t=el("text",{x:xf(f),y:210,"text-anchor":"middle",class:"axis-label"});t.textContent=f;hsvg.appendChild(t);});
+  const xt=el("text",{x:HP.l+hW/2,y:218,"text-anchor":"middle",class:"axis-title"});xt.textContent="frequency, Hz →";hsvg.appendChild(xt);
+  hsvg.appendChild(el("g",{id:"harmDyn"}));
+}
+function centsTo(val,base){const n=Math.max(1,Math.round(val/base));return {n,cents:1200*Math.log2(val/(n*base))};}
+function renderProjection(F1,F2,F3,F0,sq,level){
+  const dyn=document.getElementById("harmDyn"); if(!dyn) return; dyn.innerHTML="";
+  const sel=parseFloat(document.getElementById("pitch").value);
+  const base= sel>0? sel : (F0||null);
+  document.getElementById("pF0").innerHTML=(base?Math.round(base):"–")+'<small> Hz</small>';
+  if(!base){document.getElementById("tuneStatus").textContent="No pitch yet — pick a note or sustain a tone.";
+    ["pF1h","pF2h","pOut"].forEach(i=>document.getElementById(i).textContent="–");
+    document.getElementById("pVrn").innerHTML='<span class="dim">[ projection reading appears here ]</span>';return;}
+  for(let n=1;n*base<=3600;n++){const f=n*base;
+    dyn.appendChild(el("line",{x1:xf(f),y1:HP.t,x2:xf(f),y2:HP.t+hH,stroke:"#ffd700","stroke-width":1,opacity:0.4}));
+    if(n<=12){const t=el("text",{x:xf(f),y:HP.t-5,"text-anchor":"middle",fill:"#ffd700","font-size":8,opacity:0.65});t.textContent="H"+n;dyn.appendChild(t);}}
+  const locks=[];
+  [["F1",F1,12],["F2",F2,24],["F3",F3,12]].forEach(function(row){var name=row[0],val=row[1],dy=row[2];
+    if(!val)return;const c=centsTo(val,base);const tuned=Math.abs(c.cents)<50;
+    if(tuned)locks.push({name:name,n:c.n});
+    const bar=el("line",{x1:xf(val),y1:HP.t,x2:xf(val),y2:HP.t+hH,stroke:"#00d4ff","stroke-width":tuned?4:2});
+    if(tuned)bar.setAttribute("filter","drop-shadow(0 0 6px #00d4ff)");dyn.appendChild(bar);
+    const lab=el("text",{x:xf(val),y:HP.t+hH+dy,"text-anchor":"middle",fill:"#00d4ff","font-size":11,"font-weight":700});
+    lab.textContent=name+(tuned?" 🔒":"");dyn.appendChild(lab);});
+  const hInfo=function(v){if(!v)return "–";const c=centsTo(v,base);return "H"+c.n+" "+(c.cents>=0?"+":"")+Math.round(c.cents)+"¢";};
+  document.getElementById("pF1h").textContent=hInfo(F1);
+  document.getElementById("pF2h").textContent=hInfo(F2);
+  const db=20*Math.log10(Math.max(level,1e-6));const pct=Math.max(0,Math.min(100,Math.round((db+50)/40*100)));
+  document.getElementById("pOut").innerHTML=pct+'<small> %</small>';
+  const bright=F2&&F2>1500*SCALE[vtype].f2;const parts=[];
+  parts.push(bright?"H++":"C+");parts.push(bright?"O++":"O+");if(sq>9)parts.push("Sq"+(sq>16?"++":"+"));parts.push(bright?"Ch+":"Sc");
+  locks.forEach(function(l){parts.push(l.name+"·H"+l.n);});
+  document.getElementById("pVrn").innerHTML="["+parts.join(", ")+"]";
+  document.getElementById("tuneStatus").textContent= locks.length? (locks.map(function(l){return l.name+"→H"+l.n;}).join(", ")+" locked — that's the ring, for almost no breath."):"Shape the vowel until a formant bar snaps onto a gold harmonic line.";
+}
+
 /* ================= mic control ================= */
 async function start(){
   try{
@@ -373,6 +453,8 @@ function stop(){running=false;cancelAnimationFrame(raf);if(micStream)micStream.g
   if(ac)ac.close();sm={F1:null,F2:null,F3:null};$("btn").textContent="🎤 Start listening";$("status").textContent="Stopped.";setIdle();}
 $("btn").addEventListener("click",()=>running?stop():start());
 $("vtype").addEventListener("change",e=>{vtype=e.target.value;rebuildPlot();});
+document.getElementById("pitch").addEventListener("change",()=>{ if(!running) renderProjection(null,null,null,null,0,0); });
+harmBase(); renderProjection(null,null,null,null,0,0);
 </script>
 </body>
 </html>
