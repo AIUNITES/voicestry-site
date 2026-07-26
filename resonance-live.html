@@ -180,7 +180,7 @@
       <!-- Projection: formant tuning -->
       <div class="card">
         <h2 style="margin:0 0 4px;font-size:1.15rem">Projection — formant tuning</h2>
-        <p class="note" style="margin:0 0 14px;color:var(--text-dim);font-size:.85rem">When a vocal-tract resonance (a formant) lines up with a harmonic of the note you're singing, that harmonic <em>rings</em> — a loud, carrying tone for very little breath. Pick a pitch (or follow your own), sustain a vowel, and watch your formant bars snap onto the gold harmonic lines.</p>
+        <p class="note" style="margin:0 0 14px;color:var(--text-dim);font-size:.85rem">When a vocal-tract resonance (a formant) lines up with a harmonic of the note you're singing, that harmonic <em>rings</em> — a loud, carrying tone for very little breath. Pick a pitch (or follow your own), sustain a vowel, and watch your formant bars snap onto the gold harmonic lines. Turn on the drone to match the pitch by ear (headphones recommended, so the mic hears you and not the tone), and hold a lock to build a streak.</p>
         <div class="mic-row" style="margin-bottom:14px">
           <label class="vt">Target pitch
             <select id="pitch">
@@ -199,6 +199,7 @@
               <option value="1046.50">C6</option>
             </select>
           </label>
+          <button class="btn btn--ghost" id="drone" type="button" style="padding:9px 16px">🔊 Play drone</button>
           <span class="status" id="tuneStatus">Sustain a vowel to see formant–harmonic alignment.</span>
         </div>
         <svg id="harm" viewBox="0 0 720 220" style="width:100%;height:auto;display:block" role="img" aria-label="Formant to harmonic alignment"></svg>
@@ -207,6 +208,7 @@
           <div class="meter"><div class="k">F1 → harmonic</div><div class="v" id="pF1h">–</div></div>
           <div class="meter"><div class="k">F2 → harmonic</div><div class="v" id="pF2h">–</div></div>
           <div class="meter"><div class="k">Output</div><div class="v" id="pOut">–</div></div>
+          <div class="meter"><div class="k">Lock hold</div><div class="v" id="pHold">–</div></div>
         </div>
         <div class="vrn-live" id="pVrn" style="margin-top:12px"><span class="dim">[ projection reading appears here ]</span></div>
         <p class="note flag" style="margin-top:14px"><b>Resonance, not force.</b> You noticed it yourself — in a hard room (a nave, a glass-walled lobby) a sound can ring for almost no airflow. That's the room reflecting strongly while a tuned formant amplifies the tone: the resonance does the work, so you don't push air. An <span class="text-gold" style="font-family:'Courier New',monospace">F1·H2</span>-style tag below means a formant locked onto that harmonic.</p>
@@ -406,6 +408,25 @@ function harmBase(){
   hsvg.appendChild(el("g",{id:"harmDyn"}));
 }
 function centsTo(val,base){const n=Math.max(1,Math.round(val/base));return {n,cents:1200*Math.log2(val/(n*base))};}
+/* --- drone (pitch reference) + hold-the-lock timer --- */
+let dctx=null,dosc=[],droneGain=null,droneOn=false,holdStart=null,bestHold=0;
+function droneFreq(){const s=parseFloat(document.getElementById("pitch").value);return s>0?s:0;}
+function startDrone(){
+  const f=droneFreq(); if(!f){document.getElementById("tuneStatus").textContent='Pick a fixed pitch (not "Follow my pitch") to hear a drone.';return;}
+  if(!dctx)dctx=new (window.AudioContext||window.webkitAudioContext)();
+  if(dctx.state==="suspended")dctx.resume();
+  const g=dctx.createGain();g.gain.value=0.0;g.connect(dctx.destination);
+  const o1=dctx.createOscillator();o1.type="sawtooth";o1.frequency.value=f;
+  const o2=dctx.createOscillator();o2.type="sine";o2.frequency.value=f*2;
+  const g2=dctx.createGain();g2.gain.value=0.3;o2.connect(g2);
+  o1.connect(g);g2.connect(g);o1.start();o2.start();
+  g.gain.linearRampToValueAtTime(0.08,dctx.currentTime+0.05);
+  dosc=[{o:o1},{o:o2}];droneGain=g;droneOn=true;
+  const b=document.getElementById("drone");if(b)b.textContent="🔇 Stop drone";
+}
+function stopDrone(){ if(droneGain&&dctx){try{droneGain.gain.linearRampToValueAtTime(0,dctx.currentTime+0.05);}catch(e){}} dosc.forEach(function(d){try{d.o.stop(dctx.currentTime+0.12);}catch(e){}}); dosc=[];droneOn=false; const b=document.getElementById("drone");if(b)b.textContent="🔊 Play drone"; }
+function toggleDrone(){ droneOn?stopDrone():startDrone(); }
+function updateDrone(){ if(!droneOn)return; const f=droneFreq(); if(!f){stopDrone();return;} dosc.forEach(function(d,i){try{d.o.frequency.value=i===1?f*2:f;}catch(e){}}); }
 function renderProjection(F1,F2,F3,F0,sq,level){
   const dyn=document.getElementById("harmDyn"); if(!dyn) return; dyn.innerHTML="";
   const sel=parseFloat(document.getElementById("pitch").value);
@@ -434,6 +455,8 @@ function renderProjection(F1,F2,F3,F0,sq,level){
   parts.push(bright?"H++":"C+");parts.push(bright?"O++":"O+");if(sq>9)parts.push("Sq"+(sq>16?"++":"+"));parts.push(bright?"Ch+":"Sc");
   locks.forEach(function(l){parts.push(l.name+"·H"+l.n);});
   document.getElementById("pVrn").innerHTML="["+parts.join(", ")+"]";
+  const hEl=document.getElementById("pHold");
+  if(hEl){ if(locks.length){ if(holdStart==null)holdStart=performance.now(); const cur=(performance.now()-holdStart)/1000; if(cur>bestHold)bestHold=cur; hEl.innerHTML=cur.toFixed(1)+'<small>s · best '+bestHold.toFixed(1)+'s</small>'; } else { holdStart=null; hEl.innerHTML=(bestHold>0?'0.0<small>s · best '+bestHold.toFixed(1)+'s</small>':'–'); } }
   document.getElementById("tuneStatus").textContent= locks.length? (locks.map(function(l){return l.name+"→H"+l.n;}).join(", ")+" locked — that's the ring, for almost no breath."):"Shape the vowel until a formant bar snaps onto a gold harmonic line.";
 }
 
@@ -453,7 +476,8 @@ function stop(){running=false;cancelAnimationFrame(raf);if(micStream)micStream.g
   if(ac)ac.close();sm={F1:null,F2:null,F3:null};$("btn").textContent="🎤 Start listening";$("status").textContent="Stopped.";setIdle();}
 $("btn").addEventListener("click",()=>running?stop():start());
 $("vtype").addEventListener("change",e=>{vtype=e.target.value;rebuildPlot();});
-document.getElementById("pitch").addEventListener("change",()=>{ if(!running) renderProjection(null,null,null,null,0,0); });
+document.getElementById("pitch").addEventListener("change",()=>{ updateDrone(); if(!running) renderProjection(null,null,null,null,0,0); });
+document.getElementById("drone").addEventListener("click",toggleDrone);
 harmBase(); renderProjection(null,null,null,null,0,0);
 </script>
 </body>
